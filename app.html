@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>throne. — the court app (design preview)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:#0A0C0B}
+a{color:#00FF9C;text-decoration:none}a:hover{color:#D4AF37}
+@keyframes thpulse{0%,100%{opacity:1}50%{opacity:0.45}}
+</style>
+</helmet>
+<div style="min-height:100vh;min-width:1320px;background:#0A0C0B;color:#F2F4F0;font-family:Verdana,Geneva,sans-serif;position:relative">
+  <div style="position:absolute;inset:0;background:radial-gradient(1100px 640px at 65% -10%,rgba(212,175,55,0.07),transparent 62%);pointer-events:none"></div>
+  <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,0.012) 0px,rgba(255,255,255,0.012) 1px,transparent 1px,transparent 4px);pointer-events:none"></div>
+
+  <div style="position:relative;display:flex;justify-content:space-between;align-items:center;padding:14px 28px;border-bottom:1px solid #1f2422;background:rgba(10,12,11,0.75)">
+    <div style="display:flex;align-items:center;gap:22px">
+      <div style="display:flex;align-items:center;gap:9px">
+        <div style="width:24px;display:flex;align-items:center;filter:drop-shadow(0 0 6px rgba(57,241,148,0.5))"><svg width="24" height="24" viewBox="-28 -34 56 56" style="display:block"><path d="M-24,10 L-24,-14 L-13,-6 L0,-26 L13,-6 L24,-14 L24,10 Z" fill="#229959" stroke="#39F194" stroke-width="3" stroke-linejoin="round"/><rect x="-24" y="10" width="48" height="9" rx="4.5" fill="#229959" stroke="#39F194" stroke-width="2.6"/><circle cx="-24" cy="-17" r="3" fill="#39F194"/><circle cx="0" cy="-29" r="3.6" fill="#39F194"/><circle cx="24" cy="-17" r="3" fill="#39F194"/></svg></div>
+        <span style="font-size:21px;font-weight:700;letter-spacing:-0.02em">throne<span style="color:#00FF9C">.</span></span>
+      </div>
+      <div style="display:flex;gap:4px">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+          <div onClick="{{ t.go }}" style="white-space:nowrap;padding:8px 15px;border-radius:10px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.05em;color:{{ t.color }};background:{{ t.bg }};border:1px solid {{ t.border }}" style-hover="color:#D4AF37">{{ t.label }}</div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px;font-family:'JetBrains Mono',monospace;font-size:11.5px">
+      <span style="color:#00FF9C"><span style="animation:thpulse 2s infinite">●</span> epoch 09 · settles {{ epochTimer }}</span>
+      <div style="display:flex;border:1px solid #1f2422;border-radius:9px;overflow:hidden">
+        <sc-for list="{{ walletOpts }}" as="w" hint-placeholder-count="4">
+          <span onClick="{{ w.go }}" style="padding:7px 11px;cursor:pointer;color:{{ w.col }};background:{{ w.bg }};font-size:10.5px">{{ w.label }}</span>
+        </sc-for>
+      </div>
+      <span style="padding:7px 14px;border-radius:10px;background:{{ walletChipBg }};border:1px solid {{ walletChipBrd }};color:{{ walletChipCol }};cursor:pointer">{{ walletChip }}</span>
+    </div>
+  </div>
+
+  <sc-if value="{{ isVault }}" hint-placeholder-val="{{ true }}">
+  <div style="position:relative;padding:26px 32px;display:grid;grid-template-columns:520px 1fr;gap:24px">
+    <div style="padding:30px 34px;background:linear-gradient(180deg,rgba(242,244,240,0.08),rgba(242,244,240,0.025));border:1px solid rgba(242,244,240,0.16);border-radius:20px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.14);display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;color:#F2F4F0">senior · protected, paid first</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#9BA39E">capped launch · audited rails</span>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:48px;font-weight:700">~9%</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#5E6663">estimate · morpho base −1pt + creator fees</span></div>
+      <div style="display:flex;gap:8px;font-family:'JetBrains Mono',monospace;font-size:12px">
+        <span onClick="{{ setDeposit }}" style="flex:1;text-align:center;padding:9px;border-radius:9px;cursor:pointer;color:{{ depCol }};background:{{ depBg }};border:1px solid {{ depBrd }}">deposit</span>
+        <span onClick="{{ setWithdraw }}" style="flex:1;text-align:center;padding:9px;border-radius:9px;cursor:pointer;color:{{ wdCol }};background:{{ wdBg }};border:1px solid {{ wdBrd }}">withdraw</span>
+      </div>
+      <div style="padding:15px 18px;border-radius:12px;background:rgba(10,12,11,0.5);border:1px solid #1f2422;font-family:'JetBrains Mono',monospace;display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:20px">10,000</span><span style="color:#5E6663;font-size:11px">usdg · max</span></div>
+      <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#9BA39E"><span>your position</span><span style="color:#F2F4F0">{{ seniorPos }}</span></div>
+      <div style="padding:13px;border-radius:10px;text-align:center;background:{{ ctaBg }};border:1px solid {{ ctaBrd }};font-family:'JetBrains Mono',monospace;font-size:13px;color:{{ ctaCol }};cursor:pointer">{{ vaultCta }}</div>
+      <div style="display:flex;flex-direction:column;gap:7px"><div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E6663"><span>vault cap · capped launch</span><span style="color:#9BA39E">$3.2m / $5.0m</span></div><div style="height:6px;border-radius:3px;background:rgba(242,244,240,0.06);overflow:hidden"><div style="height:100%;width:64%;background:rgba(242,244,240,0.35);border-radius:3px"></div></div><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#5E6663">withdrawals settle at epoch close</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+        <div style="padding:16px 18px;background:linear-gradient(180deg,rgba(242,244,240,0.05),rgba(242,244,240,0.015));border:1px solid #1f2422;border-radius:14px;display:flex;flex-direction:column;gap:4px"><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E6663">tvl</span><span style="font-family:'JetBrains Mono',monospace;font-size:23px;font-weight:700">$4.0m</span></div>
+        <div style="padding:16px 18px;background:linear-gradient(180deg,rgba(0,255,156,0.05),rgba(0,255,156,0.012));border:1px solid rgba(0,255,156,0.2);border-radius:14px;display:flex;flex-direction:column;gap:4px"><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E6663">desk fees · epoch 09</span><span style="font-family:'JetBrains Mono',monospace;font-size:23px;font-weight:700;color:#00FF9C">$18.2k</span></div>
+        <div style="padding:16px 18px;background:linear-gradient(180deg,rgba(212,175,55,0.07),rgba(212,175,55,0.02));border:1px solid rgba(212,175,55,0.3);border-radius:14px;display:flex;flex-direction:column;gap:4px"><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E6663">court fill</span><span style="font-family:'JetBrains Mono',monospace;font-size:23px;font-weight:700;color:#D4AF37">61%</span></div>
+      </div>
+      <div style="padding:22px 26px;background:linear-gradient(180deg,rgba(242,244,240,0.05),rgba(242,244,240,0.015));border:1px solid #1f2422;border-radius:16px;display:flex;flex-direction:column;gap:14px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;color:#5E6663">this epoch's waterfall</span>
+        <sc-for list="{{ waterfall }}" as="w" hint-placeholder-count="4">
+          <div style="display:flex;align-items:center;gap:14px;font-family:'JetBrains Mono',monospace;font-size:12px">
+            <span style="width:190px;color:#9BA39E">{{ w.label }}</span>
+            <div style="flex:1;height:9px;border-radius:5px;background:rgba(242,244,240,0.06);overflow:hidden"><div style="height:100%;width:{{ w.pct }}%;background:{{ w.col }};border-radius:5px"></div></div>
+            <span style="width:90px;text-align:right;color:{{ w.valCol }}">{{ w.val }}</span>
+            <span style="width:80px;color:#5E6663;font-size:10.5px">{{ w.state }}</span>
+          </div>
+        </sc-for>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E6663">order every epoch: senior paid first · court takes the rest · losses hit the court first</span>
+      </div>
+      <div style="padding:16px 20px;background:linear-gradient(180deg,rgba(242,244,240,0.05),rgba(242,244,240,0.015));border:1px solid #1f2422;border-radius:14px;display:flex;flex-direction:column;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#9BA39E">
+        <span style="letter-spacing:0.12em;color:#5E6663">activity</span>
+        <div>14:22 · seat_14 undefended, countdown started <span style="color:#7DFFC0">defense</span></div>
+        <div>14:19 · desk fee sweep +$412 to the court <span style="color:#00FF9C">fees</span></div>
+        <div>13:58 · seat_22 auction bid $91,200 <span style="color:#D4AF37">auction</span></div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isCourt }}" hint-placeholder-val="{{ false }}">
+  <div style="position:relative;padding:24px 32px;display:grid;grid-template-columns:576px 1fr;gap:24px">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="position:relative;width:576px;height:576px;border:1px solid rgba(212,175,55,0.25);border-radius:14px;overflow:hidden;background:repeating-conic-gradient(rgba(242,244,240,0.05) 0% 25%,rgba(242,244,240,0.015) 0% 50%) 0 0/144px 144px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.1),0 30px 80px rgba(0,0,0,0.55)">
+        <sc-for list="{{ pieces }}" as="pc" hint-placeholder-count="32">
+          <div onClick="{{ pc.go }}" style="position:absolute;left:{{ pc.x }}px;top:{{ pc.y }}px;width:72px;height:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;border:1px solid {{ pc.brd }};border-radius:10px" style-hover="border-color:rgba(212,175,55,0.6)">
+            <span style="font-size:37px;line-height:1;color:{{ pc.col }};text-shadow:{{ pc.glow }}">{{ pc.ch }}</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:8.5px;color:{{ pc.badgeCol }}">{{ pc.badge }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#5E6663">29 defended · 1 undefended · 1 in auction · 1 dormant · click any seat</span>
+    </div>
+    <div style="padding:24px 28px;background:linear-gradient(180deg,rgba(212,175,55,0.06),rgba(212,175,55,0.015));border:1px solid rgba(212,175,55,0.28);border-radius:18px;display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.08em;color:#D4AF37">{{ sel.name }} · seat_{{ sel.num }}</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:{{ sel.stCol }}">● {{ sel.st }}</span>
+      </div>
+      <div style="display:flex;gap:20px">
+        <div style="width:120px;height:148px;border-radius:14px;background:radial-gradient(80px 100px at 50% 32%,{{ sel.artGlow }},rgba(242,244,240,0.03) 75%),linear-gradient(180deg,rgba(242,244,240,0.07),rgba(242,244,240,0.02));border:1px solid {{ sel.artBrd }};display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;flex-shrink:0">
+          <span style="font-size:62px;line-height:1;color:{{ sel.artCol }};text-shadow:{{ sel.artShadow }}">{{ sel.ch }}</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#5E6663">{{ sel.weight }}</span>
+        </div>
+        <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11.5px">
+          <div style="padding:11px 13px;background:rgba(10,12,11,0.45);border:1px solid #1f2422;border-radius:10px;display:flex;flex-direction:column;gap:3px"><span style="color:#5E6663">holder</span><span style="font-size:14px">{{ sel.owner }}</span></div>
+          <div style="padding:11px 13px;background:rgba(10,12,11,0.45);border:1px solid #1f2422;border-radius:10px;display:flex;flex-direction:column;gap:3px"><span style="color:#5E6663">usdg deposit</span><span style="font-size:14px">{{ sel.usdc }}</span></div>
+          <div style="padding:11px 13px;background:rgba(10,12,11,0.45);border:1px solid #1f2422;border-radius:10px;display:flex;flex-direction:column;gap:3px"><span style="color:#5E6663">accrued fees · epoch</span><span style="font-size:14px;color:#00FF9C">{{ sel.flow }}</span></div>
+          <div style="padding:11px 13px;background:rgba(10,12,11,0.45);border:1px solid #1f2422;border-radius:10px;display:flex;flex-direction:column;gap:3px"><span style="color:#5E6663">share of court</span><span style="font-size:14px;color:#D4AF37">{{ sel.share }}</span></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11.5px"><span style="color:#5E6663">stake vs requirement</span><span style="color:{{ sel.stCol }}">{{ sel.stakeLine }}</span></div>
+        <div style="height:9px;border-radius:5px;background:rgba(242,244,240,0.07);overflow:hidden"><div style="height:100%;width:{{ sel.stakePct }}%;background:{{ sel.stakeBarCol }};border-radius:5px"></div></div>
+      </div>
+      <sc-if value="{{ sel.showTimer }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:14px 18px;background:rgba(255,107,87,0.06);border:1px solid rgba(255,107,87,0.32);border-radius:12px;display:flex;justify-content:space-between;align-items:center">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#7DFFC0">defense window</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:700;color:#7DFFC0">{{ timer }}</span>
+        </div>
+      </sc-if>
+      <div style="margin-top:auto;font-family:'JetBrains Mono',monospace;font-size:10.5px;line-height:1.7;color:#5E6663">the seat is a token-bound wallet · deposit, stake and yield stream travel with the nft · sale or auction transfers everything at once</div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isCovenant }}" hint-placeholder-val="{{ false }}">
+  <div style="position:relative;padding:26px 32px;display:flex;flex-direction:column;gap:18px">
+    <div style="display:flex;justify-content:space-between;align-items:baseline">
+      <span style="font-size:20px;font-weight:700;text-transform:lowercase">the covenant</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#9BA39E">season 01 ends in <span style="color:#D4AF37">41d 12:08:44</span></span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+      <sc-for list="{{ kings }}" as="k" hint-placeholder-count="2">
+        <div style="padding:24px 28px;background:{{ k.bg }};border:1px solid {{ k.brd }};border-radius:18px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:{{ k.titleCol }}">{{ k.title }}</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:{{ k.stateCol }}">● {{ k.state }}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:20px">
+            <span style="font-size:56px;line-height:1;color:{{ k.pieceCol }};text-shadow:{{ k.pieceShadow }}">{{ k.ch }}</span>
+            <div style="flex:1;display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11.5px"><span style="color:#5E6663">stake ratio · 30% required</span><span style="color:{{ k.stateCol }};font-weight:700">{{ k.ratio }}</span></div>
+              <div style="position:relative;height:12px;border-radius:6px;background:rgba(242,244,240,0.07);overflow:hidden">
+                <div style="height:100%;width:{{ k.pct }}%;background:{{ k.barCol }};border-radius:6px"></div>
+                <div style="position:absolute;left:75%;top:-2px;bottom:-2px;width:2px;background:#F2F4F0;opacity:0.6"></div>
+              </div>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E6663">{{ k.note }}</span>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:14px 18px;border-radius:12px;background:rgba(10,12,11,0.45);border:1px solid #1f2422;font-family:'JetBrains Mono',monospace;font-size:12px">
+            <span style="color:#5E6663">color pot · escrow</span><span style="color:{{ k.potCol }};font-weight:700">{{ k.pot }}</span>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="padding:18px 24px;background:linear-gradient(180deg,rgba(255,107,87,0.06),rgba(255,107,87,0.012));border:1px solid rgba(255,107,87,0.3);border-radius:14px;display:flex;align-items:center;gap:18px;font-family:'JetBrains Mono',monospace;font-size:12px">
+      <span style="color:#7DFFC0;font-size:20px">⇄</span>
+      <span style="color:#9BA39E">black court is in breach: <span style="color:#7DFFC0">2% of black's yield</span> is bleeding to the white pot while the ratio sits under 30%. pots settle to the winning color at season end; if both kings hold, the pots roll over and compound.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px">
+      <div style="padding:18px 20px;background:linear-gradient(180deg,rgba(242,244,240,0.05),rgba(242,244,240,0.015));border:1px solid #1f2422;border-radius:14px;display:flex;flex-direction:column;gap:5px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E6663">escrow · both pots</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700">$30,500</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9BA39E">parked in the senior morpho vault · earning while it waits</span>
+      </div>
+      <div style="padding:18px 20px;background:linear-gradient(180deg,rgba(0,255,156,0.05),rgba(0,255,156,0.012));border:1px solid rgba(0,255,156,0.2);border-radius:14px;display:flex;flex-direction:column;gap:5px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E6663">escrow yield · season 01</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:#00FF9C">+$412</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9BA39E">float splits between the two kings · $206 each so far</span>
+      </div>
+      <div style="padding:18px 20px;background:linear-gradient(180deg,rgba(255,107,87,0.05),rgba(255,107,87,0.012));border:1px solid rgba(255,107,87,0.25);border-radius:14px;display:flex;flex-direction:column;gap:5px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E6663">active bleed · black → white</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:#7DFFC0">$96 / day</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9BA39E">2% of black's yield · day 4 of breach · $384 moved</span>
+      </div>
+      <div style="padding:18px 20px;background:linear-gradient(180deg,rgba(212,175,55,0.06),rgba(212,175,55,0.015));border:1px solid rgba(212,175,55,0.28);border-radius:14px;display:flex;flex-direction:column;gap:5px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E6663">projected season settle</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:#D4AF37">$34.1k → white</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9BA39E">if the breach holds to season end · pro-rata by seat weight</span>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isAuction }}" hint-placeholder-val="{{ false }}">
+  <div style="position:relative;padding:26px 32px;display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;justify-content:space-between;align-items:baseline">
+      <span style="font-size:20px;font-weight:700;text-transform:lowercase">auction house</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#5E6663">floor = everything inside the seat +20% · kings +30%, 14-day window</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1.25fr 1fr;gap:16px">
+      <div style="padding:24px 28px;background:linear-gradient(180deg,rgba(212,175,55,0.08),rgba(212,175,55,0.02));border:1px solid rgba(212,175,55,0.35);border-radius:16px;display:flex;gap:22px">
+        <div style="width:104px;height:130px;border-radius:12px;background:radial-gradient(70px 84px at 50% 30%,rgba(212,175,55,0.4),rgba(242,244,240,0.03) 75%),linear-gradient(180deg,rgba(242,244,240,0.07),rgba(242,244,240,0.02));border:1px solid rgba(212,175,55,0.4);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;flex-shrink:0">
+          <span style="font-size:56px;line-height:1;color:#F2F4F0;text-shadow:0 0 20px rgba(212,175,55,0.8)">♖&#xFE0E;</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#5E6663">seat_22 · 3x</span>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#D4AF37">live · w_rook_22 abdication</span><span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#7DFFC0">ends 09:41:12</span></div>
+          <div style="display:flex;gap:18px;font-family:'JetBrains Mono',monospace;font-size:11.5px">
+            <div style="display:flex;flex-direction:column;gap:2px"><span style="color:#5E6663">contents</span><span style="font-size:16px">$72.0k</span></div>
+            <div style="display:flex;flex-direction:column;gap:2px"><span style="color:#5E6663">floor · +20%</span><span style="font-size:16px;color:#D4AF37">$86.4k</span></div>
+            <div style="display:flex;flex-direction:column;gap:2px"><span style="color:#5E6663">top bid</span><span style="font-size:16px;color:#00FF9C">$91.2k · 0x9a…41</span></div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:auto">
+            <div style="flex:1;padding:10px 14px;border-radius:9px;background:#111413;border:1px solid #1f2422;font-family:'JetBrains Mono',monospace;font-size:12px;display:flex;justify-content:space-between"><span style="color:#5E6663">your bid</span><span>92,500 usdg</span></div>
+            <span style="padding:10px 20px;border-radius:9px;background:{{ bidBg }};border:1px solid {{ bidBrd }};font-family:'JetBrains Mono',monospace;font-size:12px;color:{{ bidCol }};cursor:pointer">{{ bidCta }}</span>
+          </div>
+        </div>
+      </div>
+      <div style="padding:24px 28px;background:linear-gradient(180deg,rgba(242,244,240,0.05),rgba(242,244,240,0.015));border:1px solid #1f2422;border-radius:16px;display:flex;flex-direction:column;gap:12px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;color:#5E6663">dormant seats · revivable</span>
+        <sc-for list="{{ dormants }}" as="d" hint-placeholder-count="2">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-radius:10px;background:rgba(10,12,11,0.45);border:1px solid #1f2422;font-family:'JetBrains Mono',monospace;font-size:12px">
+            <span style="color:#9BA39E"><span style="font-size:20px;color:#3a423e">{{ d.ch }}</span>  {{ d.name }}</span>
+            <span style="color:#5E6663">{{ d.note }}</span>
+          </div>
+        </sc-for>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;line-height:1.7;color:#5E6663;margin-top:auto">why dormant, not sold: the floor (contents +20%) protects the exiting holder, so an auction can fail when the ask sits above what the fee stream justifies. the seat parks instead — weight redistributes to defended seats, the holder keeps everything and can re-stake any time to revive. nothing is confiscated.</span>
+      </div>
+    </div>
+    <div style="padding:14px 22px;background:linear-gradient(180deg,rgba(242,244,240,0.045),rgba(242,244,240,0.012));border:1px solid #1f2422;border-radius:13px;display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#9BA39E">
+      <span>past: b_knight_31 cleared 1.34x · w_pawn_12 cleared at floor · b_bishop_27 no bids → revived 3 days later</span>
+      <span style="color:#D4AF37">premiums over floor split: treasury-free — 100% to active seats</span>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isMine }}" hint-placeholder-val="{{ false }}">
+  <div style="position:relative;padding:26px 32px">
+    <sc-if value="{{ hasSeat }}" hint-placeholder-val="{{ true }}">
+    <div style="display:grid;grid-template-columns:380px 1fr;gap:24px">
+      <div style="position:relative;height:440px;border-radius:18px;background:radial-gradient(220px 280px at 50% 32%,{{ mySeat.artGlow }},rgba(242,244,240,0.02) 75%),linear-gradient(180deg,rgba(242,244,240,0.06),rgba(242,244,240,0.02));border:1px solid {{ mySeat.artBrd }};box-shadow:inset 0 1px 0 rgba(255,255,255,0.12),0 30px 80px rgba(0,0,0,0.55);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px">
+        <span style="font-size:130px;line-height:1;color:#F2F4F0;text-shadow:{{ mySeat.artShadow }}">{{ mySeat.ch }}</span>
+        <span style="font-size:18px;font-weight:700;text-transform:lowercase">{{ mySeat.name }}</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:4px 13px;border-radius:8px;background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.35);color:#D4AF37">{{ mySeat.tag }}</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#5E6663">token-bound wallet · everything travels with the nft</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;font-family:'JetBrains Mono',monospace;font-size:11.5px">
+          <div style="padding:14px 16px;background:rgba(242,244,240,0.03);border:1px solid #1f2422;border-radius:11px;display:flex;flex-direction:column;gap:3px"><span style="color:#5E6663">usdg deposit</span><span style="font-size:17px">{{ mySeat.usdc }}</span></div>
+          <div style="padding:14px 16px;background:rgba(242,244,240,0.03);border:1px solid #1f2422;border-radius:11px;display:flex;flex-direction:column;gap:3px"><span style="color:#5E6663">$throne stake / req</span><span style="font-size:17px;color:#00FF9C">{{ mySeat.stake }}</span></div>
+          <div style="padding:14px 16px;background:rgba(242,244,240,0.03);border:1px solid #1f2422;border-radius:11px;display:flex;flex-direction:column;gap:3px"><span style="color:#5E6663">accrued · epoch 09</span><span style="font-size:17px;color:#00FF9C">{{ mySeat.accrued }}</span></div>
+        </div>
+        <sc-if value="{{ isMonarchSeat }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:16px 20px;background:linear-gradient(180deg,rgba(212,175,55,0.08),rgba(212,175,55,0.02));border:1px solid rgba(212,175,55,0.35);border-radius:13px;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:12px">
+          <span style="color:#D4AF37">covenant duty: hold ≥30% of white's tvl · currently 31.2%</span>
+          <span style="color:#9BA39E">your share of pot float: <span style="color:#D4AF37">$412 / epoch</span></span>
+        </div>
+        </sc-if>
+        <div style="padding:20px 24px;background:linear-gradient(180deg,rgba(242,244,240,0.05),rgba(242,244,240,0.015));border:1px solid #1f2422;border-radius:14px;display:flex;flex-direction:column;gap:12px;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#9BA39E">
+          <span style="letter-spacing:0.12em;color:#5E6663">yield stream</span>
+          <div style="display:flex;justify-content:space-between"><span>epoch 08 · desk fees + give-up + vault yield</span><span style="color:#00FF9C">+$1,148</span></div>
+          <div style="display:flex;justify-content:space-between"><span>epoch 07 · incl. dormancy flow from seat_11</span><span style="color:#00FF9C">+$1,306</span></div>
+          <div style="display:flex;justify-content:space-between"><span>epoch 06</span><span style="color:#00FF9C">+$1,022</span></div>
+        </div>
+        <div style="display:flex;gap:12px">
+          <span style="flex:2;text-align:center;padding:13px;border-radius:11px;background:linear-gradient(180deg,rgba(0,255,156,0.14),rgba(0,255,156,0.06));border:1px solid rgba(0,255,156,0.4);font-family:'JetBrains Mono',monospace;font-size:12px;color:#00FF9C;cursor:pointer">top up stake</span>
+          <span style="flex:2;text-align:center;padding:13px;border-radius:11px;background:rgba(242,244,240,0.05);border:1px solid rgba(242,244,240,0.2);font-family:'JetBrains Mono',monospace;font-size:12px;color:#F2F4F0;cursor:pointer">notice-period exit · free</span>
+          <span style="flex:2;text-align:center;padding:13px;border-radius:11px;background:rgba(255,107,87,0.05);border:1px solid rgba(255,107,87,0.3);font-family:'JetBrains Mono',monospace;font-size:12px;color:#7DFFC0;cursor:pointer">abdicate now · floor {{ mySeat.floor }}</span>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;line-height:1.7;color:#5E6663">notice-period exit queues {{ mySeat.notice }} and costs nothing · instant abdication lists at contents {{ mySeat.floorPct }} and you keep all proceeds</span>
+      </div>
+    </div>
+    </sc-if>
+    <sc-if value="{{ noSeat }}" hint-placeholder-val="{{ false }}">
+    <div style="height:420px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px">
+      <div style="width:44px;opacity:0.7;filter:drop-shadow(0 0 8px rgba(57,241,148,0.4))"><svg width="44" height="44" viewBox="-28 -34 56 56" style="display:block"><path d="M-24,10 L-24,-14 L-13,-6 L0,-26 L13,-6 L24,-14 L24,10 Z" fill="#229959" stroke="#39F194" stroke-width="3" stroke-linejoin="round"/><rect x="-24" y="10" width="48" height="9" rx="4.5" fill="#229959" stroke="#39F194" stroke-width="2.6"/><circle cx="-24" cy="-17" r="3" fill="#39F194"/><circle cx="0" cy="-29" r="3.6" fill="#39F194"/><circle cx="24" cy="-17" r="3" fill="#39F194"/></svg></div>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#9BA39E">{{ emptyLine }}</span>
+      <span style="padding:12px 24px;border-radius:11px;background:linear-gradient(180deg,rgba(212,175,55,0.14),rgba(212,175,55,0.05));border:1px solid rgba(212,175,55,0.4);font-family:'JetBrains Mono',monospace;font-size:12px;color:#D4AF37;cursor:pointer">{{ emptyCta }}</span>
+    </div>
+    </sc-if>
+  </div>
+  </sc-if>
+
+  <div style="position:relative;display:flex;justify-content:space-between;gap:60px;padding:12px 28px;border-top:1px solid #1f2422;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E6663">
+    <span style="white-space:nowrap">throne. · robinhood chain · <a href="#" style="color:#9BA39E">terms</a></span>
+    <span style="text-align:right;max-width:980px;line-height:1.6">this is a defi experiment, please use at your own risk · built on audited infrastructure; throne's own contracts launch capped and are audited before caps lift · figures are estimates from stated assumptions · nothing here is an offer or financial advice</span>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { tab: 'vault', piece: 28, wallet: 'holder', vaultMode: 'deposit', t: 286882, et: 220102 };
+  componentDidMount(){ this.iv=setInterval(()=>this.setState(s=>({t:s.t-1, et:s.et-1})),1000); }
+  componentWillUnmount(){ clearInterval(this.iv); }
+  seats(){
+    if(this.S) return this.S;
+    const backB=['♜','♞','♝','♛','♚','♝','♞','♜'], backW=['♖','♘','♗','♕','♔','♗','♘','♖'];
+    const names={'♟':'pawn','♙':'pawn','♞':'knight','♘':'knight','♝':'bishop','♗':'bishop','♜':'rook','♖':'rook','♛':'queen','♕':'queen','♚':'king','♔':'king'};
+    const w=(ch)=>'♟♙'.includes(ch)?1:'♞♘♝♗'.includes(ch)?2:'♜♖'.includes(ch)?3:'♛♕'.includes(ch)?6:0;
+    const req=(ch)=>'♟♙'.includes(ch)?'25k':'♞♘♝♗'.includes(ch)?'50k':'♜♖'.includes(ch)?'75k':'♛♕'.includes(ch)?'150k':'covenant';
+    const owners=['0x8a…e1','0x2c…77','0x91…0b','0x77…9e','0xa0…4d','0xde…21','0x3b…f4','0x4f…c2'];
+    const all=[]; let n=0;
+    const add=(ch,isB,c,r)=>{ const i=n++; const royal='♛♚♕♔'.includes(ch);
+      const st=i===13?'undefended':i===21?'auction':i===26?'dormant':'defended';
+      all.push({ch:ch+'\uFE0E',c,r,i,isB,royal,st,wt:w(ch),req:req(ch),owner:owners[(c+r*3)%8],
+        name:(isB?'b_':'w_')+names[ch]+'_'+String(i+1).padStart(2,'0'),num:String(i+1).padStart(2,'0'),
+        usdc: royal?'$180k':w(ch)===6?'$140k':w(ch)===3?'$72k':w(ch)===2?'$48k':'$24k'}); };
+    for(let c=0;c<8;c++) add(backB[c],true,c,0);
+    for(let c=0;c<8;c++) add('♟',true,c,1);
+    for(let c=0;c<8;c++) add('♙',false,c,6);
+    for(let c=0;c<8;c++) add(backW[c],false,c,7);
+    this.S=all; return all;
+  }
+  fmt(t){ const d=Math.floor(t/86400),h=String(Math.floor(t%86400/3600)).padStart(2,'0'),m=String(Math.floor(t%3600/60)).padStart(2,'0'),s=String(t%60).padStart(2,'0'); return d+'d '+h+':'+m+':'+s; }
+  renderVals(){
+    const S=this.state, set=(p)=>()=>this.setState(p), seats=this.seats();
+    const tabDefs=[['vault','vault'],['court','the court'],['covenant','covenant'],['auction','auction house'],['mine','my throne']];
+    const tabs=tabDefs.map(([id,label])=>({label,go:set({tab:id}),color:S.tab===id?'#D4AF37':'#9BA39E',bg:S.tab===id?'rgba(212,175,55,0.08)':'transparent',border:S.tab===id?'rgba(212,175,55,0.35)':'transparent'}));
+    const wDefs=[['disconnected','guest'],['connected','user'],['holder','seat'],['monarch','king']];
+    const walletOpts=wDefs.map(([id,label])=>({label,go:set({wallet:id}),col:S.wallet===id?'#00FF9C':'#5E6663',bg:S.wallet===id?'rgba(0,255,156,0.07)':'transparent'}));
+    const connected=S.wallet!=='disconnected';
+    const pieces=seats.map((p,i)=>({ch:p.ch,x:p.c*72,y:p.r*72,go:set({piece:i}),
+      col:p.st==='dormant'?'#3a423e':p.isB?'#6A7A70':'#F2F4F0',
+      glow:p.st==='undefended'?'0 0 16px rgba(255,107,87,0.95)':p.st==='auction'?'0 0 16px rgba(212,175,55,1)':p.st==='dormant'?'none':p.royal?'0 0 14px rgba(212,175,55,0.75)':'0 0 8px rgba(0,255,156,0.35)',
+      brd:S.piece===i?'rgba(212,175,55,0.6)':'transparent',
+      badge:p.st==='undefended'?this.fmt(S.t).slice(0,7):p.st==='auction'?'auction':p.st==='dormant'?'dormant':'',
+      badgeCol:p.st==='undefended'?'#7DFFC0':p.st==='auction'?'#D4AF37':'#5E6663'}));
+    const q=seats[S.piece];
+    const stCol={defended:'#00FF9C',undefended:'#7DFFC0',auction:'#D4AF37',dormant:'#5E6663'}[q.st];
+    const under=q.st==='undefended';
+    const sel={ch:q.ch,name:q.name,num:q.num,owner:q.owner,usdc:q.usdc,st:q.st,stCol,
+      weight:q.wt?q.wt+'x weight':'anchor',share:q.wt?(q.wt/112*100).toFixed(1)+'%':'covenant',
+      flow:q.st==='dormant'?'$0':'+$'+(q.wt?q.wt*164:412),
+      stakeLine: under?'18k / '+q.req+' $throne':q.req==='covenant'?'covenant · 30% of color tvl':q.req+' / '+q.req+' $throne',
+      stakePct: under?58:100, stakeBarCol: under?'#7DFFC0':'#00FF9C',
+      showTimer: under,
+      artGlow:q.royal?'rgba(212,175,55,0.4)':under?'rgba(255,107,87,0.25)':'rgba(0,255,156,0.18)',
+      artBrd:q.royal?'rgba(212,175,55,0.4)':under?'rgba(255,107,87,0.35)':'rgba(242,244,240,0.14)',
+      artCol:q.st==='dormant'?'#3a423e':q.isB?'#8A9A90':'#F2F4F0',
+      artShadow:q.royal?'0 0 30px rgba(212,175,55,0.8)':under?'0 0 24px rgba(255,107,87,0.7)':'0 0 20px rgba(0,255,156,0.4)'};
+    const isMon=S.wallet==='monarch';
+    const mySeat = isMon
+      ? {ch:'♔\uFE0E',name:'w_king_29',tag:'covenant king · anchor',usdc:'$180,000',stake:'620k / 600k',accrued:'+$2,214',floor:'+30%',floorPct:'+30%',notice:'14 days',artGlow:'rgba(212,175,55,0.4)',artBrd:'rgba(212,175,55,0.4)',artShadow:'0 0 34px rgba(212,175,55,0.85)'}
+      : {ch:'♖\uFE0E',name:'w_rook_23',tag:'seat_23 · 3x weight',usdc:'$72,000',stake:'75k / 75k',accrued:'+$492',floor:'+20%',floorPct:'+20%',notice:'7 days',artGlow:'rgba(0,255,156,0.2)',artBrd:'rgba(242,244,240,0.16)',artShadow:'0 0 24px rgba(0,255,156,0.45)'};
+    const dep=S.vaultMode==='deposit';
+    return { tabs, walletOpts, pieces, sel, mySeat,
+      epochTimer:this.fmt(S.et), timer:this.fmt(S.t),
+      isVault:S.tab==='vault', isCourt:S.tab==='court', isCovenant:S.tab==='covenant', isAuction:S.tab==='auction', isMine:S.tab==='mine',
+      walletChip: connected?(isMon?'0x4f…c2 · king':S.wallet==='holder'?'0x4f…c2 · 1 seat':'0x4f…c2'):'connect wallet',
+      walletChipBg: connected?'rgba(212,175,55,0.08)':'rgba(0,255,156,0.1)',
+      walletChipBrd: connected?'rgba(212,175,55,0.3)':'rgba(0,255,156,0.35)',
+      walletChipCol: connected?'#D4AF37':'#00FF9C',
+      setDeposit:set({vaultMode:'deposit'}), setWithdraw:set({vaultMode:'withdraw'}),
+      depCol:dep?'#00FF9C':'#5E6663', depBg:dep?'rgba(0,255,156,0.08)':'transparent', depBrd:dep?'rgba(0,255,156,0.35)':'#1f2422',
+      wdCol:!dep?'#00FF9C':'#5E6663', wdBg:!dep?'rgba(0,255,156,0.08)':'transparent', wdBrd:!dep?'rgba(0,255,156,0.35)':'#1f2422',
+      seniorPos: connected?'$25,000 · +$212 accrued':'—',
+      vaultCta: connected?(dep?'deposit usdg':'queue withdrawal'):'connect wallet to continue',
+      ctaBg: connected?'linear-gradient(180deg,rgba(0,255,156,0.14),rgba(0,255,156,0.06))':'rgba(242,244,240,0.04)',
+      ctaBrd: connected?'rgba(0,255,156,0.4)':'#1f2422', ctaCol: connected?'#00FF9C':'#5E6663',
+      waterfall:[
+        {label:'senior · base + creator fees',pct:100,col:'#F2F4F0',val:'$6,940',valCol:'#F2F4F0',state:'paid ✓'},
+        {label:'court · desk fees',pct:74,col:'#D4AF37',val:'$18,240',valCol:'#D4AF37',state:'accruing'},
+        {label:'court · give-up at 4:1',pct:32,col:'#D4AF37',val:'$769',valCol:'#D4AF37',state:'accruing'},
+        {label:'court · vault yield + premiums',pct:44,col:'#00CC7D',val:'$2,105',valCol:'#00FF9C',state:'accruing'}],
+      kings:[
+        {title:'white court · 16 seats',ch:'♔\uFE0E',state:'holding',stateCol:'#00FF9C',ratio:'31.2%',pct:100,barCol:'#00FF9C',
+         bg:'linear-gradient(180deg,rgba(242,244,240,0.08),rgba(242,244,240,0.025))',brd:'rgba(242,244,240,0.18)',titleCol:'#F2F4F0',pieceCol:'#F2F4F0',pieceShadow:'0 0 20px rgba(212,175,55,0.7)',
+         note:'620k $throne locked · non-withdrawable while crowned',pot:'$18,420 · receiving black\u2019s bleed',potCol:'#00FF9C'},
+        {title:'black court · 16 seats',ch:'♚\uFE0E',state:'breach',stateCol:'#7DFFC0',ratio:'27.4%',pct:79,barCol:'#7DFFC0',
+         bg:'linear-gradient(180deg,rgba(255,107,87,0.05),rgba(242,244,240,0.015))',brd:'rgba(255,107,87,0.3)',titleCol:'#9BA39E',pieceCol:'#6A7A70',pieceShadow:'0 0 16px rgba(255,107,87,0.5)',
+         note:'needs +58k $throne to clear the 30% line',pot:'$12,080 · bleeding 2% to white',potCol:'#7DFFC0'}],
+      bidCta: connected?'place bid':'connect to bid',
+      bidBg: connected?'linear-gradient(180deg,rgba(212,175,55,0.16),rgba(212,175,55,0.06))':'rgba(242,244,240,0.04)',
+      bidBrd: connected?'rgba(212,175,55,0.45)':'#1f2422', bidCol: connected?'#D4AF37':'#5E6663',
+      dormants:[{ch:'♟\uFE0E',name:'b_pawn_11',note:'dormant 12 days · weight 0'},{ch:'♙\uFE0E',name:'w_pawn_31',note:'dormant 3 days · weight 0'}],
+      hasSeat: S.wallet==='holder'||isMon, noSeat: !(S.wallet==='holder'||isMon), isMonarchSeat: isMon,
+      emptyLine: connected?'no throne yet. the court has open auctions.':'connect a wallet to see your throne.',
+      emptyCta: connected?'browse the auction house':'connect wallet' };
+  }
+}
+</script>
+</body>
+</html>

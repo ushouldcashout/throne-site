@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>throne. · the king (3d)</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#0A0C0B; overflow:hidden; font-family:'JetBrains Mono',monospace; }
+  #stage { position:fixed; inset:0; }
+  .label { position:fixed; display:flex; align-items:center; gap:8px; font-size:12px; letter-spacing:0.14em; color:#9BA39E; z-index:2; pointer-events:none; }
+  .label b { color:#D4AF37; font-weight:700; }
+  .label.red b { color:#39F194; }
+  .l-top { left:50%; top:4%; transform:translateX(-50%); }
+  .l-right { right:4%; top:50%; transform:translateY(-50%); }
+  .l-bottom { left:50%; bottom:4%; transform:translateX(-50%); }
+  .l-left { left:4%; top:50%; transform:translateY(-50%); }
+  .scan { position:fixed; inset:0; background:repeating-linear-gradient(0deg, rgba(255,255,255,0.012) 0 1px, transparent 1px 4px); pointer-events:none; z-index:3; }
+  .vig { position:fixed; inset:0; background:radial-gradient(circle at 50% 50%, transparent 34%, rgba(10,12,11,0.85) 62%, #0A0C0B 74%); pointer-events:none; z-index:1; }
+  .wm { position:fixed; left:26px; top:20px; z-index:2; font-size:17px; font-weight:700; color:#F2F4F0; }
+  .wm span { color:#00FF9C; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<div class="vig"></div>
+<div class="label red l-top"><b>01</b> trade</div>
+<div class="label red l-right"><b>02</b> fee</div>
+<div class="label l-bottom"><b>03</b> vault</div>
+<div class="label l-left"><b>04</b> repeat</div>
+<div class="scan"></div>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+
+const stage = document.getElementById('stage');
+const renderer = new THREE.WebGLRenderer({ antialias:true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.15;
+stage.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0A0C0B);
+scene.fog = new THREE.Fog(0x0A0C0B, 14, 30);
+
+const camera = new THREE.PerspectiveCamera(38, innerWidth/innerHeight, 0.1, 100);
+camera.position.set(0, 2.6, 11.5);
+camera.lookAt(0, 2.1, 0);
+
+// lights — crimson key, gold top, cool fill, hot rim
+scene.add(new THREE.AmbientLight(0x1a0d10, 2.2));
+const key = new THREE.PointLight(0x39F194, 90, 40); key.position.set(-6, 5, 6); scene.add(key);
+const rim = new THREE.PointLight(0x5DFFB4, 130, 40); rim.position.set(4, 3, -6); scene.add(rim);
+const gold = new THREE.SpotLight(0xD4AF37, 160, 30, 0.5, 0.6); gold.position.set(0, 12, 2); gold.target.position.set(0,4,0); scene.add(gold, gold.target);
+const fill = new THREE.PointLight(0x2a3a34, 25, 30); fill.position.set(6, 1, 7); scene.add(fill);
+
+const crimsonMat = new THREE.MeshPhysicalMaterial({ color:0x229959, roughness:0.22, metalness:0.15, clearcoat:1, clearcoatRoughness:0.15, emissive:0x06301A, emissiveIntensity:1.2 });
+const goldMat = new THREE.MeshPhysicalMaterial({ color:0xD4AF37, roughness:0.28, metalness:1, emissive:0x4a3a08, emissiveIntensity:0.8 });
+const hotMat = new THREE.MeshBasicMaterial({ color:0x9BFFCF });
+
+const king = new THREE.Group();
+
+// body — lathe profile
+const pts = [[0,0],[1.35,0],[1.42,0.1],[1.3,0.28],[0.95,0.5],[0.62,0.9],[0.46,1.5],[0.4,2.2],[0.46,2.85],[0.62,3.3],[0.78,3.6],[0.8,3.78],[0.55,3.9],[0.5,3.98]]
+  .map(p => new THREE.Vector2(p[0], p[1]));
+const body = new THREE.Mesh(new THREE.LatheGeometry(pts, 96), crimsonMat);
+king.add(body);
+
+// collar ring under crown
+const collar = new THREE.Mesh(new THREE.TorusGeometry(0.56, 0.07, 24, 64), goldMat);
+collar.rotation.x = Math.PI/2; collar.position.y = 4.0; king.add(collar);
+
+// crown wall
+const crownWall = new THREE.Mesh(new THREE.CylinderGeometry(0.62, 0.5, 0.5, 64, 1, true), crimsonMat);
+crownWall.position.y = 4.28; king.add(crownWall);
+const crownFloor = new THREE.Mesh(new THREE.CylinderGeometry(0.62, 0.62, 0.04, 64), crimsonMat);
+crownFloor.position.y = 4.5; king.add(crownFloor);
+
+// crown spikes + ball tips
+for (let i = 0; i < 8; i++) {
+  const a = i / 8 * Math.PI * 2;
+  const spike = new THREE.Mesh(new THREE.ConeGeometry(0.09, 0.42, 16), crimsonMat);
+  spike.position.set(Math.cos(a)*0.56, 4.72, Math.sin(a)*0.56);
+  king.add(spike);
+  const tip = new THREE.Mesh(new THREE.SphereGeometry(0.055, 16, 16), i % 2 ? goldMat : hotMat);
+  tip.position.set(Math.cos(a)*0.56, 4.96, Math.sin(a)*0.56);
+  king.add(tip);
+}
+// center orb + cross
+const orb = new THREE.Mesh(new THREE.SphereGeometry(0.13, 24, 24), goldMat);
+orb.position.y = 4.62; king.add(orb);
+const crossV = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.5, 0.07), goldMat); crossV.position.y = 5.05; king.add(crossV);
+const crossH = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.07, 0.07), goldMat); crossH.position.y = 5.12; king.add(crossH);
+
+scene.add(king);
+
+// checkerboard floor, fading out
+const cnv = document.createElement('canvas'); cnv.width = cnv.height = 512;
+const cx = cnv.getContext('2d');
+for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) {
+  cx.fillStyle = (r + c) % 2 ? '#141817' : '#0C0F0E';
+  cx.fillRect(c*64, r*64, 64, 64);
+}
+const boardTex = new THREE.CanvasTexture(cnv);
+boardTex.wrapS = boardTex.wrapT = THREE.RepeatWrapping; boardTex.repeat.set(3,3);
+const aCnv = document.createElement('canvas'); aCnv.width = aCnv.height = 256;
+const ax = aCnv.getContext('2d');
+const grad = ax.createRadialGradient(128,128,10,128,128,128);
+grad.addColorStop(0,'#fff'); grad.addColorStop(0.55,'#555'); grad.addColorStop(1,'#000');
+ax.fillStyle = grad; ax.fillRect(0,0,256,256);
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(34,34),
+  new THREE.MeshStandardMaterial({ map:boardTex, transparent:true, alphaMap:new THREE.CanvasTexture(aCnv), roughness:0.35, metalness:0.4 }));
+floor.rotation.x = -Math.PI/2; scene.add(floor);
+
+// under-glow sprite
+function glowTex(colA, colB) {
+  const c = document.createElement('canvas'); c.width = c.height = 256;
+  const g = c.getContext('2d');
+  const gr = g.createRadialGradient(128,128,0,128,128,128);
+  gr.addColorStop(0,colA); gr.addColorStop(1,colB);
+  g.fillStyle = gr; g.fillRect(0,0,256,256);
+  return new THREE.CanvasTexture(c);
+}
+const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map:glowTex('rgba(57,241,148,0.35)','rgba(57,241,148,0)'), blending:THREE.AdditiveBlending, depthWrite:false }));
+halo.scale.set(11,11,1); halo.position.y = 2.4; scene.add(halo);
+
+// orbit rings + traveling nodes
+const rings = [];
+const ringDefs = [ {r:4.6, col:0x1E5A3A, tilt:0.42, speed:0.22, dot:0x39F194},
+                   {r:6.0, col:0x4a3a18, tilt:0.36, speed:-0.15, dot:0xD4AF37},
+                   {r:7.4, col:0x163A2A, tilt:0.3, speed:0.1, dot:0x39F194} ];
+for (const d of ringDefs) {
+  const g = new THREE.BufferGeometry().setFromPoints(
+    Array.from({length:129}, (_,i) => { const a = i/128*Math.PI*2; return new THREE.Vector3(Math.cos(a)*d.r, 0, Math.sin(a)*d.r); }));
+  const ring = new THREE.LineLoop(g, new THREE.LineBasicMaterial({ color:d.col, transparent:true, opacity:0.7 }));
+  const grp = new THREE.Group();
+  grp.add(ring);
+  const dot = new THREE.Mesh(new THREE.SphereGeometry(0.09, 16, 16), new THREE.MeshBasicMaterial({ color:d.dot }));
+  const dotGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map:glowTex(d.dot===0xD4AF37?'rgba(212,175,55,0.8)':'rgba(57,241,148,0.8)','rgba(0,0,0,0)'), blending:THREE.AdditiveBlending, depthWrite:false }));
+  dotGlow.scale.set(0.7,0.7,1);
+  dot.add(dotGlow);
+  grp.add(dot);
+  grp.rotation.x = d.tilt;
+  grp.position.y = 2.3;
+  scene.add(grp);
+  rings.push({ grp, dot, r:d.r, speed:d.speed, a:Math.random()*Math.PI*2 });
+}
+
+let t = 0;
+function frame() {
+  requestAnimationFrame(frame);
+  // guard against 0×0 or stale size (hidden pane at load, etc.)
+  if (renderer.domElement.width === 0 || Math.abs(renderer.domElement.clientWidth - innerWidth) > 1) {
+    if (innerWidth > 0 && innerHeight > 0) {
+      camera.aspect = innerWidth/innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(innerWidth, innerHeight);
+    }
+  }
+  t += 0.016;
+  king.rotation.y = t * 0.35;
+  king.position.y = Math.sin(t * 0.8) * 0.06;
+  halo.material.opacity = 0.8 + Math.sin(t * 1.2) * 0.2;
+  for (const r of rings) {
+    r.a += r.speed * 0.016;
+    r.dot.position.set(Math.cos(r.a) * r.r, 0, Math.sin(r.a) * r.r);
+  }
+  renderer.render(scene, camera);
+}
+frame();
+
+addEventListener('resize', () => {
+  camera.aspect = innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+</script>
+</body>
+</html>

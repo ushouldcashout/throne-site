@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:#0A0C0B}
+a{color:#00FF9C;text-decoration:none}a:hover{color:#D4AF37}
+@keyframes thpulse{0%,100%{opacity:1}50%{opacity:0.45}}
+@keyframes thspin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+@keyframes thskel{0%,100%{opacity:0.35}50%{opacity:0.7}}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#0A0C0B;color:#F2F4F0;font-family:Verdana,Geneva,sans-serif;position:relative;overflow:hidden">
+  <div style="position:absolute;top:0;left:0;right:0;height:900px;background:radial-gradient(1000px 560px at 30% -14%,rgba(0,255,156,0.05),transparent 60%),radial-gradient(1000px 560px at 78% -10%,rgba(212,175,55,0.08),transparent 62%);pointer-events:none"></div>
+  <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,0.011) 0px,rgba(255,255,255,0.011) 1px,transparent 1px,transparent 4px);pointer-events:none"></div>
+
+  <div style="position:relative;display:flex;justify-content:space-between;align-items:center;padding:16px 40px;border-bottom:1px solid #1F2422;background:rgba(10,12,11,0.72)">
+    <div style="display:flex;align-items:center;gap:11px">
+      <svg width="30" height="30" viewBox="-28 -34 56 56"><path d="M-24,10 L-24,-14 L-13,-6 L0,-26 L13,-6 L24,-14 L24,10 Z" fill="#229959" stroke="#39F194" stroke-width="2.4" stroke-linejoin="round"/><rect x="-24" y="10" width="48" height="9" rx="4.5" fill="#229959" stroke="#39F194" stroke-width="2"/><circle cx="-24" cy="-17" r="3" fill="#39F194"/><circle cx="0" cy="-29" r="3.6" fill="#39F194"/><circle cx="24" cy="-17" r="3" fill="#39F194"/></svg>
+      <span style="font-size:22px;font-weight:700;letter-spacing:-0.02em">throne<span style="color:#00FF9C">.</span></span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#5E6663;margin-left:8px">the vaults</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:24px;font-family:'JetBrains Mono',monospace;font-size:12.5px">
+      <a href="#" style="color:#9BA39E">the desk</a><a href="#" style="color:#9BA39E">points</a><a href="#" style="color:#9BA39E">terms</a>
+      <span data-hook="connect" onClick="{{ cycleWallet }}" style="padding:9px 18px;border-radius:10px;cursor:pointer;font-size:12px;background:{{ wBg }};border:1px solid {{ wBrd }};color:{{ wCol }}">{{ wLabel }}</span>
+    </div>
+  </div>
+
+  <div style="position:relative;display:flex;justify-content:center;gap:8px;padding:12px 40px 0;font-family:'JetBrains Mono',monospace;font-size:10px;opacity:0.75">
+    <sc-for list="{{ stateChips }}" as="s" hint-placeholder-count="6">
+      <span onClick="{{ s.go }}" style="padding:5px 11px;border-radius:8px;cursor:pointer;border:1px solid {{ s.brd }};color:{{ s.col }}">{{ s.label }}</span>
+    </sc-for>
+  </div>
+
+  <div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;padding:36px 40px 26px;text-align:center">
+    <h1 style="margin:0;font-size:64px;font-weight:700;letter-spacing:-0.03em;text-transform:lowercase">one is protected. one is royal<span style="color:#00FF9C">.</span></h1>
+    <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#9BA39E">senior is live. the court opens with the seat auction.</span>
+  </div>
+
+  <div style="position:relative;display:flex;justify-content:center;gap:26px;padding:0 40px 46px">
+
+    <div style="width:560px;border-radius:22px;background:linear-gradient(180deg,rgba(242,244,240,0.075),rgba(242,244,240,0.022));border:1px solid rgba(242,244,240,0.17);box-shadow:inset 0 1px 0 rgba(255,255,255,0.15),0 44px 110px rgba(0,0,0,0.62);display:flex;flex-direction:column;overflow:hidden">
+      <div style="padding:24px 30px 18px;border-bottom:1px solid #1F2422;display:flex;justify-content:space-between;align-items:baseline">
+        <span style="font-size:22px;font-weight:700;text-transform:lowercase">senior · genesis vault</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#00FF9C"><span style="animation:thpulse 2s infinite">●</span> open to all · live</span>
+      </div>
+      <div style="padding:16px 30px 0;font-size:13.5px;line-height:1.6;color:#9BA39E;text-wrap:pretty">deposit usdg. the vault routes to morpho and receives 100% of protocol fees until the court is seated. withdraw any epoch - withdrawals can never be paused.</div>
+      <sc-if value="{{ loading }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:22px 30px;display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div style="height:74px;border-radius:12px;background:#161A18;animation:thskel 1.4s infinite"></div>
+          <div style="height:74px;border-radius:12px;background:#161A18;animation:thskel 1.4s infinite"></div>
+          <div style="height:74px;border-radius:12px;background:#161A18;animation:thskel 1.4s infinite"></div>
+          <div style="height:74px;border-radius:12px;background:#161A18;animation:thskel 1.4s infinite"></div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ ready }}" hint-placeholder-val="{{ true }}">
+      <div style="padding:20px 30px 0;display:grid;grid-template-columns:1.1fr 1fr;gap:14px">
+        <div style="padding:18px 20px;border-radius:14px;background:rgba(0,255,156,0.045);border:1px solid rgba(0,255,156,0.22);display:flex;flex-direction:column;gap:4px">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E6663">current apy · floating</span>
+          <span data-hook="apy" onClick="{{ toggleApy }}" style="font-family:'JetBrains Mono',monospace;font-size:42px;font-weight:700;color:#00FF9C;text-shadow:0 0 24px rgba(0,255,156,0.35);cursor:pointer;line-height:1">7.9%<span style="font-size:14px;color:#5E6663;margin-left:8px">{{ apyCaret }}</span></span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="flex:1;padding:12px 16px;border-radius:12px;background:rgba(10,12,11,0.45);border:1px solid #1F2422;display:flex;flex-direction:column;gap:2px"><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E6663">vault tvl</span><span data-hook="tvl" style="font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700">$48,210</span></div>
+          <div style="flex:1;padding:12px 16px;border-radius:12px;background:rgba(10,12,11,0.45);border:1px solid #1F2422;display:flex;flex-direction:column;gap:2px"><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E6663">your fee share during genesis</span><span data-hook="fee-share" style="font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;color:#00FF9C">100% <span style="font-size:11px;color:#5E6663">of protocol fees</span></span></div>
+        </div>
+      </div>
+      <sc-if value="{{ apyOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="margin:16px 30px 0;padding:14px 18px;border-radius:12px;background:rgba(10,12,11,0.5);border:1px solid #1F2422;display:flex;flex-direction:column;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11.5px">
+          <div style="display:flex;justify-content:space-between"><span style="color:#9BA39E">morpho base · floating</span><span data-hook="apy-base">3.7%</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:#9BA39E">protocol fee flow · trailing 7d, annualized ÷ tvl</span><span data-hook="apy-fees" style="color:#00FF9C">+4.2%</span></div>
+          <span style="color:#5E6663;font-size:10.5px;border-top:1px solid #1F2422;padding-top:8px">apy = morpho base + fee flow ÷ tvl · floating, not a promise</span>
+        </div>
+      </sc-if>
+      <div style="padding:16px 30px 0;display:flex;flex-direction:column;gap:7px">
+        <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5E6663"><span>deposit cap</span><span data-hook="cap">{{ capLine }}</span></div>
+        <div data-hook="capbar" style="height:7px;border-radius:4px;background:rgba(242,244,240,0.07);overflow:hidden"><div style="height:100%;width:{{ capPct }};background:{{ capBarCol }};border-radius:4px"></div></div>
+        <sc-if value="{{ capReached }}" hint-placeholder-val="{{ false }}">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#D4AF37">the vault is full - cap raises after audit</span>
+        </sc-if>
+      </div>
+      <div style="padding:16px 30px 0;display:flex;flex-direction:column;gap:11px">
+        <div style="display:flex;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11.5px">
+          <span onClick="{{ setDep }}" style="flex:1;text-align:center;padding:8px;border-radius:8px;cursor:pointer;color:{{ depTabCol }};background:{{ depTabBg }};border:1px solid {{ depTabBrd }}">deposit</span>
+          <span onClick="{{ setWd }}" style="flex:1;text-align:center;padding:8px;border-radius:8px;cursor:pointer;color:{{ wdTabCol }};background:{{ wdTabBg }};border:1px solid {{ wdTabBrd }}">withdraw</span>
+        </div>
+        <sc-if value="{{ isDep }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;gap:8px">
+            <div style="flex:1;display:flex;justify-content:space-between;align-items:center;padding:13px 16px;border-radius:12px;background:rgba(10,12,11,0.55);border:1px solid #1F2422;font-family:'JetBrains Mono',monospace;font-size:16px"><span data-hook="dep-amt" style="color:{{ amtCol }}">{{ amtText }}</span><span data-hook="dep-max" style="font-size:11px;color:#00FF9C;cursor:pointer">max</span></div>
+            <span data-hook="dep-btn" onClick="{{ depClick }}" style="width:190px;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;font-family:'JetBrains Mono',monospace;font-size:12.5px;cursor:pointer;background:{{ depBtnBg }};border:1px solid {{ depBtnBrd }};color:{{ depBtnCol }}">{{ depBtnSpin }}{{ depBtnLabel }}</span>
+          </div>
+          <sc-if value="{{ connected }}" hint-placeholder-val="{{ false }}">
+            <div data-hook="dep-status" style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:10.5px">
+              <span style="color:{{ step1Col }}">1 approve usdg</span>
+              <span style="flex:1;border-bottom:1px dashed #1F2422;margin:0 12px;transform:translateY(-4px)"></span>
+              <span style="color:{{ step2Col }}">2 deposit</span>
+              <span style="margin-left:16px;color:{{ depMsgCol }}">{{ depMsg }}</span>
+            </div>
+          </sc-if>
+        </sc-if>
+        <sc-if value="{{ isWd }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;gap:8px">
+            <div style="flex:1;display:flex;justify-content:space-between;align-items:center;padding:13px 16px;border-radius:12px;background:rgba(10,12,11,0.55);border:1px solid #1F2422;font-family:'JetBrains Mono',monospace;font-size:16px"><span data-hook="wd-amt" style="color:{{ amtCol }}">500.00</span><span data-hook="wd-max" style="font-size:11px;color:#00FF9C;cursor:pointer">max</span></div>
+            <span data-hook="wd-btn" onClick="{{ wdClick }}" style="width:190px;display:flex;align-items:center;justify-content:center;border-radius:12px;font-family:'JetBrains Mono',monospace;font-size:12.5px;cursor:pointer;background:rgba(242,244,240,0.06);border:1px solid rgba(242,244,240,0.24);color:#F2F4F0">{{ wdBtnLabel }}</span>
+          </div>
+          <span data-hook="wd-status" style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E6663">withdrawals settle at epoch close · never pausable</span>
+        </sc-if>
+        <div style="display:flex;flex-direction:column;gap:4px;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E6663"><span data-hook="wallet-balance">{{ balanceLine }}</span><span><span data-hook="price">1 share = 1.004918 usdg</span> · <span data-hook="vault-address">vault 0x7c31…9f04 · robinhood chain (4663)</span></span></div>
+      </div>
+      <div style="margin:16px 30px 0;padding:11px 16px;border-radius:12px;background:rgba(212,175,55,0.05);border:1px solid rgba(212,175,55,0.22);font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.6;color:#D4AF37">genesis: 100% of desk + pool fees route here until the court is seated. genesis stakers earn court points. once seated, senior gives up 1pt of base to the court - the price of first-loss protection.</div>
+      <sc-if value="{{ hasPosition }}" hint-placeholder-val="{{ false }}">
+        <div style="margin:16px 30px 0;padding:14px 18px;border-radius:12px;background:rgba(0,255,156,0.035);border:1px solid rgba(0,255,156,0.18);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px 16px;font-family:'JetBrains Mono',monospace;font-size:11.5px">
+          <div style="display:flex;flex-direction:column;gap:3px"><span style="color:#5E6663">your deposit value</span><span data-hook="pos-value" style="font-size:18px;font-weight:700;color:#00FF9C">$1,204.11</span></div>
+          <div style="display:flex;flex-direction:column;gap:3px"><span style="color:#5E6663">shares</span><span data-hook="pos-shares">1,198.24 gTHRONE</span></div>
+          <div style="display:flex;flex-direction:column;gap:3px"><span style="color:#5E6663">earned</span><span data-hook="pos-earned" style="color:#00FF9C">+$4.11</span></div>
+          <span style="padding:4px 10px;border-radius:7px;background:rgba(212,175,55,0.08);border:1px solid rgba(212,175,55,0.3);color:#D4AF37;font-size:10px;white-space:nowrap;flex-shrink:0">points accruing</span>
+        </div>
+      </sc-if>
+      </sc-if>
+      <div style="padding:0 0 24px"></div>
+    </div>
+
+    <div style="width:560px;border-radius:22px;position:relative;background:linear-gradient(180deg,rgba(212,175,55,0.085),rgba(212,175,55,0.02));border:1px solid rgba(212,175,55,0.38);box-shadow:inset 0 1px 0 rgba(212,175,55,0.25),0 44px 110px rgba(0,0,0,0.62),0 0 90px rgba(212,175,55,0.07);display:flex;flex-direction:column;overflow:hidden">
+      <div style="position:absolute;inset:0;background:repeating-conic-gradient(rgba(212,175,55,0.02) 0% 25%,transparent 0% 50%) 0 0/90px 90px;pointer-events:none"></div>
+      <div style="padding:24px 30px 18px;border-bottom:1px solid rgba(212,175,55,0.22);display:flex;justify-content:space-between;align-items:baseline">
+        <span style="font-size:22px;font-weight:700;text-transform:lowercase;color:#F2F4F0">the court · junior</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#D4AF37">◈ 32 seats · auction soon</span>
+      </div>
+      <div style="position:relative;padding:16px 30px 0;font-size:13.5px;line-height:1.6;color:#9BA39E;text-wrap:pretty">the levered seat. gated by the 32-piece chess set - own a piece, keep $throne staked at 20% of your seat's tvl, and the seat collects 100% of desk fees, the senior give-up at 4:1, auction premiums and vault yield.</div>
+      <div style="position:relative;padding:20px 30px 0;display:grid;grid-template-columns:1.1fr 1fr;gap:14px">
+        <div style="padding:18px 20px;border-radius:14px;background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.3);display:flex;flex-direction:column;gap:4px">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E6663">projected apy · at base case, full court</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:42px;font-weight:700;color:#D4AF37;text-shadow:0 0 26px rgba(212,175,55,0.4);line-height:1">20%+</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="flex:1;padding:12px 16px;border-radius:12px;background:rgba(10,12,11,0.45);border:1px solid rgba(212,175,55,0.18);display:flex;flex-direction:column;gap:2px"><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E6663">seats</span><span style="font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;color:#D4AF37">32</span></div>
+          <div style="flex:1;padding:12px 16px;border-radius:12px;background:rgba(10,12,11,0.45);border:1px solid rgba(212,175,55,0.18);display:flex;flex-direction:column;gap:2px"><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E6663">per-seat</span><span style="font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700">pawn ~$9k → king ~$250k</span></div>
+        </div>
+      </div>
+      <div style="position:relative;margin:16px 30px 0;border-top:1px solid rgba(212,175,55,0.18);border-bottom:1px solid rgba(212,175,55,0.18);padding:16px 0;display:flex;justify-content:space-between">
+        <sc-for list="{{ courtPieces }}" as="p" hint-placeholder-count="6">
+          <div onMouseEnter="{{ p.over }}" onMouseLeave="{{ pieceLeave }}" style="display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;flex:1">
+            <span style="font-size:37px;line-height:1;color:{{ p.col }};text-shadow:{{ p.glow }}">{{ p.ch }}</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;color:#5E6663">{{ p.count }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="position:relative;padding:10px 30px 0;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;color:{{ pieceInfoCol }};height:16px;line-height:16px">{{ pieceInfo }}</div>
+      <div style="position:relative;margin:16px 30px 0;flex:1;min-height:96px;border-radius:14px;background:rgba(10,12,11,0.4);border:1px solid rgba(212,175,55,0.2);display:flex;flex-direction:column;justify-content:center;gap:10px;padding:16px 20px;font-family:'JetBrains Mono',monospace;font-size:11.5px">
+        <span style="letter-spacing:0.12em;color:#5E6663;font-size:10.5px">the coronation · auction order</span>
+        <div style="display:flex;justify-content:space-between;color:#9BA39E"><span style="color:#D4AF37">1 · kings ♚&#xFE0E;</span><span style="color:#3a423e">→</span><span style="color:#D4AF37">2 · queens ♛&#xFE0E;</span><span style="color:#3a423e">→</span><span>3 · rooks ♜&#xFE0E;</span><span style="color:#3a423e">→</span><span>4 · minors ♞&#xFE0E;♝&#xFE0E;</span><span style="color:#3a423e">→</span><span>5 · pawns ♟&#xFE0E;</span></div>
+        <div style="display:flex;justify-content:space-between;color:#5E6663;font-size:10.5px"><span>dutch auction · per-wallet cap 4 seats</span><span>court points set your priority</span></div>
+      </div>
+      <div style="position:relative;padding:16px 30px 24px;margin-top:auto;display:flex;flex-direction:column;gap:10px">
+        <a href="#" style="display:block;padding:15px;border-radius:12px;text-align:center;background:linear-gradient(180deg,rgba(212,175,55,0.1),rgba(212,175,55,0.03));border:1px dashed rgba(212,175,55,0.45);font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#D4AF37;opacity:0.85">seats go to auction - earn priority with court points →</a>
+        <span style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E6663">◈ sealed until the coronation auction</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:relative;display:flex;justify-content:center;padding:0 40px 44px">
+    <div style="width:1146px;display:flex;flex-direction:column;gap:14px">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;color:#5E6663">where the yield comes from</span>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+        <div style="padding:18px 22px;border-radius:14px;background:linear-gradient(180deg,rgba(242,244,240,0.05),rgba(242,244,240,0.015));border:1px solid #1F2422;display:flex;flex-direction:column;gap:6px">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#00FF9C">desk fees</span>
+          <span style="font-size:13px;line-height:1.55;color:#9BA39E">3.5bps of taker volume, stocks and crypto perps, 24/7</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E6663;margin-top:auto">→ senior now · the court once seated</span>
+        </div>
+        <div style="padding:18px 22px;border-radius:14px;background:linear-gradient(180deg,rgba(242,244,240,0.05),rgba(242,244,240,0.015));border:1px solid #1F2422;display:flex;flex-direction:column;gap:6px">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#00FF9C">pool creator fees</span>
+          <span style="font-size:13px;line-height:1.55;color:#9BA39E">0.7% of $throne swap volume, paid in eth</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E6663;margin-top:auto">→ senior</span>
+        </div>
+        <div style="padding:18px 22px;border-radius:14px;background:linear-gradient(180deg,rgba(242,244,240,0.05),rgba(242,244,240,0.015));border:1px solid #1F2422;display:flex;flex-direction:column;gap:6px">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#00FF9C">morpho base</span>
+          <span style="font-size:13px;line-height:1.55;color:#9BA39E">steakhouse usdg vault, the rails behind robinhood earn</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E6663;margin-top:auto">→ both seats</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:relative;border-top:1px solid #1F2422;padding:22px 40px;display:flex;flex-direction:column;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E6663">
+    <span style="line-height:1.7">unaudited contracts launch capped; audited before caps lift. runs on audited third-party rails (morpho, the desk). terms at <a href="#" style="color:#9BA39E">/terms</a>.</span>
+    <div style="display:flex;justify-content:space-between"><span>throne. · <a href="#" style="color:#9BA39E">the desk</a> · <a href="#" style="color:#9BA39E">points</a> · @thronedefi</span><span>robinhood chain (4663) · usdg · robinhoodchain.blockscout.com</span></div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1250}}">
+class Component extends DCLogic {
+  state = { wallet:'disconnected', tab:'dep', dep:'idle', apyOpen:false, capReached:false, loading:false, hoverPiece:null };
+  renderVals(){
+    const S=this.state, set=(p)=>()=>this.setState(p);
+    const connected=S.wallet!=='disconnected';
+    const chips=[
+      ['disconnected',()=>this.setState({wallet:'disconnected',dep:'idle',loading:false,capReached:false})],
+      ['connected · no position',()=>this.setState({wallet:'connected',dep:'idle',loading:false,capReached:false})],
+      ['with position',()=>this.setState({wallet:'position',dep:'idle',loading:false,capReached:false})],
+      ['deposit flow',()=>this.setState({wallet:'position',dep:S.dep==='idle'?'approve':S.dep,loading:false,capReached:false})],
+      ['cap reached',()=>this.setState({capReached:!S.capReached,loading:false})],
+      ['loading',()=>this.setState({loading:!S.loading})]];
+    const activeIdx = S.loading?5:S.capReached?4:S.dep!=='idle'?3:S.wallet==='position'?2:S.wallet==='connected'?1:0;
+    const stateChips=chips.map(([label,go],i)=>({label,go,col:i===activeIdx?'#00FF9C':'#5E6663',brd:i===activeIdx?'rgba(0,255,156,0.35)':'#1F2422'}));
+    const depMap={
+      idle:{label:'deposit',bg:'linear-gradient(180deg,rgba(212,175,55,0.18),rgba(212,175,55,0.07))',brd:'rgba(212,175,55,0.5)',col:'#D4AF37',msg:'',msgCol:'#5E6663',s1:'#9BA39E',s2:'#5E6663',spin:false},
+      approve:{label:'approving usdg…',bg:'rgba(212,175,55,0.08)',brd:'rgba(212,175,55,0.35)',col:'#D4AF37',msg:'confirm in wallet',msgCol:'#D4AF37',s1:'#D4AF37',s2:'#5E6663',spin:true},
+      deposit:{label:'depositing…',bg:'rgba(212,175,55,0.08)',brd:'rgba(212,175,55,0.35)',col:'#D4AF37',msg:'pending',msgCol:'#D4AF37',s1:'#00FF9C',s2:'#D4AF37',spin:true},
+      success:{label:'deposited ✓',bg:'rgba(0,255,156,0.1)',brd:'rgba(0,255,156,0.4)',col:'#00FF9C',msg:'tx 0x8f2a…c1 ↗',msgCol:'#00FF9C',s1:'#00FF9C',s2:'#00FF9C',spin:false},
+      error:{label:'retry deposit',bg:'rgba(255,107,87,0.08)',brd:'rgba(255,107,87,0.4)',col:'#7DFFC0',msg:'rejected in wallet',msgCol:'#7DFFC0',s1:'#00FF9C',s2:'#7DFFC0',spin:false}};
+    const d=depMap[S.dep];
+    const order={idle:'approve',approve:'deposit',deposit:'success',success:'error',error:'idle'};
+    const pieceData=[
+      ['♟\uFE0E','pawn ×16','1x weight · ~$9k capacity'],
+      ['♞\uFE0E','knight ×4','2x weight · ~$18k capacity'],
+      ['♝\uFE0E','bishop ×4','2x weight · ~$18k capacity'],
+      ['♜\uFE0E','rook ×4','3x weight · ~$27k capacity'],
+      ['♛\uFE0E','queen ×2','6x weight · ~$54k capacity · largest tradable seat'],
+      ['♚\uFE0E','king ×2','anchor · ~$250k · the covenant seat']];
+    const courtPieces=pieceData.map(([ch,count],i)=>({ch,count,over:()=>this.setState({hoverPiece:i}),
+      col: S.hoverPiece===i?'#D4AF37':'#F2F4F0',
+      glow: i>=4?'0 0 18px rgba(212,175,55,0.6)':S.hoverPiece===i?'0 0 14px rgba(212,175,55,0.5)':'0 0 10px rgba(242,244,240,0.15)'}));
+    const spinner = d.spin ? React.createElement('span',{style:{width:'12px',height:'12px',border:'2px solid rgba(212,175,55,0.3)',borderTopColor:'#D4AF37',borderRadius:'50%',display:'inline-block',animation:'thspin 0.8s linear infinite'}}) : null;
+    return {
+      cycleWallet: ()=>this.setState({wallet: S.wallet==='disconnected'?'connected':S.wallet==='connected'?'position':'disconnected'}),
+      wLabel: connected?'0x12ab…34cd':'connect wallet',
+      wBg: connected?'rgba(242,244,240,0.05)':'linear-gradient(180deg,rgba(212,175,55,0.18),rgba(212,175,55,0.07))',
+      wBrd: connected?'rgba(242,244,240,0.2)':'rgba(212,175,55,0.5)',
+      wCol: connected?'#9BA39E':'#D4AF37',
+      stateChips, loading:S.loading, ready:!S.loading,
+      disconnected:!connected, connected, hasPosition:S.wallet==='position',
+      apyOpen:S.apyOpen, toggleApy:set({apyOpen:!S.apyOpen}), apyCaret:S.apyOpen?'▴':'▾',
+      capReached:S.capReached, capLine:S.capReached?'$250,000 / $250,000':'$48,210 / $250,000',
+      capPct:S.capReached?'100%':'19.3%', capBarCol:S.capReached?'#D4AF37':'#00FF9C',
+      isDep:S.tab==='dep', isWd:S.tab==='wd', setDep:set({tab:'dep'}), setWd:set({tab:'wd'}),
+      depTabCol:S.tab==='dep'?'#D4AF37':'#5E6663', depTabBg:S.tab==='dep'?'rgba(212,175,55,0.08)':'transparent', depTabBrd:S.tab==='dep'?'rgba(212,175,55,0.35)':'#1F2422',
+      wdTabCol:S.tab==='wd'?'#D4AF37':'#5E6663', wdTabBg:S.tab==='wd'?'rgba(212,175,55,0.08)':'transparent', wdTabBrd:S.tab==='wd'?'rgba(212,175,55,0.35)':'#1F2422',
+      depClick: connected ? ()=>this.setState({dep:order[S.dep]}) : ()=>this.setState({wallet:'connected'}),
+      wdClick: connected ? ()=>{} : ()=>this.setState({wallet:'connected'}),
+      amtText: connected ? '1,000.00' : '0.00', amtCol: connected ? '#F2F4F0' : '#5E6663',
+      wdBtnLabel: connected ? 'withdraw' : 'connect',
+      balanceLine: connected ? 'wallet: 4,120.50 usdg' : 'connect a wallet to deposit',
+      depBtnLabel: connected ? d.label : 'deposit', depBtnBg:d.bg, depBtnBrd:d.brd, depBtnCol:d.col,
+      depMsg:d.msg, depMsgCol:d.msgCol, step1Col:d.s1, step2Col:d.s2, depBtnSpin:spinner,
+      courtPieces, pieceLeave:()=>this.setState({hoverPiece:null}),
+      pieceInfo: S.hoverPiece==null?'hover a piece for seat capacity':pieceData[S.hoverPiece][1]+' · '+pieceData[S.hoverPiece][2],
+      pieceInfoCol: S.hoverPiece==null?'#5E6663':'#D4AF37' };
+  }
+}
+</script>
+<script>if(innerWidth<768&&!location.pathname.includes('vault-m'))location.href='/vault-m'+location.search;</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
+<script>
+(function(){
+const CHAIN={id:4663,hex:'0x1237',name:'Robinhood Chain',rpc:'https://rpc.mainnet.chain.robinhood.com',explorer:'https://robinhoodchain.blockscout.com'};
+const USDG='0x5fc5360d0400a0fd4f2af552add042d716f1d168';
+const MORPHO='0xBeEff033F34C046626B8D0A041844C5d1A5409dd';
+const VAULT_ABI=[{"inputs": [{"internalType": "contract IERC20", "name": "asset_", "type": "address"}, {"internalType": "contract IERC4626", "name": "morphoVault_", "type": "address"}, {"internalType": "uint256", "name": "initialCap_", "type": "uint256"}, {"internalType": "address", "name": "owner_", "type": "address"}], "stateMutability": "nonpayable", "type": "constructor"}, {"inputs": [], "name": "DepositsArePaused", "type": "error"}, {"inputs": [{"internalType": "address", "name": "spender", "type": "address"}, {"internalType": "uint256", "name": "allowance", "type": "uint256"}, {"internalType": "uint256", "name": "needed", "type": "uint256"}], "name": "ERC20InsufficientAllowance", "type": "error"}, {"inputs": [{"internalType": "address", "name": "sender", "type": "address"}, {"internalType": "uint256", "name": "balance", "type": "uint256"}, {"internalType": "uint256", "name": "needed", "type": "uint256"}], "name": "ERC20InsufficientBalance", "type": "error"}, {"inputs": [{"internalType": "address", "name": "approver", "type": "address"}], "name": "ERC20InvalidApprover", "type": "error"}, {"inputs": [{"internalType": "address", "name": "receiver", "type": "address"}], "name": "ERC20InvalidReceiver", "type": "error"}, {"inputs": [{"internalType": "address", "name": "sender", "type": "address"}], "name": "ERC20InvalidSender", "type": "error"}, {"inputs": [{"internalType": "address", "name": "spender", "type": "address"}], "name": "ERC20InvalidSpender", "type": "error"}, {"inputs": [{"internalType": "address", "name": "receiver", "type": "address"}, {"internalType": "uint256", "name": "assets", "type": "uint256"}, {"internalType": "uint256", "name": "max", "type": "uint256"}], "name": "ERC4626ExceededMaxDeposit", "type": "error"}, {"inputs": [{"internalType": "address", "name": "receiver", "type": "address"}, {"internalType": "uint256", "name": "shares", "type": "uint256"}, {"internalType": "uint256", "name": "max", "type": "uint256"}], "name": "ERC4626ExceededMaxMint", "type": "error"}, {"inputs": [{"internalType": "address", "name": "owner", "type": "address"}, {"internalType": "uint256", "name": "shares", "type": "uint256"}, {"internalType": "uint256", "name": "max", "type": "uint256"}], "name": "ERC4626ExceededMaxRedeem", "type": "error"}, {"inputs": [{"internalType": "address", "name": "owner", "type": "address"}, {"internalType": "uint256", "name": "assets", "type": "uint256"}, {"internalType": "uint256", "name": "max", "type": "uint256"}], "name": "ERC4626ExceededMaxWithdraw", "type": "error"}, {"inputs": [], "name": "MorphoAssetMismatch", "type": "error"}, {"inputs": [{"internalType": "address", "name": "owner", "type": "address"}], "name": "OwnableInvalidOwner", "type": "error"}, {"inputs": [{"internalType": "address", "name": "account", "type": "address"}], "name": "OwnableUnauthorizedAccount", "type": "error"}, {"inputs": [], "name": "ReentrancyGuardReentrantCall", "type": "error"}, {"inputs": [{"internalType": "address", "name": "token", "type": "address"}], "name": "SafeERC20FailedOperation", "type": "error"}, {"inputs": [], "name": "SweepProtected", "type": "error"}, {"anonymous": false, "inputs": [{"indexed": true, "internalType": "address", "name": "owner", "type": "address"}, {"indexed": true, "internalType": "address", "name": "spender", "type": "address"}, {"indexed": false, "internalType": "uint256", "name": "value", "type": "uint256"}], "name": "Approval", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "internalType": "address", "name": "sender", "type": "address"}, {"indexed": true, "internalType": "address", "name": "owner", "type": "address"}, {"indexed": false, "internalType": "uint256", "name": "assets", "type": "uint256"}, {"indexed": false, "internalType": "uint256", "name": "shares", "type": "uint256"}], "name": "Deposit", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "internalType": "uint256", "name": "oldCap", "type": "uint256"}, {"indexed": false, "internalType": "uint256", "name": "newCap", "type": "uint256"}], "name": "DepositCapSet", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "internalType": "bool", "name": "paused", "type": "bool"}], "name": "DepositsPausedSet", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "internalType": "address", "name": "from", "type": "address"}, {"indexed": false, "internalType": "uint256", "name": "assets", "type": "uint256"}, {"indexed": false, "internalType": "string", "name": "memo", "type": "string"}], "name": "FeesDonated", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "internalType": "address", "name": "previousOwner", "type": "address"}, {"indexed": true, "internalType": "address", "name": "newOwner", "type": "address"}], "name": "OwnershipTransferStarted", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "internalType": "address", "name": "previousOwner", "type": "address"}, {"indexed": true, "internalType": "address", "name": "newOwner", "type": "address"}], "name": "OwnershipTransferred", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "internalType": "address", "name": "from", "type": "address"}, {"indexed": true, "internalType": "address", "name": "to", "type": "address"}, {"indexed": false, "internalType": "uint256", "name": "value", "type": "uint256"}], "name": "Transfer", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "internalType": "address", "name": "sender", "type": "address"}, {"indexed": true, "internalType": "address", "name": "receiver", "type": "address"}, {"indexed": true, "internalType": "address", "name": "owner", "type": "address"}, {"indexed": false, "internalType": "uint256", "name": "assets", "type": "uint256"}, {"indexed": false, "internalType": "uint256", "name": "shares", "type": "uint256"}], "name": "Withdraw", "type": "event"}, {"inputs": [], "name": "MORPHO_VAULT", "outputs": [{"internalType": "contract IERC4626", "name": "", "type": "address"}], "stateMutability": "view", "type": "function"}, {"inputs": [], "name": "acceptOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [{"internalType": "address", "name": "owner", "type": "address"}, {"internalType": "address", "name": "spender", "type": "address"}], "name": "allowance", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [{"internalType": "address", "name": "spender", "type": "address"}, {"internalType": "uint256", "name": "value", "type": "uint256"}], "name": "approve", "outputs": [{"internalType": "bool", "name": "", "type": "bool"}], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [], "name": "asset", "outputs": [{"internalType": "address", "name": "", "type": "address"}], "stateMutability": "view", "type": "function"}, {"inputs": [{"internalType": "address", "name": "account", "type": "address"}], "name": "balanceOf", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [{"internalType": "uint256", "name": "shares", "type": "uint256"}], "name": "convertToAssets", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [{"internalType": "uint256", "name": "assets", "type": "uint256"}], "name": "convertToShares", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [], "name": "decimals", "outputs": [{"internalType": "uint8", "name": "", "type": "uint8"}], "stateMutability": "view", "type": "function"}, {"inputs": [{"internalType": "uint256", "name": "assets", "type": "uint256"}, {"internalType": "address", "name": "receiver", "type": "address"}], "name": "deposit", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [], "name": "depositCap", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [], "name": "depositsPaused", "outputs": [{"internalType": "bool", "name": "", "type": "bool"}], "stateMutability": "view", "type": "function"}, {"inputs": [{"internalType": "uint256", "name": "assets", "type": "uint256"}, {"internalType": "string", "name": "memo", "type": "string"}], "name": "donateFees", "outputs": [], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [{"internalType": "address", "name": "", "type": "address"}], "name": "maxDeposit", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [{"internalType": "address", "name": "receiver", "type": "address"}], "name": "maxMint", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [{"internalType": "address", "name": "owner", "type": "address"}], "name": "maxRedeem", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [{"internalType": "address", "name": "owner", "type": "address"}], "name": "maxWithdraw", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [{"internalType": "uint256", "name": "shares", "type": "uint256"}, {"internalType": "address", "name": "receiver", "type": "address"}], "name": "mint", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [], "name": "name", "outputs": [{"internalType": "string", "name": "", "type": "string"}], "stateMutability": "view", "type": "function"}, {"inputs": [], "name": "owner", "outputs": [{"internalType": "address", "name": "", "type": "address"}], "stateMutability": "view", "type": "function"}, {"inputs": [], "name": "pendingOwner", "outputs": [{"internalType": "address", "name": "", "type": "address"}], "stateMutability": "view", "type": "function"}, {"inputs": [{"internalType": "uint256", "name": "assets", "type": "uint256"}], "name": "previewDeposit", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [{"internalType": "uint256", "name": "shares", "type": "uint256"}], "name": "previewMint", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [{"internalType": "uint256", "name": "shares", "type": "uint256"}], "name": "previewRedeem", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [{"internalType": "uint256", "name": "assets", "type": "uint256"}], "name": "previewWithdraw", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [{"internalType": "uint256", "name": "shares", "type": "uint256"}, {"internalType": "address", "name": "receiver", "type": "address"}, {"internalType": "address", "name": "owner", "type": "address"}], "name": "redeem", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [{"internalType": "uint256", "name": "newCap", "type": "uint256"}], "name": "setDepositCap", "outputs": [], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [{"internalType": "bool", "name": "paused", "type": "bool"}], "name": "setDepositsPaused", "outputs": [], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [{"internalType": "contract IERC20", "name": "token", "type": "address"}, {"internalType": "address", "name": "to", "type": "address"}], "name": "sweep", "outputs": [], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [], "name": "symbol", "outputs": [{"internalType": "string", "name": "", "type": "string"}], "stateMutability": "view", "type": "function"}, {"inputs": [], "name": "totalAssets", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [], "name": "totalFeesDonated", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [], "name": "totalSupply", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "view", "type": "function"}, {"inputs": [{"internalType": "address", "name": "to", "type": "address"}, {"internalType": "uint256", "name": "value", "type": "uint256"}], "name": "transfer", "outputs": [{"internalType": "bool", "name": "", "type": "bool"}], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [{"internalType": "address", "name": "from", "type": "address"}, {"internalType": "address", "name": "to", "type": "address"}, {"internalType": "uint256", "name": "value", "type": "uint256"}], "name": "transferFrom", "outputs": [{"internalType": "bool", "name": "", "type": "bool"}], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [{"internalType": "address", "name": "newOwner", "type": "address"}], "name": "transferOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function"}, {"inputs": [{"internalType": "uint256", "name": "assets", "type": "uint256"}, {"internalType": "address", "name": "receiver", "type": "address"}, {"internalType": "address", "name": "owner", "type": "address"}], "name": "withdraw", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "stateMutability": "nonpayable", "type": "function"}];
+const BYTECODE='0x60e060405234801561000f575f80fd5b5060405161235438038061235483398101604081905261002e9161034e565b80846040518060400160405280601481526020017f7468726f6e652067656e65736973207661756c7400000000000000000000000081525060405180604001604052806007815260200166675448524f4e4560c81b81525081600390816100959190610438565b5060046100a28282610438565b5050505f806100b68361021b60201b60201c565b91509150816100c65760126100c8565b805b60ff1660a05250506001600160a01b03908116608052811661010357604051631e4fbdf760e01b81525f600482015260240160405180910390fd5b61010c816102ac565b5060017f9b779b17422d0df92223018b32b4d1fa46e071723d6817e2486d003becc55f005f0181905550836001600160a01b0316836001600160a01b03166338d52e0f6040518163ffffffff1660e01b8152600401602060405180830381865afa15801561017c573d5f803e3d5ffd5b505050506040513d601f19601f820116820180604052508101906101a091906104f2565b6001600160a01b0316146101c757604051633033baa960e21b815260040160405180910390fd5b6001600160a01b03831660c0526007829055604080515f8152602081018490527f296bce538ac6d09f30846d670defb82b44ccc28a772613d99904be3f6ed7a167910160405180910390a150505050610514565b5f808061022760405190565b6040805160048152602481019091526020810180516001600160e01b0390811663313ce56760e01b179091529192505f918291610267918891906102c816565b50909250905061027683604052565b818015610284575060203d10155b8015610291575060ff8111155b61029c575f806102a0565b6001815b94509450505050915091565b600680546001600160a01b03191690556102c5816102e9565b50565b5f805f60405f855160208701885afa92505f51915060205190509250925092565b600580546001600160a01b038381166001600160a01b0319831681179093556040519116919082907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0905f90a35050565b6001600160a01b03811681146102c5575f80fd5b5f805f8060808587031215610361575f80fd5b845161036c8161033a565b602086015190945061037d8161033a565b6040860151606087015191945092506103958161033a565b939692955090935050565b634e487b7160e01b5f52604160045260245ffd5b600181811c908216806103c857607f821691505b6020821081036103e657634e487b7160e01b5f52602260045260245ffd5b50919050565b601f82111561043357805f5260205f20601f840160051c810160208510156104115750805b601f840160051c820191505b81811015610430575f815560010161041d565b50505b505050565b81516001600160401b03811115610451576104516103a0565b6104658161045f84546103b4565b846103ec565b6020601f821160018114610497575f83156104805750848201515b5f19600385901b1c1916600184901b178455610430565b5f84815260208120601f198516915b828110156104c657878501518255602094850194600190920191016104a6565b50848210156104e357868401515f19600387901b60f8161c191681555b50505050600190811b01905550565b5f60208284031215610502575f80fd5b815161050d8161033a565b9392505050565b60805160a05160c051611dbb6105995f395f81816103420152818161053e01528181610a6001528181610f740152818161118701526111c801525f6107ec01525f81816102f20152818161061601528181610a2501528181610c4f01528181610ed9015281816110c501528181611165015281816117e401526118780152611dbb5ff3fe608060405234801561000f575f80fd5b5060043610610229575f3560e01c8063866512031161012a578063c63d75b6116100b4578063dd62ed3e11610079578063dd62ed3e146104b8578063e30c3978146104f0578063ef8b30f714610476578063f2fde38b14610501578063fb380ead14610514575f80fd5b8063c63d75b614610463578063c6e6f59214610476578063ce96cb7714610489578063d905777e1461049c578063dbd5edc7146104af575f80fd5b8063a9059cbb116100fa578063a9059cbb14610404578063b3d7f6b914610417578063b460af941461042a578063b8dc491b1461043d578063ba08765214610450575f80fd5b806386651203146103c55780638da5cb5b146103d857806394bf804d146103e957806395d89b41146103fc575f80fd5b806338d52e0f116101b6578063613de66f1161017b578063613de66f146103715780636e553f651461037a57806370a082311461038d578063715018a6146103b557806379ba5097146103bd575f80fd5b806338d52e0f146102f0578063402d267d1461032a5780634cdad5061461025d5780635bca49d21461033d57806360da3e8314610364575f80fd5b80630a28a477116101fc5780630a28a4771461029357806318160ddd146102a65780631c481e2d146102ae57806323b872dd146102c3578063313ce567146102d6575f80fd5b806301e1d1141461022d57806306fdde031461024857806307a2d13a1461025d578063095ea7b314610270575b5f80fd5b610235610527565b6040519081526020015b60405180910390f35b6102506106ac565b60405161023f9190611915565b61023561026b36600461194a565b61073c565b61028361027e366004611975565b61074d565b604051901515815260200161023f565b6102356102a136600461194a565b610764565b600254610235565b6102c16102bc36600461199f565b610770565b005b6102836102d13660046119be565b6107bf565b6102de6107e4565b60405160ff909116815260200161023f565b7f00000000000000000000000000000000000000000000000000000000000000005b6040516001600160a01b03909116815260200161023f565b6102356103383660046119fc565b610810565b6103127f000000000000000000000000000000000000000000000000000000000000000081565b6008546102839060ff1681565b61023560095481565b610235610388366004611a17565b610854565b61023561039b3660046119fc565b6001600160a01b03165f9081526020819052604090205490565b6102c16108b1565b6102c16108c4565b6102c16103d336600461194a565b610908565b6005546001600160a01b0316610312565b6102356103f7366004611a17565b610951565b61025061099d565b610283610412366004611975565b6109ac565b61023561042536600461194a565b6109b9565b610235610438366004611a45565b6109c5565b6102c161044b366004611a84565b610a1b565b61023561045e366004611a45565b610b33565b6102356104713660046119fc565b610b80565b61023561048436600461194a565b610b98565b6102356104973660046119fc565b610ba3565b6102356104aa3660046119fc565b610bac565b61023560075481565b6102356104c6366004611a84565b6001600160a01b039182165f90815260016020908152604080832093909416825291909152205490565b6006546001600160a01b0316610312565b6102c161050f3660046119fc565b610bc9565b6102c1610522366004611ab0565b610c3a565b6040516370a0823160e01b81523060048201525f907f00000000000000000000000000000000000000000000000000000000000000006001600160a01b0316906307a2d13a9082906370a0823190602401602060405180830381865afa158015610593573d5f803e3d5ffd5b505050506040513d601f19601f820116820180604052508101906105b79190611b27565b6040518263ffffffff1660e01b81526004016105d591815260200190565b602060405180830381865afa1580156105f0573d5f803e3d5ffd5b505050506040513d601f19601f820116820180604052508101906106149190611b27565b7f00000000000000000000000000000000000000000000000000000000000000006040516370a0823160e01b81523060048201526001600160a01b0391909116906370a0823190602401602060405180830381865afa158015610679573d5f803e3d5ffd5b505050506040513d601f19601f8201168201806040525081019061069d9190611b27565b6106a79190611b52565b905090565b6060600380546106bb90611b65565b80601f01602080910402602001604051908101604052809291908181526020018280546106e790611b65565b80156107325780601f1061070957610100808354040283529160200191610732565b820191905f5260205f20905b81548152906001019060200180831161071557829003601f168201915b5050505050905090565b5f610747825f610cf6565b92915050565b5f3361075a818585610d2f565b5060019392505050565b5f610747826001610d3c565b610778610d6c565b6008805460ff19168215159081179091556040519081527f9cc2044889457670dcf1b4f002e64d84b8507017b30f77aab31d88416a23c4cd9060200160405180910390a150565b5f336107cc858285610d99565b6107d7858585610e02565b60019150505b9392505050565b5f6106a760067f0000000000000000000000000000000000000000000000000000000000000000611b9d565b6008545f9060ff161561082457505f919050565b5f61082d610527565b905060075481101561084c57806007546108479190611bb6565b6107dd565b5f9392505050565b5f8061085f83610810565b90508084111561089157828482604051633c8097d960e11b815260040161088893929190611bc9565b60405180910390fd5b5f61089b85610b98565b90506108a933858784610e5f565b949350505050565b6108b9610d6c565b6108c25f610eb5565b565b60065433906001600160a01b031681146108fc5760405163118cdaa760e01b81526001600160a01b0382166004820152602401610888565b61090581610eb5565b50565b610910610d6c565b60075460408051918252602082018390527f296bce538ac6d09f30846d670defb82b44ccc28a772613d99904be3f6ed7a167910160405180910390a1600755565b5f8061095c83610b80565b9050808411156109855782848260405163284ff66760e01b815260040161088893929190611bc9565b5f61098f856109b9565b90506108a933858388610e5f565b6060600480546106bb90611b65565b5f3361075a818585610e02565b5f610747826001610cf6565b5f806109d083610ba3565b9050808511156109f957828582604051633fa733bb60e21b815260040161088893929190611bc9565b5f610a0386610764565b9050610a123386868985610ece565b95945050505050565b610a23610d6c565b7f00000000000000000000000000000000000000000000000000000000000000006001600160a01b0316826001600160a01b03161480610a9457507f00000000000000000000000000000000000000000000000000000000000000006001600160a01b0316826001600160a01b0316145b15610ab257604051632f2f40c760e01b815260040160405180910390fd5b6040516370a0823160e01b8152306004820152610b2f9082906001600160a01b038516906370a0823190602401602060405180830381865afa158015610afa573d5f803e3d5ffd5b505050506040513d601f19601f82011682018060405250810190610b1e9190611b27565b6001600160a01b038516919061103c565b5050565b5f80610b3e83610bac565b905080851115610b6757828582604051632e52afbb60e21b815260040161088893929190611bc9565b5f610b718661073c565b9050610a12338686848a610ece565b5f80610b8b83610810565b9050801561084c57610847815b5f610747825f610d3c565b5f61074761026b835b6001600160a01b0381165f90815260208190526040812054610747565b610bd1610d6c565b600680546001600160a01b0383166001600160a01b03199091168117909155610c026005546001600160a01b031690565b6001600160a01b03167f38d16b8cac22d99fc7c124b9cd0de2d3fa1faef420bfe791d8c362d765e2270060405160405180910390a350565b610c42611071565b610c776001600160a01b037f00000000000000000000000000000000000000000000000000000000000000001633308661108c565b8260095f828254610c889190611b52565b90915550610c9690506110c2565b336001600160a01b03167f15a31f80870477449e33a560e14f2c62cab1ac37135d093f6f05eb77f49e8609848484604051610cd393929190611bea565b60405180910390a2610cf160015f80516020611d6683398151915255565b505050565b5f6107dd610d02610527565b610d0d906001611b52565b610d196006600a611d02565b600254610d269190611b52565b8591908561123a565b610cf1838383600161127c565b5f6107dd610d4c6006600a611d02565b600254610d599190611b52565b610d61610527565b610d26906001611b52565b6005546001600160a01b031633146108c25760405163118cdaa760e01b8152336004820152602401610888565b6001600160a01b038381165f908152600160209081526040808320938616835292905220545f19811015610dfc5781811015610dee57828183604051637dc7a0d960e11b815260040161088893929190611bc9565b610dfc84848484035f61127c565b50505050565b6001600160a01b038316610e2b57604051634b637e8f60e11b81525f6004820152602401610888565b6001600160a01b038216610e545760405163ec442f0560e01b81525f6004820152602401610888565b610cf183838361134e565b610e67611071565b60085460ff1615610e8b57604051630b4cba3160e31b815260040160405180910390fd5b610e9784848484611461565b610e9f6110c2565b610dfc60015f80516020611d6683398151915255565b600680546001600160a01b0319169055610905816114c3565b610ed6611071565b5f7f00000000000000000000000000000000000000000000000000000000000000006040516370a0823160e01b81523060048201526001600160a01b0391909116906370a0823190602401602060405180830381865afa158015610f3c573d5f803e3d5ffd5b505050506040513d601f19601f82011682018060405250810190610f609190611b27565b905082811015611011576001600160a01b037f00000000000000000000000000000000000000000000000000000000000000001663b460af94610fa38386611bb6565b6040516001600160e01b031960e084901b1681526004810191909152306024820181905260448201526064016020604051808303815f875af1158015610feb573d5f803e3d5ffd5b505050506040513d601f19601f8201168201806040525081019061100f9190611b27565b505b61101e8686868686611514565b5061103560015f80516020611d6683398151915255565b5050505050565b61104983838360016115b3565b610cf157604051635274afe760e01b81526001600160a01b0384166004820152602401610888565b611079611615565b60025f80516020611d6683398151915255565b61109a848484846001611644565b610dfc57604051635274afe760e01b81526001600160a01b0385166004820152602401610888565b5f7f00000000000000000000000000000000000000000000000000000000000000006040516370a0823160e01b81523060048201526001600160a01b0391909116906370a0823190602401602060405180830381865afa158015611128573d5f803e3d5ffd5b505050506040513d601f19601f8201168201806040525081019061114c9190611b27565b9050805f036111585750565b6111ac6001600160a01b037f0000000000000000000000000000000000000000000000000000000000000000167f0000000000000000000000000000000000000000000000000000000000000000836116b1565b604051636e553f6560e01b8152600481018290523060248201527f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031690636e553f65906044016020604051808303815f875af1158015611216573d5f803e3d5ffd5b505050506040513d601f19601f82011682018060405250810190610b2f9190611b27565b5f61126761124783611703565b801561126257505f848061125d5761125d611d10565b868809115b151590565b61127286868661172f565b610a129190611b52565b6001600160a01b0384166112a55760405163e602df0560e01b81525f6004820152602401610888565b6001600160a01b0383166112ce57604051634a1406b160e11b81525f6004820152602401610888565b6001600160a01b038085165f9081526001602090815260408083209387168352929052208290558015610dfc57826001600160a01b0316846001600160a01b03167f8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b9258460405161134091815260200190565b60405180910390a350505050565b6001600160a01b038316611378578060025f82825461136d9190611b52565b909155506113d59050565b6001600160a01b0383165f90815260208190526040902054818110156113b75783818360405163391434e360e21b815260040161088893929190611bc9565b6001600160a01b0384165f9081526020819052604090209082900390555b6001600160a01b0382166113f15760028054829003905561140f565b6001600160a01b0382165f9081526020819052604090208054820190555b816001600160a01b0316836001600160a01b03167fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef8360405161145491815260200190565b60405180910390a3505050565b61146b84836117df565b611475838261180b565b826001600160a01b0316846001600160a01b03167fdcbc1c05240f31ff3ad067ef1ee35ce4997762752e3a095284754544f4c709d78484604051611340929190918252602082015260400190565b600580546001600160a01b038381166001600160a01b0319831681179093556040519116919082907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0905f90a35050565b826001600160a01b0316856001600160a01b03161461153857611538838683610d99565b611542838261183f565b61154c8483611873565b826001600160a01b0316846001600160a01b0316866001600160a01b03167ffbde797d201c681b91056529119e0b02407c7bb96a4a2c75c01fc9667232c8db85856040516115a4929190918252602082015260400190565b60405180910390a45050505050565b60405163a9059cbb60e01b5f8181526001600160a01b038616600452602485905291602083604481808b5af1925060015f511483166116095783831516156115fd573d5f823e3d81fd5b5f873b113d1516831692505b60405250949350505050565b5f80516020611d66833981519152546002036108c257604051633ee5aeb560e01b815260040160405180910390fd5b6040516323b872dd60e01b5f8181526001600160a01b038781166004528616602452604485905291602083606481808c5af1925060015f511483166116a0578383151615611694573d5f823e3d81fd5b5f883b113d1516831692505b604052505f60605295945050505050565b6116bd8383835f61189e565b610cf1576116ce83835f600161189e565b6116f657604051635274afe760e01b81526001600160a01b0384166004820152602401610888565b611049838383600161189e565b5f600282600381111561171857611718611d24565b6117229190611d38565b60ff166001149050919050565b5f805f61173c86866118e8565b91509150815f036117605783818161175657611756611d10565b04925050506107dd565b818411611777576117776003851502601118611904565b5f848688095f868103871696879004966002600389028118808a02820302808a02820302808a02820302808a02820302808a02820302808a02909103029181900381900460010185841190960395909502919093039390930492909217029150509392505050565b610b2f7f000000000000000000000000000000000000000000000000000000000000000083308461108c565b6001600160a01b0382166118345760405163ec442f0560e01b81525f6004820152602401610888565b610b2f5f838361134e565b6001600160a01b03821661186857604051634b637e8f60e11b81525f6004820152602401610888565b610b2f825f8361134e565b610b2f7f0000000000000000000000000000000000000000000000000000000000000000838361103c565b60405163095ea7b360e01b5f8181526001600160a01b038616600452602485905291602083604481808b5af1925060015f511483166116095783831516156115fd573d5f823e3d81fd5b5f805f1983850993909202808410938190039390930393915050565b634e487b715f52806020526024601cfd5b602081525f82518060208401528060208501604085015e5f604082850101526040601f19601f83011684010191505092915050565b5f6020828403121561195a575f80fd5b5035919050565b6001600160a01b0381168114610905575f80fd5b5f8060408385031215611986575f80fd5b823561199181611961565b946020939093013593505050565b5f602082840312156119af575f80fd5b813580151581146107dd575f80fd5b5f805f606084860312156119d0575f80fd5b83356119db81611961565b925060208401356119eb81611961565b929592945050506040919091013590565b5f60208284031215611a0c575f80fd5b81356107dd81611961565b5f8060408385031215611a28575f80fd5b823591506020830135611a3a81611961565b809150509250929050565b5f805f60608486031215611a57575f80fd5b833592506020840135611a6981611961565b91506040840135611a7981611961565b809150509250925092565b5f8060408385031215611a95575f80fd5b8235611aa081611961565b91506020830135611a3a81611961565b5f805f60408486031215611ac2575f80fd5b83359250602084013567ffffffffffffffff811115611adf575f80fd5b8401601f81018613611aef575f80fd5b803567ffffffffffffffff811115611b05575f80fd5b866020828401011115611b16575f80fd5b939660209190910195509293505050565b5f60208284031215611b37575f80fd5b5051919050565b634e487b7160e01b5f52601160045260245ffd5b8082018082111561074757610747611b3e565b600181811c90821680611b7957607f821691505b602082108103611b9757634e487b7160e01b5f52602260045260245ffd5b50919050565b60ff818116838216019081111561074757610747611b3e565b8181038181111561074757610747611b3e565b6001600160a01b039390931683526020830191909152604082015260600190565b83815260406020820152816040820152818360608301375f818301606090810191909152601f909201601f1916010192915050565b6001815b6001841115611c5a57808504811115611c3e57611c3e611b3e565b6001841615611c4c57908102905b60019390931c928002611c23565b935093915050565b5f82611c7057506001610747565b81611c7c57505f610747565b8160018114611c925760028114611c9c57611cb8565b6001915050610747565b60ff841115611cad57611cad611b3e565b50506001821b610747565b5060208310610133831016604e8410600b8410161715611cdb575081810a610747565b611ce75f198484611c1f565b805f1904821115611cfa57611cfa611b3e565b029392505050565b5f6107dd60ff841683611c62565b634e487b7160e01b5f52601260045260245ffd5b634e487b7160e01b5f52602160045260245ffd5b5f60ff831680611d5657634e487b7160e01b5f52601260045260245ffd5b8060ff8416069150509291505056fe9b779b17422d0df92223018b32b4d1fa46e071723d6817e2486d003becc55f00a2646970667358221220b4e2c5acec1dc4fe0a3c3d8179aeceed9c04a517cdea5b78249454aa0268ff6d64736f6c634300081a0033';
+const ERC20=['function approve(address,uint256) returns (bool)','function allowance(address,address) view returns (uint256)','function balanceOf(address) view returns (uint256)'];
+const V4626=['function convertToAssets(uint256) view returns (uint256)'];
+let provider,signer,me,vaultAddr=new URLSearchParams(location.search).get('vault')||localStorage.getItem('throne_vault_addr')||'';
+const H=n=>document.querySelector('[data-hook="'+n+'"]');
+const fmt=(v,d=6)=>Number(ethers.formatUnits(v,d)).toLocaleString(undefined,{maximumFractionDigits:2});
+const set=(n,t)=>{const e=H(n); if(e) e.textContent=t;};
+const setH=(n,t)=>{const e=H(n); if(e) e.innerHTML=t;};
+const val=n=>{const e=H(n); return e?e.value:'';};
+let morphoBase=null, roProv=null;
+const ro=()=>roProv||(roProv=new ethers.JsonRpcProvider(CHAIN.rpc));
+async function fetchBase(){
+  try{
+    const days=3;
+    const ts=Math.floor(Date.now()/1000)-days*86400;
+    const bs=await fetch(CHAIN.explorer+'/api?module=block&action=getblocknobytime&timestamp='+ts+'&closest=before').then(r=>r.json());
+    const oldBlock=parseInt(bs.result&&(bs.result.blockNumber||bs.result));
+    if(!oldBlock||isNaN(oldBlock)) throw new Error('nohist');
+    const mv=new ethers.Contract(MORPHO,V4626,ro());
+    const one=1000000n;
+    const [pNow,pOld]=await Promise.all([mv.convertToAssets(one),mv.convertToAssets(one,{blockTag:oldBlock})]);
+    morphoBase=(Math.pow(Number(pNow)/Number(pOld),365/days)-1)*100;
+  }catch(e){
+    try{ const r=await fetch('https://yields.llama.fi/pools').then(x=>x.json()); const p=r.data.find(p=>/robinhood/i.test(p.chain)&&p.symbol==='STEAKUSDG'); morphoBase=p&&p.apyBase; }catch(e2){}
+  }
+}
+async function feeFlow(tvlNum){ try{
+  const end=new Date().toISOString().slice(0,10); const start=new Date(Date.now()-7*864e5).toISOString().slice(0,10);
+  const r=await fetch('https://api.orderly.org/v1/broker/leaderboard/daily?page=1&size=200&aggregateBy=address_per_builder&broker_id=throne&start_date='+start+'&end_date='+end).then(x=>x.json());
+  const fees=((r.data&&r.data.rows)||[]).reduce((s,x)=>s+(x.broker_fee||0),0);
+  return tvlNum>0? (fees/7*365)/tvlNum*100 : 0;
+}catch(e){ return 0; } }
+function posWidget(){
+  let w=document.getElementById('thPosW');
+  if(!w){
+    w=document.createElement('div'); w.id='thPosW';
+    w.style.cssText='position:fixed;top:62px;right:16px;z-index:9998;background:#111413;border:1px solid #1F2422;border-radius:12px;padding:10px 14px;font:12px "JetBrains Mono",monospace;color:#F2F4F0;display:none;box-shadow:0 8px 30px rgba(0,0,0,0.5);min-width:210px';
+    w.innerHTML='<div style="color:#5E6663;font-size:10px;letter-spacing:0.1em;margin-bottom:5px">YOUR POSITION</div><div style="display:flex;justify-content:space-between;gap:14px;align-items:baseline"><span id="thPosV" style="color:#00FF9C;font-weight:700;font-size:16px">$0.00</span><span id="thPosE" style="color:#9BA39E">-</span></div><div style="display:flex;justify-content:space-between;gap:14px;margin-top:4px"><span id="thPosS" style="color:#5E6663;font-size:10.5px">0 gTHRONE</span><span style="color:#D4AF37;font-size:10.5px;border:1px solid rgba(212,175,55,0.35);border-radius:6px;padding:1px 7px">points accruing</span></div>';
+    document.body.appendChild(w);
+  }
+  return w;
+}
+async function connect(){
+  if(!window.ethereum){alert('no wallet found');return;}
+  provider=new ethers.BrowserProvider(window.ethereum);
+  await provider.send('eth_requestAccounts',[]);
+  const net=await provider.getNetwork();
+  if(Number(net.chainId)!==CHAIN.id){
+    try{await provider.send('wallet_switchEthereumChain',[{chainId:CHAIN.hex}]);}
+    catch(e){await provider.send('wallet_addEthereumChain',[{chainId:CHAIN.hex,chainName:CHAIN.name,rpcUrls:[CHAIN.rpc],nativeCurrency:{name:'Ether',symbol:'ETH',decimals:18},blockExplorerUrls:[CHAIN.explorer]}]);}
+    provider=new ethers.BrowserProvider(window.ethereum);
+  }
+  signer=await provider.getSigner(); me=await signer.getAddress();
+  set('connect', me.slice(0,6)+'…'+me.slice(-4));
+  posWidget().style.display='block';
+  refresh();
+}
+async function refresh(){
+  try{
+    if(me){const u=new ethers.Contract(USDG,ERC20,ro()); set('wallet-balance', fmt(await u.balanceOf(me))+' USDG');}
+    if(morphoBase==null) await fetchBase();
+    if(!vaultAddr){
+      set('vault-address','vault: not deployed - add ?admin=1 to deploy');
+      set('tvl','$0'); set('cap','$0'); set('price','1.000000');
+      set('pos-value','$0.00'); set('pos-shares','0 gTHRONE'); set('pos-earned','-');
+      const b0=H('capbar'); if(b0)b0.style.width='0%';
+      if(morphoBase!=null){set('apy-base',morphoBase.toFixed(2)+'%'); set('apy-fees','+0.00%'); set('apy',morphoBase.toFixed(1)+'%');}
+      return;
+    }
+    setH('vault-address','vault: <a style="color:#00FF9C" target="_blank" href="'+CHAIN.explorer+'/address/'+vaultAddr+'">'+vaultAddr.slice(0,10)+'…'+vaultAddr.slice(-8)+'</a>');
+    const v=new ethers.Contract(vaultAddr,VAULT_ABI,ro());
+    const [ta,cap,ts]=await Promise.all([v.totalAssets(),v.depositCap(),v.totalSupply()]);
+    set('tvl','$'+fmt(ta)); set('cap','$'+fmt(cap));
+    const bar=H('capbar'); if(bar&&cap>0n) bar.style.width=Math.min(100,Number(ta)*100/Number(cap))+'%';
+    set('price', ts>0n?(Number(ta)/Number(ts)).toFixed(6):'1.000000');
+    const tvlNum=Number(ethers.formatUnits(ta,6));
+    const ff=await feeFlow(tvlNum);
+    if(morphoBase!=null){ set('apy-base',morphoBase.toFixed(2)+'%'); set('apy-fees','+'+ff.toFixed(2)+'%'); set('apy',(morphoBase+ff).toFixed(1)+'%'); }
+    if(me){
+      const sh=await v.balanceOf(me); const assets=ts>0n?await v.convertToAssets(sh):0n;
+      const vStr='$'+fmt(assets), sStr=fmt(sh)+' gTHRONE';
+      set('pos-value',vStr); set('pos-shares',sStr);
+      let eStr='-';
+      const dep=localStorage.getItem('throne_dep_'+me.toLowerCase());
+      if(dep){const diff=Number(ethers.formatUnits(assets,6))-Number(dep); eStr=(diff>=0?'+':'')+'$'+diff.toFixed(2); set('pos-earned',eStr);}
+      const w=posWidget(); w.style.display='block';
+      document.getElementById('thPosV').textContent=vStr;
+      document.getElementById('thPosS').textContent=sStr;
+      document.getElementById('thPosE').textContent=eStr;
+      document.getElementById('thPosE').style.color = eStr.startsWith('+')?'#00FF9C':'#9BA39E';
+    }
+  }catch(e){console.log('refresh',e);}
+}
+async function doDeposit(){
+  const amt=val('dep-amt'); if(!amt||!signer||!vaultAddr) { setH('dep-status', signer?'no vault deployed':'connect wallet first'); return; }
+  try{
+    const wei=ethers.parseUnits(amt,6);
+    const u=new ethers.Contract(USDG,ERC20,signer);
+    if((await u.allowance(me,vaultAddr))<wei){ setH('dep-status','1/2 approving usdg…'); const t1=await u.approve(vaultAddr,wei); await t1.wait(); }
+    setH('dep-status','2/2 depositing…');
+    const v=new ethers.Contract(vaultAddr,VAULT_ABI,signer);
+    const t2=await v.deposit(wei,me); const rc=await t2.wait();
+    const prev=Number(localStorage.getItem('throne_dep_'+me.toLowerCase())||0);
+    localStorage.setItem('throne_dep_'+me.toLowerCase(), String(prev+Number(amt)));
+    setH('dep-status','done · <a style="color:#00FF9C" target="_blank" href="'+CHAIN.explorer+'/tx/'+rc.hash+'">view tx</a>'); refresh();
+  }catch(e){ setH('dep-status','<span style="color:#7DFFC0">'+(e.shortMessage||e.message).slice(0,120)+'</span>'); }
+}
+async function doWithdraw(){
+  const amt=val('wd-amt'); if(!amt||!signer||!vaultAddr) { setH('wd-status', signer?'no vault deployed':'connect wallet first'); return; }
+  try{
+    setH('wd-status','withdrawing…');
+    const v=new ethers.Contract(vaultAddr,VAULT_ABI,signer);
+    const t=await v.withdraw(ethers.parseUnits(amt,6),me,me); const rc=await t.wait();
+    setH('wd-status','done · <a style="color:#00FF9C" target="_blank" href="'+CHAIN.explorer+'/tx/'+rc.hash+'">view tx</a>'); refresh();
+  }catch(e){ setH('wd-status','<span style="color:#7DFFC0">'+(e.shortMessage||e.message).slice(0,120)+'</span>'); }
+}
+async function maxDep(){ if(!me)return; const u=new ethers.Contract(USDG,ERC20,ro()); const b=await u.balanceOf(me); const e=H('dep-amt'); if(e)e.value=ethers.formatUnits(b,6); }
+async function maxWd(){ if(!me||!vaultAddr)return; const v=new ethers.Contract(vaultAddr,VAULT_ABI,ro()); const sh=await v.balanceOf(me); const a=await v.convertToAssets(sh); const e=H('wd-amt'); if(e)e.value=ethers.formatUnits(a,6); }
+function killDemo(){
+  // remove the state-switcher chip bar (contains exact chip labels)
+  const labels=['disconnected','deposit flow','cap reached'];
+  const cands=Array.from(document.querySelectorAll('div,span,button')).filter(e=>e.children.length===0&&labels.includes((e.textContent||'').trim()));
+  if(cands.length){
+    let bar=cands[0]; for(let i=0;i<6&&bar;i++){ const t=bar.textContent||''; if(labels.every(l=>t.includes(l))){ bar.style.display='none'; break; } bar=bar.parentElement; }
+  }
+  // hide the inline position card (moved to fixed widget)
+  const posLbl=Array.from(document.querySelectorAll('div,span')).find(e=>e.children.length===0&&/your deposit value/i.test(e.textContent||''));
+  if(posLbl){ let c=posLbl; for(let i=0;i<6&&c;i++){ c=c.parentElement; if(c&&/shares/i.test(c.textContent)&&/earned/i.test(c.textContent)){ c.style.display='none'; break; } } }
+  // clear demo input values + enable
+  ['dep-amt','wd-amt'].forEach(n=>{const e=H(n); if(e){e.value='';e.removeAttribute('readonly');e.removeAttribute('disabled');}});
+  // reset demo wallet pill
+  set('connect','connect wallet');
+}
+function bind(){
+  [['connect',connect],['dep-btn',doDeposit],['wd-btn',doWithdraw],['dep-max',maxDep],['wd-max',maxWd]].forEach(([n,fn])=>{
+    const e=H(n); if(e&&!e._thWired){e._thWired=1;e.addEventListener('click',fn);}
+  });
+}
+function staticize(){
+  // freeze the react app into plain DOM: clone body, replace, react loses everything
+  const nb=document.body.cloneNode(true); document.body.replaceWith(nb);
+}
+const boot=setInterval(()=>{
+  if(H('tvl')){
+    clearInterval(boot);
+    setTimeout(()=>{ staticize(); killDemo(); bind(); refresh(); setInterval(refresh,20000); adminBar(); },900);
+  }
+},400);
+function adminBar(){
+  if(new URLSearchParams(location.search).get('admin')!=='1') return;
+  const bar=document.createElement('div');
+  bar.style.cssText='position:fixed;bottom:0;left:0;right:0;background:#111413;border-top:1px solid #D4AF37;padding:10px 16px;z-index:9999;font:12px JetBrains Mono,monospace;color:#F2F4F0;display:flex;gap:8px;align-items:center';
+  bar.innerHTML='<span style="color:#D4AF37">admin</span><input id="thCap" placeholder="cap USDG" style="background:#0A0C0B;border:1px solid #1F2422;color:#F2F4F0;padding:6px;border-radius:6px;width:110px"/><button id="thDeploy" style="background:#D4AF37;border:0;padding:6px 12px;border-radius:6px;font-weight:700;cursor:pointer">deploy</button><input id="thAddr" placeholder="or paste vault 0x…" style="background:#0A0C0B;border:1px solid #1F2422;color:#F2F4F0;padding:6px;border-radius:6px;flex:1"/><button id="thUse" style="background:#1F2422;color:#F2F4F0;border:0;padding:6px 12px;border-radius:6px;cursor:pointer">use</button><span id="thMsg" style="color:#9BA39E"></span>';
+  document.body.appendChild(bar);
+  document.getElementById('thDeploy').onclick=async()=>{
+    const cap=document.getElementById('thCap').value; const msg=document.getElementById('thMsg');
+    if(!signer){msg.textContent='connect wallet first';return;}
+    if(!cap){msg.textContent='enter cap';return;}
+    try{ msg.textContent='deploying…';
+      const f=new ethers.ContractFactory(VAULT_ABI,BYTECODE,signer);
+      const c=await f.deploy(USDG,MORPHO,ethers.parseUnits(cap,6),me);
+      await c.waitForDeployment(); vaultAddr=await c.getAddress();
+      localStorage.setItem('throne_vault_addr',vaultAddr); msg.textContent='deployed '+vaultAddr; refresh();
+    }catch(e){ msg.textContent=(e.shortMessage||e.message).slice(0,100); }
+  };
+  document.getElementById('thUse').onclick=()=>{const a=document.getElementById('thAddr').value.trim(); if(/^0x[0-9a-fA-F]{40}$/.test(a)){vaultAddr=a;localStorage.setItem('throne_vault_addr',a);document.getElementById('thMsg').textContent='using '+a;refresh();}};
+}
+if(location.host.includes('pages.dev')) location.href='https://throne.network/vault';
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>throne. · court points</title>
+<meta name="description" content="trade the desk, earn court points. points set your priority when the court opens.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#0A0C0B; --surface:#111413; --line:#1F2422; --fg:#F2F4F0; --dim:#9BA39E; --faint:#5E6663;
+          --crimson:#39F194; --crimson-d:#229959; --gold:#D4AF37; --green:#00FF9C; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:auto; }
+  body { background:var(--bg); color:var(--fg); font-family:'JetBrains Mono', ui-monospace, Menlo, monospace; min-height:100vh; overflow-x:hidden; }
+  a { color:inherit; }
+  ::selection { background:rgba(57,241,148,0.35); }
+
+  /* ambient throne-room backdrop */
+  .bg { position:fixed; inset:0; pointer-events:none; z-index:0; }
+  .bg .glow { position:absolute; left:50%; top:-340px; width:1100px; height:680px; transform:translateX(-50%);
+    background:radial-gradient(closest-side, rgba(57,241,148,0.13), rgba(34,153,93,0.05) 55%, transparent 75%);
+    animation:breathe 7s ease-in-out infinite; }
+  .bg .goldglow { position:absolute; left:50%; top:120px; width:640px; height:340px; transform:translateX(-50%);
+    background:radial-gradient(closest-side, rgba(212,175,55,0.07), transparent 70%); }
+  .bg .board { position:absolute; inset:0;
+    background:repeating-conic-gradient(rgba(242,244,240,0.016) 0% 25%, transparent 0% 50%);
+    background-size:180px 180px;
+    -webkit-mask-image:radial-gradient(900px 600px at 50% 0%, #000 20%, transparent 75%);
+    mask-image:radial-gradient(900px 600px at 50% 0%, #000 20%, transparent 75%); }
+  .bg .scan { position:absolute; inset:0; background:repeating-linear-gradient(0deg, rgba(255,255,255,0.012) 0 1px, transparent 1px 4px); }
+  @keyframes breathe { 0%,100%{opacity:1} 50%{opacity:0.55} }
+
+  .wrap { position:relative; z-index:1; max-width:920px; margin:0 auto; padding:28px 20px 90px; }
+
+  header { display:flex; align-items:center; justify-content:space-between; margin-bottom:56px; }
+  .logo { display:flex; align-items:center; gap:10px; font-size:22px; font-weight:700; letter-spacing:-0.5px; }
+  .logo a { text-decoration:none; }
+  .logo .dot { color:var(--green); }
+  nav a { color:var(--dim); text-decoration:none; font-size:13px; margin-left:20px; }
+  nav a:hover { color:var(--fg); }
+  nav a.launch { color:var(--bg, #0a0c0b); background:var(--fg, #F2F4F0); padding:8px 12px; border-radius:8px; font-weight:600; }
+  nav a.launch:hover { background:#fff; box-shadow:0 8px 24px rgba(57,241,148,0.3); }
+
+  /* hero */
+  .hero { text-align:center; margin-bottom:34px; }
+  .kicker { display:inline-flex; align-items:center; gap:8px; font-size:11px; letter-spacing:0.22em; color:var(--gold);
+    border:1px solid rgba(212,175,55,0.3); border-radius:999px; padding:7px 16px; margin-bottom:22px;
+    background:linear-gradient(180deg, rgba(212,175,55,0.07), rgba(212,175,55,0.02)); }
+  .kicker .live { color:var(--green); animation:pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+  h1 { font-size:clamp(38px, 7vw, 64px); font-weight:800; letter-spacing:-0.03em; line-height:1.02; }
+  h1 .accent { background:linear-gradient(100deg, var(--gold) 20%, #f0d98a 50%, var(--gold) 80%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+  .sub { color:var(--dim); font-size:13px; line-height:1.8; max-width:620px; margin:18px auto 0; }
+  .sub b { color:var(--fg); font-weight:500; }
+  .sub + .sub { margin-top:8px; color:var(--faint); }
+
+  /* stats */
+  .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:38px 0 14px; }
+  .stat { position:relative; overflow:hidden; background:linear-gradient(180deg, rgba(242,244,240,0.045), rgba(242,244,240,0.012));
+    border:1px solid var(--line); border-radius:16px; padding:20px 22px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.07); }
+  .stat::after { content:''; position:absolute; left:0; right:0; top:0; height:1px;
+    background:linear-gradient(90deg, transparent, rgba(57,241,148,0.5), transparent); opacity:0; animation:sweep 6s ease-in-out infinite; }
+  .stat:nth-child(2)::after { animation-delay:2s; }
+  .stat:nth-child(3)::after { animation-delay:4s; background:linear-gradient(90deg, transparent, rgba(212,175,55,0.6), transparent); }
+  @keyframes sweep { 0%,70%,100%{opacity:0} 82%{opacity:1} }
+  .stat .k { color:var(--faint); font-size:10.5px; letter-spacing:0.18em; margin-bottom:8px; }
+  .stat .v { font-size:26px; font-weight:800; letter-spacing:-0.02em; font-variant-numeric:tabular-nums; }
+  .stat .v.gold { color:var(--gold); text-shadow:0 0 24px rgba(212,175,55,0.35); }
+
+  /* podium */
+  .podium { display:grid; grid-template-columns:1fr 1.15fr 1fr; gap:14px; align-items:end; margin:30px 0 8px; }
+  .seat { position:relative; overflow:hidden; text-align:center; border-radius:18px; padding:26px 16px 20px;
+    background:linear-gradient(180deg, rgba(212,175,55,0.09), rgba(212,175,55,0.02) 60%, rgba(17,20,19,0.6));
+    border:1px solid rgba(212,175,55,0.3); box-shadow:inset 0 1px 0 rgba(255,255,255,0.1), 0 24px 60px rgba(0,0,0,0.45); }
+  .seat::before { content:''; position:absolute; left:50%; top:-70px; width:220px; height:150px; transform:translateX(-50%);
+    background:radial-gradient(closest-side, rgba(212,175,55,0.22), transparent 75%); }
+  .seat.first { padding-top:34px; padding-bottom:28px;
+    background:linear-gradient(180deg, rgba(212,175,55,0.15), rgba(212,175,55,0.03) 55%, rgba(17,20,19,0.6));
+    border-color:rgba(212,175,55,0.5); box-shadow:inset 0 1px 0 rgba(255,255,255,0.14), 0 30px 80px rgba(0,0,0,0.55), 0 0 70px rgba(212,175,55,0.1); }
+  .seat .glyph { display:block; font-size:44px; line-height:1; color:var(--gold); text-shadow:0 0 26px rgba(212,175,55,0.6); margin-bottom:10px; }
+  .seat.first .glyph { font-size:60px; animation:crownbreathe 3.2s ease-in-out infinite; }
+  @keyframes crownbreathe { 0%,100%{text-shadow:0 0 26px rgba(212,175,55,0.55)} 50%{text-shadow:0 0 46px rgba(212,175,55,0.95)} }
+  .seat .tier { font-size:10px; letter-spacing:0.24em; color:var(--gold); margin-bottom:12px; opacity:0.8; }
+  .seat .who { font-size:13px; color:var(--fg); margin-bottom:4px; }
+  .seat .p { font-size:22px; font-weight:800; color:var(--gold); font-variant-numeric:tabular-nums; }
+  .seat.first .p { font-size:28px; }
+  .seat .v { font-size:10.5px; color:var(--faint); margin-top:4px; }
+  .seat .rk { position:absolute; top:12px; left:14px; font-size:10px; color:var(--faint); letter-spacing:0.14em; }
+
+  /* you card */
+  .youcard { display:none; margin:22px 0 4px; border-radius:18px; padding:20px 24px;
+    background:linear-gradient(180deg, rgba(0,255,156,0.08), rgba(0,255,156,0.015));
+    border:1px solid rgba(0,255,156,0.35); box-shadow:inset 0 1px 0 rgba(255,255,255,0.1), 0 0 60px rgba(0,255,156,0.07);
+    align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap; }
+  .youcard.show { display:flex; }
+  .youcard .yl { display:flex; align-items:center; gap:16px; }
+  .youcard .yglyph { font-size:38px; line-height:1; color:var(--green); text-shadow:0 0 22px rgba(0,255,156,0.55); }
+  .youcard .yk { font-size:10px; letter-spacing:0.22em; color:var(--green); margin-bottom:5px; }
+  .youcard .yaddr { font-size:14px; }
+  .youcard .yr { text-align:right; }
+  .youcard .ypts { font-size:26px; font-weight:800; color:var(--green); font-variant-numeric:tabular-nums; text-shadow:0 0 20px rgba(0,255,156,0.35); }
+  .youcard .ymeta { font-size:11px; color:var(--dim); margin-top:3px; }
+
+  /* search */
+  .searchbar { display:flex; gap:10px; margin:26px 0 18px; }
+  .searchbar input { flex:1; background:linear-gradient(180deg, rgba(242,244,240,0.04), rgba(242,244,240,0.01));
+    border:1px solid var(--line); border-radius:12px; padding:14px 16px; color:var(--fg); font-family:inherit; font-size:13px; outline:none; }
+  .searchbar input:focus { border-color:rgba(57,241,148,0.55); box-shadow:0 0 0 3px rgba(57,241,148,0.1); }
+  .searchbar input::placeholder { color:var(--faint); }
+
+  /* leaderboard */
+  .boardcard { border:1px solid var(--line); border-radius:18px; overflow:hidden;
+    background:linear-gradient(180deg, rgba(242,244,240,0.03), rgba(242,244,240,0.008));
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.06); }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th { text-align:left; color:var(--faint); font-weight:400; font-size:10.5px; letter-spacing:0.16em; padding:14px 18px; border-bottom:1px solid var(--line); background:rgba(10,12,11,0.5); }
+  th:last-child, td:last-child { text-align:right; }
+  td { padding:13px 18px; border-bottom:1px solid rgba(31,36,34,0.55); font-variant-numeric:tabular-nums; }
+  tr:last-child td { border-bottom:none; }
+  tr.court td { background:rgba(212,175,55,0.05); }
+  tr.court td:first-child { box-shadow:inset 2px 0 0 rgba(212,175,55,0.55); }
+  tr.court-end td { border-bottom:1px solid rgba(212,175,55,0.4); }
+  tr.me td { background:rgba(0,255,156,0.07); }
+  tr.me td:first-child { box-shadow:inset 2px 0 0 rgba(0,255,156,0.7); }
+  tr:hover td { background:rgba(242,244,240,0.03); }
+  tr.court:hover td { background:rgba(212,175,55,0.08); }
+  .rank { color:var(--dim); width:86px; white-space:nowrap; }
+  .piece { display:inline-block; width:20px; margin-right:6px; }
+  .gold { color:var(--gold); } .crimson { color:var(--crimson); } .green { color:var(--green); }
+  .addr { color:var(--fg); }
+  .vol { color:var(--dim); }
+  .pts { font-weight:700; }
+  .divider-label { font-size:9.5px; letter-spacing:0.22em; color:var(--gold); opacity:0.75; }
+  .loading { color:var(--dim); padding:44px 0; text-align:center; }
+
+  .note { margin-top:24px; color:var(--faint); font-size:11.5px; line-height:1.8; }
+  footer { margin-top:52px; padding-top:20px; border-top:1px solid var(--line); color:var(--faint); font-size:11px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+  footer a { color:var(--dim); text-decoration:none; }
+  footer a:hover { color:var(--fg); }
+
+  @media (max-width:680px) {
+    header { margin-bottom:36px; }
+    nav a { margin-left:12px; font-size:12px; }
+    .stats { grid-template-columns:1fr; gap:10px; }
+    .stat .v { font-size:22px; }
+    .podium { grid-template-columns:1fr; gap:10px; }
+    .seat, .seat.first { padding:20px 16px; display:flex; align-items:center; text-align:left; gap:16px; }
+    .seat .glyph, .seat.first .glyph { font-size:38px; margin-bottom:0; }
+    .seat .body { flex:1; }
+    .seat .tier { margin-bottom:4px; }
+    .seat .rk { position:static; order:3; }
+    .vol-col { display:none; }
+    td, th { padding:12px 12px; }
+    .rank { width:70px; }
+  }
+</style>
+</head>
+<body>
+<div class="bg"><div class="glow"></div><div class="goldglow"></div><div class="board"></div><div class="scan"></div></div>
+<div class="wrap">
+  <header>
+    <div class="logo"><svg width="30" height="30" viewBox="-28 -34 56 56"><path d="M-24,10 L-24,-14 L-13,-6 L0,-26 L13,-6 L24,-14 L24,10 Z" fill="#229959" stroke="#39F194" stroke-width="3" stroke-linejoin="round"/><rect x="-24" y="10" width="48" height="9" rx="4.5" fill="#229959" stroke="#39F194" stroke-width="2.6"/><circle cx="-24" cy="-17" r="3" fill="#39F194"/><circle cx="0" cy="-29" r="3.6" fill="#39F194"/><circle cx="24" cy="-17" r="3" fill="#39F194"/></svg><a href="/">throne<span class="dot">.</span></a></div>
+    <nav><a href="/#vault">the vault</a><a href="/terms">terms</a><a class="launch" href="https://trade.throne.network">launch app →</a></nav>
+  </header>
+
+  <div class="hero">
+    <div class="kicker"><span class="live">●</span> season zero · sep 25 - dec 2, 2026</div>
+    <h1>court points <span class="accent">· season zero</span></h1>
+    <p class="sub">trade the desk, earn court points. <b>1 point per $10 of volume.</b> points set your priority tier when the court opens. higher tier, earlier window, first pick. points confer priority only.</p>
+    <p class="sub">when the vault opens, staking earns points too. both feeds merge into one court score.</p>
+    <p class="sub">the season zero trading competition is scored oct 2 to dec 2. rules and rewards drop on <a href="https://x.com/thronedefi" target="_blank" rel="noopener" style="color:var(--gold)">@thronedefi</a>.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="k">TRADERS</div><div class="v" data-hook="stat-traders">-</div></div>
+    <div class="stat"><div class="k">SEASON VOLUME</div><div class="v" data-hook="stat-volume">-</div></div>
+    <div class="stat"><div class="k">POINTS ISSUED</div><div class="v gold" data-hook="stat-points">-</div></div>
+  </div>
+
+  <div class="podium" data-hook="podium">
+    <div class="seat" data-hook="podium-2">
+      <span class="rk">RANK 02</span>
+      <span class="glyph">♛</span>
+      <div class="body">
+        <div class="tier">THE QUEEN</div>
+        <div class="who">-</div>
+        <div class="p">-</div>
+        <div class="v">awaiting a claimant</div>
+      </div>
+    </div>
+    <div class="seat first" data-hook="podium-1">
+      <span class="rk">RANK 01</span>
+      <span class="glyph">♚</span>
+      <div class="body">
+        <div class="tier">THE KING</div>
+        <div class="who">-</div>
+        <div class="p">-</div>
+        <div class="v">awaiting a claimant</div>
+      </div>
+    </div>
+    <div class="seat" data-hook="podium-3">
+      <span class="rk">RANK 03</span>
+      <span class="glyph">♜</span>
+      <div class="body">
+        <div class="tier">FIRST ROOK</div>
+        <div class="who">-</div>
+        <div class="p">-</div>
+        <div class="v">awaiting a claimant</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="youcard" data-hook="you-card">
+    <div class="yl">
+      <span class="yglyph">♝</span>
+      <div>
+        <div class="yk">YOUR SEAT</div>
+        <div class="yaddr">-</div>
+      </div>
+    </div>
+    <div class="yr">
+      <div class="ypts">-</div>
+      <div class="ymeta">search your address above</div>
+    </div>
+  </div>
+
+  <div class="searchbar"><input data-hook="search" id="q" placeholder="search your address (0x...)" /></div>
+
+  <div class="boardcard">
+  <table>
+    <thead><tr><th>RANK</th><th>ADDRESS</th><th class="vol-col">VOLUME</th><th>POINTS</th></tr></thead>
+    <tbody data-hook="leaderboard" id="rows"></tbody>
+  </table>
+  </div>
+
+  <p class="note">top ranks sit in the provisional court tier (gold). seats are limited. rankings update continuously from on-venue volume. formula: points = perp volume x 0.1. referral bonuses are credited at season settlement. figures are estimates until season close.</p>
+
+  <footer>
+    <span>throne. · this is a defi experiment, please use at your own risk</span>
+    <span><a href="/">throne.network</a> · <a href="https://x.com/thronedefi">@thronedefi</a></span>
+  </footer>
+</div>
+
+<script>
+// ---- live wiring: throne court points ----
+const START='2026-09-25';
+const END='2026-12-02';
+const pieces=['♚','♛','♜','♜','♜','♜','♞','♞','♞','♞','♝','♝','♝','♝'];
+function pieceFor(i){ if(i<pieces.length) return pieces[i]; if(i<32) return '♟'; return ''; }
+function tierFor(i){ return i===0?'king':i===1?'queen':i<6?'rook':i<10?'knight':i<14?'bishop':i<32?'pawn':'unranked'; }
+const fmt=n=>'$'+Math.round(n).toLocaleString();
+const short=a=>a.slice(0,6)+'...'+a.slice(-4);
+
+let LIST=[]; // [{full, a(short), v, p}] sorted desc
+
+function render(q){
+  const tb=document.getElementById('rows');
+  const items=LIST.map((r,i)=>({r,i}));
+  const filtered=q?items.filter(o=>o.r.full.toLowerCase().includes(q)):items;
+  if(!filtered.length){ tb.innerHTML='<tr><td colspan="4" class="loading">'+(q?'address not found - trade the desk to enter the court.':'no traders yet. the court awaits.')+'</td></tr>'; return; }
+  const shown=filtered.slice(0,200);
+  tb.innerHTML=shown.map(({r,i},idx)=>{
+    const isMe=q&&r.full.toLowerCase().includes(q);
+    const cls=(i<32?'court':'')+(i===31?' court-end':'')+(isMe?' me':'');
+    const glyph=pieceFor(i);
+    const hooks=idx===0; // first rendered row carries the clone-template hooks
+    return `<tr class="${cls}"><td class="rank"${hooks?' data-hook="row-rank"':''}><span class="piece ${i<32?'gold':''}"${hooks?' data-hook="row-piece"':''}>${glyph}</span>${String(i+1).padStart(2,'0')}</td><td class="addr"${hooks?' data-hook="row-address"':''}>${r.a}</td><td class="vol vol-col"${hooks?' data-hook="row-volume"':''}>${fmt(r.v)}</td><td class="pts ${i<32?'gold':''}"${hooks?' data-hook="row-points"':''}>${Math.round(r.p).toLocaleString()}</td></tr>`;
+  }).join('');
+}
+
+function fillPodium(){
+  const seats=[['podium-1','THE KING',0],['podium-2','THE QUEEN',1],['podium-3','FIRST ROOK',2]];
+  seats.forEach(([hook,label,i])=>{
+    const el=document.querySelector('[data-hook="'+hook+'"]'); if(!el) return;
+    const r=LIST[i];
+    el.querySelector('.rk').textContent='RANK '+String(i+1).padStart(2,'0');
+    el.querySelector('.glyph').textContent=pieceFor(i);
+    el.querySelector('.tier').textContent=label;
+    el.querySelector('.who').textContent=r?r.a:'-';
+    el.querySelector('.p').textContent=r?Math.round(r.p).toLocaleString():'-';
+    el.querySelector('.v').textContent=r?fmt(r.v)+' volume':'awaiting a claimant';
+  });
+}
+
+const you=document.querySelector('[data-hook="you-card"]');
+function updateYou(q){
+  const hit=q && LIST.map((r,i)=>({r,i})).find(o=>o.r.full.toLowerCase().includes(q));
+  if(hit){
+    const i=hit.i;
+    you.classList.add('show');
+    you.querySelector('.yglyph').textContent=pieceFor(i)||'·';
+    you.querySelector('.yaddr').textContent=hit.r.a;
+    you.querySelector('.ypts').textContent=Math.round(hit.r.p).toLocaleString()+' pts';
+    you.querySelector('.ymeta').textContent='rank '+(i+1)+' · '+tierFor(i)+' tier · '+(i<32?'provisional court':'outside the court');
+  } else { you.classList.remove('show'); }
+}
+
+document.getElementById('q').addEventListener('input',e=>{
+  const q=e.target.value.trim().toLowerCase();
+  render(q); updateYou(q);
+});
+
+async function load(){
+  const today=new Date().toISOString().slice(0,10);
+  const end=today<END?today:END;
+  let rows=[], page=1;
+  try{
+    while(page<=5){
+      const r=await fetch(`https://api.orderly.org/v1/broker/leaderboard/daily?page=${page}&size=200&aggregateBy=address_per_builder&broker_id=throne&sort=descending_perp_volume&start_date=${START}&end_date=${end}`).then(x=>x.json());
+      const batch=(r.data&&r.data.rows)||[];
+      rows=rows.concat(batch);
+      if(batch.length<200) break; page++;
+    }
+  }catch(e){ document.getElementById('rows').innerHTML='<tr><td colspan="4" class="loading">could not reach the court. refresh to retry.</td></tr>'; return; }
+  const agg={};
+  rows.forEach(r=>{ if(!r.address) return; agg[r.address]=(agg[r.address]||0)+(r.perp_volume||0); });
+  LIST=Object.entries(agg).map(([full,v])=>({full, a:short(full), v, p:v*0.1})).sort((x,y)=>y.v-x.v);
+  const totV=LIST.reduce((s,r)=>s+r.v,0);
+  document.querySelector('[data-hook="stat-traders"]').textContent=LIST.length.toLocaleString();
+  document.querySelector('[data-hook="stat-volume"]').textContent=fmt(totV);
+  document.querySelector('[data-hook="stat-points"]').textContent=Math.round(totV*0.1).toLocaleString();
+  fillPodium();
+  render(''); updateYou('');
+}
+document.getElementById('rows').innerHTML='<tr><td colspan="4" class="loading">summoning the court...</td></tr>';
+load();
+</script>
+</body>
+</html>
