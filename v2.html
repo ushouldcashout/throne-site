@@ -180,7 +180,7 @@ footer a:hover{color:var(--fg)}
     <div class="acts">
       <a class="btn solid" href="https://trade.throne.network">Launch app →</a>
       <a class="btn" href="https://docs.throne.network">Read the docs</a>
-      <span class="fine" id="openLine">Desk opens Friday</span>
+      <span class="fine" id="openLine">Desk opens soon</span>
     </div>
 
     <div class="stats" id="stats">
@@ -320,7 +320,7 @@ footer a:hover{color:var(--fg)}
       <div class="qa"><h3>What protects Senior?</h3><p>Order of operations. Senior is paid first every epoch and the Court's capital absorbs losses before Senior sees them. Senior can withdraw any epoch. Withdrawals cannot be paused.</p></div>
       <div class="qa"><h3>How do I get into the Court?</h3><p>Hold $THRONE, trade the desk during season zero to earn points, and stake when the Court opens. Points decide priority. Seats are limited.</p></div>
       <div class="qa"><h3>Where does the money come from?</h3><p>Two places. Fees from real trading on the desk, and the 0.7% fee on $THRONE swaps in its Uniswap pool. Senior also earns base yield on its deposits. Nothing is paid from token emissions.</p></div>
-      <div class="qa"><h3>When does the desk open?</h3><p id="faqOpen">Friday. Season zero points start the same day. The Court opens after the desk. <a href="https://x.com/thronedefi">@thronedefi</a> is the only place anything is announced.</p></div>
+      <div class="qa"><h3>When does the desk open?</h3><p id="faqOpen">Soon. Season zero points start the same day. The Court opens after the desk. <a href="https://x.com/thronedefi">@thronedefi</a> is the only place anything is announced.</p></div>
     </div>
   </div>
 </section>
@@ -333,7 +333,7 @@ footer a:hover{color:var(--fg)}
     <h2 style="margin-top:10px">Why this exists.</h2>
     <p>Every perp DEX I have used had the same quiet problem. The vault that paid me was also the house. When I traded well, it bled. When the yield was good, it was because someone else was losing. That is not a business, it is a casino with a dividend.</p>
     <p>Throne is built the other way round. The desk is a real venue with real order books, stocks next to crypto, open when Wall Street is not. It earns a fee on every fill. That fee does not stay with us. It goes to the Court, and the Court is held by the people who hold $THRONE.</p>
-    <p>No emissions. No promises about yield. A fee stream, a small vault that collects it, and a token that is the only way in. If the desk trades, the seats get paid. If it does not, they do not. That is the whole deal, and we would rather say it plainly than dress it up.</p>
+    <p>No emissions. No promises about yield. A fee stream, a small vault that collects it, and a token that is the only way in. If the desk trades, the seats get paid. If it does not, they do not.</p>
     <p class="sig">— <a href="https://x.com/ushouldcashout">@ushouldcashout</a>, in the seat</p>
   </div>
 </section>
@@ -389,17 +389,16 @@ footer a:hover{color:var(--fg)}
   function openLine(){
     var ms = LAUNCH - Date.now();
     if(ms <= 0){ $('openLine').textContent = 'Desk is open'; $('faqOpen').firstChild.textContent = 'It is open. '; return; }
-    var d=Math.floor(ms/864e5), h=Math.floor(ms%864e5/36e5), m=Math.floor(ms%36e5/6e4);
-    $('openLine').textContent = 'Desk opens in '+(d>0?d+'d ':'')+h+'h '+m+'m';
+    $('openLine').textContent = 'Desk opens soon';
   }
   openLine(); setInterval(openLine, 30000);
 
   // ---- builder stats: hero + ledger ----
   function setPre(){
-    $('sVol').textContent = 'opens fri'; $('sVolSub').textContent = 'live once the desk is open';
-    $('sFees').textContent = '$0'; $('sFeesSub').textContent = 'first fee lands friday';
+    $('sVol').textContent = 'opens soon'; $('sVolSub').textContent = 'live once the desk is open';
+    $('sFees').textContent = '$0'; $('sFeesSub').textContent = 'first fee lands at open';
     $('sUsers').textContent = '—'; $('sUsersSub').textContent = 'wallets that traded';
-    $('ledgerBody').innerHTML = '<div class="empty"><b>The ledger opens when the desk does.</b> The first row lands the day after opening, once the venue closes the UTC day. Until then there is nothing to show you, and we would rather show you nothing than a mock-up.</div>';
+    $('ledgerBody').innerHTML = '<div class="empty"><b>The ledger opens when the desk does.</b> The first row lands the day after opening, once the venue closes the UTC day. Until then there is nothing to show, and we would rather show nothing than a mock-up.</div>';
     $('ledgerNote').textContent = 'source: venue builder statistics, public endpoint, refreshed on load.';
   }
   function loadStats(){
