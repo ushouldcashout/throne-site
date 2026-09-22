@@ -215,13 +215,13 @@ footer a:hover{color:var(--fg)}
         <g>
           <rect x="24" y="24" width="270" height="72" rx="3" fill="#0D100F" stroke="rgba(255,255,255,.14)"/>
           <text x="40" y="52" fill="#F2F4F0" font-size="15" font-weight="600" font-family="Inter, system-ui, sans-serif">the desk</text>
-          <text x="40" y="76" fill="#9BA39E" font-size="10.5">stocks + crypto perps · 24/7 · robinhood chain</text>
+          <text x="40" y="76" fill="#9BA39E" font-size="9.5">stocks + crypto perps · 24/7 · robinhood chain</text>
           <text x="278" y="42" fill="#5E6663" font-size="9" text-anchor="end">src.a</text>
         </g>
         <g>
           <rect x="346" y="24" width="270" height="72" rx="3" fill="#0D100F" stroke="rgba(255,255,255,.14)"/>
           <text x="362" y="52" fill="#F2F4F0" font-size="15" font-weight="600" font-family="Inter, system-ui, sans-serif">the pool</text>
-          <text x="362" y="76" fill="#9BA39E" font-size="10.5"><tspan fill="#39F194">$THRONE</tspan> / eth · uniswap v4 · 0.7% per swap</text>
+          <text x="362" y="76" fill="#9BA39E" font-size="9.5"><tspan fill="#39F194">$THRONE</tspan> / eth · uniswap v4 · 0.7% per swap</text>
           <text x="600" y="42" fill="#5E6663" font-size="9" text-anchor="end">src.b</text>
         </g>
         <!-- down to router -->
@@ -245,7 +245,7 @@ footer a:hover{color:var(--fg)}
           <text x="228" y="214" fill="#5E6663" font-size="9" text-anchor="end">tr.senior</text>
           <text x="40" y="250" fill="#9BA39E" font-size="10.5">usdg in · base yield</text>
           <text x="40" y="272" fill="#9BA39E" font-size="10.5">paid first</text>
-          <text x="40" y="294" fill="#9BA39E" font-size="10.5">redeem any epoch · no token required</text>
+          <text x="40" y="294" fill="#9BA39E" font-size="9.5">redeem any epoch · no token required</text>
         </g>
         <!-- court -->
         <g>
@@ -262,8 +262,8 @@ footer a:hover{color:var(--fg)}
           <rect x="262" y="404" width="204" height="72" rx="3" fill="#0A0C0B" stroke="rgba(57,241,148,.55)"/>
           <rect x="280" y="432" width="14" height="12" rx="2" fill="none" stroke="#39F194" stroke-width="1.4"/>
           <path d="M283 432 v-4 a4 4 0 0 1 8 0 v4" fill="none" stroke="#39F194" stroke-width="1.4"/>
-          <text x="306" y="434" fill="#F2F4F0" font-size="11">gate: stake <tspan fill="#39F194">$THRONE</tspan> to enter</text>
-          <text x="306" y="456" fill="#9BA39E" font-size="10.5">want the seat, hold the key</text>
+          <text x="304" y="434" fill="#F2F4F0" font-size="9.5">gate: stake <tspan fill="#39F194">$THRONE</tspan> to enter</text>
+          <text x="304" y="456" fill="#9BA39E" font-size="9.5">want the seat, hold the key</text>
           <text x="450" y="420" fill="#5E6663" font-size="9" text-anchor="end">key</text>
         </g>
         <!-- outside -->
@@ -435,8 +435,7 @@ footer a:hover{color:var(--fg)}
     var p = (j.pairs||[]).sort(function(a,b){ return (b.liquidity&&b.liquidity.usd||0)-(a.liquidity&&a.liquidity.usd||0); })[0];
     if(!p) return;
     $('sMcap').textContent = fmtBig(p.marketCap || p.fdv);
-    var ch = p.priceChange && p.priceChange.h24;
-    $('sPrice').innerHTML = '$'+(+p.priceUsd).toPrecision(4)+(ch!=null?' · <span class="'+(ch>=0?'up':'dn')+'">'+(ch>=0?'+':'')+ch.toFixed(1)+'% 24h</span>':'');
+    $('sPrice').textContent = '$'+(+p.priceUsd).toPrecision(4)+' per token';
   }).catch(function(){});
 
   // ---- markets: tape + grid ----
