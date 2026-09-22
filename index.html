@@ -168,7 +168,7 @@ footer a:hover{color:var(--fg)}
       <a href="#markets">Markets</a>
       <a href="/points">Points</a>
       <a href="https://docs.throne.network">Docs</a>
-      <a class="cta primary" href="https://trade.throne.network">Launch app →</a>
+      <a class="cta primary" href="/reserve">Reserve a seat →</a>
     </div>
   </div>
 </nav>
@@ -178,9 +178,9 @@ footer a:hover{color:var(--fg)}
     <h1>A perp desk for stocks and crypto that pays its fees to the people holding the key.</h1>
     <p class="sub">Trade Tesla, gold, the S&amp;P and Bitcoin on one margin account, 24/7, on Robinhood Chain. The desk keeps none of the fees. They go to the Court, and the Court is held by <span class="mono" style="color:var(--fg)">$THRONE</span>.</p>
     <div class="acts">
-      <a class="btn solid" href="https://trade.throne.network">Launch app →</a>
-      <a class="btn" href="https://docs.throne.network">Read the docs</a>
-      <span class="fine" id="openLine">Desk opens soon</span>
+      <a class="btn solid" href="/reserve">Reserve a seat →</a>
+      <a class="btn" href="https://trade.throne.network">Launch app</a>
+      <span class="fine" id="openLine">Beta is live · 500 seats drawn from the list</span>
     </div>
 
     <div class="stats" id="stats">
@@ -320,7 +320,7 @@ footer a:hover{color:var(--fg)}
       <div class="qa"><h3>What protects Senior?</h3><p>Order of operations. Senior is paid first every epoch and the Court's capital absorbs losses before Senior sees them. Senior can withdraw any epoch. Withdrawals cannot be paused.</p></div>
       <div class="qa"><h3>How do I get into the Court?</h3><p>Hold $THRONE, trade the desk during season zero to earn points, and stake when the Court opens. Points decide priority. Seats are limited.</p></div>
       <div class="qa"><h3>Where does the money come from?</h3><p>Two places. Fees from real trading on the desk, and the 0.7% fee on $THRONE swaps in its Uniswap pool. Senior also earns base yield on its deposits. Nothing is paid from token emissions.</p></div>
-      <div class="qa"><h3>When does the desk open?</h3><p id="faqOpen">Soon. Season zero points start the same day. The Court opens after the desk. <a href="https://x.com/thronedefi">@thronedefi</a> is the only place anything is announced.</p></div>
+      <div class="qa"><h3>When does the desk open?</h3><p id="faqOpen">The beta is live for a first group of traders; <a href="/reserve">reserve a seat</a>. Public open follows. Season zero points start with the beta. The Court opens after the desk. <a href="https://x.com/thronedefi">@thronedefi</a> is the only place anything is announced.</p></div>
     </div>
   </div>
 </section>
@@ -389,14 +389,14 @@ footer a:hover{color:var(--fg)}
   function openLine(){
     var ms = LAUNCH - Date.now();
     if(ms <= 0){ $('openLine').textContent = 'Desk is open'; $('faqOpen').firstChild.textContent = 'It is open. '; return; }
-    $('openLine').textContent = 'Desk opens soon';
+    /* beta: line set in markup */
   }
   openLine(); setInterval(openLine, 30000);
 
   // ---- builder stats: hero + ledger ----
   function setPre(){
-    $('sVol').textContent = 'opens soon'; $('sVolSub').textContent = 'live once the desk is open';
-    $('sFees').textContent = '$0'; $('sFeesSub').textContent = 'first fee lands at open';
+    $('sVol').textContent = 'beta'; $('sVolSub').textContent = 'live once the desk opens to all';
+    $('sFees').textContent = '$0'; $('sFeesSub').textContent = 'first fee lands at public open';
     $('sUsers').textContent = '—'; $('sUsersSub').textContent = 'wallets that traded';
     $('ledgerBody').innerHTML = '<div class="empty"><b>The ledger opens when the desk does.</b> The first row lands the day after opening, once the venue closes the UTC day. Until then there is nothing to show, and we would rather show nothing than a mock-up.</div>';
     $('ledgerNote').textContent = 'source: venue builder statistics, public endpoint, refreshed on load.';
