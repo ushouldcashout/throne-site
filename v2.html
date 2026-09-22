@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>throne. · a perp desk that pays its fees to the seats</title>
+<meta name="description" content="Stocks and crypto perps on Robinhood Chain, 24/7. The fees the desk earns are paid out to the Court, and the Court is held by $THRONE.">
+<meta property="og:title" content="throne. · a perp desk that pays its fees to the seats">
+<meta property="og:description" content="Stocks and crypto perps on Robinhood Chain, 24/7. The fees the desk earns are paid out to the Court, and the Court is held by $THRONE.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://throne.network/og-crown.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://throne.network/og-crown.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/throne-favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="/throne-favicon-64.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050605;--panel:#0A0C0B;--panel2:#0D100F;--fg:#F2F4F0;--dim:#9BA39E;--faint:#5E6663;
+  --line:rgba(255,255,255,.07);--line2:rgba(255,255,255,.14);
+  --green:#229959;--mint:#39F194;--gold:#D4AF37;--loss:#FF6B57;
+  --sans:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;
+  --max:1040px;--pad:22px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.6 var(--sans);overflow-x:hidden}
+a{color:var(--mint);text-decoration:none}
+a:hover{color:var(--gold)}
+p{margin:0}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.02em;line-height:1.1}
+h1{font-size:clamp(34px,5.2vw,58px)}
+h2{font-size:clamp(22px,3vw,30px)}
+h3{font-size:16px;letter-spacing:-.01em}
+.mono{font-family:var(--mono)}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--pad)}
+.lbl{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--faint);text-transform:lowercase}
+.rule{border:0;border-top:1px solid var(--line);margin:0}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.up{color:var(--mint)}.dn{color:var(--loss)}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:20;background:rgba(5,6,5,.9);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:22px;height:54px}
+.brand{display:flex;align-items:center;gap:9px;color:var(--fg);font-weight:600;font-size:17px;letter-spacing:-.01em}
+.brand b{color:var(--mint);font-weight:600}
+.links{margin-left:auto;display:flex;gap:18px;align-items:center;font-family:var(--mono);font-size:12.5px}
+.links a{color:var(--dim)}.links a:hover{color:var(--fg)}
+.cta{color:var(--fg)!important;border:1px solid var(--line2);border-radius:4px;padding:7px 12px}
+.cta:hover{border-color:var(--mint);color:var(--mint)!important}
+.cta.primary{background:var(--fg);color:var(--bg)!important;border-color:var(--fg)}
+.cta.primary:hover{background:var(--mint);border-color:var(--mint);color:var(--bg)!important}
+.status{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;color:var(--dim)}
+.status i{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--mint);box-shadow:0 0 8px rgba(57,241,148,.7)}
+@media (max-width:760px){.links a:not(.cta){display:none}.status{display:none}}
+
+/* hero */
+.hero{padding:72px 0 40px}
+.hero h1{max-width:820px}
+.hero h1 span{color:var(--dim);font-weight:500}
+.hero .sub{margin-top:18px;max-width:640px;color:var(--dim);font-size:17px}
+.hero .acts{margin-top:26px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border-radius:4px;font-family:var(--mono);font-size:13px;border:1px solid var(--line2);color:var(--fg)}
+.btn:hover{border-color:var(--mint);color:var(--mint)}
+.btn.solid{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.btn.solid:hover{background:var(--mint);border-color:var(--mint);color:var(--bg)}
+.hero .fine{margin-left:6px;font-family:var(--mono);font-size:11px;color:var(--faint)}
+
+/* stat row */
+.stats{margin-top:44px;display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:4px;background:var(--panel)}
+.stat{padding:18px 20px;border-right:1px solid var(--line);min-width:0}
+.stat:last-child{border-right:0}
+.stat .v{font-family:var(--mono);font-size:26px;font-weight:600;letter-spacing:-.01em;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stat .v.gold{color:var(--gold)}
+.stat .s{font-family:var(--mono);font-size:11px;color:var(--faint);margin-top:4px}
+@media (max-width:760px){.stats{grid-template-columns:1fr 1fr}.stat{border-bottom:1px solid var(--line)}.stat:nth-child(2n){border-right:0}.stat:nth-child(n+3){border-bottom:0}.stat .v{font-size:22px}}
+
+/* tape */
+.tape{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--panel);overflow:hidden;white-space:nowrap;margin-top:56px}
+.tape .track{display:inline-flex;gap:0;animation:tape 70s linear infinite;will-change:transform}
+.tape:hover .track{animation-play-state:paused}
+.tk{display:inline-flex;gap:10px;align-items:baseline;padding:10px 22px;border-right:1px solid var(--line);font-family:var(--mono);font-size:12.5px}
+.tk .sym{color:var(--fg);font-weight:500}.tk .px{color:var(--dim)}.tk .ch{font-size:11.5px}
+.tk .lev{font-size:10px;color:var(--faint);border:1px solid var(--line);border-radius:2px;padding:0 4px}
+@keyframes tape{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.tape .track{animation:none}}
+
+/* sections */
+section{padding:72px 0}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:48px;align-items:start}
+@media (max-width:860px){.two{grid-template-columns:1fr;gap:28px}}
+.lead{color:var(--dim);font-size:16px;margin-top:14px;max-width:520px}
+.lead b{color:var(--fg);font-weight:500}
+.steps{margin-top:22px;display:grid;gap:12px}
+.step{display:grid;grid-template-columns:22px 1fr;gap:12px;font-size:14.5px;color:#d7dbd8}
+.step .n{font-family:var(--mono);font-size:11px;color:var(--gold);padding-top:4px}
+.step b{color:var(--fg);font-weight:500}
+
+/* diagram */
+.diagram{border:1px solid var(--line);border-radius:4px;background:var(--panel);padding:10px}
+.diagram svg{width:100%;height:auto;display:block}
+
+/* ledger */
+.tbl{width:100%;border-collapse:collapse;font-size:14px;margin-top:18px}
+.tbl th{text-align:left;font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.06em;color:var(--faint);padding:8px 10px;border-bottom:1px solid var(--line2)}
+.tbl td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl td.num,.tbl th.num{text-align:right;font-family:var(--mono)}
+.tbl tr.tot td{border-bottom:0;border-top:1px solid var(--line2);font-weight:600}
+.tbl td.gold{color:var(--gold)}
+.empty{margin-top:18px;border:1px dashed var(--line2);border-radius:4px;padding:26px 22px;color:var(--dim);font-size:14.5px}
+.empty b{color:var(--fg);font-weight:500}
+.foot-note{margin-top:10px;font-family:var(--mono);font-size:11px;color:var(--faint)}
+
+/* markets */
+.mk{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:4px;background:var(--panel);margin-top:22px}
+.mk .col{padding:16px 18px;border-right:1px solid var(--line)}
+.mk .col:last-child{border-right:0}
+.mk .col h3{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--faint);font-weight:500;text-transform:lowercase;margin-bottom:10px}
+.mk .row{display:flex;justify-content:space-between;gap:8px;font-family:var(--mono);font-size:12.5px;padding:5px 0;border-bottom:1px solid var(--line)}
+.mk .row:last-child{border-bottom:0}
+.mk .row span:first-child{color:var(--fg)}
+.mk .row span:last-child{color:var(--dim)}
+@media (max-width:860px){.mk{grid-template-columns:1fr 1fr}.mk .col{border-bottom:1px solid var(--line)}.mk .col:nth-child(2n){border-right:0}.mk .col:nth-child(n+3){border-bottom:0}}
+@media (max-width:480px){.mk{grid-template-columns:1fr}.mk .col{border-right:0;border-bottom:1px solid var(--line)}.mk .col:last-child{border-bottom:0}}
+
+/* faq */
+.faq{margin-top:22px;max-width:760px}
+.qa{padding:18px 0;border-top:1px solid var(--line)}
+.qa:last-child{border-bottom:1px solid var(--line)}
+.qa h3{font-weight:500;font-size:15.5px}
+.qa p{color:var(--dim);margin-top:6px;font-size:14.5px}
+
+/* note */
+.note{max-width:680px}
+.note p{color:#d7dbd8;font-size:16px;margin-top:14px}
+.note p:first-of-type{margin-top:18px}
+.note .sig{margin-top:22px;font-family:var(--mono);font-size:12.5px;color:var(--dim)}
+.note .sig a{color:var(--mint)}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:36px 0 44px;font-size:13.5px;color:var(--dim)}
+footer .grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:28px}
+footer h4{margin:0 0 8px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--faint);font-weight:500;text-transform:lowercase}
+footer a{display:block;color:var(--dim);padding:2px 0}
+footer a:hover{color:var(--fg)}
+.contract{margin-top:26px;padding:12px 14px;border:1px solid var(--line);border-radius:4px;background:var(--panel);display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-family:var(--mono);font-size:12px}
+.contract code{color:var(--fg);word-break:break-all}
+.contract button{background:none;border:1px solid var(--line2);color:var(--dim);font-family:var(--mono);font-size:11px;border-radius:3px;padding:4px 8px;cursor:pointer}
+.contract button:hover{border-color:var(--mint);color:var(--mint)}
+.legal{margin-top:22px;font-family:var(--mono);font-size:11px;color:var(--faint);line-height:1.7}
+@media (max-width:760px){footer .grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="/">
+      <svg width="22" height="22" viewBox="-28 -34 56 56" aria-hidden="true"><path d="M-24,10 L-24,-14 L-13,-6 L0,-26 L13,-6 L24,-14 L24,10 Z" fill="#229959" stroke="#39F194" stroke-width="2" stroke-linejoin="round"/><rect x="-24" y="10" width="48" height="9" rx="4.5" fill="#229959" stroke="#39F194" stroke-width="2"/><circle cx="0" cy="-29" r="3.6" fill="#D4AF37"/></svg>
+      <span>throne<b>.</b></span>
+    </a>
+    <span class="status" id="status"><i></i><span id="statusText">connecting</span></span>
+    <div class="links">
+      <a href="#fees">How it works</a>
+      <a href="#ledger">Ledger</a>
+      <a href="#markets">Markets</a>
+      <a href="/points">Points</a>
+      <a href="https://docs.throne.network">Docs</a>
+      <a class="cta primary" href="https://trade.throne.network">Launch app →</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>A perp desk for stocks and crypto that pays its fees to the people holding the key.</h1>
+    <p class="sub">Trade Tesla, gold, the S&amp;P and Bitcoin on one margin account, 24/7, on Robinhood Chain. The desk keeps none of the fees. They go to the Court, and the Court is held by <span class="mono" style="color:var(--fg)">$THRONE</span>.</p>
+    <div class="acts">
+      <a class="btn solid" href="https://trade.throne.network">Launch app →</a>
+      <a class="btn" href="https://docs.throne.network">Read the docs</a>
+      <span class="fine" id="openLine">Desk opens Friday</span>
+    </div>
+
+    <div class="stats" id="stats">
+      <div class="stat"><div class="lbl">desk volume · today utc</div><div class="v num" id="sVol">—</div><div class="s" id="sVolSub">live from the desk</div></div>
+      <div class="stat"><div class="lbl">fees earned by the desk</div><div class="v num gold" id="sFees">—</div><div class="s" id="sFeesSub">accruing to the Court</div></div>
+      <div class="stat"><div class="lbl">traders · today</div><div class="v num" id="sUsers">—</div><div class="s" id="sUsersSub">wallets that traded</div></div>
+      <div class="stat"><div class="lbl">$THRONE · market cap</div><div class="v num" id="sMcap">—</div><div class="s" id="sPrice">—</div></div>
+    </div>
+  </div>
+
+  <div class="tape" id="tape" aria-label="live markets"><div class="track" id="track"></div></div>
+</header>
+
+<section id="fees">
+  <div class="wrap two">
+    <div>
+      <div class="lbl">how it works</div>
+      <h2 style="margin-top:10px">Where the fees go.</h2>
+      <p class="lead">Most perp DEXs keep their fees, or send them to a vault that is the house and takes the other side of your trades. <b>The Court is not the house.</b> It never touches trader PnL. It only receives what the desk earns.</p>
+      <div class="steps">
+        <div class="step"><span class="n">01</span><span><b>You trade.</b> Stocks, indices, commodities, FX and crypto perps on one balance, any hour of the week.</span></div>
+        <div class="step"><span class="n">02</span><span><b>The desk earns a fee</b> on every fill. A second stream comes from swaps of $THRONE itself in its Uniswap pool.</span></div>
+        <div class="step"><span class="n">03</span><span><b>Fees route to two vaults.</b> Senior takes USDG from anyone, earns base yield and is paid first. The Court sits behind it, absorbs losses first, and receives the desk's fees.</span></div>
+        <div class="step"><span class="n">04</span><span><b>The Court is gated.</b> To take a seat you stake $THRONE alongside your deposit. Want the seat, hold the key.</span></div>
+      </div>
+      <p class="lead" style="margin-top:22px;font-size:14px">Liquidations and bad debt are handled at the venue layer, outside both vaults. Paid in fees only. Fixed supply. No emissions anywhere in the design.</p>
+    </div>
+    <div class="diagram" aria-label="fee flow diagram">
+      <svg viewBox="0 0 640 520" xmlns="http://www.w3.org/2000/svg" font-family="JetBrains Mono, ui-monospace, monospace">
+        <defs><marker id="dot" markerWidth="6" markerHeight="6" refX="3" refY="3"><circle cx="3" cy="3" r="2.2" fill="#39F194"/></marker></defs>
+        <!-- sources -->
+        <g>
+          <rect x="24" y="24" width="270" height="72" rx="3" fill="#0D100F" stroke="rgba(255,255,255,.14)"/>
+          <text x="40" y="52" fill="#F2F4F0" font-size="15" font-weight="600" font-family="Inter, system-ui, sans-serif">the desk</text>
+          <text x="40" y="76" fill="#9BA39E" font-size="10.5">stocks + crypto perps · 24/7 · robinhood chain</text>
+          <text x="278" y="42" fill="#5E6663" font-size="9" text-anchor="end">src.a</text>
+        </g>
+        <g>
+          <rect x="346" y="24" width="270" height="72" rx="3" fill="#0D100F" stroke="rgba(255,255,255,.14)"/>
+          <text x="362" y="52" fill="#F2F4F0" font-size="15" font-weight="600" font-family="Inter, system-ui, sans-serif">the pool</text>
+          <text x="362" y="76" fill="#9BA39E" font-size="10.5"><tspan fill="#39F194">$THRONE</tspan> / eth · uniswap v4 · 0.7% per swap</text>
+          <text x="600" y="42" fill="#5E6663" font-size="9" text-anchor="end">src.b</text>
+        </g>
+        <!-- down to router -->
+        <line x1="159" y1="96" x2="159" y2="150" stroke="#39F194" stroke-width="1" marker-end="url(#dot)"/>
+        <line x1="481" y1="96" x2="481" y2="150" stroke="#39F194" stroke-width="1" marker-end="url(#dot)"/>
+        <!-- vaults box -->
+        <rect x="12" y="128" width="470" height="372" rx="3" fill="none" stroke="rgba(255,255,255,.14)" stroke-dasharray="3 4"/>
+        <text x="24" y="122" fill="#5E6663" font-size="9.5">the vaults</text>
+        <!-- router bar -->
+        <line x1="40" y1="156" x2="600" y2="156" stroke="#39F194" stroke-width="1.5"/>
+        <rect x="36" y="152" width="8" height="8" fill="none" stroke="#39F194"/>
+        <rect x="596" y="152" width="8" height="8" fill="none" stroke="#39F194"/>
+        <text x="52" y="146" fill="#5E6663" font-size="9.5">fee router</text>
+        <!-- to tranches -->
+        <line x1="159" y1="156" x2="159" y2="192" stroke="#39F194" stroke-width="1" marker-end="url(#dot)"/>
+        <line x1="352" y1="156" x2="352" y2="192" stroke="#39F194" stroke-width="1" marker-end="url(#dot)"/>
+        <!-- senior -->
+        <g>
+          <rect x="24" y="196" width="220" height="128" rx="3" fill="#0A0C0B" stroke="rgba(255,255,255,.14)"/>
+          <text x="40" y="224" fill="#F2F4F0" font-size="15" font-weight="600" font-family="Inter, system-ui, sans-serif">senior</text>
+          <text x="228" y="214" fill="#5E6663" font-size="9" text-anchor="end">tr.senior</text>
+          <text x="40" y="250" fill="#9BA39E" font-size="10.5">usdg in · base yield</text>
+          <text x="40" y="272" fill="#9BA39E" font-size="10.5">paid first</text>
+          <text x="40" y="294" fill="#9BA39E" font-size="10.5">redeem any epoch · no token required</text>
+        </g>
+        <!-- court -->
+        <g>
+          <rect x="262" y="196" width="204" height="128" rx="3" fill="#0A0C0B" stroke="#D4AF37"/>
+          <text x="278" y="224" fill="#D4AF37" font-size="15" font-weight="600" font-family="Inter, system-ui, sans-serif">the court</text>
+          <text x="450" y="214" fill="#5E6663" font-size="9" text-anchor="end">tr.junior</text>
+          <text x="278" y="250" fill="#9BA39E" font-size="10.5">receives the desk's fees</text>
+          <text x="278" y="272" fill="#9BA39E" font-size="10.5">absorbs losses first</text>
+          <text x="278" y="294" fill="#9BA39E" font-size="10.5">capped size · small base</text>
+        </g>
+        <!-- gate -->
+        <line x1="364" y1="400" x2="364" y2="328" stroke="#39F194" stroke-width="1" marker-end="url(#dot)"/>
+        <g>
+          <rect x="262" y="404" width="204" height="72" rx="3" fill="#0A0C0B" stroke="rgba(57,241,148,.55)"/>
+          <rect x="280" y="432" width="14" height="12" rx="2" fill="none" stroke="#39F194" stroke-width="1.4"/>
+          <path d="M283 432 v-4 a4 4 0 0 1 8 0 v4" fill="none" stroke="#39F194" stroke-width="1.4"/>
+          <text x="306" y="434" fill="#F2F4F0" font-size="11">gate: stake <tspan fill="#39F194">$THRONE</tspan> to enter</text>
+          <text x="306" y="456" fill="#9BA39E" font-size="10.5">want the seat, hold the key</text>
+          <text x="450" y="420" fill="#5E6663" font-size="9" text-anchor="end">key</text>
+        </g>
+        <!-- outside -->
+        <line x1="500" y1="128" x2="500" y2="500" stroke="rgba(255,255,255,.12)"/>
+        <text x="514" y="214" fill="#5E6663" font-size="9.5">outside the vaults</text>
+        <g>
+          <rect x="514" y="224" width="112" height="60" rx="3" fill="#0A0C0B" stroke="rgba(255,255,255,.14)"/>
+          <text x="524" y="246" fill="#F2F4F0" font-size="10.5" font-weight="600" font-family="Inter, system-ui, sans-serif">liquidations</text>
+          <text x="524" y="260" fill="#F2F4F0" font-size="10.5" font-weight="600" font-family="Inter, system-ui, sans-serif">+ bad debt</text>
+          <text x="524" y="276" fill="#9BA39E" font-size="9">venue layer</text>
+        </g>
+        <line x1="570" y1="284" x2="570" y2="470" stroke="#FF6B57" stroke-width="1" stroke-dasharray="3 4"/>
+        <circle cx="570" cy="470" r="2.5" fill="#FF6B57"/>
+        <text x="570" y="490" fill="#5E6663" font-size="9" text-anchor="middle">never reaches</text>
+        <text x="570" y="502" fill="#5E6663" font-size="9" text-anchor="middle">senior or the court</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section id="ledger">
+  <div class="wrap">
+    <div class="lbl">the ledger</div>
+    <h2 style="margin-top:10px">What the desk earned, day by day.</h2>
+    <p class="lead">Every row is a UTC day since the desk opened, pulled from the venue's public builder statistics. Nothing here is typed in by us.</p>
+    <div id="ledgerBody"></div>
+    <p class="foot-note" id="ledgerNote"></p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section id="markets">
+  <div class="wrap">
+    <div class="lbl">the desk</div>
+    <h2 style="margin-top:10px">One margin account. Every market.</h2>
+    <p class="lead">The stock market closes at four. The desk doesn't. Prices below are live marks from the desk's order books.</p>
+    <div class="mk" id="mk"></div>
+    <p class="foot-note">Leverage varies by market. Use less than the maximum.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section id="faq">
+  <div class="wrap">
+    <div class="lbl">questions</div>
+    <h2 style="margin-top:10px">The ones people actually ask.</h2>
+    <div class="faq">
+      <div class="qa"><h3>Is the vault taking the other side of my trades?</h3><p>No. Neither vault market-makes or backstops liquidations. Liquidations and bad debt are handled at the venue layer. The Court's exposure is to fee volume, not to trader PnL.</p></div>
+      <div class="qa"><h3>What does $THRONE actually do?</h3><p>It is the key to the Court. To deposit into the Court you stake $THRONE alongside your USDG. No stake, no seat. It is not a governance token and it is not the yield itself.</p></div>
+      <div class="qa"><h3>What protects Senior?</h3><p>Order of operations. Senior is paid first every epoch and the Court's capital absorbs losses before Senior sees them. Senior can withdraw any epoch. Withdrawals cannot be paused.</p></div>
+      <div class="qa"><h3>How do I get into the Court?</h3><p>Hold $THRONE, trade the desk during season zero to earn points, and stake when the Court opens. Points decide priority. Seats are limited.</p></div>
+      <div class="qa"><h3>Where does the money come from?</h3><p>Two places. Fees from real trading on the desk, and the 0.7% fee on $THRONE swaps in its Uniswap pool. Senior also earns base yield on its deposits. Nothing is paid from token emissions.</p></div>
+      <div class="qa"><h3>When does the desk open?</h3><p id="faqOpen">Friday. Season zero points start the same day. The Court opens after the desk. <a href="https://x.com/thronedefi">@thronedefi</a> is the only place anything is announced.</p></div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section id="note">
+  <div class="wrap note">
+    <div class="lbl">a note from the desk</div>
+    <h2 style="margin-top:10px">Why this exists.</h2>
+    <p>Every perp DEX I have used had the same quiet problem. The vault that paid me was also the house. When I traded well, it bled. When the yield was good, it was because someone else was losing. That is not a business, it is a casino with a dividend.</p>
+    <p>Throne is built the other way round. The desk is a real venue with real order books, stocks next to crypto, open when Wall Street is not. It earns a fee on every fill. That fee does not stay with us. It goes to the Court, and the Court is held by the people who hold $THRONE.</p>
+    <p>No emissions. No promises about yield. A fee stream, a small vault that collects it, and a token that is the only way in. If the desk trades, the seats get paid. If it does not, they do not. That is the whole deal, and we would rather say it plainly than dress it up.</p>
+    <p class="sig">— <a href="https://x.com/ushouldcashout">@ushouldcashout</a>, in the seat</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <a class="brand" href="/" style="display:inline-flex"><svg width="20" height="20" viewBox="-28 -34 56 56" aria-hidden="true"><path d="M-24,10 L-24,-14 L-13,-6 L0,-26 L13,-6 L24,-14 L24,10 Z" fill="#229959" stroke="#39F194" stroke-width="2" stroke-linejoin="round"/><rect x="-24" y="10" width="48" height="9" rx="4.5" fill="#229959" stroke="#39F194" stroke-width="2"/><circle cx="0" cy="-29" r="3.6" fill="#D4AF37"/></svg><span>throne<b>.</b></span></a>
+        <p style="margin-top:10px;max-width:300px">A perp desk for stocks and crypto, and the vault it pays. On Robinhood Chain.</p>
+        <p class="mono" style="margin-top:10px;font-size:11px;color:var(--faint)">Long live the king.</p>
+      </div>
+      <div><h4>protocol</h4><a href="https://trade.throne.network">The desk</a><a href="#fees">How it works</a><a href="#ledger">Ledger</a><a href="/points">Points</a></div>
+      <div><h4>resources</h4><a href="https://docs.throne.network">Docs</a><a href="https://docs.throne.network/referrals.html">Referrals</a><a href="/terms">Terms</a><a href="https://docs.throne.network/risks.html">Risks</a></div>
+      <div><h4>court</h4><a href="https://x.com/thronedefi">@thronedefi</a><a href="https://dexscreener.com/robinhood/0x4c5daa1d7be101298eb5302c085a752ab9078da226621d78c63a9a8e518d3702">$THRONE chart</a><a href="https://docs.throne.network/support.html">Support</a></div>
+    </div>
+    <div class="contract">
+      <span class="lbl">official contract · robinhood chain</span>
+      <code id="ca">0x72dc556fff14115c077a540921e5F35499a4DCa7</code>
+      <button id="copyCa">copy</button>
+      <span style="color:var(--faint);font-size:11px">This is the only contract. We will never DM you a different one, and we will never DM you first.</span>
+    </div>
+    <p class="legal">© 2026 throne. · Robinhood Chain · This is a DeFi experiment. Use at your own risk. Vault contracts launch capped and are audited before caps lift. Nothing on this page is an offer, a promise of returns, or financial advice.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // ---- config ----
+  var LAUNCH = Date.parse('2026-09-25T16:00:00Z');           // desk opens (UTC). change here only.
+  var BROKER = 'throne';
+  var TOKEN  = '0x72dc556fff14115c077a540921e5F35499a4DCa7';
+  var STATS  = 'https://api.orderly.org/md/volume/builder/daily_stats?broker_id='+BROKER;
+  var FUT    = 'https://api.orderly.org/v1/public/futures';
+  var DEX    = 'https://api.dexscreener.com/latest/dex/tokens/'+TOKEN;
+
+  // markets shown on the desk (symbol, label, max leverage)
+  var GROUPS = [
+    ['stocks + indices', [['PERP_TSLA_USDC','TSLA','20x'],['PERP_NVDA_USDC','NVDA','20x'],['PERP_GOOGL_USDC','GOOGL','20x'],['PERP_SPX500_USDC','SPX500','20x'],['PERP_NAS100_USDC','NAS100','20x']]],
+    ['commodities', [['PERP_XAU_USDC','GOLD','20x'],['PERP_XAG_USDC','SILVER','20x'],['PERP_BZ_USDC','BRENT','20x'],['PERP_CL_USDC','WTI','20x']]],
+    ['fx', [['PERP_EURUSD_USDC','EURUSD','50x'],['PERP_USDJPY_USDC','USDJPY','50x']]],
+    ['crypto', [['PERP_BTC_USDC','BTC','100x'],['PERP_ETH_USDC','ETH','100x'],['PERP_SOL_USDC','SOL','100x'],['PERP_XRP_USDC','XRP','50x'],['PERP_LINK_USDC','LINK','20x']]]
+  ];
+
+  var $ = function(id){ return document.getElementById(id); };
+  var fmtUsd = function(n, d){ if(n==null||isNaN(n)) return '—'; d = d==null ? (n>=1000?0:2) : d; return '$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d}); };
+  var fmtBig = function(n){ if(n==null||isNaN(n)) return '—'; if(n>=1e9) return '$'+(n/1e9).toFixed(2)+'B'; if(n>=1e6) return '$'+(n/1e6).toFixed(2)+'M'; if(n>=1e4) return '$'+(n/1e3).toFixed(1)+'K'; return fmtUsd(n); };
+  var fmtPx = function(p){ if(p==null) return '—'; p=+p; var d = p>=1000?1 : p>=100?2 : p>=1?3 : p>=0.01?4 : 6; return p.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d}); };
+  var ymd = function(d){ return d.toISOString().slice(0,10); };
+  var live = Date.now() >= LAUNCH;
+
+  // ---- countdown / open line ----
+  function openLine(){
+    var ms = LAUNCH - Date.now();
+    if(ms <= 0){ $('openLine').textContent = 'Desk is open'; $('faqOpen').firstChild.textContent = 'It is open. '; return; }
+    var d=Math.floor(ms/864e5), h=Math.floor(ms%864e5/36e5), m=Math.floor(ms%36e5/6e4);
+    $('openLine').textContent = 'Desk opens in '+(d>0?d+'d ':'')+h+'h '+m+'m';
+  }
+  openLine(); setInterval(openLine, 30000);
+
+  // ---- builder stats: hero + ledger ----
+  function setPre(){
+    $('sVol').textContent = 'opens fri'; $('sVolSub').textContent = 'live once the desk is open';
+    $('sFees').textContent = '$0'; $('sFeesSub').textContent = 'first fee lands friday';
+    $('sUsers').textContent = '—'; $('sUsersSub').textContent = 'wallets that traded';
+    $('ledgerBody').innerHTML = '<div class="empty"><b>The ledger opens when the desk does.</b> The first row lands the day after opening, once the venue closes the UTC day. Until then there is nothing to show you, and we would rather show you nothing than a mock-up.</div>';
+    $('ledgerNote').textContent = 'source: venue builder statistics, public endpoint, refreshed on load.';
+  }
+  function loadStats(){
+    fetch(STATS).then(function(r){return r.json();}).then(function(rows){
+      $('statusText').textContent = 'live · '+new Date().toUTCString().slice(17,22)+' utc';
+      if(!live){ setPre(); return; }
+      var since = ymd(new Date(LAUNCH));
+      var today = ymd(new Date());
+      var post = rows.filter(function(r){ return r.date.slice(0,10) >= since; })
+                     .sort(function(a,b){ return a.date < b.date ? 1 : -1; });
+      var t = post.filter(function(r){ return r.date.slice(0,10)===today; })[0];
+      var vol = t ? (+t.takerVolume + +t.makerVolume) : 0;
+      var totFees = post.reduce(function(s,r){ return s + +r.builderFee; },0);
+      var totVol  = post.reduce(function(s,r){ return s + +r.takerVolume + +r.makerVolume; },0);
+      $('sVol').textContent = fmtBig(vol); $('sVolSub').textContent = fmtBig(totVol)+' since open';
+      $('sFees').textContent = fmtUsd(totFees, totFees<1000?2:0); $('sFeesSub').textContent = 'since open · accruing to the Court';
+      $('sUsers').textContent = t ? t.activeUser : '0'; $('sUsersSub').textContent = 'wallets that traded today';
+      if(!post.length){ $('ledgerBody').innerHTML = '<div class="empty"><b>Open.</b> The first row lands once the venue closes today\'s UTC day.</div>'; return; }
+      var h = '<table class="tbl"><thead><tr><th>day (utc)</th><th class="num">desk volume</th><th class="num">traders</th><th class="num">fees earned</th><th class="num">status</th></tr></thead><tbody>';
+      post.forEach(function(r){
+        var d = r.date.slice(0,10), isToday = d===today;
+        h += '<tr><td class="mono">'+d+'</td><td class="num">'+fmtBig(+r.takerVolume + +r.makerVolume)+'</td><td class="num">'+r.activeUser+'</td><td class="num gold">'+fmtUsd(+r.builderFee, 2)+'</td><td class="num" style="color:var(--faint)">'+(isToday?'accruing':'closed')+'</td></tr>';
+      });
+      h += '<tr class="tot"><td>total since open</td><td class="num">'+fmtBig(totVol)+'</td><td></td><td class="num gold">'+fmtUsd(totFees,2)+'</td><td></td></tr></tbody></table>';
+      $('ledgerBody').innerHTML = h;
+      $('ledgerNote').textContent = 'source: venue builder statistics, public endpoint. days with no trades are omitted by the venue. the court receives its share once it is live; until then fees accrue to it.';
+    }).catch(function(){ $('statusText').textContent = 'offline'; if(!live) setPre(); });
+  }
+  loadStats();
+
+  // ---- token ----
+  fetch(DEX).then(function(r){return r.json();}).then(function(j){
+    var p = (j.pairs||[]).sort(function(a,b){ return (b.liquidity&&b.liquidity.usd||0)-(a.liquidity&&a.liquidity.usd||0); })[0];
+    if(!p) return;
+    $('sMcap').textContent = fmtBig(p.marketCap || p.fdv);
+    var ch = p.priceChange && p.priceChange.h24;
+    $('sPrice').innerHTML = '$'+(+p.priceUsd).toPrecision(4)+(ch!=null?' · <span class="'+(ch>=0?'up':'dn')+'">'+(ch>=0?'+':'')+ch.toFixed(1)+'% 24h</span>':'');
+  }).catch(function(){});
+
+  // ---- markets: tape + grid ----
+  function loadMarkets(){
+    fetch(FUT).then(function(r){return r.json();}).then(function(j){
+      var by = {}; (j.data.rows||[]).forEach(function(r){ by[r.symbol]=r; });
+      var tape = '', grid = '';
+      GROUPS.forEach(function(g){
+        grid += '<div class="col"><h3>'+g[0]+'</h3>';
+        g[1].forEach(function(m){
+          var r = by[m[0]]; if(!r) return;
+          var o=+r['24h_open'], c=+r['24h_close'], ch = o? (c-o)/o*100 : 0;
+          var cls = ch>=0?'up':'dn', sgn = ch>=0?'+':'';
+          tape += '<span class="tk"><span class="sym">'+m[1]+'</span><span class="px">'+fmtPx(r.mark_price)+'</span><span class="ch '+cls+'">'+sgn+ch.toFixed(2)+'%</span><span class="lev">'+m[2]+'</span></span>';
+          grid += '<div class="row"><span>'+m[1]+' <span class="lev" style="font-size:10px;color:var(--faint)">'+m[2]+'</span></span><span>'+fmtPx(r.mark_price)+' <span class="'+cls+'">'+sgn+ch.toFixed(1)+'%</span></span></div>';
+        });
+        grid += '</div>';
+      });
+      $('track').innerHTML = tape + tape; // duplicated for seamless loop
+      $('mk').innerHTML = grid;
+    }).catch(function(){ $('tape').style.display='none'; });
+  }
+  loadMarkets(); setInterval(loadMarkets, 30000);
+
+  // ---- copy CA ----
+  $('copyCa').addEventListener('click', function(){
+    var b=this; navigator.clipboard.writeText(TOKEN).then(function(){ b.textContent='copied'; setTimeout(function(){ b.textContent='copy'; },1500); });
+  });
+})();
+</script>
+</body>
+</html>
