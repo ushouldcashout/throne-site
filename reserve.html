@@ -85,18 +85,19 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 </div></nav>
 
 <main class="page">
-  <div class="status"><span><i></i>desk beta · live</span><span>list closes in <b id="closes">—</b></span><span><b>500</b> seats in the draw</span></div>
+  <div class="status"><span><i></i>desk beta · live</span><span>list closes in <b id="closes">—</b></span></div>
+  <div class="status" style="margin-top:8px"><span><b>500</b> seats in the draw</span></div>
 
   <h1>Put a wallet on the list.</h1>
 
   <div class="intro">
-    <p>We're letting 500 traders onto the desk before everyone else. Paste the address of the wallet you'll trade with. That's the whole form.</p>
-    <p>If that wallet is holding <b>$THRONE</b> when we run the draw, you're in regardless. Put it on the list anyway so we can match it and credit your code. Everyone else gets a number and a fair shot. Beta traders start earning season zero points from their first fill, before the public gets a look.</p>
+    <p>We're letting 500 traders onto the desk before everyone else. Paste the address of the wallet you'll trade with.</p>
+    <p>If that wallet is holding <b>$THRONE</b> when we run the draw, you're in regardless. Put it on the list anyway so we can match it and credit your code. Early access beta traders start earning season zero points from their trades before public access.</p>
   </div>
 
   <form id="form" onsubmit="return false">
     <div class="field">
-      <label for="wallet">wallet · robinhood chain (evm)</label>
+      <label for="wallet">add your RH wallet below</label>
       <input id="wallet" placeholder="0x…" autocomplete="off" spellcheck="false" style="width:100%">
     </div>
     <div class="field">
@@ -105,7 +106,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     </div>
     <button class="btn solid" id="submit" type="button">Reserve my seat</button>
     <div class="err" id="err"></div>
-    <p class="fine">Paste only. This page never asks you to connect a wallet, sign anything, or approve anything. We keep the address, the code and a timestamp, nothing else. Results go out on <a href="https://x.com/thronedefi">@thronedefi</a>.</p>
+    <p class="fine">Paste only. This page never asks you to connect a wallet, sign anything, or approve anything.</p>
   </form>
 
   <div class="done" id="done">
@@ -126,14 +127,14 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   <div class="how">
     <h2>How the draw works</h2>
     <p>The list closes Friday, September 25 at 7pm EST. We freeze it and post its hash. Then we name a Robinhood Chain block that hasn't been mined yet. When it lands, its hash seeds the draw and picks 500 wallets. Anyone with the list and the block can recompute the same 500. We can't tilt it and neither can you.</p>
-    <p>Before the draw we drop duplicates and any wallet with zero history on Robinhood Chain. One wallet, one entry. Farming the form with fresh addresses gets you nothing.</p>
+    <p>Before the draw we drop duplicates and any wallet with zero history on Robinhood Chain. One wallet, one entry. Farming the form with fresh addresses is prohibited and will get you removed.</p>
   </div>
 
   <div class="stub">
     <span>seats</span><span class="g">500 drawn + every holder</span>
     <span>entry</span><span>one wallet address</span>
     <span>cost</span><span>nothing</span>
-    <span>points</span><span>season zero, from first fill</span>
+    <span>points</span><span>season zero</span>
     <span>closes</span><span>fri sep 25 · 7pm est</span>
   </div>
 </main>
