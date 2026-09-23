@@ -90,17 +90,14 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   <h1>Put a wallet on the list.</h1>
 
   <div class="intro">
-    <p>We're letting 500 traders onto the desk before everyone else. Drop the wallet you'll trade with. That's the whole form.</p>
+    <p>We're letting 500 traders onto the desk before everyone else. Paste the address of the wallet you'll trade with. That's the whole form.</p>
     <p>If that wallet is holding <b>$THRONE</b> when we run the draw, you're in regardless. Put it on the list anyway so we can match it and credit your code. Everyone else gets a number and a fair shot. Beta traders start earning season zero points from their first fill, before the public gets a look.</p>
   </div>
 
   <form id="form" onsubmit="return false">
     <div class="field">
       <label for="wallet">wallet · robinhood chain (evm)</label>
-      <div class="inrow">
-        <input id="wallet" placeholder="0x…" autocomplete="off" spellcheck="false">
-        <button class="btn" id="connect" type="button">Connect</button>
-      </div>
+      <input id="wallet" placeholder="0x…" autocomplete="off" spellcheck="false" style="width:100%">
     </div>
     <div class="field">
       <label for="code">referral code · optional</label>
@@ -108,7 +105,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     </div>
     <button class="btn solid" id="submit" type="button">Reserve my seat</button>
     <div class="err" id="err"></div>
-    <p class="fine">No signature, no transaction, nothing to approve. We keep the address, the code and a timestamp, nothing else. Results go out on <a href="https://x.com/thronedefi">@thronedefi</a>.</p>
+    <p class="fine">Paste only. This page never asks you to connect a wallet, sign anything, or approve anything. We keep the address, the code and a timestamp, nothing else. Results go out on <a href="https://x.com/thronedefi">@thronedefi</a>.</p>
   </form>
 
   <div class="done" id="done">
@@ -159,12 +156,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
   var q = new URLSearchParams(location.search); var pre = q.get('ref') || q.get('code');
   if(pre) $('code').value = pre.toUpperCase();
-
-  $('connect').addEventListener('click', function(){
-    if(!window.ethereum){ $('err').textContent = 'No wallet in this browser. Paste the address instead.'; return; }
-    window.ethereum.request({ method: 'eth_requestAccounts' }).then(function(a){ if(a&&a[0]) { $('wallet').value = a[0]; $('err').textContent=''; } })
-      .catch(function(){ $('err').textContent = 'Wallet connection was cancelled.'; });
-  });
 
   $('submit').addEventListener('click', function(){
     var w = $('wallet').value.trim(), c = $('code').value.trim();
