@@ -180,13 +180,13 @@ footer a:hover{color:var(--fg)}
     <div class="acts">
       <a class="btn solid" href="/reserve">Reserve a seat →</a>
       <a class="btn" href="https://trade.throne.network">Launch app</a>
-      <span class="fine" id="openLine">Beta is live · 500 seats drawn from the list</span>
+      <span class="fine" id="openLine">Beta is live · list closes Friday 7pm EST</span>
     </div>
 
     <div class="stats" id="stats">
-      <div class="stat"><div class="lbl">desk volume · today utc</div><div class="v num" id="sVol">—</div><div class="s" id="sVolSub">live from the desk</div></div>
-      <div class="stat"><div class="lbl">fees earned by the desk</div><div class="v num gold" id="sFees">—</div><div class="s" id="sFeesSub">accruing to the Court</div></div>
-      <div class="stat"><div class="lbl">traders · today</div><div class="v num" id="sUsers">—</div><div class="s" id="sUsersSub">wallets that traded</div></div>
+      <div class="stat"><div class="lbl" id="lVol">desk</div><div class="v num" id="sVol">beta · live</div><div class="s" id="sVolSub">open to the list and to holders first</div></div>
+      <div class="stat"><div class="lbl" id="lFees">seats in the beta</div><div class="v num gold" id="sFees">500</div><div class="s" id="sFeesSub">plus every $THRONE holder</div></div>
+      <div class="stat"><div class="lbl" id="lUsers">list closes in</div><div class="v num" id="sUsers">—</div><div class="s" id="sUsersSub">fri sep 25 · 7pm est</div></div>
       <div class="stat"><div class="lbl">$THRONE · market cap</div><div class="v num" id="sMcap">—</div><div class="s" id="sPrice">—</div></div>
     </div>
   </div>
@@ -363,7 +363,8 @@ footer a:hover{color:var(--fg)}
 <script>
 (function(){
   // ---- config ----
-  var LAUNCH = Date.parse('2026-09-25T16:00:00Z');           // desk opens (UTC). change here only.
+  var LAUNCH = Date.parse('2026-09-25T23:00:00Z');           // desk opens: fri sep 25, 7pm est. change here only.
+  var MIN_TRADERS = 25;                                        // hide the traders cell below this
   var BROKER = 'throne';
   var TOKEN  = '0x72dc556fff14115c077a540921e5F35499a4DCa7';
   var STATS  = 'https://api.orderly.org/md/volume/builder/daily_stats?broker_id='+BROKER;
@@ -394,10 +395,13 @@ footer a:hover{color:var(--fg)}
   openLine(); setInterval(openLine, 30000);
 
   // ---- builder stats: hero + ledger ----
+  function countdown(){
+    var ms = LAUNCH - Date.now(); if(ms<=0) return;
+    var d=Math.floor(ms/864e5), h=Math.floor(ms%864e5/36e5), m=Math.floor(ms%36e5/6e4);
+    $('sUsers').textContent = (d>0?d+'d ':'')+h+'h '+m+'m';
+  }
   function setPre(){
-    $('sVol').textContent = 'beta'; $('sVolSub').textContent = 'live once the desk opens to all';
-    $('sFees').textContent = '$0'; $('sFeesSub').textContent = 'first fee lands at public open';
-    $('sUsers').textContent = '—'; $('sUsersSub').textContent = 'wallets that traded';
+    countdown(); setInterval(countdown, 20000);
     $('ledgerBody').innerHTML = '<div class="empty"><b>The ledger opens when the desk does.</b> The first row lands the day after opening, once the venue closes the UTC day. Until then there is nothing to show, and we would rather show nothing than a mock-up.</div>';
     $('ledgerNote').textContent = 'source: venue builder statistics, public endpoint, refreshed on load.';
   }
@@ -413,9 +417,11 @@ footer a:hover{color:var(--fg)}
       var vol = t ? (+t.takerVolume + +t.makerVolume) : 0;
       var totFees = post.reduce(function(s,r){ return s + +r.builderFee; },0);
       var totVol  = post.reduce(function(s,r){ return s + +r.takerVolume + +r.makerVolume; },0);
-      $('sVol').textContent = fmtBig(vol); $('sVolSub').textContent = fmtBig(totVol)+' since open';
-      $('sFees').textContent = fmtUsd(totFees, totFees<1000?2:0); $('sFeesSub').textContent = 'since open · accruing to the Court';
-      $('sUsers').textContent = t ? t.activeUser : '0'; $('sUsersSub').textContent = 'wallets that traded today';
+      $('lVol').textContent = 'desk volume · today utc'; $('sVol').textContent = fmtBig(vol); $('sVolSub').textContent = fmtBig(totVol)+' since open';
+      $('lFees').textContent = 'fees earned by the desk'; $('sFees').textContent = fmtUsd(totFees, totFees<1000?2:0); $('sFeesSub').textContent = 'since open · accruing to the Court';
+      var users = t ? +t.activeUser : 0;
+      if(users >= MIN_TRADERS){ $('lUsers').textContent = 'traders · today'; $('sUsers').textContent = users; $('sUsersSub').textContent = 'wallets that traded today'; }
+      else { $('lUsers').textContent = 'season zero'; $('sUsers').textContent = 'live'; $('sUsersSub').textContent = '1 point per $10 traded'; }
       if(!post.length){ $('ledgerBody').innerHTML = '<div class="empty"><b>Open.</b> The first row lands once the venue closes today\'s UTC day.</div>'; return; }
       var h = '<table class="tbl"><thead><tr><th>day (utc)</th><th class="num">desk volume</th><th class="num">traders</th><th class="num">fees earned</th><th class="num">status</th></tr></thead><tbody>';
       post.forEach(function(r){

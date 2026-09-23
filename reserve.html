@@ -85,7 +85,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 </div></nav>
 
 <main class="page">
-  <div class="status"><span><i></i>desk beta · live</span><span>list open</span><span><b id="count">—</b> wallets on it</span><span><b>500</b> seats in the draw</span></div>
+  <div class="status"><span><i></i>desk beta · live</span><span>list closes in <b id="closes">—</b></span><span><b>500</b> seats in the draw</span></div>
 
   <h1>Put a wallet on the list.</h1>
 
@@ -120,12 +120,12 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   </div>
 
   <div class="closed" id="closedBox">
-    <b style="color:var(--fg)">The list is closed.</b> The hash of the final list and the block that decides the draw are posted on <a href="https://x.com/thronedefi">@thronedefi</a>. If you hold $THRONE, you're in.
+    <b style="color:var(--fg)">The list is closed.</b> The desk is opening to the draw and to holders. The hash of the final list and the block that decided it are posted on <a href="https://x.com/thronedefi">@thronedefi</a>. If you hold $THRONE, you're in.
   </div>
 
   <div class="how">
     <h2>How the draw works</h2>
-    <p>When we're ready, we freeze the list and post its hash. Then we name a Robinhood Chain block that hasn't been mined yet. When it lands, its hash seeds the draw and picks 500 wallets. Anyone with the list and the block can recompute the same 500. We can't tilt it and neither can you.</p>
+    <p>The list closes Friday, September 25 at 7pm EST. We freeze it and post its hash. Then we name a Robinhood Chain block that hasn't been mined yet. When it lands, its hash seeds the draw and picks 500 wallets. Anyone with the list and the block can recompute the same 500. We can't tilt it and neither can you.</p>
     <p>Before the draw we drop duplicates and any wallet with zero history on Robinhood Chain. One wallet, one entry. Farming the form with fresh addresses gets you nothing.</p>
   </div>
 
@@ -134,7 +134,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     <span>entry</span><span>one wallet address</span>
     <span>cost</span><span>nothing</span>
     <span>points</span><span>season zero, from first fill</span>
-    <span>closes</span><span>not yet · announced first</span>
+    <span>closes</span><span>fri sep 25 · 7pm est</span>
   </div>
 </main>
 
@@ -146,13 +146,20 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   var $ = function(id){ return document.getElementById(id); };
   var ADDR = /^0x[0-9a-fA-F]{40}$/;
 
+  var CLOSES = Date.parse('2026-09-25T23:00:00Z'); // fri sep 25, 7pm est
+  function tick(){
+    var ms = CLOSES - Date.now();
+    if(ms <= 0){ $('closes').textContent='closed'; $('form').style.display='none'; $('closedBox').style.display='block'; return; }
+    var d=Math.floor(ms/864e5), h=Math.floor(ms%864e5/36e5), m=Math.floor(ms%36e5/6e4);
+    $('closes').textContent = (d>0?d+'d ':'')+h+'h '+m+'m';
+  }
+  tick(); setInterval(tick, 20000);
   function refresh(){
     fetch(API+'/count').then(function(r){return r.json();}).then(function(j){
-      $('count').textContent = (j.count||0).toLocaleString('en-US');
       if(j.closed){ $('form').style.display='none'; $('closedBox').style.display='block'; }
     }).catch(function(){});
   }
-  refresh(); setInterval(refresh, 30000);
+  refresh();
 
   var q = new URLSearchParams(location.search); var pre = q.get('ref') || q.get('code');
   if(pre) $('code').value = pre.toUpperCase();
