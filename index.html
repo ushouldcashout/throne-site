@@ -318,7 +318,7 @@ footer a:hover{color:var(--fg)}
       <div class="qa"><h3>Is the vault taking the other side of my trades?</h3><p>No. Neither vault market-makes or backstops liquidations. Liquidations and bad debt are handled at the venue layer. The Court's exposure is to fee volume, not to trader PnL.</p></div>
       <div class="qa"><h3>What does $THRONE actually do?</h3><p>It is the key to the Court. To deposit into the Court you stake $THRONE alongside your USDG. No stake, no seat. It is not a governance token and it is not the yield itself.</p></div>
       <div class="qa"><h3>What protects Senior?</h3><p>Order of operations. Senior is paid first every epoch and the Court's capital absorbs losses before Senior sees them. Senior can withdraw any epoch. Withdrawals cannot be paused.</p></div>
-      <div class="qa"><h3>How do I get into the Court?</h3><p>Hold $THRONE, trade the desk during season zero to earn points, and stake when the Court opens. Points decide priority. Seats are limited.</p></div>
+      <div class="qa"><h3>How do I get into the Court?</h3><p>Hold $THRONE, trade the desk during season zero to earn points, and stake when the Court opens. Points decide priority. Seats are limited. Wallets from the beta list earn 2x points for the whole beta period.</p></div>
       <div class="qa"><h3>Where does the money come from?</h3><p>Two places. Fees from real trading on the desk, and the 0.7% fee on $THRONE swaps in its Uniswap pool. Senior also earns base yield on its deposits. Nothing is paid from token emissions.</p></div>
       <div class="qa"><h3>When does the desk open?</h3><p id="faqOpen">The beta is live for a first group of traders; <a href="/reserve">reserve a seat</a>. Public open follows. Season zero points start with the beta. The Court opens after the desk. <a href="https://x.com/thronedefi">@thronedefi</a> is the only place anything is announced.</p></div>
     </div>
@@ -421,7 +421,7 @@ footer a:hover{color:var(--fg)}
       $('lFees').textContent = 'fees earned by the desk'; $('sFees').textContent = fmtUsd(totFees, totFees<1000?2:0); $('sFeesSub').textContent = 'since open · accruing to the Court';
       var users = t ? +t.activeUser : 0;
       if(users >= MIN_TRADERS){ $('lUsers').textContent = 'traders · today'; $('sUsers').textContent = users; $('sUsersSub').textContent = 'wallets that traded today'; }
-      else { $('lUsers').textContent = 'season zero'; $('sUsers').textContent = 'live'; $('sUsersSub').textContent = '1 point per $10 traded'; }
+      else { $('lUsers').textContent = 'season zero'; $('sUsers').textContent = 'live'; $('sUsersSub').textContent = '1 pt per $10 · 2x for beta wallets'; }
       if(!post.length){ $('ledgerBody').innerHTML = '<div class="empty"><b>Open.</b> The first row lands once the venue closes today\'s UTC day.</div>'; return; }
       var h = '<table class="tbl"><thead><tr><th>day (utc)</th><th class="num">desk volume</th><th class="num">traders</th><th class="num">fees earned</th><th class="num">status</th></tr></thead><tbody>';
       post.forEach(function(r){

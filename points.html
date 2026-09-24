@@ -169,6 +169,7 @@
     <div class="kicker"><span class="live">●</span> season zero · sep 25 - dec 2, 2026</div>
     <h1>court points <span class="accent">· season zero</span></h1>
     <p class="sub">trade the desk, earn court points. <b>1 point per $10 of volume.</b> points set your priority tier when the court opens. higher tier, earlier window, first pick. points confer priority only.</p>
+    <p class="sub"><b>beta multiplier:</b> wallets that were on the beta list before it closed and got in (drawn or holder) earn <b>2x points</b> on every fill during the beta period, until the desk opens to everyone. the wallet list is public at <a href="/beta.json" style="color:var(--gold)">/beta.json</a> so anyone can check the math.</p>
     <p class="sub">when the vault opens, staking earns points too. both feeds merge into one court score.</p>
     <p class="sub">the season zero trading competition is scored oct 2 to dec 2. rules and rewards drop on <a href="https://x.com/thronedefi" target="_blank" rel="noopener" style="color:var(--gold)">@thronedefi</a>.</p>
   </div>
@@ -235,7 +236,7 @@
   </table>
   </div>
 
-  <p class="note">top ranks sit in the provisional court tier (gold). seats are limited. rankings update continuously from on-venue volume. formula: points = perp volume x 0.1. referral bonuses are credited at season settlement. figures are estimates until season close.</p>
+  <p class="note">top ranks sit in the provisional court tier (gold). seats are limited. rankings update continuously from on-venue volume. formula: points = perp volume x 0.1, x2 for beta-list wallets during the beta period. referral bonuses are credited at season settlement. figures are estimates until season close.</p>
 
   <footer>
     <span>throne. · this is a defi experiment, please use at your own risk</span>
@@ -247,6 +248,8 @@
 // ---- live wiring: throne court points ----
 const START='2026-09-25';
 const END='2026-12-02';
+const BETA_MULT=2;            // multiplier for beta-list wallets
+let BETA=new Set(), BETA_END=null; // loaded from /beta.json; BETA_END null = beta still running
 const pieces=['♚','♛','♜','♜','♜','♜','♞','♞','♞','♞','♝','♝','♝','♝'];
 function pieceFor(i){ if(i<pieces.length) return pieces[i]; if(i<32) return '♟'; return ''; }
 function tierFor(i){ return i===0?'king':i===1?'queen':i<6?'rook':i<10?'knight':i<14?'bishop':i<32?'pawn':'unranked'; }
@@ -266,7 +269,7 @@ function render(q){
     const cls=(i<32?'court':'')+(i===31?' court-end':'')+(isMe?' me':'');
     const glyph=pieceFor(i);
     const hooks=idx===0; // first rendered row carries the clone-template hooks
-    return `<tr class="${cls}"><td class="rank"${hooks?' data-hook="row-rank"':''}><span class="piece ${i<32?'gold':''}"${hooks?' data-hook="row-piece"':''}>${glyph}</span>${String(i+1).padStart(2,'0')}</td><td class="addr"${hooks?' data-hook="row-address"':''}>${r.a}</td><td class="vol vol-col"${hooks?' data-hook="row-volume"':''}>${fmt(r.v)}</td><td class="pts ${i<32?'gold':''}"${hooks?' data-hook="row-points"':''}>${Math.round(r.p).toLocaleString()}</td></tr>`;
+    return `<tr class="${cls}"><td class="rank"${hooks?' data-hook="row-rank"':''}><span class="piece ${i<32?'gold':''}"${hooks?' data-hook="row-piece"':''}>${glyph}</span>${String(i+1).padStart(2,'0')}</td><td class="addr"${hooks?' data-hook="row-address"':''}>${r.a}${r.beta?' <span title="beta wallet · 2x" style="color:var(--gold);font-size:10px">2x</span>':''}</td><td class="vol vol-col"${hooks?' data-hook="row-volume"':''}>${fmt(r.v)}</td><td class="pts ${i<32?'gold':''}"${hooks?' data-hook="row-points"':''}>${Math.round(r.p).toLocaleString()}</td></tr>`;
   }).join('');
 }
 
@@ -303,6 +306,7 @@ document.getElementById('q').addEventListener('input',e=>{
 });
 
 async function load(){
+  try{ const b=await fetch('/beta.json?v='+Date.now()).then(x=>x.json()); (b.wallets||[]).forEach(w=>BETA.add(String(w).toLowerCase())); BETA_END=b.beta_end||null; }catch(e){}
   const today=new Date().toISOString().slice(0,10);
   const end=today<END?today:END;
   let rows=[], page=1;
@@ -314,13 +318,19 @@ async function load(){
       if(batch.length<200) break; page++;
     }
   }catch(e){ document.getElementById('rows').innerHTML='<tr><td colspan="4" class="loading">could not reach the court. refresh to retry.</td></tr>'; return; }
-  const agg={};
-  rows.forEach(r=>{ if(!r.address) return; agg[r.address]=(agg[r.address]||0)+(r.perp_volume||0); });
-  LIST=Object.entries(agg).map(([full,v])=>({full, a:short(full), v, p:v*0.1})).sort((x,y)=>y.v-x.v);
-  const totV=LIST.reduce((s,r)=>s+r.v,0);
+  const agg={}, pts={};
+  rows.forEach(r=>{
+    if(!r.address) return; const v=r.perp_volume||0; const a=r.address.toLowerCase();
+    const day=(r.date||r.day||r.timestamp||'').toString().slice(0,10);
+    const inBeta=BETA.has(a) && (!BETA_END || !day || day<=BETA_END);
+    agg[r.address]=(agg[r.address]||0)+v;
+    pts[r.address]=(pts[r.address]||0)+v*0.1*(inBeta?BETA_MULT:1);
+  });
+  LIST=Object.entries(agg).map(([full,v])=>({full, a:short(full), v, p:pts[full]||v*0.1, beta:BETA.has(full.toLowerCase())})).sort((x,y)=>y.p-x.p);
+  const totV=LIST.reduce((s,r)=>s+r.v,0), totP=LIST.reduce((s,r)=>s+r.p,0);
   document.querySelector('[data-hook="stat-traders"]').textContent=LIST.length.toLocaleString();
   document.querySelector('[data-hook="stat-volume"]').textContent=fmt(totV);
-  document.querySelector('[data-hook="stat-points"]').textContent=Math.round(totV*0.1).toLocaleString();
+  document.querySelector('[data-hook="stat-points"]').textContent=Math.round(totP).toLocaleString();
   fillPodium();
   render(''); updateYou('');
 }
