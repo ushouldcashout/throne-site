@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Reserve a seat · throne.</title>
-<meta name="description" content="The desk beta is live. 500 seats for early traders, drawn from the list. Every $THRONE holder is in automatically. Wallet address only.">
+<meta name="description" content="The desk beta is live. Put a wallet on the list and get in. Every $THRONE holder is in automatically. Wallet address only, nothing to connect.">
 <meta property="og:title" content="Reserve a seat · throne.">
-<meta property="og:description" content="The desk beta is live. 500 seats for early traders, drawn from the list. Every $THRONE holder is in automatically. Wallet address only.">
+<meta property="og:description" content="The desk beta is live. Put a wallet on the list and get in. Every $THRONE holder is in automatically. Wallet address only, nothing to connect.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://throne.network/og-reserve.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -85,14 +85,14 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 </div></nav>
 
 <main class="page">
-  <div class="status"><span><i></i>desk beta · live</span><span>list closes in <b id="closes">—</b></span></div>
-  <div class="status" style="margin-top:8px"><span><b>500</b> seats in the draw</span></div>
+  <div class="status"><span><i></i>desk beta · live</span><span id="phase">doors open in <b id="closes">—</b></span></div>
+  <div class="status" style="margin-top:8px"><span>new wallets added <b>every monday</b></span></div>
 
   <h1>Put a wallet on the list.</h1>
 
   <div class="intro">
-    <p>We're letting 500 traders onto the desk before everyone else. Paste the address of the wallet you'll trade with.</p>
-    <p>If that wallet is holding <b>$THRONE</b> when we run the draw, you're in regardless. Put it on the list anyway so we can match it and credit your code. Early access beta traders earn <b>2x season zero points</b> on every trade for the whole beta period, before public access.</p>
+    <p>The desk opens to the list Friday, September 25 at 7pm EST. Paste the address of the wallet you'll trade with.</p>
+    <p>If that wallet is holding <b>$THRONE</b>, you're in regardless. Put it on the list anyway so we can match it and credit your code. Early access beta traders earn <b>2x season zero points</b> on every trade for the whole beta period, before public access.</p>
   </div>
 
   <form id="form" onsubmit="return false">
@@ -114,28 +114,30 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
       <div class="t0">throne. · desk beta · seat reserved</div>
       <div class="t1" id="pos"></div>
       <div class="t2" id="tWallet"></div>
-      <div class="t3"><span id="tTime"></span><span>draw date on @thronedefi</span></div>
+      <div class="t3"><span id="tTime"></span><span id="tNext">doors open fri sep 25 · 7pm est</span></div>
     </div>
     <a class="btn solid" id="share" target="_blank" rel="noreferrer" style="display:flex">Post it on X</a>
-    <p class="after">One more thing: hold $THRONE in this wallet when the draw runs and you don't need the draw. <a href="https://dexscreener.com/robinhood/0x4c5daa1d7be101298eb5302c085a752ab9078da226621d78c63a9a8e518d3702">Chart</a> · <a href="/#fees">How the desk pays the Court</a></p>
+    <p class="after">One more thing: hold $THRONE in this wallet and you don't need the list. <a href="https://dexscreener.com/robinhood/0x4c5daa1d7be101298eb5302c085a752ab9078da226621d78c63a9a8e518d3702">Chart</a> · <a href="/#fees">How the desk pays the Court</a></p>
   </div>
 
   <div class="closed" id="closedBox">
-    <b style="color:var(--fg)">The list is closed.</b> The desk is opening to the draw and to holders. The hash of the final list and the block that decided it are posted on <a href="https://x.com/thronedefi">@thronedefi</a>. If you hold $THRONE, you're in.
+    <b style="color:var(--fg)">The list is paused.</b> If you hold $THRONE, you're in. Otherwise check <a href="https://x.com/thronedefi">@thronedefi</a> for the next batch.
   </div>
 
   <div class="how">
-    <h2>How the draw works</h2>
-    <p>The list closes Friday, September 25 at 7pm EST. We freeze it and post its hash. Then we name a Robinhood Chain block that hasn't been mined yet. When it lands, its hash seeds the draw and picks 500 wallets. Anyone with the list and the block can recompute the same 500. We can't tilt it and neither can you.</p>
-    <p>Before the draw we drop duplicates and any wallet with zero history on Robinhood Chain. One wallet, one entry. Farming the form with fresh addresses is prohibited and will get you removed.</p>
+    <h2>How the list works</h2>
+    <p>Friday, September 25 at 7pm EST, every wallet on the list gets access to the desk, along with every wallet holding $THRONE. We post the hash of the list at that moment so anyone can check it wasn't edited afterwards.</p>
+    <p>The list stays open. Wallets added after Friday are let in each Monday, in batches, until the desk opens to everyone. Your 2x points start the day your wallet is let in.</p>
+    <p>We drop duplicates and any wallet with zero history on Robinhood Chain. One wallet, one entry. Farming the form with fresh addresses is prohibited and will get you removed.</p>
   </div>
 
   <div class="stub">
-    <span>seats</span><span class="g">500 drawn + every holder</span>
+    <span>access</span><span class="g">every listed wallet + every holder</span>
     <span>entry</span><span>one wallet address</span>
     <span>cost</span><span>nothing</span>
     <span>points</span><span class="g">season zero · 2x for beta wallets</span>
-    <span>closes</span><span>fri sep 25 · 7pm est</span>
+    <span>doors open</span><span>fri sep 25 · 7pm est</span>
+    <span>after that</span><span>new wallets every monday</span>
   </div>
 </main>
 
@@ -147,12 +149,22 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   var $ = function(id){ return document.getElementById(id); };
   var ADDR = /^0x[0-9a-fA-F]{40}$/;
 
-  var CLOSES = Date.parse('2026-09-25T23:00:00Z'); // fri sep 25, 7pm est
+  var OPENS = Date.parse('2026-09-25T23:00:00Z'); // fri sep 25, 7pm est: doors open to the list
+  function nextMonday(){ // next monday 7pm est (23:00Z) after now
+    var t = new Date(); t.setUTCHours(23,0,0,0);
+    var day = t.getUTCDay(); var add = (8 - day) % 7; if(add===0 && t.getTime()<=Date.now()) add = 7;
+    t.setUTCDate(t.getUTCDate()+add); return t;
+  }
+  function fmt(ms){ var d=Math.floor(ms/864e5), h=Math.floor(ms%864e5/36e5), m=Math.floor(ms%36e5/6e4); return (d>0?d+'d ':'')+h+'h '+m+'m'; }
   function tick(){
-    var ms = CLOSES - Date.now();
-    if(ms <= 0){ $('closes').textContent='closed'; $('form').style.display='none'; $('closedBox').style.display='block'; return; }
-    var d=Math.floor(ms/864e5), h=Math.floor(ms%864e5/36e5), m=Math.floor(ms%36e5/6e4);
-    $('closes').textContent = (d>0?d+'d ':'')+h+'h '+m+'m';
+    var ms = OPENS - Date.now();
+    if(ms > 0){ $('closes').textContent = fmt(ms); return; }
+    var nm = nextMonday();
+    $('phase').innerHTML = 'desk open · next batch in <b id="closes"></b>';
+    $('closes').textContent = fmt(nm - Date.now());
+    var dt = nm.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}).toLowerCase();
+    $('tNext').textContent = 'next batch: '+dt+' · 7pm est';
+    $('submit').textContent = 'Add me to the next batch';
   }
   tick(); setInterval(tick, 20000);
   function refresh(){
@@ -170,21 +182,21 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     $('err').textContent = '';
     if(!ADDR.test(w)){ $('err').textContent = 'That is not a valid EVM address.'; return; }
     if(c && !/^[A-Za-z0-9_-]{2,24}$/.test(c)){ $('err').textContent = 'Referral codes are letters and numbers only.'; return; }
-    var b = $('submit'); b.disabled = true; b.textContent = 'Reserving…';
+    var b = $('submit'); var LABEL = b.textContent; b.disabled = true; b.textContent = 'Reserving…';
     fetch(API, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ wallet: w, code: c }) })
       .then(function(r){ return r.json().then(function(j){ return {s:r.status, j:j}; }); })
       .then(function(x){
         if(x.s === 410){ $('form').style.display='none'; $('closedBox').style.display='block'; return; }
-        if(!x.j.ok){ $('err').textContent = x.j.error || 'Something went wrong.'; b.disabled=false; b.textContent='Reserve my seat'; return; }
+        if(!x.j.ok){ $('err').textContent = x.j.error || 'Something went wrong.'; b.disabled=false; b.textContent=LABEL; return; }
         $('form').style.display = 'none'; $('done').style.display = 'block';
         $('pos').textContent = x.j.already ? 'This wallet is already on the list.' : 'Wallet #'+x.j.position+' on the list.';
         $('tWallet').textContent = w;
         $('tTime').textContent = new Date().toISOString().slice(0,16).replace('T',' ')+' utc';
-        var text = 'Seat reserved for the throne. desk beta. Stocks and crypto perps on Robinhood Chain, fees paid to the seats.\n\nWallet only, provable draw.\n\nhttps://throne.network/reserve'+(c?'?ref='+encodeURIComponent(c.toUpperCase()):'');
+        var text = 'Seat reserved for the throne. desk beta. Stocks and crypto perps on Robinhood Chain, fees paid to the seats.\n\nWallet only, no connect.\n\nhttps://throne.network/reserve'+(c?'?ref='+encodeURIComponent(c.toUpperCase()):'');
         $('share').href = 'https://x.com/intent/post?text='+encodeURIComponent(text);
         refresh();
       })
-      .catch(function(){ $('err').textContent = 'Network error. Try again.'; b.disabled=false; b.textContent='Reserve my seat'; });
+      .catch(function(){ $('err').textContent = 'Network error. Try again.'; b.disabled=false; b.textContent=LABEL; });
   });
 })();
 </script>
