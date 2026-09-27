@@ -385,6 +385,14 @@ footer a:hover{color:var(--fg)}
   var fmtPx = function(p){ if(p==null) return '—'; p=+p; var d = p>=1000?1 : p>=100?2 : p>=1?3 : p>=0.01?4 : 6; return p.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d}); };
   var ymd = function(d){ return d.toISOString().slice(0,10); };
   var live = Date.now() >= LAUNCH;
+  var QUIET = true; // true: hide volume/fees/ledger/mcap on the homepage; static cells only. flip to false when the numbers are worth showing.
+  function setQuiet(){
+    $('lVol').textContent='desk'; $('sVol').textContent='open'; $('sVolSub').textContent='stocks and crypto · 24/7 · robinhood chain';
+    $('lFees').textContent='who gets in'; $('sFees').textContent='list'; $('sFeesSub').textContent='every listed wallet + every $THRONE holder · new wallets every monday';
+    $('lUsers').textContent='season zero'; $('sUsers').textContent='live'; $('sUsersSub').textContent='1 pt per $10 · 2x for beta wallets';
+    var mc=$('sMcap').parentNode; mc.innerHTML='<div class="lbl">the competition</div><div class="v num gold">oct 2</div><div class="s">two sides · details this week</div>';
+    var led=document.getElementById('ledger'); if(led){ led.style.display='none'; var hr=led.previousElementSibling; if(hr && hr.tagName==='HR') hr.style.display='none'; }
+  }
 
   // ---- countdown / open line ----
   function openLine(){
@@ -406,6 +414,7 @@ footer a:hover{color:var(--fg)}
     $('ledgerNote').textContent = 'source: venue builder statistics, public endpoint, refreshed on load.';
   }
   function loadStats(){
+    if(QUIET){ setQuiet(); $('statusText').textContent = 'live · '+new Date().toUTCString().slice(17,22)+' utc'; return; }
     fetch(STATS).then(function(r){return r.json();}).then(function(rows){
       $('statusText').textContent = 'live · '+new Date().toUTCString().slice(17,22)+' utc';
       if(!live){ setPre(); return; }
@@ -438,7 +447,7 @@ footer a:hover{color:var(--fg)}
   // ---- token ----
   fetch(DEX).then(function(r){return r.json();}).then(function(j){
     var p = (j.pairs||[]).sort(function(a,b){ return (b.liquidity&&b.liquidity.usd||0)-(a.liquidity&&a.liquidity.usd||0); })[0];
-    if(!p) return;
+    if(!p || QUIET || !$('sMcap')) return;
     $('sMcap').textContent = fmtBig(p.marketCap || p.fdv);
     $('sPrice').textContent = '$'+(+p.priceUsd).toPrecision(4)+' per token';
   }).catch(function(){});
