@@ -286,7 +286,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
         <div class="line"><span class="d">next piece</span><span id="seatNextPiece" style="display:flex;align-items:center;gap:8px">—</span></div>
         <div class="line"><span class="lnk" id="switchBtn">Switch side</span><span class="mono" style="font-size:12px;color:var(--faint)" id="switchNote">once per season</span></div>
         <div class="steps hidden" id="seatSteps" style="padding:4px 24px 10px">
-          <div class="st"><b>01</b><span><a href="https://trade.throne.network">Trade the desk</a>. Every taker fill scores for you and your side. 1 point per $10.</span></div>
+          <div class="st"><b>01</b><span><a href="https://trade.throne.network">Trade the desk</a>. Every trade scores for you and your side. 1 point per $10.</span></div>
           <div class="st"><b>02</b><span>Watch this panel. Rank, points this week, and the gap to the next piece update every 10 minutes.</span></div>
           <div class="st"><b>03</b><span>Sunday 7pm EST the week closes and the King Drop lands. Results post here and on <a href="https://x.com/thronedefi">@thronedefi</a>.</span></div>
           <div class="st"><b>04</b><span>Hold 100k $THRONE through the week for 1.25x points, 500k for 1.5x.</span></div>
@@ -441,7 +441,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
         <div class="tr" id="tR"><img id="tEm" src="/arena/emblem-black-128.svg" width="72" height="72" alt=""></div>
       </div>
       <div class="steps">
-        <div class="st"><b>01</b><span><a href="https://trade.throne.network">Trade the desk</a>. Every taker fill scores for you and <span class="dSide">your side</span>. 1 point per $10.</span></div>
+        <div class="st"><b>01</b><span><a href="https://trade.throne.network">Trade the desk</a>. Every trade scores for you and <span class="dSide">your side</span>. 1 point per $10.</span></div>
         <div class="st"><b>02</b><span>Watch the board. Your seat shows your rank, your points this week, and how far you are from the next piece.</span></div>
         <div class="st"><b>03</b><span>Sunday 7pm EST the week closes and the King Drop lands. Results post here and on <a href="https://x.com/thronedefi">@thronedefi</a>.</span></div>
         <div class="st"><b>04</b><span>Hold 100k $THRONE through the week for 1.25x points, 500k for 1.5x.</span></div>
@@ -711,7 +711,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     $('seatMult').innerHTML = mtxt;
     // streak
     var st = me ? (me.streak||0) : 0;
-    $('seatStreak').innerHTML = st ? '<b>'+st+' day'+(st>1?'s':'')+'</b> <span class="mono" style="font-size:12px;color:'+(me.activeToday?'var(--dim)':'var(--gold)')+'">· '+(me.activeToday?'scored today':'trade today to keep it')+'</span>' : '<span class="mono" style="font-size:12px;color:var(--dim)">no streak · one fill starts it</span>';
+    $('seatStreak').innerHTML = st ? '<b>'+st+' day'+(st>1?'s':'')+'</b> <span class="mono" style="font-size:12px;color:'+(me.activeToday?'var(--dim)':'var(--gold)')+'">· '+(me.activeToday?'scored today':'trade today to keep it')+'</span>' : '<span class="mono" style="font-size:12px;color:var(--dim)">no streak · one trade starts it</span>';
     // under attack
     var atk = me && me.attacked;
     if(atk && piece){ $('seatAtk').classList.remove('hidden'); $('seatAtk').innerHTML = 'your '+piece+' is under attack. <b>'+short(atk.addr)+'</b> (#'+atk.rank+') is out-scoring you this week with '+fmt(atk.weekPts)+' pts, '+fmt(atk.gapPts)+' pts behind you for the season.'; }
@@ -811,7 +811,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     if(atk){ ctx.fillStyle='#FF6B57'; ctx.fillText('under attack · '+short(me.attacked.addr)+' is coming for my '+piece, 64, 472); }
     else if(isKing){ ctx.fillStyle=gold; ctx.fillText('holding the crown for '+cap(side), 64, 472); }
     else if(me.gap && me.gap.usd){ ctx.fillStyle=mint; ctx.fillText('$'+fmt(me.gap.usd)+' of volume from the '+me.gap.piece, 64, 472); }
-    else { ctx.fillStyle=dim; ctx.fillText('every fill on the desk scores for '+cap(side), 64, 472); }
+    else { ctx.fillStyle=dim; ctx.fillText('every trade on the desk scores for '+cap(side), 64, 472); }
     // lead bar
     var shW = board.share ? board.share.white : 0.5; var bx=64, by=538, bw=W-128, bh=8;
     ctx.fillStyle='#F2F4F0'; rr(ctx,bx,by,bw*shW,bh,4); ctx.fill(); ctx.fillStyle=mint; rr(ctx,bx+bw*shW,by,bw*(1-shW),bh,4); ctx.fill();
@@ -822,9 +822,9 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
   function cardText(){
     var me = board&&board.wallets[wallet]||{}; var side=mine?mine.side:''; var piece=me.piece, rank=me.rank;
     var t;
-    if(me.attacked) t = "Someone is coming for my "+piece+" on "+cap(side)+". Not today.\n\nKing Drop on the throne. desk: stocks and crypto perps, every fill scores for your side.";
-    else if(rank===1) t = "Holding the crown for "+cap(side)+" on King Drop. Come take it.\n\nthrone. desk: stocks and crypto perps, every fill scores for your side.";
-    else if(piece) t = cap(side)+" "+piece+", rank #"+rank+" on King Drop. "+fmt(me.season||0)+" season points and counting.\n\nthrone. desk: stocks and crypto perps, every fill scores for your side.";
+    if(me.attacked) t = "Someone is coming for my "+piece+" on "+cap(side)+". Not today.\n\nKing Drop on the throne. desk: stocks and crypto perps, every trade scores for your side.";
+    else if(rank===1) t = "Holding the crown for "+cap(side)+" on King Drop. Come take it.\n\nthrone. desk: stocks and crypto perps, every trade scores for your side.";
+    else if(piece) t = cap(side)+" "+piece+", rank #"+rank+" on King Drop. "+fmt(me.season||0)+" season points and counting.\n\nthrone. desk: stocks and crypto perps, every trade scores for your side.";
     else t = "I'm on "+cap(side)+" for season zero of King Drop on the throne. desk. Stocks and crypto perps, every trade scores for my side.";
     return t+"\n\nthrone.network/board";
   }
