@@ -176,6 +176,25 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
 .gap a{color:var(--mint);text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(57,241,148,.35)}
 .pot.power{border-color:var(--gold);background:rgba(212,175,55,.08)}.pot.power b{color:var(--gold)}
 .ph{font-family:var(--mono);font-size:11px;color:var(--gold);border:1px solid rgba(212,175,55,.5);border-radius:2px;padding:2px 6px;margin-left:8px}
+/* seat stats v2 */
+.kv3{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line)}
+.kv3>div{padding:16px 24px;display:flex;flex-direction:column;gap:4px;border-right:1px solid var(--line)}
+.kv3>div:last-child{border-right:0}
+.kv3 .l{font-family:var(--mono);font-size:11px;color:var(--dim)}.kv3 .v{font-size:28px;font-weight:600;letter-spacing:-.02em}.kv3 .s{font-family:var(--mono);font-size:11px;color:var(--faint)}
+@media (max-width:720px){.kv3{grid-template-columns:1fr 1fr}.kv3>div:nth-child(2){border-right:0}.kv3>div:last-child{grid-column:1/-1;border-top:1px solid var(--line)}}
+.holdbox{margin:12px 24px 0;padding:12px 14px;border:1px dashed rgba(57,241,148,.35);border-radius:3px;font-family:var(--mono);font-size:12px;color:var(--dim);line-height:1.6}
+.holdbox b{color:var(--mint);font-weight:500}
+.soon{font-family:var(--mono);font-size:11px;color:var(--faint);border:1px solid var(--line2);border-radius:2px;padding:1px 6px;margin-left:6px}
+/* leaderboard */
+.lb{display:flex;flex-direction:column}
+.lb .r{display:grid;grid-template-columns:36px 28px minmax(0,1fr) 90px 100px 110px 56px;gap:10px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:12.5px}
+.lb .r:last-child{border-bottom:0}
+.lb .r.h{color:var(--dim);font-size:11px;text-transform:lowercase}
+.lb .r .n{text-align:right}
+.lb .r.me{background:rgba(57,241,148,.10);border-left:3px solid var(--mint);color:var(--mint);font-weight:600;font-size:14px}
+.lb .r img{width:18px;height:18px;display:block}
+.lb .r .ell{color:var(--faint);grid-column:1/-1;text-align:center;padding:4px 0}
+@media (max-width:720px){.lb .r{grid-template-columns:30px 22px minmax(0,1fr) 80px 56px}.lb .r .hide-m{display:none}}
 /* seat on top */
 #seatWrap{margin-top:18px}
 #seat .card.strip{flex-direction:row;align-items:center;gap:20px;padding:18px 24px}
@@ -276,7 +295,12 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
           </div>
           <img id="seatEm" src="/arena/emblem-black-128.svg" width="32" height="32" alt="">
         </div>
-        <div class="kv"><div><span class="l">this week</span><span class="v" id="seatWeek">0</span></div><div><span class="l">this season</span><span class="v" id="seatSeason">0</span></div></div>
+        <div class="kv3" style="grid-column:1/-1">
+          <div><span class="l">points</span><span class="v" id="seatSeason">0</span><span class="s"><span id="seatWeek">0</span> this week</span></div>
+          <div><span class="l">dollars traded</span><span class="v" id="seatVol">$0</span><span class="s"><span id="seatVolWeek">$0</span> this week</span></div>
+          <div><span class="l" id="seatEstL">est. this week's drop for your seat</span><span class="v" id="seatEst" style="color:var(--gold)">—</span><span class="s" id="seatEstS">posts when the token switch is on</span></div>
+        </div>
+        <div class="holdbox" id="seatHold" style="grid-column:1/-1">—</div>
         <div class="sharebox"><span class="mono" style="font-size:11px;color:var(--dim)">share card</span><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn line" id="cardBtn" style="width:auto;padding:9px 14px;font-size:13px">Preview my card</button><button class="btn" id="cardPost" style="width:auto;padding:9px 14px;font-size:13px">Post on X</button></div></div>
         <div class="gap hidden" id="seatGapBox"><b id="seatGapText"></b><span id="seatGapSub"></span></div>
         <div class="atkline hidden" id="seatAtk"></div>
@@ -346,7 +370,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
   </div>
   <div class="bar" id="shareBar">
     <div class="track"><div class="w" id="shareW" style="width:50%"></div><div class="b"></div></div>
-    <div class="lbl"><span id="shareWl">white —</span><span>share of points this week</span><span id="shareBl">black —</span></div>
+    <div class="lbl"><span id="shareWl">white —</span><span id="shareMid">share of points this week</span><span id="shareBl">black —</span></div>
   </div>
 
   <div class="grid">
@@ -370,8 +394,9 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     </div>
 
     <div class="sec full">
-      <div class="sech"><b>Pieces</b><span><span class="lnk" id="piecesToggle">show full ranks</span></span></div>
-      <div class="pieces hidden" id="piecesWrap">
+      <div class="sech"><b>Leaderboard</b><span>top 20 by season points · <span class="lnk" id="piecesToggle">show pieces by side</span></span></div>
+      <div class="card lb" id="lb"></div>
+      <div class="pieces hidden" id="piecesWrap" style="margin-top:14px">
         <div class="card"><div class="ph"><span>white</span><span>pts</span></div><div id="wPieces"></div></div>
         <div class="card"><div class="ph"><span>black</span><span>pts</span></div><div id="bPieces"></div></div>
       </div>
@@ -456,6 +481,18 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
 <script>
 (function(){
   var API = '/api/arena';
+  var TOKEN_PRICE = null; // usd per $THRONE, from dexscreener; null until loaded
+  fetch('https://api.dexscreener.com/latest/dex/tokens/0x72dc556fff14115c077a540921e5F35499a4DCa7').then(function(r){return r.json();}).then(function(j){ var p=(j.pairs||[]).sort(function(a,b){return (b.liquidity&&b.liquidity.usd||0)-(a.liquidity&&a.liquidity.usd||0);})[0]; if(p&&p.priceUsd){ TOKEN_PRICE=+p.priceUsd; if(board) renderSeat(); } }).catch(function(){});
+  // payout estimate: 80% of the pot to the side that is ahead, split by this week's points; 10% to the trailing king (7) and queen (3). estimate only.
+  function estimateDrop(me, side){
+    var potQ = parseInt(new URLSearchParams(location.search).get('pot')||'',10); var pot = (board && board.pot) || (potQ>0 ? potQ : null);
+    if(!pot || !me) return null;
+    var mine = board.sides[side], other = board.sides[side==='white'?'black':'white'];
+    if(mine.pts > other.pts && mine.pts > 0) return pot*0.8*(me.week/mine.pts);
+    if(mine.pts <= other.pts && me.rank===1) return pot*0.10*0.7;
+    if(mine.pts <= other.pts && me.rank===2) return pot*0.10*0.3;
+    return 0;
+  }
   var $ = function(id){ return document.getElementById(id); };
   var PIECES = ['king','queen','rook','rook','bishop','bishop','knight','knight','pawn','pawn','pawn','pawn','pawn','pawn','pawn','pawn'];
   var fmt = function(n){ return (Math.round(n||0)).toLocaleString('en-US'); };
@@ -529,18 +566,21 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     var last = rs[rs.length-1];
     $('lastWeekLine').innerHTML = last ? 'week '+last.week+' · '+last.winner+(last.winner==='draw'?'':' won')+' · '+fmt(last.white)+' to '+fmt(last.black)+' · hash <a href="#results">'+last.hash.slice(0,4)+'…'+last.hash.slice(-4)+'</a>' : (season&&season.state==='pre' ? 'week 1 opens fri oct 9 · 7pm est · closes sun oct 11' : 'no weeks closed yet');
   }
+  function seasonTotals(){ var t={white:0,black:0,wc:0,bc:0}; Object.keys(board.wallets||{}).forEach(function(a){ var w=board.wallets[a]; if(w.season>0){ t[w.side]+=w.season; t[w.side==='white'?'wc':'bc']++; } }); return t; }
   function renderHero(){
     var W=board.sides.white, B=board.sides.black;
-    $('wPts').textContent=fmt(W.pts); $('bPts').textContent=fmt(B.pts);
-    $('wCount').textContent=fmt(W.wallets)+' traders'; $('bCount').textContent=fmt(B.wallets)+' traders';
+    var pre = board.state==='pre';
+    if(board.week===0 && !pre){ document.querySelectorAll('.hero .pts .l').forEach(function(x){ x.textContent='points · pre-season'; }); }
+    if(pre){ var st0=seasonTotals(); $('wPts').textContent=fmt(Math.round(st0.white)); $('bPts').textContent=fmt(Math.round(st0.black)); $('wCount').textContent=fmt(st0.wc)+' traders'; $('bCount').textContent=fmt(st0.bc)+' traders'; document.querySelectorAll('.hero .pts .l').forEach(function(x){ x.textContent='season points · week 1 opens oct 9'; }); }
+    else { $('wPts').textContent=fmt(W.pts); $('bPts').textContent=fmt(B.pts); $('wCount').textContent=fmt(W.wallets)+' traders'; $('bCount').textContent=fmt(B.wallets)+' traders'; if(board.week!==0) document.querySelectorAll('.hero .pts .l').forEach(function(x){ x.textContent='points this week'; }); }
     $('wKing').textContent = W.king?short(W.king.addr):'—'; $('wKingPts').textContent = W.king?fmt(W.king.season)+' pts':'—';
     $('bKing').textContent = B.king?short(B.king.addr):'—'; $('bKingPts').textContent = B.king?fmt(B.king.season)+' pts':'—';
     $('wThreat').classList.toggle('hidden', !(board.threat&&board.threat.white)); $('bThreat').classList.toggle('hidden', !(board.threat&&board.threat.black));
     var st=board.streak||{};
     $('wTag').classList.add('hidden'); $('bTag').classList.add('hidden');
     if(st.count>=2){ var win=st.side, lose=win==='white'?'black':'white'; $(win==='white'?'wTag':'bTag').textContent='won '+st.count+' straight'; $(win==='white'?'wTag':'bTag').classList.remove('hidden'); $(lose==='white'?'wTag':'bTag').textContent='revenge week'; $(lose==='white'?'wTag':'bTag').classList.remove('hidden'); }
-    var sw = board.share ? board.share.white : .5;
-    $('shareW').style.width=(sw*100).toFixed(1)+'%'; $('shareWl').textContent='white '+(sw*100).toFixed(1)+'%'; $('shareBl').textContent='black '+((1-sw)*100).toFixed(1)+'%';
+    var sw = board.share ? board.share.white : .5; if(pre){ var st1=seasonTotals(); var tt=st1.white+st1.black; sw = tt? st1.white/tt : .5; }
+    $('shareW').style.width=(sw*100).toFixed(1)+'%'; if($('shareMid')) $('shareMid').textContent = pre ? 'share of season points' : (board.week===0 ? 'share of pre-season points' : 'share of points this week'); $('shareWl').textContent='white '+(sw*100).toFixed(1)+'%'; $('shareBl').textContent='black '+((1-sw)*100).toFixed(1)+'%';
     // sunday drop hero: first 24h after the latest close
     var last=(board.results||[])[board.results.length-1];
     var show = last && (Date.now()-last.closes) < 864e5 && last.winner!=='draw';
@@ -554,7 +594,12 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     var when = closes ? closes.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}).toLowerCase()+' · 7pm est' : 'sunday 7pm est';
     var ph = board && board.powerHour; var pot = $('pot');
     var potQ = parseInt(new URLSearchParams(location.search).get('pot')||'',10); var potV = (board && board.pot) || (potQ>0 ? potQ : null);
-    if(potV && !(ph && ph.active)){ pot.classList.remove('power'); $('potText').innerHTML = '<span style="font-family:var(--sans);font-size:clamp(24px,2.8vw,34px);color:var(--mint);font-weight:600;letter-spacing:-.02em">'+fmt(potV)+' $THRONE</span> on the line this week.'; $('potSub').textContent = 'accrues weekly, paid when the token switch is on · week '+(board?board.week:'')+' · closes '+when+(closes?localTime(+closes):'')+(season&&season.rehearsal?' · rehearsal preview':''); return; }
+    if(potV && !(ph && ph.active)){ pot.classList.remove('power');
+      var big='<span style="font-family:var(--sans);font-size:clamp(24px,2.8vw,34px);color:var(--mint);font-weight:600;letter-spacing:-.02em">'+fmt(potV)+' $THRONE</span>';
+      if(board && board.week===0){ $('potText').innerHTML = big+' on the line from week 1. Points you score now count toward your season rank, so early traders keep their edge.'; $('potSub').textContent = 'pre-season · week 1 opens fri oct 9 · 7pm est · closes sun oct 18'+localTime(+board.closes)+' · accrues weekly, paid when the token switch is on'; }
+      else if(season && season.state==='pre'){ $('potText').innerHTML = big+' on the line in week 1. Points you score now count toward your season rank.'; $('potSub').textContent = 'week 1 opens fri oct 9 · 7pm est · closes sun oct 18'+localTime(+season.opens)+' · accrues weekly, paid when the token switch is on'; }
+      else { $('potText').innerHTML = big+' on the line this week.'; $('potSub').textContent = 'accrues weekly, paid when the token switch is on · week '+(board?board.week:'')+' · closes '+when+(closes?localTime(+closes):''); }
+      return; }
     if(ph && ph.active){ pot.classList.add('power'); $('potText').textContent = 'Power hour. Every point counts 1.5x until the close.'; $('potSub').textContent = 'closes in '+fmtMs(ph.closesAt-Date.now())+(season&&season.rehearsal?' · rehearsal':''); return; }
     pot.classList.remove('power');
     if(season && season.rehearsal){ $('potText').textContent = 'Rehearsal. Real wallets, real desk volume, no drop. Season zero opens Oct 9.'; $('potSub').textContent = 'clears before week 1'; return; }
@@ -601,6 +646,20 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
       }
       el.appendChild(sq);
     }
+  }
+  // ---- leaderboard: top 20 across both sides by season points, you highlighted ----
+  function renderLeaderboard(){
+    var el=$('lb'); if(!el||!board) return;
+    var rows=[]; ['white','black'].forEach(function(sd){ (board.pieces[sd]||[]).forEach(function(p){ rows.push(Object.assign({side:sd},p)); }); });
+    Object.keys(board.wallets||{}).forEach(function(a){ var w=board.wallets[a]; if(w.season>0 && !rows.some(function(r){return r.addr===a;})) rows.push({addr:a,side:w.side,piece:w.piece,rank:w.rank,season:w.season,week:w.week,vol:w.vol,mult:w.mult}); });
+    rows.sort(function(a,b){ return b.season-a.season; });
+    if(!rows.length){ el.innerHTML='<div class="empty">no points yet this season.</div>'; return; }
+    var h='<div class="r h"><span>#</span><span></span><span>wallet</span><span class="n">pts</span><span class="n hide-m">$ traded</span><span class="hide-m">piece</span><span class="n">mult</span></div>';
+    var top=rows.slice(0,20), meIdx=rows.findIndex(function(r){return wallet && r.addr===wallet;});
+    var line=function(r,i){ var me=wallet&&r.addr===wallet; return '<div class="r'+(me?' me':'')+'"><span>'+(i+1)+'</span><img src="/arena/emblem-'+r.side+'-128.svg" alt=""><span style="overflow:hidden;text-overflow:ellipsis">'+(me?'you · ':'')+short(r.addr)+'</span><span class="n">'+fmt(r.season)+'</span><span class="n hide-m">$'+fmt(r.vol||0)+'</span><span class="hide-m">'+(r.piece?r.piece+' #'+r.rank:'—')+'</span><span class="n" style="color:'+(r.mult>1?'var(--gold)':'inherit')+'">'+(r.mult||1)+'x</span></div>'; };
+    top.forEach(function(r,i){ h+=line(r,i); });
+    if(meIdx>=20){ h+='<div class="r"><span class="ell">···</span></div>'+line(rows[meIdx],meIdx); }
+    el.innerHTML=h;
   }
   // ---- movers feed ----
   function ago(t){ var m=Math.round((Date.now()-t)/6e4); return m<1?'now':m<60?m+' min ago':Math.round(m/60)+'h ago'; }
@@ -665,12 +724,12 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     $('chartNote').textContent='one candle per day. the line is white points minus black points: above zero white leads, below zero black leads. wicks are the day\'s extremes, the dashed candle is today, still printing.';
   }
   var _rz; window.addEventListener('resize', function(){ clearTimeout(_rz); _rz=setTimeout(function(){ if(board) renderChart(); }, 150); });
-  function render(){ if(!board) return; renderPot(); renderHero(); renderChess(); renderFeed(); renderChart(); renderPieces('white',board.pieces.white); renderPieces('black',board.pieces.black); renderDays(); renderResults(); renderSeat(); }
+  function render(){ if(!board) return; renderPot(); renderHero(); renderChess(); renderFeed(); renderChart(); renderLeaderboard(); renderPieces('white',board.pieces.white); renderPieces('black',board.pieces.black); renderDays(); renderResults(); renderSeat(); }
 
   // ---- wallet / seat ----
   function setNav(){ var b=$('navBtn'); if(wallet){ b.textContent=short(wallet); b.className='pill ghost'; } else { b.textContent='connect'; b.className='pill'; } $('seatAddr').textContent = wallet?short(wallet):''; }
   function renderSeat(){
-    $('seatOff').classList.toggle('hidden', !!wallet);
+    $('seatOff').classList.toggle('hidden', !!wallet); if(board) renderLeaderboard();
     if(!wallet||!mine){ $('seatAssigned').classList.add('hidden'); $('seatOn').classList.add('hidden'); return; }
     var side=mine.side, me = board && board.wallets ? board.wallets[wallet] : null;
     if(mine.source==='default'){
@@ -685,6 +744,19 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     $('seatTitle').textContent = cap(side)+(piece?' · '+piece:'');
     $('seatRank').textContent = rank ? 'rank #'+rank+' on '+side : 'no points yet this season';
     $('seatWeek').textContent = fmt(me?me.week:0); $('seatSeason').textContent = fmt(me?me.season:0);
+    document.querySelectorAll('.kv3 .s').forEach(function(x){ if(x.textContent.indexOf('this week')>-1 || x.textContent.indexOf('pre-season')>-1){ x.innerHTML = x.innerHTML.replace(/(this week|pre-season)/, board.week===0?'pre-season':'this week'); } });
+    $('seatVol').textContent = '$'+fmt(me?me.vol||0:0); $('seatVolWeek').textContent = '$'+fmt(me?me.weekVol||0:0);
+    var est = estimateDrop(me, side);
+    if(est===null){ $('seatEst').textContent='—'; $('seatEstS').textContent='posts when the token switch is on'; }
+    else if(board.week===0){ $('seatEst').textContent = 'from week 1'; $('seatEstS').textContent = 'drops start fri oct 9 · your rank carries over'; }
+    else { var usdv = TOKEN_PRICE ? ' ≈ $'+fmt(Math.round(est*TOKEN_PRICE)) : ''; $('seatEst').textContent = fmt(Math.round(est))+' $THRONE'+usdv; var ahead = board.sides[side].pts > board.sides[side==='white'?'black':'white'].pts; $('seatEstS').textContent = ahead ? 'if the week closed now · your share of the winning side' : (me&&me.rank<=2 ? 'if the week closed now · trailing '+(me.rank===1?'king':'queen')+' share' : 'your side is behind · take the lead to earn from the drop'); }
+    // $THRONE holdings and multiplier verification
+    var hold = me ? (me.hold||0) : 0, HT2=(board.rules&&board.rules.holdTiers)||[{min:500000,mult:1.5},{min:100000,mult:1.25}]; var tiers2=HT2.slice().sort(function(a,b){return a.min-b.min;});
+    var hm = me ? (me.holdMult||1) : 1;
+    var hb = '<b>'+fmt(Math.round(hold))+' $THRONE</b> in this wallet · holder tier <b>'+hm+'x</b> · balance checked every 10 minutes, the week\'s lowest balance sets the tier';
+    if(hold < tiers2[0].min) hb += '<br><span style="color:var(--gold)">Get '+tiers2[0].mult+'x to '+tiers2[tiers2.length-1].mult+'x more points by simply holding $THRONE in this wallet: '+fmt(tiers2[0].min)+' for '+tiers2[0].mult+'x, '+fmt(tiers2[tiers2.length-1].min)+' for '+tiers2[tiers2.length-1].mult+'x.</span>';
+    hb += '<br>LP in the $THRONE pools for up to 1.7x <span class="soon">coming soon</span>';
+    $('seatHold').innerHTML = hb;
     var list = board.pieces[side]||[];
     // gap to next rank / next piece uses the top-16 list when the wallet is in range
     var nextRank = null, nextPiece = null;
@@ -771,7 +843,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
 
 
   // ---- UX bits: ranks toggle, tap hint, local time ----
-  $('piecesToggle').addEventListener('click', function(){ var w=$('piecesWrap'); var open=w.classList.toggle('hidden'); this.textContent = open ? 'show full ranks' : 'hide full ranks'; });
+  $('piecesToggle').addEventListener('click', function(){ var w=$('piecesWrap'); var open=w.classList.toggle('hidden'); this.textContent = open ? 'show pieces by side' : 'hide pieces by side'; });
   if(window.matchMedia && matchMedia('(pointer:coarse)').matches){ $('boardHint').textContent='32 pieces · 32 wallets · tap a piece'; }
   function localTime(ms){ try{ var d=new Date(ms); var tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''; if(/New_York|Toronto|Detroit/.test(tz)) return ''; return ' · your time '+d.toLocaleString(undefined,{weekday:'short',hour:'numeric',minute:'2-digit'}).toLowerCase(); }catch(e){ return ''; } }
 
