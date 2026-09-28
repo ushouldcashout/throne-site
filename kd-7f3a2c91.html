@@ -204,6 +204,20 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
 #seatOn .kv{border-right:1px solid var(--line)}
 .sharebox{display:flex;flex-direction:column;justify-content:center;gap:10px;padding:14px 24px;border-bottom:1px solid var(--line)}
 @media (max-width:720px){#seatOn{grid-template-columns:1fr}#seatOn .kv{border-right:0}}
+/* welcome splash + toast */
+.splash{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;z-index:60;padding:20px}
+.splash.on{display:flex}
+.splash .in{background:var(--panel);border:1px solid rgba(57,241,148,.35);border-radius:4px;padding:28px 28px 22px;max-width:560px;width:100%;display:flex;flex-direction:column;gap:14px}
+.splash h2{margin:0;font-size:clamp(22px,3vw,30px);letter-spacing:-.02em;line-height:1.15}
+.splash h2 b{color:var(--mint);font-weight:600}
+.splash .k{font-family:var(--mono);font-size:12px;color:var(--dim)}
+.splash ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.splash li{display:grid;grid-template-columns:24px 1fr;gap:10px;font-size:14.5px;line-height:1.5}
+.splash li b{font-family:var(--mono);color:var(--mint);font-weight:500}
+.splash .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--panel2);border:1px solid rgba(57,241,148,.4);border-radius:3px;padding:12px 16px;font-family:var(--mono);font-size:12.5px;color:var(--fg);opacity:0;transition:all .25s;z-index:55;pointer-events:none;max-width:92vw}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast b{color:var(--mint);font-weight:500}
 /* card modal */
 .cardm{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
 .cardm.on{display:flex}
@@ -426,7 +440,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     <div>
       <div class="li"><span>01</span><span>Every wallet that trades is in. You're assigned a side; pick one once a season to make it yours.</span></div>
       <div class="li"><span>02</span><span>Trade the desk; taker volume earns points for you and your side. 1 point per $10.</span></div>
-      <div class="li"><span>03</span><span>Weeks close Sunday 7pm EST; the side with more points takes the King Drop. The final hour before the close is power hour: every point counts 1.5x.</span></div>
+      <div class="li"><span>03</span><span>Weeks close Sunday 7pm EST; the side with more points takes the King Drop, split by points. The losing side's king and queen still get paid: 10% of the drop, 7/3 between them. The final hour before the close is power hour: every point counts 1.5x.</span></div>
       <div class="li"><span>04</span><span>Hold $THRONE through the week and your points multiply: 100k for 1.25x, 500k for 1.5x, measured on your lowest balance of the week. Beta list wallets score 2x. Combined cap 2x.</span></div>
       <div class="li"><span>05</span><span>Top 16 on each side hold the pieces. Points set your place in line when the Court opens.</span></div>
       <div class="li"><span>06</span><span>Results are published with a hash so anyone can check them against the venue's public data.</span></div>
@@ -477,6 +491,17 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
   </div>
 </div>
 
+<div class="splash" id="splash"><div class="in">
+  <span class="k">king drop · season zero</span>
+  <h2><b>923,000 $THRONE</b> in King Drop rewards for points, from now to oct 18.</h2>
+  <ul>
+    <li><b>01</b><span>Trade the desk. Every trade scores 1 point per $10 for you and your side, White or Black.</span></li>
+    <li><b>02</b><span>The side with more points takes the drop, split by points. The losing king and queen still get paid.</span></li>
+    <li><b>03</b><span>Hold $THRONE for up to 1.5x points. Top 16 per side hold the pieces.</span></li>
+  </ul>
+  <div class="acts"><button class="btn" id="splashConnect" style="width:auto;padding:11px 20px">Connect and see my seat</button><a class="btn line" href="https://trade.throne.network" style="width:auto;padding:11px 20px;text-decoration:none">Trade the desk</a><button class="btn line" id="splashClose" style="width:auto;padding:11px 16px">Just look</button></div>
+</div></div>
+<div class="toast" id="toast"></div>
 <div class="cardm" id="cardModal"><div class="in"><canvas id="cardCanvas" width="1200" height="630"></canvas><div class="acts"><button class="btn line" id="cardClose" style="width:auto;padding:9px 14px;font-size:13px">Close</button><a class="btn line" id="cardDl" download="king-drop-card.png" style="width:auto;padding:9px 14px;font-size:13px;text-decoration:none">Download PNG</a><a class="btn" id="cardX" target="_blank" rel="noreferrer" style="width:auto;padding:9px 14px;font-size:13px;text-decoration:none">Post on X</a></div><p class="mono" style="margin:0;font-size:11px;color:var(--faint)">download the card, then attach it to the post. the post text is prefilled.</p></div></div>
 <script>
 (function(){
@@ -908,6 +933,22 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
   $('cardClose').addEventListener('click', function(){ $('cardModal').classList.remove('on'); });
   $('cardModal').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('on'); });
 
+  // ---- welcome splash (once per device per 7 days) and returning-wallet toast ----
+  function seenSplash(){ try{ var t=+localStorage.getItem('kd_splash')||0; return Date.now()-t < 7*864e5; }catch(e){ return false; } }
+  function markSplash(){ try{ localStorage.setItem('kd_splash', String(Date.now())); }catch(e){} }
+  function showSplash(){ $('splash').classList.add('on'); }
+  function hideSplash(){ $('splash').classList.remove('on'); markSplash(); }
+  $('splashClose').addEventListener('click', hideSplash);
+  $('splash').addEventListener('click', function(e){ if(e.target===this) hideSplash(); });
+  $('splashConnect').addEventListener('click', async function(){ hideSplash(); await connect(); });
+  var _toastT; function toast(html){ var t=$('toast'); t.innerHTML=html; t.classList.add('on'); clearTimeout(_toastT); _toastT=setTimeout(function(){ t.classList.remove('on'); }, 6000); }
+  var splashDecided=false;
+  function maybeWelcome(){
+    if(splashDecided) return; splashDecided=true;
+    if(wallet && board && mine){ var me=board.wallets[wallet]; if(me && me.season>0){ toast('welcome back · <b>'+cap(mine.side)+(me.piece?' '+me.piece:'')+'</b> · rank #'+me.rank+' · '+fmt(me.season)+' pts'+(me.attacked?' · <span style="color:#FF6B57">under attack</span>':'')+(me.gap&&me.gap.usd?' · $'+fmt(me.gap.usd)+' to the '+me.gap.piece:'')); markSplash(); return; } }
+    if(!seenSplash()) showSplash();
+  }
+
   // ---- load ----
   async function load(){
     try{ season = await fetch(API+'/season',{cache:'no-store'}).then(function(r){return r.json();}); }catch(e){}
@@ -917,6 +958,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     if(board) render();
     // silent reconnect if the wallet is already authorized
     if(window.ethereum){ try{ var accs = await window.ethereum.request({method:'eth_accounts'}); if(accs&&accs[0]){ wallet=accs[0].toLowerCase(); setNav(); await loadMine(); renderSeat(); } }catch(e){} }
+    maybeWelcome();
   }
   load(); setInterval(load, 600000);
 })();
