@@ -164,6 +164,46 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
 .ticket .tr.w{background:var(--fg)}
 .hidden{display:none !important}
 .empty{padding:22px 14px;font-family:var(--mono);font-size:12px;color:var(--faint)}
+
+/* pot banner */
+.pot{margin-top:28px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:16px 20px;border:1px solid rgba(57,241,148,.35);border-radius:3px;background:var(--panel2)}
+.pot b{color:var(--mint);font-weight:600;font-size:clamp(17px,2vw,22px);letter-spacing:-.01em}
+.pot span{font-family:var(--mono);font-size:12px;color:var(--dim)}
+/* chessboard */
+.boardwrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,360px);gap:24px;align-items:start}
+@media (max-width:900px){.boardwrap{grid-template-columns:1fr}}
+.chess{position:relative;aspect-ratio:1/1;max-width:640px;width:100%;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);border:1px solid var(--line2);border-radius:3px;overflow:hidden;background:var(--panel)}
+.sq{position:relative;display:flex;align-items:center;justify-content:center}
+.sq.l{background:#111513}.sq.d{background:#0A0C0B}
+.sq img{width:72%;height:72%;cursor:pointer;transition:transform .12s}
+.sq img:hover{transform:scale(1.12)}
+.sq.me:after{content:"";position:absolute;inset:3px;border:1px solid var(--mint);border-radius:2px;pointer-events:none}
+.sq .thr{position:absolute;top:4px;right:4px;width:10px;height:10px}
+.hover{position:absolute;z-index:5;pointer-events:none;background:var(--panel2);border:1px solid var(--line2);border-radius:3px;padding:12px 14px;min-width:220px;font-family:var(--mono);font-size:12px;line-height:1.7;box-shadow:0 8px 30px rgba(0,0,0,.5);display:none}
+.hover.on{display:block}
+.hover .h1{font-family:var(--sans);font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px}
+.hover .row{display:flex;justify-content:space-between;gap:16px}.hover .row span:first-child{color:var(--dim)}
+.pos{color:var(--mint)}.neg{color:#FF6B57}
+.feed{display:flex;flex-direction:column}
+.feed .ev{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:11px 14px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:12px;line-height:1.5}
+.feed .ev:last-child{border-bottom:0}
+.feed .ev .t{color:var(--faint);white-space:nowrap}
+.feed .ev.w .side{color:var(--fg)}.feed .ev.b .side{color:var(--mint)}
+.feed .ev.lead{background:rgba(57,241,148,.06)}
+.feed .ev.threat .side{color:var(--gold)}
+/* lead chart */
+.chartbox{padding:16px 16px 10px}
+.chartbox svg{width:100%;height:220px;display:block}
+.ctl{display:flex;gap:6px;font-family:var(--mono);font-size:11px}
+.ctl button{background:none;border:1px solid var(--line2);color:var(--dim);border-radius:2px;padding:3px 8px;cursor:pointer;font-family:var(--mono);font-size:11px}
+.ctl button.on{border-color:var(--mint);color:var(--mint)}
+/* next steps */
+.steps{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.steps .st{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px;line-height:1.5}
+.steps .st:last-child{border-bottom:0}
+.steps .st b{font-family:var(--mono);color:var(--mint);font-weight:500}
+.steps .st a{color:var(--mint);text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(57,241,148,.35)}
+.mult{font-size:11px;color:var(--gold);margin-left:4px}
 </style>
 </head>
 <body>
@@ -183,6 +223,8 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     <h1>K<span class="i">ı<img src="/arena/crown.svg" alt=""></span>ng Drop</h1>
     <div class="sub"><span class="dot"></span><span id="subline">white vs black · season zero · loading</span></div>
   </div>
+
+  <div class="pot" id="pot"><b id="potText">This week's drop: season points, your piece, and first pick of the Court.</b><span id="potSub">closes sunday 7pm est</span></div>
 
   <!-- sunday drop hero (first 24h after a close) -->
   <div class="drop hidden" id="dropHero">
@@ -239,6 +281,25 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
 
   <div class="grid">
     <div class="sec full">
+      <div class="sech"><b>The board</b><span>32 pieces · 32 wallets · hover a piece</span></div>
+      <div class="boardwrap">
+        <div style="position:relative">
+          <div class="chess" id="chess"></div>
+          <div class="hover" id="hover"></div>
+        </div>
+        <div class="sec" style="gap:14px">
+          <div class="sech"><b>Movers</b><span>updates every 10 min · no positions, no sizes</span></div>
+          <div class="card feed" id="feed"><div class="empty">quiet until the season opens.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec full">
+      <div class="sech"><b>The lead</b><div class="ctl"><button class="on" id="ctlLead">lead</button><button id="ctlPnl">pnl</button></div></div>
+      <div class="card chartbox"><svg id="leadChart" viewBox="0 0 800 220" preserveAspectRatio="none"></svg><div class="mono" style="font-size:11px;color:var(--faint);padding-top:8px" id="chartNote">white points minus black points, this week. above zero white leads, below zero black leads.</div></div>
+    </div>
+
+    <div class="sec full">
       <div class="sech"><b>Pieces</b><span>top 16 per side · season points</span></div>
       <div class="pieces">
         <div class="card"><div class="ph"><span>white</span><span>pts</span></div><div id="wPieces"></div></div>
@@ -270,6 +331,12 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
         <div class="line"><span class="d">next rank</span><span id="seatNext">—</span></div>
         <div class="line"><span class="d">next piece</span><span id="seatNextPiece" style="display:flex;align-items:center;gap:8px">—</span></div>
         <div class="line"><span class="lnk" id="switchBtn">Switch side</span><span class="mono" style="font-size:12px;color:var(--faint)" id="switchNote">once per season</span></div>
+        <div class="steps hidden" id="seatSteps" style="padding:4px 24px 10px">
+          <div class="st"><b>01</b><span><a href="https://trade.throne.network">Trade the desk</a>. Every taker fill scores for you and your side. 1 point per $10.</span></div>
+          <div class="st"><b>02</b><span>Watch this panel. Rank, points this week, and the gap to the next piece update every 10 minutes.</span></div>
+          <div class="st"><b>03</b><span>Sunday 7pm EST the week closes and the King Drop lands. Results post here and on <a href="https://x.com/thronedefi">@thronedefi</a>.</span></div>
+          <div class="st"><b>04</b><span>Hold 100k $THRONE through the week for 1.25x points, 500k for 1.5x.</span></div>
+        </div>
       </div>
     </div>
 
@@ -335,6 +402,12 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
         <div class="tl"><span class="k" id="tK">throne. · king drop · black</span><span class="n" id="tN">Black</span><div class="m"><span><i>wallet</i> <span id="tW">—</span></span><span><i>season</i> zero</span></div></div>
         <div class="tr" id="tR"><img id="tEm" src="/arena/emblem-black-128.svg" width="72" height="72" alt=""></div>
       </div>
+      <div class="steps">
+        <div class="st"><b>01</b><span><a href="https://trade.throne.network">Trade the desk</a>. Every taker fill scores for you and <span class="dSide">your side</span>. 1 point per $10.</span></div>
+        <div class="st"><b>02</b><span>Watch the board. Your seat shows your rank, your points this week, and how far you are from the next piece.</span></div>
+        <div class="st"><b>03</b><span>Sunday 7pm EST the week closes and the King Drop lands. Results post here and on <a href="https://x.com/thronedefi">@thronedefi</a>.</span></div>
+        <div class="st"><b>04</b><span>Hold 100k $THRONE through the week for 1.25x points, 500k for 1.5x.</span></div>
+      </div>
       <a class="btn" id="shareX" target="_blank" rel="noreferrer">Post it on X</a>
       <span class="forme" id="toBoard" style="text-decoration:none">Go to the board</span>
     </div>
@@ -373,7 +446,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     list.forEach(function(p){
       var col = p.rank<=2 ? 'var(--gold)' : p.rank<=8 ? 'var(--fg)' : 'var(--dim)';
       var row = document.createElement('div'); row.className='prow'+(wallet && p.addr===wallet?' me':''); row.style.color=col;
-      row.innerHTML = '<span>'+String(p.rank).padStart(2,'0')+'</span><img src="'+pieceSrc(side,p.rank)+'" width="22" height="22" alt=""><span class="a">'+short(p.addr)+'</span><span class="p">'+fmt(p.season)+'</span><span class="t">'+(promos.indexOf(p.addr)>=0?'<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#39F194" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><title>promoted into the top 8 this week</title><path d="M3,8.5 L8,3.5 L13,8.5"/><path d="M3,13.5 L8,8.5 L13,13.5"/></svg>':'')+(p.beta?'2x':'')+'</span>';
+      row.innerHTML = '<span>'+String(p.rank).padStart(2,'0')+'</span><img src="'+pieceSrc(side,p.rank)+'" width="22" height="22" alt=""><span class="a">'+short(p.addr)+'</span><span class="p">'+fmt(p.season)+'</span><span class="t">'+(promos.indexOf(p.addr)>=0?'<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#39F194" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><title>promoted into the top 8 this week</title><path d="M3,8.5 L8,3.5 L13,8.5"/><path d="M3,13.5 L8,8.5 L13,13.5"/></svg>':'')+(p.mult&&p.mult>1?'<span class="mult">'+p.mult+'x</span>':'')+'</span>';
       el.appendChild(row);
     });
   }
@@ -434,7 +507,104 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     $('dropHero').classList.toggle('hidden', !show); $('liveHero').classList.toggle('hidden', !!show); $('shareBar').classList.toggle('hidden', !!show);
     if(show){ var w=last.winner, l=w==='white'?'black':'white'; $('dropEm').src='/arena/emblem-'+w+'-512.svg'; $('dropWk').textContent='week '+last.week+' · closed sunday 7pm est'; $('dropH').innerHTML=cap(w)+' took<br>the week.'; $('dropL1').textContent=w; $('dropV1').textContent=fmt(last[w]); $('dropL2').textContent=l; $('dropV2').textContent=fmt(last[l]); $('dropV3').textContent=fmt(last.margin); $('dropHash').textContent=last.hash.slice(0,4)+'…'+last.hash.slice(-4); }
   }
-  function render(){ if(!board) return; renderHero(); renderPieces('white',board.pieces.white); renderPieces('black',board.pieces.black); renderDays(); renderResults(); renderSeat(); }
+
+  // ---- pot banner ----
+  function renderPot(){
+    var closes = season && season.closes ? new Date(season.closes) : null;
+    var when = closes ? closes.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}).toLowerCase()+' · 7pm est' : 'sunday 7pm est';
+    if(board && board.pot){ $('potText').textContent = fmt(board.pot)+' $THRONE on the line this week'; $('potSub').textContent = 'week '+board.week+' · closes '+when; }
+    else { $('potText').textContent = "This week's drop: season points, your piece, and first pick of the Court."; $('potSub').textContent = (season&&season.state==='pre') ? 'week 1 opens fri oct 2 · 7pm est' : 'week '+(board?board.week:'')+' · closes '+when; }
+  }
+  // ---- chessboard: white on ranks 1-2 (bottom), black on 7-8 (top). rank 1..16 -> classic setup order.
+  var SETUP = [['rook',3],['knight',7],['bishop',5],['queen',2],['king',1],['bishop',6],['knight',8],['rook',4]]; // back rank left->right: piece, rank index used
+  function renderChess(){
+    var el=$('chess'); el.innerHTML='';
+    var hov=$('hover');
+    var place = {}; // "r,c" -> {side, rank}
+    // white back rank = row 7 (bottom), pawns row 6; black back rank row 0, pawns row 1
+    SETUP.forEach(function(p,c){ place['7,'+c]={side:'white',rank:p[1]}; place['0,'+c]={side:'black',rank:p[1]}; });
+    for(var c=0;c<8;c++){ place['6,'+c]={side:'white',rank:9+c}; place['1,'+c]={side:'black',rank:9+c}; }
+    for(var r=0;r<8;r++) for(var c=0;c<8;c++){
+      var sq=document.createElement('div'); sq.className='sq '+(((r+c)%2)?'d':'l');
+      var pl=place[r+','+c];
+      if(pl && board){
+        var list=board.pieces[pl.side]||[]; var w=list[pl.rank-1];
+        if(w){
+          var img=document.createElement('img'); img.src=pieceSrc(pl.side, pl.rank); img.alt=pl.side+' '+PIECES[pl.rank-1];
+          if(wallet && w.addr===wallet) sq.classList.add('me');
+          if(pl.rank===1 && board.threat && board.threat[pl.side]) sq.innerHTML='<svg class="thr" viewBox="0 0 16 16" fill="none" stroke="#D4AF37" stroke-width="1.5"><path d="M2.5,8 L2.5,3 L5,5 L8,1.5 L11,5 L13.5,3 L13.5,8 Z"/><path d="M8,10.5 L8,15 M5.8,12.8 L8,15 L10.2,12.8"/></svg>';
+          (function(w,pl,sq){
+            var show=function(e){ var pn=w.pnlWeek||0, ps=w.pnlSeason||0;
+              hov.innerHTML='<div class="h1"><img src="'+pieceSrc(pl.side,pl.rank)+'" width="18" height="18" alt="">'+cap(pl.side)+' '+PIECES[pl.rank-1]+' <span style="color:var(--dim);font-weight:400">#'+pl.rank+'</span></div>'
+                +'<div class="row"><span>wallet</span><span>'+short(w.addr)+'</span></div>'
+                +'<div class="row"><span>season</span><span>'+fmt(w.season)+' pts</span></div>'
+                +'<div class="row"><span>this week</span><span>'+fmt(w.week)+' pts</span></div>'
+                +'<div class="row"><span>pnl · week</span><span class="'+(pn>=0?'pos':'neg')+'">'+(pn>=0?'+':'−')+'$'+fmt(Math.abs(pn))+'</span></div>'
+                +'<div class="row"><span>pnl · season</span><span class="'+(ps>=0?'pos':'neg')+'">'+(ps>=0?'+':'−')+'$'+fmt(Math.abs(ps))+'</span></div>'
+                +(w.mult>1?'<div class="row"><span>multiplier</span><span style="color:var(--gold)">'+w.mult+'x</span></div>':'');
+              hov.classList.add('on'); move(e); };
+            var move=function(e){ var host=el.parentNode.getBoundingClientRect(); var x=(e.clientX-host.left)+14, y=(e.clientY-host.top)+14; if(x+240>host.width) x=x-260; if(y+180>host.height) y=y-190; hov.style.left=x+'px'; hov.style.top=y+'px'; };
+            var hide=function(){ hov.classList.remove('on'); };
+            sq.addEventListener('mouseenter',show); sq.addEventListener('mousemove',move); sq.addEventListener('mouseleave',hide);
+            sq.addEventListener('click',function(e){ if(hov.classList.contains('on')&&e.pointerType==='touch'){hide();} else show(e); });
+          })(w,pl,sq);
+          sq.appendChild(img);
+        }
+      }
+      el.appendChild(sq);
+    }
+  }
+  // ---- movers feed ----
+  function ago(t){ var m=Math.round((Date.now()-t)/6e4); return m<1?'now':m<60?m+' min ago':Math.round(m/60)+'h ago'; }
+  function renderFeed(){
+    var el=$('feed'); var evs=(board&&board.events)||[];
+    if(!evs.length){ el.innerHTML='<div class="empty">'+(season&&season.state==='pre'?'quiet until the season opens.':'no moves yet this refresh.')+'</div>'; return; }
+    el.innerHTML='';
+    evs.slice(0,18).forEach(function(e){
+      var d=document.createElement('div'); d.className='ev '+(e.side==='white'?'w':'b')+' '+e.type; var txt='';
+      if(e.type==='points') txt='<span class="side">'+short(e.addr)+'</span> · '+e.side+' · <span class="pos">+'+fmt(e.pts)+' pts</span>';
+      else if(e.type==='joined') txt='<span class="side">'+short(e.addr)+'</span> joined '+e.side+(e.pts?' · +'+fmt(e.pts)+' pts':'');
+      else if(e.type==='piece') txt='<span class="side">'+short(e.addr)+'</span> '+(e.from?e.from+' → ':'takes a ')+e.to+' · #'+e.rank+' '+e.side;
+      else if(e.type==='lead') txt='<span class="side">'+cap(e.side)+' takes the lead</span> · '+e.share+'%';
+      else if(e.type==='threat') txt='<span class="side">crown under threat</span> · '+e.side+"'s king out-scored this week";
+      d.innerHTML='<span>'+txt+'</span><span class="t">'+ago(e.t)+'</span>'; el.appendChild(d);
+    });
+  }
+  // ---- lead chart ----
+  var chartMode='lead';
+  function renderChart(){
+    var svg=$('leadChart'); var ser=(board&&board.series)||[];
+    var W=800,H=220,pad=10;
+    if(ser.length<2){ svg.innerHTML='<line x1="0" y1="'+(H/2)+'" x2="'+W+'" y2="'+(H/2)+'" stroke="rgba(255,255,255,.14)"/><text x="12" y="'+(H/2-8)+'" fill="#5E6663" font-family="JetBrains Mono" font-size="11">'+(season&&season.state==='pre'?'the line starts moving when week 1 opens.':'collecting the first points…')+'</text>'; return; }
+    var vals = chartMode==='lead' ? ser.map(function(p){return p.w-p.b;}) : null;
+    var t0=ser[0].t, t1=ser[ser.length-1].t||t0+1; var X=function(t){ return pad+(W-2*pad)*((t-t0)/Math.max(1,(t1-t0))); };
+    var out='';
+    if(chartMode==='lead'){
+      var m=Math.max(1, Math.max.apply(null, vals.map(Math.abs))); var Y=function(v){ return H/2 - (v/m)*(H/2-pad); };
+      var path=ser.map(function(p,i){ return (i?'L':'M')+X(p.t).toFixed(1)+','+Y(p.w-p.b).toFixed(1); }).join(' ');
+      // fill above (white leads) and below (black leads)
+      var above=ser.map(function(p,i){ return (i?'L':'M')+X(p.t).toFixed(1)+','+Y(Math.max(0,p.w-p.b)).toFixed(1); }).join(' ')+' L'+X(t1).toFixed(1)+','+(H/2)+' L'+X(t0).toFixed(1)+','+(H/2)+' Z';
+      var below=ser.map(function(p,i){ return (i?'L':'M')+X(p.t).toFixed(1)+','+Y(Math.min(0,p.w-p.b)).toFixed(1); }).join(' ')+' L'+X(t1).toFixed(1)+','+(H/2)+' L'+X(t0).toFixed(1)+','+(H/2)+' Z';
+      out+='<path d="'+above+'" fill="rgba(242,244,240,.10)"/><path d="'+below+'" fill="rgba(57,241,148,.14)"/>';
+      out+='<line x1="0" y1="'+(H/2)+'" x2="'+W+'" y2="'+(H/2)+'" stroke="rgba(255,255,255,.14)"/>';
+      out+='<path d="'+path+'" fill="none" stroke="#F2F4F0" stroke-width="1.5"/>';
+      var last=vals[vals.length-1]; out+='<text x="'+(W-12)+'" y="'+(last>=0?18:H-10)+'" text-anchor="end" fill="'+(last>=0?'#F2F4F0':'#39F194')+'" font-family="JetBrains Mono" font-size="12">'+(last>=0?'white +':'black +')+fmt(Math.abs(last))+'</text>';
+      $('chartNote').textContent='white points minus black points, this week. above zero white leads, below zero black leads. one point every 10 minutes.';
+    } else {
+      var all=ser.map(function(p){return p.pw;}).concat(ser.map(function(p){return p.pb;})); var mx=Math.max.apply(null,all.map(Math.abs).concat([1]));
+      var Y2=function(v){ return H/2 - (v/mx)*(H/2-pad); };
+      out+='<line x1="0" y1="'+(H/2)+'" x2="'+W+'" y2="'+(H/2)+'" stroke="rgba(255,255,255,.14)"/>';
+      out+='<path d="'+ser.map(function(p,i){return (i?'L':'M')+X(p.t).toFixed(1)+','+Y2(p.pw).toFixed(1);}).join(' ')+'" fill="none" stroke="#F2F4F0" stroke-width="1.5"/>';
+      out+='<path d="'+ser.map(function(p,i){return (i?'L':'M')+X(p.t).toFixed(1)+','+Y2(p.pb).toFixed(1);}).join(' ')+'" fill="none" stroke="#39F194" stroke-width="1.5"/>';
+      var lw=ser[ser.length-1].pw, lb=ser[ser.length-1].pb;
+      out+='<text x="'+(W-12)+'" y="18" text-anchor="end" fill="#F2F4F0" font-family="JetBrains Mono" font-size="12">white '+(lw>=0?'+':'−')+'$'+fmt(Math.abs(lw))+'</text><text x="'+(W-12)+'" y="34" text-anchor="end" fill="#39F194" font-family="JetBrains Mono" font-size="12">black '+(lb>=0?'+':'−')+'$'+fmt(Math.abs(lb))+'</text>';
+      $('chartNote').textContent="realized pnl of each side's wallets this week, from the venue's public data. zero line in the middle.";
+    }
+    svg.innerHTML=out;
+  }
+  $('ctlLead').addEventListener('click',function(){ chartMode='lead'; this.classList.add('on'); $('ctlPnl').classList.remove('on'); renderChart(); });
+  $('ctlPnl').addEventListener('click',function(){ chartMode='pnl'; this.classList.add('on'); $('ctlLead').classList.remove('on'); renderChart(); });
+  function render(){ if(!board) return; renderPot(); renderHero(); renderChess(); renderFeed(); renderChart(); renderPieces('white',board.pieces.white); renderPieces('black',board.pieces.black); renderDays(); renderResults(); renderSeat(); }
 
   // ---- wallet / seat ----
   function setNav(){ var b=$('navBtn'); if(wallet){ b.textContent=short(wallet); b.className='pill ghost'; } else { b.textContent='connect'; b.className='pill'; } $('seatAddr').textContent = wallet?short(wallet):''; }
@@ -463,6 +633,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     else nextPiece='you hold the crown';
     $('seatNext').innerHTML = nextRank||'—'; $('seatNextPiece').innerHTML = nextPiece||'—';
     $('switchBtn').classList.toggle('hidden', !!mine.switched); $('switchNote').textContent = mine.switched ? 'switched this season' : 'once per season';
+    $('seatSteps').classList.toggle('hidden', !!(me && me.season > 0));
   }
 
   async function connect(){
@@ -498,7 +669,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
   function done(side){
     $('mPick').classList.add('hidden'); $('mDone').classList.remove('hidden');
     $('dEm').src='/arena/emblem-'+side+'-128.svg'; $('tEm').src='/arena/emblem-'+side+'-128.svg'; $('dTitle').textContent="You're on "+cap(side)+'.';
-    $('tK').textContent='throne. · king drop · '+side; $('tN').textContent=cap(side); $('tW').textContent=short(wallet); $('tR').className='tr'+(side==='white'?' w':'');
+    $('tK').textContent='throne. · king drop · '+side; document.querySelectorAll('.dSide').forEach(function(x){ x.textContent=cap(side); }); $('tN').textContent=cap(side); $('tW').textContent=short(wallet); $('tR').className='tr'+(side==='white'?' w':'');
     var text = "I'm on "+cap(side)+" for season zero of King Drop on the throne. desk. Stocks and crypto perps, every trade scores for my side.\n\nthrone.network/board";
     $('shareX').href='https://x.com/intent/post?text='+encodeURIComponent(text);
   }
@@ -515,14 +686,14 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
   // ---- load ----
   async function load(){
     try{ season = await fetch(API+'/season',{cache:'no-store'}).then(function(r){return r.json();}); }catch(e){}
-    subline();
+    subline(); renderPot();
     try{ board = await fetch(API+'/board',{cache:'no-store'}).then(function(r){return r.json();}); }catch(e){}
     if(board && board.error && !board.sides){ board=null; }
     if(board) render();
     // silent reconnect if the wallet is already authorized
     if(window.ethereum){ try{ var accs = await window.ethereum.request({method:'eth_accounts'}); if(accs&&accs[0]){ wallet=accs[0].toLowerCase(); setNav(); await loadMine(); renderSeat(); } }catch(e){} }
   }
-  load(); setInterval(load, 120000);
+  load(); setInterval(load, 600000);
 })();
 </script>
 </body>
