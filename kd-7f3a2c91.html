@@ -483,14 +483,17 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
   var API = '/api/arena';
   var TOKEN_PRICE = null; // usd per $THRONE, from dexscreener; null until loaded
   fetch('https://api.dexscreener.com/latest/dex/tokens/0x72dc556fff14115c077a540921e5F35499a4DCa7').then(function(r){return r.json();}).then(function(j){ var p=(j.pairs||[]).sort(function(a,b){return (b.liquidity&&b.liquidity.usd||0)-(a.liquidity&&a.liquidity.usd||0);})[0]; if(p&&p.priceUsd){ TOKEN_PRICE=+p.priceUsd; if(board) renderSeat(); } }).catch(function(){});
-  // payout estimate: 80% of the pot to the side that is ahead, split by this week's points; 10% to the trailing king (7) and queen (3). estimate only.
+  // payout estimate, per the published split: 10% of the drop to the trailing king and queen (7/3); of the remaining 90%,
+  // 80% to the winning side by this week's points and 20% to the winning side's sixteen pieces weighted king (16) to pawn (1).
   function estimateDrop(me, side){
     var potQ = parseInt(new URLSearchParams(location.search).get('pot')||'',10); var pot = (board && board.pot) || (potQ>0 ? potQ : null);
     if(!pot || !me) return null;
+    var sp = board.split || {trailingKQ:0.10,kqWeights:[0.7,0.3],sideShare:0.72,pieceShare:0.18};
     var mine = board.sides[side], other = board.sides[side==='white'?'black':'white'];
-    if(mine.pts > other.pts && mine.pts > 0) return pot*0.8*(me.week/mine.pts);
-    if(mine.pts <= other.pts && me.rank===1) return pot*0.10*0.7;
-    if(mine.pts <= other.pts && me.rank===2) return pot*0.10*0.3;
+    var ahead = mine.pts > other.pts && mine.pts > 0;
+    if(ahead){ var v = pot*sp.sideShare*(me.week/mine.pts); if(me.rank && me.rank<=16){ var w=17-me.rank; v += pot*sp.pieceShare*(w/136); } return v; }
+    if(me.rank===1) return pot*sp.trailingKQ*sp.kqWeights[0];
+    if(me.rank===2) return pot*sp.trailingKQ*sp.kqWeights[1];
     return 0;
   }
   var $ = function(id){ return document.getElementById(id); };
