@@ -431,6 +431,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
   function subline(){
     if(!season) return;
     var s = 'white vs black · season zero · ';
+    if(season.rehearsal) s = '<span style="color:var(--gold)">rehearsal</span> · real desk volume since '+String(season.rehearsalStart||'').slice(5,10).replace('-','/')+' · nothing here counts · ';
     if(season.state==='pre') s += 'opens fri oct 2 · 7pm est · <span style="color:var(--fg)">'+fmtMs(season.opens-Date.now())+'</span>';
     else if(season.state==='ended') s += 'season closed';
     else s += 'week '+season.week+' of '+season.weeks+' · closes sunday 7pm est · <span style="color:var(--fg)">'+fmtMs(season.closes-Date.now())+'</span>';
@@ -512,6 +513,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
   function renderPot(){
     var closes = season && season.closes ? new Date(season.closes) : null;
     var when = closes ? closes.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}).toLowerCase()+' · 7pm est' : 'sunday 7pm est';
+    if(season && season.rehearsal){ $('potText').textContent = 'Rehearsal. Real wallets, real desk volume, no drop. Season zero opens Oct 2.'; $('potSub').textContent = 'clears before week 1'; return; }
     if(board && board.pot){ $('potText').textContent = fmt(board.pot)+' $THRONE on the line this week'; $('potSub').textContent = 'week '+board.week+' · closes '+when; }
     else { $('potText').textContent = "This week's drop: season points, your piece, and first pick of the Court."; $('potSub').textContent = (season&&season.state==='pre') ? 'week 1 opens fri oct 2 · 7pm est' : 'week '+(board?board.week:'')+' · closes '+when; }
   }
