@@ -751,12 +751,11 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     $('seatVol').textContent = '$'+fmt(me?me.vol||0:0); $('seatVolWeek').textContent = '$'+fmt(me?me.weekVol||0:0);
     var est = estimateDrop(me, side);
     if(est===null){ $('seatEst').textContent='—'; $('seatEstS').textContent='posts when the token switch is on'; }
-    else if(board.week===0){ $('seatEst').textContent = 'from week 1'; $('seatEstS').textContent = 'drops start fri oct 9 · your rank carries over'; }
-    else { var usdv = TOKEN_PRICE ? ' ≈ $'+fmt(Math.round(est*TOKEN_PRICE)) : ''; $('seatEst').textContent = fmt(Math.round(est))+' $THRONE'+usdv; var ahead = board.sides[side].pts > board.sides[side==='white'?'black':'white'].pts; $('seatEstS').textContent = ahead ? 'if the week closed now · your share of the winning side' : (me&&me.rank<=2 ? 'if the week closed now · trailing '+(me.rank===1?'king':'queen')+' share' : 'your side is behind · take the lead to earn from the drop'); }
+    else { var usdv = TOKEN_PRICE ? ' <span style="color:var(--fg);font-size:.7em">≈ $'+fmt(Math.round(est*TOKEN_PRICE))+'</span>' : ''; $('seatEst').innerHTML = fmt(Math.round(est))+' <span style="font-size:.7em">$THRONE</span>'+usdv; var ahead = board.sides[side].pts > board.sides[side==='white'?'black':'white'].pts; var basis = board.week===0 ? 'if week 1 closed with today\'s standings' : 'if the week closed now'; $('seatEstS').textContent = (ahead ? basis+' · your share of the winning side' : (me&&me.rank<=2 ? basis+' · trailing '+(me.rank===1?'king':'queen')+' share' : 'your side is behind · take the lead to earn from the drop')) + (TOKEN_PRICE ? ' · at $'+TOKEN_PRICE.toPrecision(3)+' per $THRONE' : ''); }
     // $THRONE holdings and multiplier verification
     var hold = me ? (me.hold||0) : 0, HT2=(board.rules&&board.rules.holdTiers)||[{min:500000,mult:1.5},{min:100000,mult:1.25}]; var tiers2=HT2.slice().sort(function(a,b){return a.min-b.min;});
     var hm = me ? (me.holdMult||1) : 1;
-    var hb = '<b>'+fmt(Math.round(hold))+' $THRONE</b> in this wallet · holder tier <b>'+hm+'x</b> · balance checked every 10 minutes, the week\'s lowest balance sets the tier';
+    var hb = '<b>'+fmt(Math.round(hold))+' $THRONE</b> in this wallet · holder tier <b>'+hm+'x</b>';
     if(hold < tiers2[0].min) hb += '<br><span style="color:var(--gold)">Get '+tiers2[0].mult+'x to '+tiers2[tiers2.length-1].mult+'x more points by simply holding $THRONE in this wallet: '+fmt(tiers2[0].min)+' for '+tiers2[0].mult+'x, '+fmt(tiers2[tiers2.length-1].min)+' for '+tiers2[tiers2.length-1].mult+'x.</span>';
     hb += '<br>LP in the $THRONE pools for up to 1.7x <span class="soon">coming soon</span>';
     $('seatHold').innerHTML = hb;
