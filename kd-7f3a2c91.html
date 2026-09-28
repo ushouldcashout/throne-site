@@ -187,10 +187,10 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
 .feed{display:flex;flex-direction:column}
 .feed .ev{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:11px 14px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:12px;line-height:1.5}
 .feed .ev:last-child{border-bottom:0}
-.feed .ev .t{color:var(--faint);white-space:nowrap}
-.feed .ev.w .side{color:var(--fg)}.feed .ev.b .side{color:var(--mint)}
+.feed .ev .t{color:var(--faint);white-space:nowrap}.feed .ev>span:first-child{min-width:0;overflow-wrap:anywhere}
+.feed .ev.w .who{color:var(--fg)}.feed .ev.b .who{color:var(--mint)}
 .feed .ev.lead{background:rgba(57,241,148,.06)}
-.feed .ev.threat .side{color:var(--gold)}
+.feed .ev.threat .who{color:var(--gold)}
 /* lead chart */
 .chartbox{padding:16px 16px 10px}
 .chartbox svg{width:100%;height:220px;display:block}
@@ -288,7 +288,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
           <div class="hover" id="hover"></div>
         </div>
         <div class="sec" style="gap:14px">
-          <div class="sech"><b>Movers</b><span>updates every 10 min · no positions, no sizes</span></div>
+          <div class="sech"><b>Movers</b><span>every 10 min</span></div>
           <div class="card feed" id="feed"><div class="empty">quiet until the season opens.</div></div>
         </div>
       </div>
@@ -562,11 +562,11 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     el.innerHTML='';
     evs.slice(0,18).forEach(function(e){
       var d=document.createElement('div'); d.className='ev '+(e.side==='white'?'w':'b')+' '+e.type; var txt='';
-      if(e.type==='points') txt='<span class="side">'+short(e.addr)+'</span> · '+e.side+' · <span class="pos">+'+fmt(e.pts)+' pts</span>';
-      else if(e.type==='joined') txt='<span class="side">'+short(e.addr)+'</span> joined '+e.side+(e.pts?' · +'+fmt(e.pts)+' pts':'');
-      else if(e.type==='piece') txt='<span class="side">'+short(e.addr)+'</span> '+(e.from?e.from+' → ':'takes a ')+e.to+' · #'+e.rank+' '+e.side;
-      else if(e.type==='lead') txt='<span class="side">'+cap(e.side)+' takes the lead</span> · '+e.share+'%';
-      else if(e.type==='threat') txt='<span class="side">crown under threat</span> · '+e.side+"'s king out-scored this week";
+      if(e.type==='points') txt='<span class="who">'+short(e.addr)+'</span> · '+e.side+' · <span class="pos">+'+fmt(e.pts)+' pts</span>';
+      else if(e.type==='joined') txt='<span class="who">'+short(e.addr)+'</span> joined '+e.side+(e.pts?' · +'+fmt(e.pts)+' pts':'');
+      else if(e.type==='piece') txt='<span class="who">'+short(e.addr)+'</span> '+(e.from?e.from+' → ':'takes a ')+e.to+' · #'+e.rank+' '+e.side;
+      else if(e.type==='lead') txt='<span class="who">'+cap(e.side)+' takes the lead</span> · '+e.share+'%';
+      else if(e.type==='threat') txt='<span class="who">crown under threat</span> · '+e.side+' king out-scored';
       d.innerHTML='<span>'+txt+'</span><span class="t">'+ago(e.t)+'</span>'; el.appendChild(d);
     });
   }
@@ -588,7 +588,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
       out+='<path d="'+above+'" fill="rgba(242,244,240,.10)"/><path d="'+below+'" fill="rgba(57,241,148,.14)"/>';
       out+='<line x1="0" y1="'+(H/2)+'" x2="'+W+'" y2="'+(H/2)+'" stroke="rgba(255,255,255,.14)"/>';
       out+='<path d="'+path+'" fill="none" stroke="#F2F4F0" stroke-width="1.5"/>';
-      var last=vals[vals.length-1]; out+='<text x="'+(W-12)+'" y="'+(last>=0?18:H-10)+'" text-anchor="end" fill="'+(last>=0?'#F2F4F0':'#39F194')+'" font-family="JetBrains Mono" font-size="12">'+(last>=0?'white +':'black +')+fmt(Math.abs(last))+'</text>';
+      var last=vals[vals.length-1]; out+='<text x="'+(W-40)+'" y="'+(last>=0?18:H-10)+'" text-anchor="end" fill="'+(last>=0?'#F2F4F0':'#39F194')+'" font-family="JetBrains Mono" font-size="12">'+(last>=0?'white +':'black +')+fmt(Math.abs(last))+'</text>';
       $('chartNote').textContent='white points minus black points, this week. above zero white leads, below zero black leads. one point every 10 minutes.';
     } else {
       var all=ser.map(function(p){return p.pw;}).concat(ser.map(function(p){return p.pb;})); var mx=Math.max.apply(null,all.map(Math.abs).concat([1]));
@@ -597,7 +597,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
       out+='<path d="'+ser.map(function(p,i){return (i?'L':'M')+X(p.t).toFixed(1)+','+Y2(p.pw).toFixed(1);}).join(' ')+'" fill="none" stroke="#F2F4F0" stroke-width="1.5"/>';
       out+='<path d="'+ser.map(function(p,i){return (i?'L':'M')+X(p.t).toFixed(1)+','+Y2(p.pb).toFixed(1);}).join(' ')+'" fill="none" stroke="#39F194" stroke-width="1.5"/>';
       var lw=ser[ser.length-1].pw, lb=ser[ser.length-1].pb;
-      out+='<text x="'+(W-12)+'" y="18" text-anchor="end" fill="#F2F4F0" font-family="JetBrains Mono" font-size="12">white '+(lw>=0?'+':'−')+'$'+fmt(Math.abs(lw))+'</text><text x="'+(W-12)+'" y="34" text-anchor="end" fill="#39F194" font-family="JetBrains Mono" font-size="12">black '+(lb>=0?'+':'−')+'$'+fmt(Math.abs(lb))+'</text>';
+      out+='<text x="'+(W-40)+'" y="18" text-anchor="end" fill="#F2F4F0" font-family="JetBrains Mono" font-size="12">white '+(lw>=0?'+':'−')+'$'+fmt(Math.abs(lw))+'</text><text x="'+(W-40)+'" y="34" text-anchor="end" fill="#39F194" font-family="JetBrains Mono" font-size="12">black '+(lb>=0?'+':'−')+'$'+fmt(Math.abs(lb))+'</text>';
       $('chartNote').textContent="realized pnl of each side's wallets this week, from the venue's public data. zero line in the middle.";
     }
     svg.innerHTML=out;
