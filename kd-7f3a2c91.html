@@ -432,7 +432,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     if(!season) return;
     var s = 'white vs black · season zero · ';
     if(season.rehearsal) s = '<span style="color:var(--gold)">rehearsal</span> · real desk volume since '+String(season.rehearsalStart||'').slice(5,10).replace('-','/')+' · nothing here counts · ';
-    if(season.state==='pre') s += 'opens fri oct 2 · 7pm est · <span style="color:var(--fg)">'+fmtMs(season.opens-Date.now())+'</span>';
+    if(season.state==='pre') s += 'opens fri oct 9 · 7pm est · <span style="color:var(--fg)">'+fmtMs(season.opens-Date.now())+'</span>';
     else if(season.state==='ended') s += 'season closed';
     else s += 'week '+season.week+' of '+season.weeks+' · closes sunday 7pm est · <span style="color:var(--fg)">'+fmtMs(season.closes-Date.now())+'</span>';
     $('subline').innerHTML = s;
@@ -488,7 +488,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     }
     el.querySelectorAll('.copy').forEach(function(c){ c.addEventListener('click',function(){ try{navigator.clipboard.writeText(c.getAttribute('data-h'));}catch(e){} }); });
     var last = rs[rs.length-1];
-    $('lastWeekLine').innerHTML = last ? 'week '+last.week+' · '+last.winner+(last.winner==='draw'?'':' won')+' · '+fmt(last.white)+' to '+fmt(last.black)+' · hash <a href="#results">'+last.hash.slice(0,4)+'…'+last.hash.slice(-4)+'</a>' : (season&&season.state==='pre' ? 'week 1 opens fri oct 2 · 7pm est · closes sun oct 11' : 'no weeks closed yet');
+    $('lastWeekLine').innerHTML = last ? 'week '+last.week+' · '+last.winner+(last.winner==='draw'?'':' won')+' · '+fmt(last.white)+' to '+fmt(last.black)+' · hash <a href="#results">'+last.hash.slice(0,4)+'…'+last.hash.slice(-4)+'</a>' : (season&&season.state==='pre' ? 'week 1 opens fri oct 9 · 7pm est · closes sun oct 11' : 'no weeks closed yet');
   }
   function renderHero(){
     var W=board.sides.white, B=board.sides.black;
@@ -513,9 +513,9 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
   function renderPot(){
     var closes = season && season.closes ? new Date(season.closes) : null;
     var when = closes ? closes.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}).toLowerCase()+' · 7pm est' : 'sunday 7pm est';
-    if(season && season.rehearsal){ $('potText').textContent = 'Rehearsal. Real wallets, real desk volume, no drop. Season zero opens Oct 2.'; $('potSub').textContent = 'clears before week 1'; return; }
+    if(season && season.rehearsal){ $('potText').textContent = 'Rehearsal. Real wallets, real desk volume, no drop. Season zero opens Oct 9.'; $('potSub').textContent = 'clears before week 1'; return; }
     if(board && board.pot){ $('potText').textContent = fmt(board.pot)+' $THRONE on the line this week'; $('potSub').textContent = 'week '+board.week+' · closes '+when; }
-    else { $('potText').textContent = "This week's drop: season points, your piece, and first pick of the Court."; $('potSub').textContent = (season&&season.state==='pre') ? 'week 1 opens fri oct 2 · 7pm est' : 'week '+(board?board.week:'')+' · closes '+when; }
+    else { $('potText').textContent = "This week's drop: season points, your piece, and first pick of the Court."; $('potSub').textContent = (season&&season.state==='pre') ? 'week 1 opens fri oct 9 · 7pm est' : 'week '+(board?board.week:'')+' · closes '+when; }
   }
   // ---- chessboard: white on ranks 1-2 (bottom), black on 7-8 (top). rank 1..16 -> classic setup order.
   var SETUP = [['rook',3],['knight',7],['bishop',5],['queen',2],['king',1],['bishop',6],['knight',8],['rook',4]]; // back rank left->right: piece, rank index used
@@ -667,6 +667,8 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     var r = await fetch(API+'/'+kind,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({wallet:wallet,side:side,sig:sig})}).then(function(r){return r.json();}).catch(function(){return {error:'network error'};});
     if(!r.ok){ $('mErr').textContent = r.error||'something went wrong.'; return; }
     await loadMine(); renderSeat(); done(side);
+    // a pick or switch moves this wallet's points to the other side: rebuild the board now instead of waiting for the cron
+    try{ var nb = await fetch(API+'/board?refresh=1&t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}); if(nb && nb.sides){ board=nb; render(); } }catch(e){}
   }
   function done(side){
     $('mPick').classList.add('hidden'); $('mDone').classList.remove('hidden');
@@ -689,7 +691,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
   async function load(){
     try{ season = await fetch(API+'/season',{cache:'no-store'}).then(function(r){return r.json();}); }catch(e){}
     subline(); renderPot();
-    try{ board = await fetch(API+'/board',{cache:'no-store'}).then(function(r){return r.json();}); }catch(e){}
+    try{ board = await fetch(API+'/board?t='+Math.floor(Date.now()/60000),{cache:'no-store'}).then(function(r){return r.json();}); }catch(e){}
     if(board && board.error && !board.sides){ board=null; }
     if(board) render();
     // silent reconnect if the wallet is already authorized
