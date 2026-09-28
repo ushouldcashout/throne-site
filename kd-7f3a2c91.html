@@ -200,7 +200,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
 .feed .ev.ev-threat .who{color:var(--gold)}
 /* lead chart */
 .chartbox{padding:16px 16px 10px}
-.chartbox svg{width:100%;height:220px;display:block}
+.chartbox svg{width:100%;height:240px;display:block}
 .ctl{display:flex;gap:6px;font-family:var(--mono);font-size:11px}
 .ctl button{background:none;border:1px solid var(--line2);color:var(--dim);border-radius:2px;padding:3px 8px;cursor:pointer;font-family:var(--mono);font-size:11px}
 .ctl button.on{border-color:var(--mint);color:var(--mint)}
@@ -303,7 +303,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
 
     <div class="sec full">
       <div class="sech"><b>The lead</b><div class="ctl"><button class="on" id="ctlLead">lead</button><button id="ctlPnl">pnl</button></div></div>
-      <div class="card chartbox"><svg id="leadChart" viewBox="0 0 800 220" preserveAspectRatio="none"></svg><div class="mono" style="font-size:11px;color:var(--faint);padding-top:8px" id="chartNote">white points minus black points, this week. above zero white leads, below zero black leads.</div></div>
+      <div class="card chartbox"><svg id="leadChart" viewBox="0 0 800 240"></svg><div class="mono" style="font-size:11px;color:var(--faint);padding-top:8px" id="chartNote">white points minus black points, this week. above zero white leads, below zero black leads.</div></div>
     </div>
 
     <div class="sec full">
@@ -584,38 +584,61 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
       d.innerHTML='<span>'+txt+'</span><span class="t">'+ago(e.t)+'</span>'; el.appendChild(d);
     });
   }
-  // ---- lead chart ----
+  // ---- lead chart: fixed time axis = the whole week, so the line grows left to right as the week runs ----
   var chartMode='lead';
+  function niceStep(m){ var p=Math.pow(10,Math.floor(Math.log10(m||1))); var n=m/p; var st = n<=1?0.25:n<=2?0.5:n<=5?1:2; return st*p; }
+  function kfmt(v){ var a=Math.abs(v); var t=a>=1e6?(a/1e6).toFixed(1)+'m':a>=1e3?(a/1e3).toFixed(a>=1e4?0:1)+'k':String(Math.round(a)); return (v<0?'-':v>0?'+':'')+t; }
   function renderChart(){
     var svg=$('leadChart'); var ser=(board&&board.series)||[];
-    var W=800,H=220,pad=10;
-    if(ser.length<2){ svg.innerHTML='<line x1="0" y1="'+(H/2)+'" x2="'+W+'" y2="'+(H/2)+'" stroke="rgba(255,255,255,.14)"/><text x="12" y="'+(H/2-8)+'" fill="#5E6663" font-family="JetBrains Mono" font-size="11">'+(season&&season.state==='pre'?'the line starts moving when week 1 opens.':'collecting the first points…')+'</text>'; return; }
-    var vals = chartMode==='lead' ? ser.map(function(p){return p.w-p.b;}) : null;
-    var t0=ser[0].t, t1=ser[ser.length-1].t||t0+1; var X=function(t){ return pad+(W-2*pad)*((t-t0)/Math.max(1,(t1-t0))); };
+    var W=Math.max(320, svg.clientWidth||svg.parentNode.clientWidth||800), H=240, padL=52, padR=16, padT=18, padB=28;
+    svg.setAttribute('viewBox','0 0 '+W+' '+H); svg.removeAttribute('preserveAspectRatio'); svg.style.height=H+'px';
+    var t0 = board && board.opens ? +board.opens : (ser[0]?ser[0].t:Date.now()-864e5);
+    var t1 = board && board.closes ? +board.closes : Date.now();
+    if(season && season.state==='pre'){ t0=+season.opens; t1=+season.closes; }
+    var X=function(t){ return padL+(W-padL-padR)*Math.min(1,Math.max(0,(t-t0)/Math.max(1,t1-t0))); };
+    var mid=padT+(H-padT-padB)/2, half=(H-padT-padB)/2;
     var out='';
+    // day columns + labels
+    var days=['sun','mon','tue','wed','thu','fri','sat'];
+    for(var t=t0;t<=t1+1;t+=864e5){ var x=X(t); out+='<line x1="'+x.toFixed(1)+'" y1="'+padT+'" x2="'+x.toFixed(1)+'" y2="'+(H-padB)+'" stroke="rgba(255,255,255,.06)"/>'; if(t<t1){ var d=new Date(t); var lbl=days[d.getUTCDay()]+(t===t0?' open':''); out+='<text x="'+(x+6).toFixed(1)+'" y="'+(H-9)+'" fill="#5E6663" font-family="JetBrains Mono" font-size="11">'+lbl+'</text>'; } }
+    out+='<text x="'+(W-padR).toFixed(1)+'" y="'+(H-9)+'" text-anchor="end" fill="#5E6663" font-family="JetBrains Mono" font-size="11">close</text>';
+    var vals, lines;
+    if(chartMode==='lead'){ vals=ser.map(function(p){return p.w-p.b;}); }
+    else { vals=ser.map(function(p){return p.pw;}).concat(ser.map(function(p){return p.pb;})); }
+    var mx=Math.max.apply(null,[1].concat(vals.map(Math.abs))); var step=niceStep(mx); var top=Math.ceil(mx/step)*step; if(top<step*2) top=step*2;
+    var Y=function(v){ return mid-(v/top)*half; };
+    // y gridlines + labels
+    for(var v=-top; v<=top+1e-9; v+=step){ var y=Y(v); out+='<line x1="'+padL+'" y1="'+y.toFixed(1)+'" x2="'+(W-padR)+'" y2="'+y.toFixed(1)+'" stroke="'+(Math.abs(v)<1e-9?'rgba(255,255,255,.22)':'rgba(255,255,255,.06)')+'"/>'; out+='<text x="'+(padL-8)+'" y="'+(y+4).toFixed(1)+'" text-anchor="end" fill="#5E6663" font-family="JetBrains Mono" font-size="11">'+(chartMode==='lead'?kfmt(v):(v<0?'-$':v>0?'+$':'$')+kfmt(Math.abs(v)).replace('+',''))+'</text>'; }
+    // side labels
+    out+='<text x="'+(padL+6)+'" y="'+(padT+11)+'" fill="#F2F4F0" font-family="JetBrains Mono" font-size="11" opacity=".7">white leads</text><text x="'+(padL+6)+'" y="'+(H-padB-6)+'" fill="#39F194" font-family="JetBrains Mono" font-size="11" opacity=".8">black leads</text>';
+    if(ser.length<2){
+      out+='<text x="'+(W/2)+'" y="'+(mid-10)+'" text-anchor="middle" fill="#5E6663" font-family="JetBrains Mono" font-size="12">'+(season&&season.state==='pre'?'the line starts when week 1 opens.':'collecting the first points…')+'</text>';
+      svg.innerHTML=out; return;
+    }
+    var pt=function(t,v){ return X(t).toFixed(1)+','+Y(v).toFixed(1); };
     if(chartMode==='lead'){
-      var m=Math.max(1, Math.max.apply(null, vals.map(Math.abs))); var Y=function(v){ return H/2 - (v/m)*(H/2-pad); };
-      var path=ser.map(function(p,i){ return (i?'L':'M')+X(p.t).toFixed(1)+','+Y(p.w-p.b).toFixed(1); }).join(' ');
-      // fill above (white leads) and below (black leads)
-      var above=ser.map(function(p,i){ return (i?'L':'M')+X(p.t).toFixed(1)+','+Y(Math.max(0,p.w-p.b)).toFixed(1); }).join(' ')+' L'+X(t1).toFixed(1)+','+(H/2)+' L'+X(t0).toFixed(1)+','+(H/2)+' Z';
-      var below=ser.map(function(p,i){ return (i?'L':'M')+X(p.t).toFixed(1)+','+Y(Math.min(0,p.w-p.b)).toFixed(1); }).join(' ')+' L'+X(t1).toFixed(1)+','+(H/2)+' L'+X(t0).toFixed(1)+','+(H/2)+' Z';
-      out+='<path d="'+above+'" fill="rgba(242,244,240,.10)"/><path d="'+below+'" fill="rgba(57,241,148,.14)"/>';
-      out+='<line x1="0" y1="'+(H/2)+'" x2="'+W+'" y2="'+(H/2)+'" stroke="rgba(255,255,255,.14)"/>';
-      out+='<path d="'+path+'" fill="none" stroke="#F2F4F0" stroke-width="1.5"/>';
-      var last=vals[vals.length-1]; out+='<text x="'+(W-40)+'" y="'+(last>=0?18:H-10)+'" text-anchor="end" fill="'+(last>=0?'#F2F4F0':'#39F194')+'" font-family="JetBrains Mono" font-size="12">'+(last>=0?'white +':'black +')+fmt(Math.abs(last))+'</text>';
-      $('chartNote').textContent='white points minus black points, this week. above zero white leads, below zero black leads. one point every 10 minutes.';
+      var last=ser[ser.length-1], lv=last.w-last.b;
+      var above='M'+pt(ser[0].t,0)+' '+ser.map(function(p){return 'L'+pt(p.t,Math.max(0,p.w-p.b));}).join(' ')+' L'+pt(last.t,0)+' Z';
+      var below='M'+pt(ser[0].t,0)+' '+ser.map(function(p){return 'L'+pt(p.t,Math.min(0,p.w-p.b));}).join(' ')+' L'+pt(last.t,0)+' Z';
+      out+='<path d="'+above+'" fill="rgba(242,244,240,.10)"/><path d="'+below+'" fill="rgba(57,241,148,.16)"/>';
+      out+='<path d="'+ser.map(function(p,i){return (i?'L':'M')+pt(p.t,p.w-p.b);}).join(' ')+'" fill="none" stroke="#F2F4F0" stroke-width="1.6" stroke-linejoin="round"/>';
+      // now marker + current value
+      var nx=X(last.t); out+='<line x1="'+nx.toFixed(1)+'" y1="'+padT+'" x2="'+nx.toFixed(1)+'" y2="'+(H-padB)+'" stroke="rgba(255,255,255,.25)" stroke-dasharray="3 4"/>';
+      out+='<circle cx="'+nx.toFixed(1)+'" cy="'+Y(lv).toFixed(1)+'" r="3.5" fill="'+(lv>=0?'#F2F4F0':'#39F194')+'"/>';
+      var lx = nx+10, anchor='start'; if(nx > W-140){ lx=nx-10; anchor='end'; }
+      out+='<text x="'+lx.toFixed(1)+'" y="'+(Y(lv)+(lv>=0?-8:16)).toFixed(1)+'" text-anchor="'+anchor+'" fill="'+(lv>=0?'#F2F4F0':'#39F194')+'" font-family="JetBrains Mono" font-size="12" font-weight="500">'+(lv>=0?'white':'black')+' +'+fmt(Math.abs(lv))+'</text>';
+      $('chartNote').textContent='white points minus black points across the week. above the line white leads, below it black leads. one point per refresh.';
     } else {
-      var all=ser.map(function(p){return p.pw;}).concat(ser.map(function(p){return p.pb;})); var mx=Math.max.apply(null,all.map(Math.abs).concat([1]));
-      var Y2=function(v){ return H/2 - (v/mx)*(H/2-pad); };
-      out+='<line x1="0" y1="'+(H/2)+'" x2="'+W+'" y2="'+(H/2)+'" stroke="rgba(255,255,255,.14)"/>';
-      out+='<path d="'+ser.map(function(p,i){return (i?'L':'M')+X(p.t).toFixed(1)+','+Y2(p.pw).toFixed(1);}).join(' ')+'" fill="none" stroke="#F2F4F0" stroke-width="1.5"/>';
-      out+='<path d="'+ser.map(function(p,i){return (i?'L':'M')+X(p.t).toFixed(1)+','+Y2(p.pb).toFixed(1);}).join(' ')+'" fill="none" stroke="#39F194" stroke-width="1.5"/>';
-      var lw=ser[ser.length-1].pw, lb=ser[ser.length-1].pb;
-      out+='<text x="'+(W-40)+'" y="18" text-anchor="end" fill="#F2F4F0" font-family="JetBrains Mono" font-size="12">white '+(lw>=0?'+':'−')+'$'+fmt(Math.abs(lw))+'</text><text x="'+(W-40)+'" y="34" text-anchor="end" fill="#39F194" font-family="JetBrains Mono" font-size="12">black '+(lb>=0?'+':'−')+'$'+fmt(Math.abs(lb))+'</text>';
-      $('chartNote').textContent="realized pnl of each side's wallets this week, from the venue's public data. zero line in the middle.";
+      out+='<path d="'+ser.map(function(p,i){return (i?'L':'M')+pt(p.t,p.pw);}).join(' ')+'" fill="none" stroke="#F2F4F0" stroke-width="1.6" stroke-linejoin="round"/>';
+      out+='<path d="'+ser.map(function(p,i){return (i?'L':'M')+pt(p.t,p.pb);}).join(' ')+'" fill="none" stroke="#39F194" stroke-width="1.6" stroke-linejoin="round"/>';
+      var l2=ser[ser.length-1], nx2=X(l2.t); out+='<line x1="'+nx2.toFixed(1)+'" y1="'+padT+'" x2="'+nx2.toFixed(1)+'" y2="'+(H-padB)+'" stroke="rgba(255,255,255,.25)" stroke-dasharray="3 4"/>';
+      var lx2 = nx2+10, an2='start'; if(nx2 > W-160){ lx2=nx2-10; an2='end'; }
+      out+='<text x="'+lx2.toFixed(1)+'" y="'+(Y(l2.pw)-8).toFixed(1)+'" text-anchor="'+an2+'" fill="#F2F4F0" font-family="JetBrains Mono" font-size="12">white '+(l2.pw>=0?'+':'-')+'$'+fmt(Math.abs(l2.pw))+'</text><text x="'+lx2.toFixed(1)+'" y="'+(Y(l2.pb)+16).toFixed(1)+'" text-anchor="'+an2+'" fill="#39F194" font-family="JetBrains Mono" font-size="12">black '+(l2.pb>=0?'+':'-')+'$'+fmt(Math.abs(l2.pb))+'</text>';
+      $('chartNote').textContent="realized pnl of each side's wallets this week, from the venue's public rows.";
     }
     svg.innerHTML=out;
   }
+  var _rz; window.addEventListener('resize', function(){ clearTimeout(_rz); _rz=setTimeout(function(){ if(board) renderChart(); }, 150); });
   $('ctlLead').addEventListener('click',function(){ chartMode='lead'; this.classList.add('on'); $('ctlPnl').classList.remove('on'); renderChart(); });
   $('ctlPnl').addEventListener('click',function(){ chartMode='pnl'; this.classList.add('on'); $('ctlLead').classList.remove('on'); renderChart(); });
   function render(){ if(!board) return; renderPot(); renderHero(); renderChess(); renderFeed(); renderChart(); renderPieces('white',board.pieces.white); renderPieces('black',board.pieces.black); renderDays(); renderResults(); renderSeat(); }
