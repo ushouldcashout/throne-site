@@ -176,6 +176,21 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
 .gap a{color:var(--mint);text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(57,241,148,.35)}
 .pot.power{border-color:var(--gold);background:rgba(212,175,55,.08)}.pot.power b{color:var(--gold)}
 .ph{font-family:var(--mono);font-size:11px;color:var(--gold);border:1px solid rgba(212,175,55,.5);border-radius:2px;padding:2px 6px;margin-left:8px}
+/* seat on top */
+#seatWrap{margin-top:18px}
+#seat .card.strip{flex-direction:row;align-items:center;gap:20px;padding:18px 24px}
+@media (max-width:640px){#seat .card.strip{flex-direction:column;align-items:stretch}}
+#seatOn{display:grid;grid-template-columns:1fr 1fr}
+#seatOn>div:first-child,#seatOn .gap,#seatOn .atkline,#seatOn .steps{grid-column:1/-1}
+#seatOn .kv{border-right:1px solid var(--line)}
+.sharebox{display:flex;flex-direction:column;justify-content:center;gap:10px;padding:14px 24px;border-bottom:1px solid var(--line)}
+@media (max-width:720px){#seatOn{grid-template-columns:1fr}#seatOn .kv{border-right:0}}
+/* card modal */
+.cardm{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
+.cardm.on{display:flex}
+.cardm .in{background:var(--panel);border:1px solid var(--line2);border-radius:4px;padding:16px;max-width:820px;width:100%;display:flex;flex-direction:column;gap:12px}
+.cardm canvas{width:100%;height:auto;border-radius:3px;display:block}
+.cardm .acts{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 /* attack + streak */
 .sq .atk{position:absolute;top:4px;left:4px;width:11px;height:11px}
 .atkline{margin:0 24px 12px;padding:10px 12px;border:1px solid rgba(255,107,87,.45);border-radius:3px;background:rgba(255,107,87,.07);font-family:var(--mono);font-size:12px;color:#FF6B57;line-height:1.6}
@@ -238,6 +253,49 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
 
   <div class="pot" id="pot"><b id="potText">This week's drop: season points, your piece, and first pick of the Court.</b><span id="potSub">closes sunday 7pm est</span><span class="potNote" style="flex-basis:100%">$THRONE holders score up to 1.5x · beta list wallets 2x · combined cap 2x</span></div>
 
+  <div class="grid" id="seatWrap">
+    <div class="sec full" id="seat">
+      <div class="sech"><b>Your seat</b><span id="seatAddr" style="color:var(--mint)"></span></div>
+      <div class="card seat strip" id="seatOff">
+        <div style="display:flex;flex-direction:column;gap:6px;flex:1;min-width:0">
+          <p style="margin:0;font-size:16px;font-weight:600">See your seat, your gap, your streak.</p>
+          <p class="mono" style="margin:0;font-size:11.5px;color:var(--faint)">Read only. Nothing to sign until you pick a side, and that signature is free.</p>
+        </div>
+        <button class="btn" id="connectBtn" style="width:auto;padding:12px 26px">Connect</button>
+      </div>
+      <div class="card seat hidden" id="seatAssigned" style="border-color:rgba(57,241,148,.35)">
+        <div class="row"><img id="asEm" src="/arena/emblem-black-128.svg" width="48" height="48" alt=""><span id="asText" style="font-size:15px;line-height:1.5">You're on Black (assigned). Pick a side to confirm, or keep it.</span></div>
+        <div class="two"><button class="btn" id="pickBtn">Pick</button><button class="btn line" id="keepBtn">Keep Black</button></div>
+      </div>
+      <div class="card hidden" id="seatOn">
+        <div style="padding:20px 24px;display:flex;align-items:center;gap:16px;border-bottom:1px solid var(--line)">
+          <img id="seatPiece" src="/arena/pieces/black-16-pawn.svg" width="48" height="48" alt="">
+          <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">
+            <span style="font-size:17px;font-weight:600" id="seatTitle">Black</span>
+            <span class="mono" style="font-size:12px;color:var(--dim)" id="seatRank">no points yet this season</span>
+          </div>
+          <img id="seatEm" src="/arena/emblem-black-128.svg" width="32" height="32" alt="">
+        </div>
+        <div class="kv"><div><span class="l">this week</span><span class="v" id="seatWeek">0</span></div><div><span class="l">this season</span><span class="v" id="seatSeason">0</span></div></div>
+        <div class="sharebox"><span class="mono" style="font-size:11px;color:var(--dim)">share card</span><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn line" id="cardBtn" style="width:auto;padding:9px 14px;font-size:13px">Preview my card</button><button class="btn" id="cardPost" style="width:auto;padding:9px 14px;font-size:13px">Post on X</button></div></div>
+        <div class="gap hidden" id="seatGapBox"><b id="seatGapText"></b><span id="seatGapSub"></span></div>
+        <div class="atkline hidden" id="seatAtk"></div>
+        <div class="line"><span class="d">multiplier</span><span id="seatMult" style="text-align:right">—</span></div>
+        <div class="line"><span class="d">streak</span><span id="seatStreak">—</span></div>
+        <div class="line"><span class="d">next rank</span><span id="seatNext">—</span></div>
+        <div class="line"><span class="d">next piece</span><span id="seatNextPiece" style="display:flex;align-items:center;gap:8px">—</span></div>
+        <div class="line"><span class="lnk" id="switchBtn">Switch side</span><span class="mono" style="font-size:12px;color:var(--faint)" id="switchNote">once per season</span></div>
+        <div class="steps hidden" id="seatSteps" style="padding:4px 24px 10px">
+          <div class="st"><b>01</b><span><a href="https://trade.throne.network">Trade the desk</a>. Every taker fill scores for you and your side. 1 point per $10.</span></div>
+          <div class="st"><b>02</b><span>Watch this panel. Rank, points this week, and the gap to the next piece update every 10 minutes.</span></div>
+          <div class="st"><b>03</b><span>Sunday 7pm EST the week closes and the King Drop lands. Results post here and on <a href="https://x.com/thronedefi">@thronedefi</a>.</span></div>
+          <div class="st"><b>04</b><span>Hold 100k $THRONE through the week for 1.25x points, 500k for 1.5x.</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
   <!-- sunday drop hero (first 24h after a close) -->
   <div class="drop hidden" id="dropHero">
     <div class="em"><img id="dropEm" src="/arena/emblem-black-512.svg" alt=""></div>
@@ -293,7 +351,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
 
   <div class="grid">
     <div class="sec full">
-      <div class="sech"><b>The board</b><span>32 pieces · 32 wallets · hover a piece</span></div>
+      <div class="sech"><b>The board</b><span id="boardHint">32 pieces · 32 wallets · hover a piece</span></div>
       <div class="boardwrap">
         <div style="position:relative">
           <div class="chess" id="chess"></div>
@@ -312,47 +370,10 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     </div>
 
     <div class="sec full">
-      <div class="sech"><b>Pieces</b><span>top 16 per side · season points</span></div>
-      <div class="pieces">
+      <div class="sech"><b>Pieces</b><span><span class="lnk" id="piecesToggle">show full ranks</span></span></div>
+      <div class="pieces hidden" id="piecesWrap">
         <div class="card"><div class="ph"><span>white</span><span>pts</span></div><div id="wPieces"></div></div>
         <div class="card"><div class="ph"><span>black</span><span>pts</span></div><div id="bPieces"></div></div>
-      </div>
-    </div>
-
-    <div class="sec" id="seat">
-      <div class="sech"><b>Your seat</b><span id="seatAddr" style="color:var(--mint)"></span></div>
-      <div class="card seat" id="seatOff">
-        <p>Connect to see your seat.</p>
-        <button class="btn" id="connectBtn">Connect</button>
-        <p class="mono" style="font-size:11px;color:var(--faint)">Read only. Connecting never asks you to sign anything until you pick a side, and that signature is free.</p>
-      </div>
-      <div class="card seat hidden" id="seatAssigned" style="border-color:rgba(57,241,148,.35)">
-        <div class="row"><img id="asEm" src="/arena/emblem-black-128.svg" width="48" height="48" alt=""><span id="asText" style="font-size:15px;line-height:1.5">You're on Black (assigned). Pick a side to confirm, or keep it.</span></div>
-        <div class="two"><button class="btn" id="pickBtn">Pick</button><button class="btn line" id="keepBtn">Keep Black</button></div>
-      </div>
-      <div class="card hidden" id="seatOn">
-        <div style="padding:20px 24px;display:flex;align-items:center;gap:16px;border-bottom:1px solid var(--line)">
-          <img id="seatPiece" src="/arena/pieces/black-16-pawn.svg" width="48" height="48" alt="">
-          <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">
-            <span style="font-size:17px;font-weight:600" id="seatTitle">Black</span>
-            <span class="mono" style="font-size:12px;color:var(--dim)" id="seatRank">no points yet this season</span>
-          </div>
-          <img id="seatEm" src="/arena/emblem-black-128.svg" width="32" height="32" alt="">
-        </div>
-        <div class="kv"><div><span class="l">this week</span><span class="v" id="seatWeek">0</span></div><div><span class="l">this season</span><span class="v" id="seatSeason">0</span></div></div>
-        <div class="gap hidden" id="seatGapBox"><b id="seatGapText"></b><span id="seatGapSub"></span></div>
-        <div class="atkline hidden" id="seatAtk"></div>
-        <div class="line"><span class="d">multiplier</span><span id="seatMult" style="text-align:right">—</span></div>
-        <div class="line"><span class="d">streak</span><span id="seatStreak">—</span></div>
-        <div class="line"><span class="d">next rank</span><span id="seatNext">—</span></div>
-        <div class="line"><span class="d">next piece</span><span id="seatNextPiece" style="display:flex;align-items:center;gap:8px">—</span></div>
-        <div class="line"><span class="lnk" id="switchBtn">Switch side</span><span class="mono" style="font-size:12px;color:var(--faint)" id="switchNote">once per season</span></div>
-        <div class="steps hidden" id="seatSteps" style="padding:4px 24px 10px">
-          <div class="st"><b>01</b><span><a href="https://trade.throne.network">Trade the desk</a>. Every taker fill scores for you and your side. 1 point per $10.</span></div>
-          <div class="st"><b>02</b><span>Watch this panel. Rank, points this week, and the gap to the next piece update every 10 minutes.</span></div>
-          <div class="st"><b>03</b><span>Sunday 7pm EST the week closes and the King Drop lands. Results post here and on <a href="https://x.com/thronedefi">@thronedefi</a>.</span></div>
-          <div class="st"><b>04</b><span>Hold 100k $THRONE through the week for 1.25x points, 500k for 1.5x.</span></div>
-        </div>
       </div>
     </div>
 
@@ -532,11 +553,11 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     var when = closes ? closes.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}).toLowerCase()+' · 7pm est' : 'sunday 7pm est';
     var ph = board && board.powerHour; var pot = $('pot');
     var potQ = parseInt(new URLSearchParams(location.search).get('pot')||'',10); var potV = (board && board.pot) || (potQ>0 ? potQ : null);
-    if(potV && !(ph && ph.active)){ pot.classList.remove('power'); $('potText').innerHTML = '<span style="font-family:var(--sans);font-size:clamp(24px,2.8vw,34px);color:var(--mint);font-weight:600;letter-spacing:-.02em">'+fmt(potV)+' $THRONE</span> on the line this week.'; $('potSub').textContent = 'accrues weekly, paid when the token switch is on · week '+(board?board.week:'')+' · closes '+when+(season&&season.rehearsal?' · rehearsal preview':''); return; }
+    if(potV && !(ph && ph.active)){ pot.classList.remove('power'); $('potText').innerHTML = '<span style="font-family:var(--sans);font-size:clamp(24px,2.8vw,34px);color:var(--mint);font-weight:600;letter-spacing:-.02em">'+fmt(potV)+' $THRONE</span> on the line this week.'; $('potSub').textContent = 'accrues weekly, paid when the token switch is on · week '+(board?board.week:'')+' · closes '+when+(closes?localTime(+closes):'')+(season&&season.rehearsal?' · rehearsal preview':''); return; }
     if(ph && ph.active){ pot.classList.add('power'); $('potText').textContent = 'Power hour. Every point counts 1.5x until the close.'; $('potSub').textContent = 'closes in '+fmtMs(ph.closesAt-Date.now())+(season&&season.rehearsal?' · rehearsal':''); return; }
     pot.classList.remove('power');
     if(season && season.rehearsal){ $('potText').textContent = 'Rehearsal. Real wallets, real desk volume, no drop. Season zero opens Oct 9.'; $('potSub').textContent = 'clears before week 1'; return; }
-    { $('potText').textContent = "This week's drop: season points, your piece, and first pick of the Court."; $('potSub').textContent = (season&&season.state==='pre') ? 'week 1 opens fri oct 9 · 7pm est' : 'week '+(board?board.week:'')+' · closes '+when; }
+    { $('potText').textContent = "This week's drop: season points, your piece, and first pick of the Court."; $('potSub').textContent = (season&&season.state==='pre') ? 'week 1 opens fri oct 9 · 7pm est'+localTime(+season.opens) : 'week '+(board?board.week:'')+' · closes '+when+(closes?localTime(+closes):''); }
   }
   // ---- chessboard: white on ranks 1-2 (bottom), black on 7-8 (top). rank 1..16 -> classic setup order.
   var SETUP = [['rook',3],['knight',7],['bishop',5],['queen',2],['king',1],['bishop',6],['knight',8],['rook',4]]; // back rank left->right: piece, rank index used
@@ -747,6 +768,71 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
   $('keepBtn').addEventListener('click', function(){ if(mine) choose(mine.side); });
   $('switchBtn').addEventListener('click', function(){ openModal('switch'); });
 
+
+  // ---- UX bits: ranks toggle, tap hint, local time ----
+  $('piecesToggle').addEventListener('click', function(){ var w=$('piecesWrap'); var open=w.classList.toggle('hidden'); this.textContent = open ? 'show full ranks' : 'hide full ranks'; });
+  if(window.matchMedia && matchMedia('(pointer:coarse)').matches){ $('boardHint').textContent='32 pieces · 32 wallets · tap a piece'; }
+  function localTime(ms){ try{ var d=new Date(ms); var tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''; if(/New_York|Toronto|Detroit/.test(tz)) return ''; return ' · your time '+d.toLocaleString(undefined,{weekday:'short',hour:'numeric',minute:'2-digit'}).toLowerCase(); }catch(e){ return ''; } }
+
+  // ---- share card (client-side PNG) ----
+  var CROWN='M-24,10 L-24,-14 L-13,-6 L0,-26 L13,-6 L24,-14 L24,10 Z';
+  function loadImg(src){ return new Promise(function(res){ var im=new Image(); im.onload=function(){res(im)}; im.onerror=function(){res(null)}; im.src=src; }); }
+  function rr(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+  function drawCrown(ctx,cx,cy,scale,fill,stroke,lw){ ctx.save(); ctx.translate(cx,cy); ctx.scale(scale,scale); var p=new Path2D(CROWN); ctx.fillStyle=fill; ctx.strokeStyle=stroke; ctx.lineWidth=lw/scale; ctx.lineJoin='round'; ctx.fill(p); ctx.stroke(p); rr(ctx,-24,10,48,9,4.5); ctx.fill(); ctx.stroke(); ctx.restore(); }
+  async function renderCard(){
+    if(!wallet||!mine||!board) return null;
+    var me = board.wallets[wallet]||{}; var side=mine.side; var rank=me.rank, piece=me.piece;
+    var cv=$('cardCanvas'), ctx=cv.getContext('2d'); var W=1200,H=630;
+    try{ await document.fonts.ready; }catch(e){}
+    var mint='#39F194', fg='#F2F4F0', dim='#9AA39D', faint='#5E6663', gold='#D4AF37';
+    var isKing = rank===1, atk = !!me.attacked;
+    // background
+    ctx.fillStyle='#050605'; ctx.fillRect(0,0,W,H);
+    var g=ctx.createRadialGradient(W*0.78,H*0.45,20,W*0.78,H*0.45,520); g.addColorStop(0, isKing?'rgba(212,175,55,.14)':(side==='white'?'rgba(242,244,240,.10)':'rgba(57,241,148,.12)')); g.addColorStop(1,'rgba(0,0,0,0)'); ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle='rgba(255,255,255,.035)'; ctx.lineWidth=1; for(var x=0;x<W;x+=70){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); } for(var y=0;y<H;y+=70){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+    // logo
+    drawCrown(ctx,84,80,0.62,'#229959',mint,2); ctx.fillStyle=fg; ctx.font='600 28px Inter, system-ui, sans-serif'; ctx.textBaseline='middle'; ctx.fillText('throne.',112,80);
+    ctx.fillStyle=faint; ctx.font='500 16px "JetBrains Mono", monospace'; ctx.textAlign='right'; ctx.fillText('king drop · season zero · week '+(board.week||1), W-64, 80); ctx.textAlign='left';
+    // piece image big on the right
+    var pimg = await loadImg(piece ? pieceSrc(side, rank) : '/arena/emblem-'+side+'-512.svg');
+    if(pimg){ var ps=300; ctx.save(); ctx.globalAlpha=0.95; ctx.drawImage(pimg, W-64-ps, 150, ps, ps); ctx.restore(); }
+    // headline
+    ctx.fillStyle=fg; ctx.font='600 20px "JetBrains Mono", monospace'; ctx.fillStyle=dim; ctx.fillText(short(wallet), 64, 170);
+    ctx.fillStyle = isKing ? gold : fg; ctx.font='600 84px Inter, system-ui, sans-serif'; ctx.textBaseline='alphabetic';
+    var title = piece ? cap(side)+' '+piece : cap(side)+' · no piece yet';
+    ctx.fillText(title, 60, 262);
+    ctx.fillStyle=dim; ctx.font='500 28px Inter, system-ui, sans-serif'; ctx.fillText(rank ? 'rank #'+rank+' of '+((board.sides[side]&&board.sides[side].wallets)||'—')+' on '+cap(side) : 'trade the desk to take a seat', 64, 306);
+    // stats row
+    var stats=[['season pts',fmt(me.season||0)],['this week',fmt(me.week||0)],['streak',(me.streak||0)+'d'],['multiplier',(me.mult||1)+'x']];
+    var sx=64; stats.forEach(function(st){ ctx.fillStyle=faint; ctx.font='500 14px "JetBrains Mono", monospace'; ctx.fillText(st[0], sx, 372); ctx.fillStyle=fg; ctx.font='600 40px Inter, system-ui, sans-serif'; ctx.fillText(st[1], sx, 416); sx += Math.max(180, ctx.measureText(st[1]).width+70); });
+    // status line
+    ctx.font='500 18px "JetBrains Mono", monospace';
+    if(atk){ ctx.fillStyle='#FF6B57'; ctx.fillText('under attack · '+short(me.attacked.addr)+' is coming for my '+piece, 64, 472); }
+    else if(isKing){ ctx.fillStyle=gold; ctx.fillText('holding the crown for '+cap(side), 64, 472); }
+    else if(me.gap && me.gap.usd){ ctx.fillStyle=mint; ctx.fillText('$'+fmt(me.gap.usd)+' of volume from the '+me.gap.piece, 64, 472); }
+    else { ctx.fillStyle=dim; ctx.fillText('every fill on the desk scores for '+cap(side), 64, 472); }
+    // lead bar
+    var shW = board.share ? board.share.white : 0.5; var bx=64, by=538, bw=W-128, bh=8;
+    ctx.fillStyle='#F2F4F0'; rr(ctx,bx,by,bw*shW,bh,4); ctx.fill(); ctx.fillStyle=mint; rr(ctx,bx+bw*shW,by,bw*(1-shW),bh,4); ctx.fill();
+    ctx.fillStyle=faint; ctx.font='500 14px "JetBrains Mono", monospace'; ctx.fillText('white '+Math.round(shW*100)+'%', bx, 572); ctx.textAlign='right'; ctx.fillText('black '+Math.round((1-shW)*100)+'%', bx+bw, 572); ctx.textAlign='center'; ctx.fillText('share of points this week', bx+bw/2, 572); ctx.textAlign='left';
+    ctx.fillStyle=faint; ctx.font='500 16px "JetBrains Mono", monospace'; ctx.fillText('throne.network/board', 64, 606);
+    return cv;
+  }
+  function cardText(){
+    var me = board&&board.wallets[wallet]||{}; var side=mine?mine.side:''; var piece=me.piece, rank=me.rank;
+    var t;
+    if(me.attacked) t = "Someone is coming for my "+piece+" on "+cap(side)+". Not today.\n\nKing Drop on the throne. desk: stocks and crypto perps, every fill scores for your side.";
+    else if(rank===1) t = "Holding the crown for "+cap(side)+" on King Drop. Come take it.\n\nthrone. desk: stocks and crypto perps, every fill scores for your side.";
+    else if(piece) t = cap(side)+" "+piece+", rank #"+rank+" on King Drop. "+fmt(me.season||0)+" season points and counting.\n\nthrone. desk: stocks and crypto perps, every fill scores for your side.";
+    else t = "I'm on "+cap(side)+" for season zero of King Drop on the throne. desk. Stocks and crypto perps, every trade scores for my side.";
+    return t+"\n\nthrone.network/board";
+  }
+  async function openCard(){ if(!wallet){ await connect(); if(!wallet) return; } var cv=await renderCard(); if(!cv) return; $('cardModal').classList.add('on'); try{ $('cardDl').href=cv.toDataURL('image/png'); }catch(e){} $('cardX').href='https://x.com/intent/post?text='+encodeURIComponent(cardText()); }
+  $('cardBtn').addEventListener('click', openCard);
+  $('cardPost').addEventListener('click', openCard);
+  $('cardClose').addEventListener('click', function(){ $('cardModal').classList.remove('on'); });
+  $('cardModal').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('on'); });
+
   // ---- load ----
   async function load(){
     try{ season = await fetch(API+'/season',{cache:'no-store'}).then(function(r){return r.json();}); }catch(e){}
@@ -760,5 +846,6 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
   load(); setInterval(load, 600000);
 })();
 </script>
+<div class="cardm" id="cardModal"><div class="in"><canvas id="cardCanvas" width="1200" height="630"></canvas><div class="acts"><button class="btn line" id="cardClose" style="width:auto;padding:9px 14px;font-size:13px">Close</button><a class="btn line" id="cardDl" download="king-drop-card.png" style="width:auto;padding:9px 14px;font-size:13px;text-decoration:none">Download PNG</a><a class="btn" id="cardX" target="_blank" rel="noreferrer" style="width:auto;padding:9px 14px;font-size:13px;text-decoration:none">Post on X</a></div><p class="mono" style="margin:0;font-size:11px;color:var(--faint)">download the card, then attach it to the post. the post text is prefilled.</p></div></div>
 </body>
 </html>
