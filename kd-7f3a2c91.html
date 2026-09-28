@@ -270,7 +270,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     <div class="sub" style="display:none"><span class="dot"></span><span id="subline">white vs black · season zero · loading</span></div>
   </div>
 
-  <div class="pot" id="pot"><b id="potText">This week's drop: season points, your piece, and first pick of the Court.</b><span id="potSub">closes sunday 7pm est</span><span class="potNote" style="flex-basis:100%">$THRONE holders score up to 1.5x · beta list wallets 2x · combined cap 2x</span></div>
+  <div class="pot" id="pot"><b id="potText">This week's drop: season points, your piece, and first pick of the Court.</b><span id="potSub">closes sunday 7pm est</span><span class="potNote" style="flex-basis:100%">$THRONE holders score up to 1.5x</span></div>
 
   <div class="grid" id="seatWrap">
     <div class="sec full" id="seat">
@@ -599,9 +599,9 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     var potQ = parseInt(new URLSearchParams(location.search).get('pot')||'',10); var potV = (board && board.pot) || (potQ>0 ? potQ : null);
     if(potV && !(ph && ph.active)){ pot.classList.remove('power');
       var big='<span style="font-family:var(--sans);font-size:clamp(24px,2.8vw,34px);color:var(--mint);font-weight:600;letter-spacing:-.02em">'+fmt(potV)+' $THRONE</span>';
-      if(board && board.week===0){ $('potText').innerHTML = big+' on the line from week 1. Points you score now count toward your season rank, so early traders keep their edge.'; $('potSub').textContent = 'pre-season · week 1 opens fri oct 9 · 7pm est · closes sun oct 18'+localTime(+board.closes)+' · accrues weekly, paid when the token switch is on'; }
-      else if(season && season.state==='pre'){ $('potText').innerHTML = big+' on the line in week 1. Points you score now count toward your season rank.'; $('potSub').textContent = 'week 1 opens fri oct 9 · 7pm est · closes sun oct 18'+localTime(+season.opens)+' · accrues weekly, paid when the token switch is on'; }
-      else { $('potText').innerHTML = big+' on the line this week.'; $('potSub').textContent = 'accrues weekly, paid when the token switch is on · week '+(board?board.week:'')+' · closes '+when+(closes?localTime(+closes):''); }
+      if(board && board.week===0){ $('potText').innerHTML = big+' <span style="color:var(--fg)">· King Drop rewards for points</span>'; $('potSub').textContent = 'pre-season: from now until oct 18'; }
+      else if(season && season.state==='pre'){ $('potText').innerHTML = big+' <span style="color:var(--fg)">· King Drop rewards for points</span>'; $('potSub').textContent = 'week 1: oct 9 to oct 18'; }
+      else { $('potText').innerHTML = big+' <span style="color:var(--fg)">· King Drop rewards for points</span>'; $('potSub').textContent = 'week '+(board?board.week:'')+': closes '+when+(closes?localTime(+closes):''); }
       return; }
     if(ph && ph.active){ pot.classList.add('power'); $('potText').textContent = 'Power hour. Every point counts 1.5x until the close.'; $('potSub').textContent = 'closes in '+fmtMs(ph.closesAt-Date.now())+(season&&season.rehearsal?' · rehearsal':''); return; }
     pot.classList.remove('power');
