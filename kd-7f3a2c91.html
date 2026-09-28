@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>King Drop · throne.</title>
+<meta name="description" content="White vs Black. The desk keeps score.">
+<meta property="og:title" content="King Drop · throne.">
+<meta property="og:description" content="White vs Black. The desk keeps score.">
+<meta property="og:image" content="https://throne.network/arena/og-board.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="/throne-favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050605;--panel:#0A0C0B;--panel2:#0D100F;--fg:#F2F4F0;--dim:#9BA39E;--faint:#5E6663;--line:rgba(255,255,255,.07);--line2:rgba(255,255,255,.14);--mint:#39F194;--gold:#D4AF37;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:Inter,system-ui,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 var(--sans)}
+a{color:var(--mint);text-decoration:none}a:hover{color:var(--fg)}
+.mono{font-family:var(--mono)}
+.wrap{max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px)}
+.nav{display:flex;justify-content:space-between;align-items:center;height:72px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);font-weight:600;font-size:20px;letter-spacing:-.01em}
+.brand b{color:var(--mint);font-weight:600}
+.links{display:flex;align-items:center;gap:clamp(14px,2.2vw,32px);font-size:14px;white-space:nowrap}
+.links a{color:var(--dim)}.links a:hover{color:var(--fg)}
+@media (max-width:720px){.links a.hide{display:none}}
+.pill{padding:9px 16px;border:1px solid var(--mint);border-radius:3px;color:var(--mint);font-family:var(--mono);font-size:13px;cursor:pointer;background:none}
+.pill:hover{background:var(--mint);color:var(--bg)}
+.pill.ghost{border-color:var(--line);color:var(--fg);cursor:default}.pill.ghost:hover{background:none;color:var(--fg)}
+h1{margin:0;font-size:clamp(48px,6vw,80px);font-weight:600;letter-spacing:-.045em;line-height:1}
+h1 .i{position:relative;display:inline-block}
+h1 .i img{position:absolute;left:50%;top:-.06em;width:.3em;height:.3em;transform:translateX(-50%)}
+.sub{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:13px;color:var(--dim);flex-wrap:wrap}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--mint);flex-shrink:0}
+.hero{margin-top:32px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+@media (max-width:720px){.hero{grid-template-columns:1fr}}
+.side{padding:40px clamp(20px,3vw,44px) 36px;display:flex;flex-direction:column;gap:28px;min-width:0}
+.side.w{background:var(--fg);color:var(--bg)}
+.side.b{background:var(--panel2);border-left:1px solid var(--line)}
+@media (max-width:720px){.side.b{border-left:0;border-top:1px solid var(--line)}}
+.side .name{font-size:clamp(56px,9vw,136px);font-weight:600;letter-spacing:-.055em;line-height:.85}
+.side .top{display:flex;justify-content:space-between;align-items:flex-start}
+.side .meta{display:flex;flex-direction:column;gap:8px;padding-top:10px;font-family:var(--mono);font-size:12px}
+.side.w .meta{align-items:flex-end;color:var(--faint)}.side.b .meta{align-items:flex-start;color:var(--dim)}
+.tag{padding:3px 7px;border:1px solid currentColor;border-radius:2px;white-space:nowrap}
+.side.b .tag{color:var(--mint);border-color:rgba(57,241,148,.5)}
+.pts{display:flex;flex-direction:column;gap:6px}.side.b .pts{align-items:flex-end}
+.pts .l{font-family:var(--mono);font-size:12px}.side.w .pts .l{color:var(--faint)}.side.b .pts .l{color:var(--dim)}
+.pts .v{font-family:var(--mono);font-size:clamp(36px,4.4vw,64px);font-weight:600;letter-spacing:-.03em;line-height:1}
+.side.b .pts .v{color:var(--mint)}
+.king{display:flex;align-items:center;gap:14px;padding-top:20px;font-family:var(--mono);font-size:14px;flex-wrap:wrap}
+.side.w .king{border-top:1px solid rgba(5,6,5,.12)}.side.b .king{border-top:1px solid var(--line)}
+.king .ml{margin-left:auto}
+.threat{display:flex;align-items:center;gap:6px;color:var(--gold);font-size:12px;white-space:nowrap}
+.bar{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.bar .track{display:flex;height:6px;border-radius:3px;overflow:hidden;background:var(--panel2)}
+.bar .track .w{background:var(--fg)}.bar .track .b{flex:1;background:var(--mint)}
+.bar .lbl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;color:var(--dim)}
+.drop{margin-top:32px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);border:1px solid rgba(57,241,148,.35);border-radius:3px;overflow:hidden;background:var(--panel2)}
+@media (max-width:720px){.drop{grid-template-columns:1fr}}
+.drop .em{display:flex;align-items:center;justify-content:center;padding:40px;border-right:1px solid rgba(57,241,148,.25);background:var(--bg)}
+.drop .em img{width:100%;max-width:300px;height:auto}
+.drop .body{padding:44px clamp(24px,3.4vw,52px);display:flex;flex-direction:column;gap:28px;min-width:0}
+.drop .h{font-size:clamp(48px,6.4vw,96px);font-weight:600;letter-spacing:-.05em;line-height:.92}
+.drop .nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-family:var(--mono)}
+.drop .nums div{padding:16px 0 16px 20px;display:flex;flex-direction:column;gap:6px;border-left:1px solid var(--line)}
+.drop .nums div:first-child{padding-left:0;border-left:0}
+.drop .nums span:first-child{font-size:12px;color:var(--dim)}
+.drop .nums span:last-child{font-size:clamp(22px,2.4vw,32px);font-weight:600}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 20px;background:var(--mint);color:var(--bg);border-radius:3px;font-weight:600;font-size:15px;cursor:pointer;border:0;font-family:var(--sans)}
+.btn:hover{background:var(--fg);color:var(--bg)}
+.btn.line{background:none;color:var(--fg);border:1px solid var(--line2)}.btn.line:hover{border-color:var(--fg);background:none}
+.grid{margin-top:48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;align-items:start}
+.sec{display:flex;flex-direction:column;gap:14px}
+.sec.full{grid-column:1 / -1}
+.sech{display:flex;justify-content:space-between;align-items:baseline}
+.sech b{font-size:20px;font-weight:600;white-space:nowrap}
+.sech span{font-family:var(--mono);font-size:12px;color:var(--dim)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:3px}
+.pieces{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.ph{display:flex;justify-content:space-between;height:36px;align-items:center;padding:0 14px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:12px;color:var(--dim)}
+.prow{display:grid;grid-template-columns:26px 28px minmax(0,1fr) auto 44px;align-items:center;gap:6px;height:40px;padding:0 14px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:13px}
+.prow:last-child{border-bottom:0}
+.prow .a{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prow .p{text-align:right}
+.prow .t{display:flex;justify-content:flex-end;align-items:center;gap:4px;font-size:11px;color:var(--mint)}
+.prow.me{background:rgba(57,241,148,.06)}
+.seat{padding:28px 24px;display:flex;flex-direction:column;gap:16px}
+.seat p{margin:0;color:var(--dim);line-height:1.5}
+.seat .row{display:flex;align-items:center;gap:16px}
+.seat .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kv{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--line)}
+.kv div{padding:16px 24px;display:flex;flex-direction:column;gap:6px}
+.kv div+div{border-left:1px solid var(--line)}
+.kv .l{font-family:var(--mono);font-size:12px;color:var(--dim)}
+.kv .v{font-family:var(--mono);font-size:22px;font-weight:600}
+.line{padding:14px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:13px}
+.line:last-child{border-bottom:0}
+.line .d{color:var(--dim)}
+.lnk{color:var(--fg);cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(242,244,240,.3);font-family:var(--sans)}
+.lnk:hover{color:var(--mint)}
+.chart{padding:20px 20px 14px}
+.bars{display:flex;align-items:flex-end;gap:10px;height:160px;border-bottom:1px solid var(--line)}
+.bars .day{flex:1;display:flex;align-items:flex-end;justify-content:center;gap:3px;height:100%}
+.bars .day i{display:block;width:9px}
+.bars .day i.w{background:var(--fg)}.bars .day i.b{background:var(--mint)}
+.dl{display:flex;gap:10px;padding-top:8px}
+.dl span{flex:1;text-align:center;font-family:var(--mono);font-size:11px;color:var(--dim)}
+.leg{display:flex;gap:16px;padding-top:12px;font-family:var(--mono);font-size:11px;color:var(--dim)}
+.leg span{display:flex;align-items:center;gap:6px}.leg i{width:8px;height:8px;display:inline-block}
+.res{margin-top:64px;display:flex;flex-direction:column;gap:14px}
+.rt{font-family:var(--mono);font-size:13px}
+.rh,.rr{display:grid;grid-template-columns:70px 110px 1fr 1fr 1fr 1.3fr;align-items:center;padding:0 20px;border-bottom:1px solid var(--line)}
+.rh{height:40px;font-size:12px;color:var(--dim)}.rr{height:44px}
+.rr:last-child{border-bottom:0}
+.rr .r{text-align:right}
+.rr .h{display:flex;justify-content:flex-end;align-items:center;gap:10px}
+.rr.empty{color:var(--faint)}
+@media (max-width:720px){.rh,.rr{grid-template-columns:50px 80px 1fr 1fr;padding:0 14px}.rh .r:nth-child(5),.rr .r:nth-child(5),.rh .h,.rr .h{display:none}}
+.copy{width:12px;height:12px;border:1px solid var(--dim);border-radius:2px;position:relative;cursor:pointer;display:inline-block}
+.copy:hover{border-color:var(--mint)}
+.copy:before{content:"";position:absolute;left:3px;top:-4px;width:9px;height:9px;border:1px solid var(--dim);border-radius:2px;background:var(--panel)}
+.how{margin-top:64px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:24px;padding-top:32px;border-top:1px solid var(--line)}
+@media (max-width:720px){.how{grid-template-columns:1fr}}
+.how b{font-size:20px;font-weight:600}
+.how .li{display:grid;grid-template-columns:48px 1fr;padding:16px 0;border-bottom:1px solid var(--line);line-height:1.5}
+.how .li span:first-child{font-family:var(--mono);color:var(--mint)}
+footer{margin-top:80px;padding:28px 0 40px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--dim);gap:16px;flex-wrap:wrap}
+footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
+.modalbg{position:fixed;inset:0;z-index:50;background:rgba(5,6,5,.86);display:none;align-items:center;justify-content:center;padding:20px}
+.modalbg.on{display:flex}
+.modal{width:100%;max-width:480px;background:var(--panel);border:1px solid var(--line);border-radius:3px;display:flex;flex-direction:column;max-height:92vh;overflow:auto}
+.mh{display:flex;justify-content:space-between;align-items:center;height:48px;padding:0 20px;border-bottom:1px solid var(--line);flex-shrink:0}
+.mh .t{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px}
+.mh .t small{font-family:var(--mono);font-size:11px;color:var(--faint);font-weight:400}
+.mh .x{cursor:pointer;font-size:18px;line-height:1;color:var(--dim)}.mh .x:hover{color:var(--fg)}
+.mb{padding:28px 24px 24px;display:flex;flex-direction:column;gap:20px;flex:1}
+.mb h2{margin:0;font-size:32px;font-weight:600;letter-spacing:-.03em;line-height:1}
+.mb p{margin:0;font-size:14.5px;line-height:1.6;color:var(--dim)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opt{border-radius:3px;padding:18px 16px 16px;display:flex;flex-direction:column;gap:14px;cursor:pointer;border:1px solid}
+.opt.w{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.opt.b{background:var(--panel2);border-color:rgba(57,241,148,.45)}
+.opt:hover{border-color:var(--mint)}
+.opt.off{opacity:.45;cursor:not-allowed}
+.opt .n{font-size:26px;font-weight:600;letter-spacing:-.03em;line-height:1}
+.opt .s{font-family:var(--mono);font-size:11.5px;line-height:1.5}
+.opt.w .s{color:var(--faint)}.opt.b .s{color:var(--dim)}
+.note{font-size:13.5px;padding:10px 12px;border:1px solid var(--line);border-radius:3px;background:var(--panel2)}
+.err{font-family:var(--mono);font-size:12px;color:#FF6B57;min-height:0}
+.forme{align-self:center;font-size:13.5px;color:var(--dim);cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(155,163,158,.4)}
+.forme:hover{color:var(--mint)}
+.mf{margin-top:auto;text-align:center;font-family:var(--mono);font-size:11px;color:var(--faint);padding-top:14px;border-top:1px solid var(--line)}
+.ticket{border:1px solid var(--gold);border-radius:3px;background:var(--panel2);display:grid;grid-template-columns:minmax(0,1fr) 112px}
+.ticket .tl{padding:14px 16px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.ticket .tl .k{font-family:var(--mono);font-size:11px;color:var(--dim);white-space:nowrap}
+.ticket .tl .n{font-size:36px;font-weight:600;letter-spacing:-.045em;line-height:.9}
+.ticket .tl .m{display:flex;gap:18px;font-family:var(--mono);font-size:12px;white-space:nowrap;flex-wrap:wrap}
+.ticket .tl .m i{color:var(--dim);font-style:normal}
+.ticket .tr{border-left:1px dashed rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center}
+.ticket .tr.w{background:var(--fg)}
+.hidden{display:none !important}
+.empty{padding:22px 14px;font-family:var(--mono);font-size:12px;color:var(--faint)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="nav">
+    <a class="brand" href="/"><img src="/arena/crown.svg" width="24" height="24" alt=""><span>throne<b>.</b></span></a>
+    <div class="links">
+      <a class="hide" href="#how">How it works</a>
+      <a class="hide" href="/points">Points</a>
+      <a class="hide" href="https://docs.throne.network">Docs</a>
+      <a class="hide" href="https://x.com/thronedefi">@thronedefi</a>
+      <button class="pill" id="navBtn">connect</button>
+    </div>
+  </nav>
+
+  <div style="padding:40px 0 4px;display:flex;flex-direction:column;gap:14px">
+    <h1>K<span class="i">ı<img src="/arena/crown.svg" alt=""></span>ng Drop</h1>
+    <div class="sub"><span class="dot"></span><span id="subline">white vs black · season zero · loading</span></div>
+  </div>
+
+  <!-- sunday drop hero (first 24h after a close) -->
+  <div class="drop hidden" id="dropHero">
+    <div class="em"><img id="dropEm" src="/arena/emblem-black-512.svg" alt=""></div>
+    <div class="body">
+      <span class="mono" style="font-size:13px;color:var(--mint)" id="dropWk">week 1 · closed sunday 7pm est</span>
+      <span class="h" id="dropH">Black took<br>the week.</span>
+      <div class="nums">
+        <div><span id="dropL1">black</span><span id="dropV1" style="color:var(--mint)">—</span></div>
+        <div><span id="dropL2">white</span><span id="dropV2">—</span></div>
+        <div><span>margin</span><span id="dropV3">—</span></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:13px">
+        <span style="color:var(--dim)">hash <span style="color:var(--fg)" id="dropHash">—</span></span>
+        <a class="btn" href="#seat">See your drop.</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- live hero -->
+  <div class="hero" id="liveHero">
+    <div class="side w">
+      <div class="top">
+        <span class="name">White</span>
+        <div class="meta"><span id="wCount">— traders</span><span class="tag hidden" id="wTag"></span></div>
+      </div>
+      <div class="pts"><span class="l">points this week</span><span class="v" id="wPts">—</span></div>
+      <div class="king">
+        <img src="/arena/pieces/white-01-king.svg" width="32" height="32" alt="">
+        <span style="color:var(--faint)">king</span>
+        <span id="wKing" style="white-space:nowrap">—</span>
+        <span class="threat hidden" id="wThreat" title="Black's top wallet out-scored this king this week"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M2.5,8 L2.5,3 L5,5 L8,1.5 L11,5 L13.5,3 L13.5,8 Z"/><path d="M8,10.5 L8,15 M5.8,12.8 L8,15 L10.2,12.8"/></svg>crown under threat</span>
+        <span class="ml" style="font-weight:600" id="wKingPts">—</span>
+      </div>
+    </div>
+    <div class="side b">
+      <div class="top">
+        <div class="meta"><span id="bCount">— traders</span><span class="tag hidden" id="bTag"></span></div>
+        <span class="name">Black</span>
+      </div>
+      <div class="pts"><span class="l">points this week</span><span class="v" id="bPts">—</span></div>
+      <div class="king">
+        <span style="font-weight:600" id="bKingPts">—</span>
+        <span class="threat hidden" id="bThreat" title="White's top wallet out-scored this king this week"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M2.5,8 L2.5,3 L5,5 L8,1.5 L11,5 L13.5,3 L13.5,8 Z"/><path d="M8,10.5 L8,15 M5.8,12.8 L8,15 L10.2,12.8"/></svg>crown under threat</span>
+        <span class="ml" style="display:flex;align-items:center;gap:14px;white-space:nowrap"><span id="bKing">—</span><span style="color:var(--dim)">king</span></span>
+        <img src="/arena/pieces/black-01-king.svg" width="32" height="32" alt="">
+      </div>
+    </div>
+  </div>
+  <div class="bar" id="shareBar">
+    <div class="track"><div class="w" id="shareW" style="width:50%"></div><div class="b"></div></div>
+    <div class="lbl"><span id="shareWl">white —</span><span>share of points this week</span><span id="shareBl">black —</span></div>
+  </div>
+
+  <div class="grid">
+    <div class="sec full">
+      <div class="sech"><b>Pieces</b><span>top 16 per side · season points</span></div>
+      <div class="pieces">
+        <div class="card"><div class="ph"><span>white</span><span>pts</span></div><div id="wPieces"></div></div>
+        <div class="card"><div class="ph"><span>black</span><span>pts</span></div><div id="bPieces"></div></div>
+      </div>
+    </div>
+
+    <div class="sec" id="seat">
+      <div class="sech"><b>Your seat</b><span id="seatAddr" style="color:var(--mint)"></span></div>
+      <div class="card seat" id="seatOff">
+        <p>Connect to see your seat.</p>
+        <button class="btn" id="connectBtn">Connect</button>
+        <p class="mono" style="font-size:11px;color:var(--faint)">Read only. Connecting never asks you to sign anything until you pick a side, and that signature is free.</p>
+      </div>
+      <div class="card seat hidden" id="seatAssigned" style="border-color:rgba(57,241,148,.35)">
+        <div class="row"><img id="asEm" src="/arena/emblem-black-128.svg" width="48" height="48" alt=""><span id="asText" style="font-size:15px;line-height:1.5">You're on Black (assigned). Pick a side to confirm, or keep it.</span></div>
+        <div class="two"><button class="btn" id="pickBtn">Pick</button><button class="btn line" id="keepBtn">Keep Black</button></div>
+      </div>
+      <div class="card hidden" id="seatOn">
+        <div style="padding:20px 24px;display:flex;align-items:center;gap:16px;border-bottom:1px solid var(--line)">
+          <img id="seatPiece" src="/arena/pieces/black-16-pawn.svg" width="48" height="48" alt="">
+          <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">
+            <span style="font-size:17px;font-weight:600" id="seatTitle">Black</span>
+            <span class="mono" style="font-size:12px;color:var(--dim)" id="seatRank">no points yet this season</span>
+          </div>
+          <img id="seatEm" src="/arena/emblem-black-128.svg" width="32" height="32" alt="">
+        </div>
+        <div class="kv"><div><span class="l">this week</span><span class="v" id="seatWeek">0</span></div><div><span class="l">this season</span><span class="v" id="seatSeason">0</span></div></div>
+        <div class="line"><span class="d">next rank</span><span id="seatNext">—</span></div>
+        <div class="line"><span class="d">next piece</span><span id="seatNextPiece" style="display:flex;align-items:center;gap:8px">—</span></div>
+        <div class="line"><span class="lnk" id="switchBtn">Switch side</span><span class="mono" style="font-size:12px;color:var(--faint)" id="switchNote">once per season</span></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sech"><b>The week</b><span>points per day</span></div>
+      <div class="card chart">
+        <div class="bars" id="bars"></div>
+        <div class="dl" id="dayLabels"></div>
+        <div class="leg"><span><i style="background:var(--fg)"></i>white</span><span><i style="background:var(--mint)"></i>black</span></div>
+      </div>
+      <div class="mono" style="font-size:12px;line-height:1.6;color:var(--dim)" id="lastWeekLine">no weeks closed yet</div>
+    </div>
+  </div>
+
+  <div class="res" id="results">
+    <span style="font-size:20px;font-weight:600">Results</span>
+    <div class="card rt">
+      <div class="rh"><span>week</span><span>winner</span><span class="r">white</span><span class="r">black</span><span class="r">margin</span><span class="h">hash</span></div>
+      <div id="resRows"></div>
+    </div>
+  </div>
+
+  <div class="how" id="how">
+    <b>How it works</b>
+    <div>
+      <div class="li"><span>01</span><span>Every wallet that trades is in. You're assigned a side; pick one once a season to make it yours.</span></div>
+      <div class="li"><span>02</span><span>Trade the desk; taker volume earns points for you and your side. 1 point per $10.</span></div>
+      <div class="li"><span>03</span><span>Weeks close Sunday 7pm EST; the side with more points takes the King Drop.</span></div>
+      <div class="li"><span>04</span><span>Top 16 on each side hold the pieces. Points set your place in line when the Court opens.</span></div>
+      <div class="li"><span>05</span><span>Results are published with a hash so anyone can check them against the venue's public data.</span></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="brand" style="font-size:15px"><img src="/arena/crown.svg" width="18" height="18" alt=""><span>throne<b>.</b></span></div>
+    <div class="l"><a href="https://docs.throne.network">Docs</a><a href="/terms">Terms</a><a href="https://x.com/thronedefi">@thronedefi</a></div>
+    <span class="mono" style="font-size:12px">this is a defi experiment, please use at your own risk.</span>
+  </footer>
+</div>
+
+<!-- onboarding / pick modal -->
+<div class="modalbg" id="modal">
+  <div class="modal">
+    <div class="mh"><div class="t"><img src="/arena/crown.svg" width="16" height="16" alt="">King Drop <small>white vs black</small></div><span class="x" id="mClose">×</span></div>
+    <div class="mb" id="mPick">
+      <h2 id="mTitle">Pick your side.</h2>
+      <p>The desk keeps score. Every trade you make earns points for you and for your side. Each week the side with more points takes the King Drop, a weekly reward for the traders who made it happen. Your points also set your place in line when the Court opens.</p>
+      <div class="opts">
+        <div class="opt w" id="optW"><img src="/arena/emblem-white-128.svg" width="64" height="64" alt=""><div><div class="n">White</div><div class="s"><span id="optWc">—</span> traders<br>moves first</div></div></div>
+        <div class="opt b" id="optB"><img src="/arena/emblem-black-128.svg" width="64" height="64" alt=""><div><div class="n">Black</div><div class="s"><span id="optBc">—</span> traders<br>answers every move</div></div></div>
+      </div>
+      <span class="note hidden" id="fullMsg"></span>
+      <span class="forme" id="forMe">Pick for me.</span>
+      <span class="err" id="mErr"></span>
+      <span class="mf">one wallet · one side · one season · switch once from the board</span>
+    </div>
+    <div class="mb hidden" id="mDone">
+      <div style="display:flex;align-items:center;gap:16px">
+        <img id="dEm" src="/arena/emblem-black-128.svg" width="72" height="72" alt="">
+        <div style="display:flex;flex-direction:column;gap:8px"><h2 id="dTitle">You're on Black.</h2><span style="font-size:14.5px;color:var(--dim)">Trade to earn. The week closes Sunday 7pm EST.</span></div>
+      </div>
+      <div class="ticket">
+        <div class="tl"><span class="k" id="tK">throne. · king drop · black</span><span class="n" id="tN">Black</span><div class="m"><span><i>wallet</i> <span id="tW">—</span></span><span><i>season</i> zero</span></div></div>
+        <div class="tr" id="tR"><img id="tEm" src="/arena/emblem-black-128.svg" width="72" height="72" alt=""></div>
+      </div>
+      <a class="btn" id="shareX" target="_blank" rel="noreferrer">Post it on X</a>
+      <span class="forme" id="toBoard" style="text-decoration:none">Go to the board</span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var API = '/api/arena';
+  var $ = function(id){ return document.getElementById(id); };
+  var PIECES = ['king','queen','rook','rook','bishop','bishop','knight','knight','pawn','pawn','pawn','pawn','pawn','pawn','pawn','pawn'];
+  var fmt = function(n){ return (Math.round(n||0)).toLocaleString('en-US'); };
+  var short = function(a){ return a ? a.slice(0,6)+'…'+a.slice(-4) : '—'; };
+  var pieceSrc = function(side, rank){ return '/arena/pieces/'+side+'-'+String(rank).padStart(2,'0')+'-'+PIECES[rank-1]+'.svg'; };
+  var cap = function(s){ return s.charAt(0).toUpperCase()+s.slice(1); };
+
+  var season = null, board = null, wallet = null, mine = null;
+
+  // ---- countdown ----
+  function fmtMs(ms){ if(ms<=0) return '0h 00m'; var d=Math.floor(ms/864e5), h=Math.floor(ms%864e5/36e5), m=Math.floor(ms%36e5/6e4); return (d>0?d+'d ':'')+h+'h '+String(m).padStart(2,'0')+'m'; }
+  function subline(){
+    if(!season) return;
+    var s = 'white vs black · season zero · ';
+    if(season.state==='pre') s += 'opens fri oct 2 · 7pm est · <span style="color:var(--fg)">'+fmtMs(season.opens-Date.now())+'</span>';
+    else if(season.state==='ended') s += 'season closed';
+    else s += 'week '+season.week+' of '+season.weeks+' · closes sunday 7pm est · <span style="color:var(--fg)">'+fmtMs(season.closes-Date.now())+'</span>';
+    $('subline').innerHTML = s;
+  }
+  setInterval(subline, 30000);
+
+  // ---- render board ----
+  function renderPieces(side, list){
+    var el = $(side==='white'?'wPieces':'bPieces'); el.innerHTML='';
+    if(!list || !list.length){ el.innerHTML = '<div class="empty">'+(season && season.state==='pre' ? 'pieces are held from the first trade of the season.' : 'no points yet.')+'</div>'; return; }
+    var promos = (board.promotions||[]).filter(function(p){return p.side===side;}).map(function(p){return p.addr;});
+    list.forEach(function(p){
+      var col = p.rank<=2 ? 'var(--gold)' : p.rank<=8 ? 'var(--fg)' : 'var(--dim)';
+      var row = document.createElement('div'); row.className='prow'+(wallet && p.addr===wallet?' me':''); row.style.color=col;
+      row.innerHTML = '<span>'+String(p.rank).padStart(2,'0')+'</span><img src="'+pieceSrc(side,p.rank)+'" width="22" height="22" alt=""><span class="a">'+short(p.addr)+'</span><span class="p">'+fmt(p.season)+'</span><span class="t">'+(promos.indexOf(p.addr)>=0?'<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#39F194" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><title>promoted into the top 8 this week</title><path d="M3,8.5 L8,3.5 L13,8.5"/><path d="M3,13.5 L8,8.5 L13,13.5"/></svg>':'')+(p.beta?'2x':'')+'</span>';
+      el.appendChild(row);
+    });
+  }
+  function renderDays(){
+    var bars=$('bars'), lbls=$('dayLabels'); bars.innerHTML=''; lbls.innerHTML='';
+    var days = (board.days||[]);
+    var max = 1; days.forEach(function(d){ max=Math.max(max,d.white,d.black); });
+    var start = season && season.opens ? new Date(season.opens) : new Date();
+    var n = season && season.week===1 ? 10 : 7;
+    var byDate={}; days.forEach(function(d){ byDate[d.date]=d; });
+    var today = new Date().toISOString().slice(0,10);
+    for(var i=0;i<n;i++){
+      var dt = new Date(start.getTime()+i*864e5); var key = dt.toISOString().slice(0,10); var d = byDate[key];
+      var day=document.createElement('div'); day.className='day';
+      day.innerHTML='<i class="w" style="height:'+(d?Math.round(d.white/max*150):0)+'px"></i><i class="b" style="height:'+(d?Math.round(d.black/max*150):0)+'px"></i>';
+      bars.appendChild(day);
+      var l=document.createElement('span'); l.textContent = d||key<=today ? ['sun','mon','tue','wed','thu','fri','sat'][dt.getUTCDay()] : '–'; if(key===today) l.style.color='var(--mint)'; lbls.appendChild(l);
+    }
+  }
+  function renderResults(){
+    var el=$('resRows'); el.innerHTML='';
+    var rs = board.results||[]; var byWeek={}; rs.forEach(function(r){byWeek[r.week]=r;});
+    var weeks = (season&&season.weeks)||9;
+    for(var i=1;i<=weeks;i++){
+      var r=byWeek[i]; var row=document.createElement('div');
+      if(r){
+        row.className='rr';
+        var wc = r.winner==='black'?'var(--mint)':r.winner==='white'?'var(--fg)':'var(--dim)';
+        row.innerHTML='<span>'+String(i).padStart(2,'0')+'</span><span style="color:'+wc+'">'+r.winner+'</span><span class="r">'+fmt(r.white)+'</span><span class="r">'+fmt(r.black)+'</span><span class="r">'+fmt(r.margin)+'</span><span class="h"><a href="'+API+'/results?week='+i+'" target="_blank" style="color:var(--mint)">'+r.hash.slice(0,4)+'…'+r.hash.slice(-4)+'</a><span class="copy" title="copy" data-h="'+r.hash+'"></span></span>';
+      } else if(season && season.state==='live' && i===season.week){
+        row.className='rr';
+        row.innerHTML='<span>'+String(i).padStart(2,'0')+'</span><span style="color:var(--mint)">live</span><span class="r">'+fmt(board.sides.white.pts)+'</span><span class="r">'+fmt(board.sides.black.pts)+'</span><span class="r">'+fmt(Math.abs(board.sides.white.pts-board.sides.black.pts))+'</span><span class="h" style="color:var(--dim)">–</span>';
+      } else {
+        row.className='rr empty';
+        row.innerHTML='<span>'+String(i).padStart(2,'0')+'</span><span>–</span><span class="r">–</span><span class="r">–</span><span class="r">–</span><span class="h">–</span>';
+      }
+      el.appendChild(row);
+    }
+    el.querySelectorAll('.copy').forEach(function(c){ c.addEventListener('click',function(){ try{navigator.clipboard.writeText(c.getAttribute('data-h'));}catch(e){} }); });
+    var last = rs[rs.length-1];
+    $('lastWeekLine').innerHTML = last ? 'week '+last.week+' · '+last.winner+(last.winner==='draw'?'':' won')+' · '+fmt(last.white)+' to '+fmt(last.black)+' · hash <a href="#results">'+last.hash.slice(0,4)+'…'+last.hash.slice(-4)+'</a>' : (season&&season.state==='pre' ? 'week 1 opens fri oct 2 · 7pm est · closes sun oct 11' : 'no weeks closed yet');
+  }
+  function renderHero(){
+    var W=board.sides.white, B=board.sides.black;
+    $('wPts').textContent=fmt(W.pts); $('bPts').textContent=fmt(B.pts);
+    $('wCount').textContent=fmt(W.wallets)+' traders'; $('bCount').textContent=fmt(B.wallets)+' traders';
+    $('wKing').textContent = W.king?short(W.king.addr):'—'; $('wKingPts').textContent = W.king?fmt(W.king.season)+' pts':'—';
+    $('bKing').textContent = B.king?short(B.king.addr):'—'; $('bKingPts').textContent = B.king?fmt(B.king.season)+' pts':'—';
+    $('wThreat').classList.toggle('hidden', !(board.threat&&board.threat.white)); $('bThreat').classList.toggle('hidden', !(board.threat&&board.threat.black));
+    var st=board.streak||{};
+    $('wTag').classList.add('hidden'); $('bTag').classList.add('hidden');
+    if(st.count>=2){ var win=st.side, lose=win==='white'?'black':'white'; $(win==='white'?'wTag':'bTag').textContent='won '+st.count+' straight'; $(win==='white'?'wTag':'bTag').classList.remove('hidden'); $(lose==='white'?'wTag':'bTag').textContent='revenge week'; $(lose==='white'?'wTag':'bTag').classList.remove('hidden'); }
+    var sw = board.share ? board.share.white : .5;
+    $('shareW').style.width=(sw*100).toFixed(1)+'%'; $('shareWl').textContent='white '+(sw*100).toFixed(1)+'%'; $('shareBl').textContent='black '+((1-sw)*100).toFixed(1)+'%';
+    // sunday drop hero: first 24h after the latest close
+    var last=(board.results||[])[board.results.length-1];
+    var show = last && (Date.now()-last.closes) < 864e5 && last.winner!=='draw';
+    $('dropHero').classList.toggle('hidden', !show); $('liveHero').classList.toggle('hidden', !!show); $('shareBar').classList.toggle('hidden', !!show);
+    if(show){ var w=last.winner, l=w==='white'?'black':'white'; $('dropEm').src='/arena/emblem-'+w+'-512.svg'; $('dropWk').textContent='week '+last.week+' · closed sunday 7pm est'; $('dropH').innerHTML=cap(w)+' took<br>the week.'; $('dropL1').textContent=w; $('dropV1').textContent=fmt(last[w]); $('dropL2').textContent=l; $('dropV2').textContent=fmt(last[l]); $('dropV3').textContent=fmt(last.margin); $('dropHash').textContent=last.hash.slice(0,4)+'…'+last.hash.slice(-4); }
+  }
+  function render(){ if(!board) return; renderHero(); renderPieces('white',board.pieces.white); renderPieces('black',board.pieces.black); renderDays(); renderResults(); renderSeat(); }
+
+  // ---- wallet / seat ----
+  function setNav(){ var b=$('navBtn'); if(wallet){ b.textContent=short(wallet); b.className='pill ghost'; } else { b.textContent='connect'; b.className='pill'; } $('seatAddr').textContent = wallet?short(wallet):''; }
+  function renderSeat(){
+    $('seatOff').classList.toggle('hidden', !!wallet);
+    if(!wallet||!mine){ $('seatAssigned').classList.add('hidden'); $('seatOn').classList.add('hidden'); return; }
+    var side=mine.side, me = board && board.wallets ? board.wallets[wallet] : null;
+    if(mine.source==='default'){
+      $('seatAssigned').classList.remove('hidden'); $('seatOn').classList.add('hidden');
+      $('asEm').src='/arena/emblem-'+side+'-128.svg'; $('asText').textContent="You're on "+cap(side)+" (assigned). Pick a side to confirm, or keep it."; $('keepBtn').textContent='Keep '+cap(side);
+      return;
+    }
+    $('seatAssigned').classList.add('hidden'); $('seatOn').classList.remove('hidden');
+    $('seatEm').src='/arena/emblem-'+side+'-128.svg';
+    var rank = me&&me.rank, piece = me&&me.piece;
+    $('seatPiece').src = piece ? pieceSrc(side, rank) : '/arena/emblem-'+side+'-128.svg';
+    $('seatTitle').textContent = cap(side)+(piece?' · '+piece:'');
+    $('seatRank').textContent = rank ? 'rank #'+rank+' on '+side : 'no points yet this season';
+    $('seatWeek').textContent = fmt(me?me.week:0); $('seatSeason').textContent = fmt(me?me.season:0);
+    var list = board.pieces[side]||[];
+    // gap to next rank / next piece uses the top-16 list when the wallet is in range
+    var nextRank = null, nextPiece = null;
+    if(rank && rank>1){ var above=list[rank-2]; if(above) nextRank='<span style="color:var(--mint)">+'+fmt(above.season-(me.season||0)+1)+' pts</span> to #'+(rank-1); }
+    if(!piece){ var p16=list[15]||list[list.length-1]; if(p16) nextPiece='<span style="color:var(--mint)">+'+fmt(p16.season-(me?me.season:0)+1)+' pts</span> to <img src="'+pieceSrc(side,16)+'" width="20" height="20" alt="">'; else nextPiece='first trade takes a pawn'; }
+    else if(rank>1){ var nr=rank-1; while(nr>1 && PIECES[nr-1]===piece) nr--; var tgt=list[nr-1]; if(tgt && PIECES[nr-1]!==piece) nextPiece='<span style="color:var(--mint)">+'+fmt(tgt.season-me.season+1)+' pts</span> to <img src="'+pieceSrc(side,nr)+'" width="20" height="20" alt="">'; else nextPiece='—'; }
+    else nextPiece='you hold the crown';
+    $('seatNext').innerHTML = nextRank||'—'; $('seatNextPiece').innerHTML = nextPiece||'—';
+    $('switchBtn').classList.toggle('hidden', !!mine.switched); $('switchNote').textContent = mine.switched ? 'switched this season' : 'once per season';
+  }
+
+  async function connect(){
+    if(!window.ethereum){ alert('No wallet found in this browser. Open this page in your wallet app, or use the desk on desktop.'); return; }
+    try{ var accs = await window.ethereum.request({method:'eth_requestAccounts'}); wallet = (accs[0]||'').toLowerCase(); }catch(e){ return; }
+    if(!wallet) return; setNav(); await loadMine(); renderSeat();
+    if(mine && mine.source==='default') openModal('pick');
+  }
+  async function loadMine(){ try{ mine = await fetch(API+'/side?wallet='+wallet,{cache:'no-store'}).then(function(r){return r.json();}); }catch(e){ mine=null; } }
+
+  // ---- modal ----
+  var modalKind='pick';
+  function openModal(kind){ modalKind=kind||'pick'; $('mPick').classList.remove('hidden'); $('mDone').classList.add('hidden'); $('mErr').textContent=''; $('mTitle').textContent = kind==='switch' ? 'Switch side.' : 'Pick your side.';
+    var c = (mine&&mine.counts)||(season&&season.counts)||{white:0,black:0}; $('optWc').textContent=fmt(c.white); $('optBc').textContent=fmt(c.black);
+    var full = (mine&&mine.capFull)||(season&&season.capFull)||null;
+    $('optW').classList.toggle('off', full==='white'); $('optB').classList.toggle('off', full==='black');
+    $('fullMsg').classList.toggle('hidden', !full); if(full) $('fullMsg').textContent = cap(full)+' is full this week. '+cap(full==='white'?'black':'white')+' is open.';
+    if(kind==='switch' && mine){ $(mine.side==='white'?'optW':'optB').classList.add('off'); }
+    $('modal').classList.add('on'); }
+  function closeModal(){ $('modal').classList.remove('on'); }
+  function msgFor(side, kind){ return 'throne. king drop\n'+(kind==='switch'?'switch to':'join')+' '+side+'\nwallet '+wallet+'\nseason zero\n\nThis signature is free and sends no transaction.'; }
+  async function choose(side){
+    if(!wallet){ await connect(); if(!wallet) return; }
+    var full = (mine&&mine.capFull)||null; if(full===side){ $('mErr').textContent=cap(side)+' is full this week.'; return; }
+    var kind = (mine && mine.source==='picked') ? 'switch' : 'pick';
+    if(kind==='switch' && mine.side===side){ $('mErr').textContent="You're already on "+cap(side)+'.'; return; }
+    $('mErr').textContent='waiting for your wallet…';
+    var sig; try{ sig = await window.ethereum.request({method:'personal_sign', params:[msgFor(side,kind), wallet]}); }catch(e){ $('mErr').textContent='signature cancelled.'; return; }
+    var r = await fetch(API+'/'+kind,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({wallet:wallet,side:side,sig:sig})}).then(function(r){return r.json();}).catch(function(){return {error:'network error'};});
+    if(!r.ok){ $('mErr').textContent = r.error||'something went wrong.'; return; }
+    await loadMine(); renderSeat(); done(side);
+  }
+  function done(side){
+    $('mPick').classList.add('hidden'); $('mDone').classList.remove('hidden');
+    $('dEm').src='/arena/emblem-'+side+'-128.svg'; $('tEm').src='/arena/emblem-'+side+'-128.svg'; $('dTitle').textContent="You're on "+cap(side)+'.';
+    $('tK').textContent='throne. · king drop · '+side; $('tN').textContent=cap(side); $('tW').textContent=short(wallet); $('tR').className='tr'+(side==='white'?' w':'');
+    var text = "I'm on "+cap(side)+" for season zero of King Drop on the throne. desk. Stocks and crypto perps, every trade scores for my side.\n\nthrone.network/board";
+    $('shareX').href='https://x.com/intent/post?text='+encodeURIComponent(text);
+  }
+  $('optW').addEventListener('click',function(){ if(!this.classList.contains('off')) choose('white'); });
+  $('optB').addEventListener('click',function(){ if(!this.classList.contains('off')) choose('black'); });
+  $('forMe').addEventListener('click',async function(){ if(!wallet){ await connect(); if(!wallet) return; } var full=(mine&&mine.capFull)||null; var side = mine ? mine.side : 'black'; if(full===side) side = side==='white'?'black':'white'; if(mine && mine.source==='default' && (mine.capFull!==mine.side)){ closeModal(); return; } choose(side); });
+  $('mClose').addEventListener('click', closeModal); $('toBoard').addEventListener('click', closeModal);
+  $('modal').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
+  $('connectBtn').addEventListener('click', connect); $('navBtn').addEventListener('click', function(){ if(!wallet) connect(); });
+  $('pickBtn').addEventListener('click', function(){ openModal('pick'); });
+  $('keepBtn').addEventListener('click', function(){ if(mine) choose(mine.side); });
+  $('switchBtn').addEventListener('click', function(){ openModal('switch'); });
+
+  // ---- load ----
+  async function load(){
+    try{ season = await fetch(API+'/season',{cache:'no-store'}).then(function(r){return r.json();}); }catch(e){}
+    subline();
+    try{ board = await fetch(API+'/board',{cache:'no-store'}).then(function(r){return r.json();}); }catch(e){}
+    if(board && board.error && !board.sides){ board=null; }
+    if(board) render();
+    // silent reconnect if the wallet is already authorized
+    if(window.ethereum){ try{ var accs = await window.ethereum.request({method:'eth_accounts'}); if(accs&&accs[0]){ wallet=accs[0].toLowerCase(); setNav(); await loadMine(); renderSeat(); } }catch(e){} }
+  }
+  load(); setInterval(load, 120000);
+})();
+</script>
+</body>
+</html>
