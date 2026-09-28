@@ -169,6 +169,13 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
 .pot{margin-top:28px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:16px 20px;border:1px solid rgba(57,241,148,.35);border-radius:3px;background:var(--panel2)}
 .pot b{color:var(--mint);font-weight:600;font-size:clamp(17px,2vw,22px);letter-spacing:-.01em}
 .pot span{font-family:var(--mono);font-size:12px;color:var(--dim)}
+/* the gap */
+.gap{margin:4px 24px 14px;padding:14px 16px;border:1px solid rgba(57,241,148,.35);border-radius:3px;background:rgba(57,241,148,.06);display:flex;flex-direction:column;gap:6px}
+.gap b{font-size:18px;font-weight:600;letter-spacing:-.01em}.gap b i{color:var(--mint);font-style:normal}
+.gap span{font-family:var(--mono);font-size:12px;color:var(--dim)}
+.gap a{color:var(--mint);text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(57,241,148,.35)}
+.pot.power{border-color:var(--gold);background:rgba(212,175,55,.08)}.pot.power b{color:var(--gold)}
+.ph{font-family:var(--mono);font-size:11px;color:var(--gold);border:1px solid rgba(212,175,55,.5);border-radius:2px;padding:2px 6px;margin-left:8px}
 /* chessboard */
 .boardwrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,360px);gap:24px;align-items:start}
 @media (max-width:900px){.boardwrap{grid-template-columns:1fr}}
@@ -189,8 +196,8 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
 .feed .ev:last-child{border-bottom:0}
 .feed .ev .t{color:var(--faint);white-space:nowrap}.feed .ev>span:first-child{min-width:0;overflow-wrap:anywhere}
 .feed .ev.w .who{color:var(--fg)}.feed .ev.b .who{color:var(--mint)}
-.feed .ev.lead{background:rgba(57,241,148,.06)}
-.feed .ev.threat .who{color:var(--gold)}
+.feed .ev.ev-lead{background:rgba(57,241,148,.06)}
+.feed .ev.ev-threat .who{color:var(--gold)}
 /* lead chart */
 .chartbox{padding:16px 16px 10px}
 .chartbox svg{width:100%;height:220px;display:block}
@@ -328,6 +335,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
           <img id="seatEm" src="/arena/emblem-black-128.svg" width="32" height="32" alt="">
         </div>
         <div class="kv"><div><span class="l">this week</span><span class="v" id="seatWeek">0</span></div><div><span class="l">this season</span><span class="v" id="seatSeason">0</span></div></div>
+        <div class="gap hidden" id="seatGapBox"><b id="seatGapText"></b><span id="seatGapSub"></span></div>
         <div class="line"><span class="d">next rank</span><span id="seatNext">—</span></div>
         <div class="line"><span class="d">next piece</span><span id="seatNextPiece" style="display:flex;align-items:center;gap:8px">—</span></div>
         <div class="line"><span class="lnk" id="switchBtn">Switch side</span><span class="mono" style="font-size:12px;color:var(--faint)" id="switchNote">once per season</span></div>
@@ -364,7 +372,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     <div>
       <div class="li"><span>01</span><span>Every wallet that trades is in. You're assigned a side; pick one once a season to make it yours.</span></div>
       <div class="li"><span>02</span><span>Trade the desk; taker volume earns points for you and your side. 1 point per $10.</span></div>
-      <div class="li"><span>03</span><span>Weeks close Sunday 7pm EST; the side with more points takes the King Drop.</span></div>
+      <div class="li"><span>03</span><span>Weeks close Sunday 7pm EST; the side with more points takes the King Drop. The final hour before the close is power hour: every point counts 1.5x.</span></div>
       <div class="li"><span>04</span><span>Top 16 on each side hold the pieces. Points set your place in line when the Court opens.</span></div>
       <div class="li"><span>05</span><span>Results are published with a hash so anyone can check them against the venue's public data.</span></div>
     </div>
@@ -434,10 +442,10 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     if(season.rehearsal) s = '<span style="color:var(--gold)">rehearsal</span> · real desk volume since '+String(season.rehearsalStart||'').slice(5,10).replace('-','/')+' · nothing here counts · ';
     if(season.state==='pre') s += 'opens fri oct 9 · 7pm est · <span style="color:var(--fg)">'+fmtMs(season.opens-Date.now())+'</span>';
     else if(season.state==='ended') s += 'season closed';
-    else s += 'week '+season.week+' of '+season.weeks+' · closes sunday 7pm est · <span style="color:var(--fg)">'+fmtMs(season.closes-Date.now())+'</span>';
+    else { s += 'week '+season.week+' of '+season.weeks+' · closes sunday 7pm est · <span style="color:var(--fg)">'+fmtMs(season.closes-Date.now())+'</span>'; var ms = season.closes-Date.now(); if(ms>0 && ms<=3600e3) s += '<span class="ph">power hour · 1.5x</span>'; else if(ms>3600e3) s += ' · <span style="color:var(--faint)">power hour from 6pm est sunday</span>'; }
     $('subline').innerHTML = s;
   }
-  setInterval(subline, 30000);
+  setInterval(function(){ subline(); if(board) renderPot(); }, 30000);
 
   // ---- render board ----
   function renderPieces(side, list){
@@ -513,6 +521,9 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
   function renderPot(){
     var closes = season && season.closes ? new Date(season.closes) : null;
     var when = closes ? closes.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}).toLowerCase()+' · 7pm est' : 'sunday 7pm est';
+    var ph = board && board.powerHour; var pot = $('pot');
+    if(ph && ph.active){ pot.classList.add('power'); $('potText').textContent = 'Power hour. Every point counts 1.5x until the close.'; $('potSub').textContent = 'closes in '+fmtMs(ph.closesAt-Date.now())+(season&&season.rehearsal?' · rehearsal':''); return; }
+    pot.classList.remove('power');
     if(season && season.rehearsal){ $('potText').textContent = 'Rehearsal. Real wallets, real desk volume, no drop. Season zero opens Oct 9.'; $('potSub').textContent = 'clears before week 1'; return; }
     if(board && board.pot){ $('potText').textContent = fmt(board.pot)+' $THRONE on the line this week'; $('potSub').textContent = 'week '+board.week+' · closes '+when; }
     else { $('potText').textContent = "This week's drop: season points, your piece, and first pick of the Court."; $('potSub').textContent = (season&&season.state==='pre') ? 'week 1 opens fri oct 9 · 7pm est' : 'week '+(board?board.week:'')+' · closes '+when; }
@@ -563,12 +574,13 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     if(!evs.length){ el.innerHTML='<div class="empty">'+(season&&season.state==='pre'?'quiet until the season opens.':'no moves yet this refresh.')+'</div>'; return; }
     el.innerHTML='';
     evs.slice(0,18).forEach(function(e){
-      var d=document.createElement('div'); d.className='ev '+(e.side==='white'?'w':'b')+' '+e.type; var txt='';
+      var d=document.createElement('div'); d.className='ev '+(e.side==='white'?'w':'b')+' ev-'+e.type; var txt='';
       if(e.type==='points') txt='<span class="who">'+short(e.addr)+'</span> · '+e.side+' · <span class="pos">+'+fmt(e.pts)+' pts</span>';
       else if(e.type==='joined') txt='<span class="who">'+short(e.addr)+'</span> joined '+e.side+(e.pts?' · +'+fmt(e.pts)+' pts':'');
       else if(e.type==='piece') txt='<span class="who">'+short(e.addr)+'</span> '+(e.from?e.from+' → ':'takes a ')+e.to+' · #'+e.rank+' '+e.side;
       else if(e.type==='lead') txt='<span class="who">'+cap(e.side)+' takes the lead</span> · '+e.share+'%';
       else if(e.type==='threat') txt='<span class="who">crown under threat</span> · '+e.side+' king out-scored';
+      else if(e.type==='power') txt='<span style="color:var(--gold)">power hour</span> · every point counts '+(e.mult||1.5)+'x until the close';
       d.innerHTML='<span>'+txt+'</span><span class="t">'+ago(e.t)+'</span>'; el.appendChild(d);
     });
   }
@@ -634,6 +646,14 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     else if(rank>1){ var nr=rank-1; while(nr>1 && PIECES[nr-1]===piece) nr--; var tgt=list[nr-1]; if(tgt && PIECES[nr-1]!==piece) nextPiece='<span style="color:var(--mint)">+'+fmt(tgt.season-me.season+1)+' pts</span> to <img src="'+pieceSrc(side,nr)+'" width="20" height="20" alt="">'; else nextPiece='—'; }
     else nextPiece='you hold the crown';
     $('seatNext').innerHTML = nextRank||'—'; $('seatNextPiece').innerHTML = nextPiece||'—';
+    // the gap: dollars of taker volume to take the next piece, at this wallet's multiplier
+    var g = me && me.gap;
+    if(g && g.usd){ $('seatGapBox').classList.remove('hidden');
+      var verb = piece ? 'take the '+g.piece : 'take a seat as a '+g.piece;
+      $('seatGapText').innerHTML = '<i>$'+fmt(g.usd)+'</i> of volume to '+verb+'.';
+      $('seatGapSub').innerHTML = 'passes #'+g.rank+' '+short(g.addr)+(me.mult>1?' · at your '+me.mult+'x':'')+(board.powerHour&&board.powerHour.active?' · <span style="color:var(--gold)">power hour: 1.5x until the close</span>':'')+' · <a href="https://trade.throne.network">trade the desk</a>'; }
+    else if(me && rank===1){ $('seatGapBox').classList.remove('hidden'); $('seatGapText').innerHTML='You hold the crown.'; var chaser=list[1]; $('seatGapSub').textContent = chaser ? '#2 '+short(chaser.addr)+' is '+fmt((me.season||0)-chaser.season)+' pts behind' : 'no one behind you yet'; }
+    else $('seatGapBox').classList.add('hidden');
     $('switchBtn').classList.toggle('hidden', !!mine.switched); $('switchNote').textContent = mine.switched ? 'switched this season' : 'once per season';
     $('seatSteps').classList.toggle('hidden', !!(me && me.season > 0));
   }
