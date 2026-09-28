@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>throne. · King Drop points</title>
-<meta name="description" content="King Drop points. Trade the desk, score for your side. 923,000 $THRONE a week from Oct 9.">
+<meta name="description" content="King Drop points. Trade the desk, score for your side. 923,000 $THRONE from now to Oct 18.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
@@ -166,9 +166,9 @@
   </header>
 
   <div class="hero">
-    <div class="kicker"><span class="live">●</span> season zero · pre-season now · week 1 opens fri oct 9</div>
+    <div class="kicker"><span class="live">●</span> season zero · from now to oct 18</div>
     <h1>King Drop points <span class="accent">· season zero</span></h1>
-    <p class="sub">trade the desk, score for your side. <b>1 point per $10 of taker volume.</b> every wallet is on White or Black. the side with more points each week takes the King Drop: <b>923,000 $THRONE</b> a week, nine weeks, from oct 9 to dec 13. points you score now already count toward your season rank.</p>
+    <p class="sub">trade the desk, score for your side. <b>1 point per $10 of taker volume.</b> every wallet is on White or Black. the side with more points takes the King Drop: <b>923,000 $THRONE</b>, from now to oct 18.</p>
     <p class="sub"><b>multipliers:</b> hold $THRONE through the week for <b>1.25x</b> (100k) or <b>1.5x</b> (500k). beta list wallets score <b>2x</b>. combined cap 2x.</p>
     <p class="sub"><b>pieces:</b> the top 16 wallets on each side hold its pieces, king to pawn, by season points. pieces come with first pick of the Court. full rules, your seat and the live board are on <a href="/kd-7f3a2c91" style="color:var(--gold)">the board</a>.</p>
   </div>
@@ -292,7 +292,7 @@ async function load(){
   document.querySelector('[data-hook="stat-traders"]').textContent=LIST.length.toLocaleString();
   document.querySelector('[data-hook="stat-volume"]').textContent=fmt(totV);
   document.querySelector('[data-hook="stat-points"]').textContent=Math.round(totP).toLocaleString();
-  const k=document.querySelector('.kicker'); if(k&&b.week>0) k.innerHTML='<span class="live">●</span> season zero · week '+b.week+' of '+b.weeks+' · closes sunday 7pm est';
+  const k=document.querySelector('.kicker'); if(k&&b.week>0) k.innerHTML='<span class="live">●</span> season zero · week '+b.week+' · closes sunday 7pm est';
   fillPodium(); render(''); updateYou('');
 }
 document.getElementById('rows').innerHTML='<tr><td colspan="4" class="loading">loading the board...</td></tr>';
