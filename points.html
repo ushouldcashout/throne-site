@@ -328,7 +328,7 @@
 
   <div class="yourow">
     <div class="searchbar"><input id="q" placeholder="Find your seat · paste your address (0x...) or a name" autocomplete="off" spellcheck="false" /></div>
-    <button class="connect" id="connect">Use my wallet</button>
+    <div style="display:flex;gap:8px"><button class="connect" id="connect">Use my wallet</button><button class="connect hidden" id="switchWallet" title="Choose a different account">Switch</button><button class="connect hidden" id="disconnectWallet" title="Forget this wallet on this page">Disconnect</button></div>
   </div>
   <div class="youcard" id="you">
     <div class="yl">
@@ -694,8 +694,15 @@
   $('more').addEventListener('click',function(){ showAll=!showAll; renderChallengers(); });
   async function connectWallet(){ var eth=window.ethereum; if(!eth){ $('connect').textContent='No wallet found'; return null; }
     try{ var a=await eth.request({method:'eth_requestAccounts'}); if(a&&a[0]){ wallet=a[0].toLowerCase(); $('q').value=wallet; q=wallet; localStorage.setItem('kd_points_wallet',wallet); if(board) renderAll(); return wallet; } }catch(e){} return null; }
-  $('connect').addEventListener('click', connectWallet);
-  var saved=localStorage.getItem('kd_points_wallet'); if(saved){ q=saved; wallet=saved; $('q').value=saved; }
+  function walletUi(){ var on=!!wallet; $('connect').textContent=on?short(wallet):'Use my wallet'; $('switchWallet').classList.toggle('hidden',!on); $('disconnectWallet').classList.toggle('hidden',!on); }
+  $('connect').addEventListener('click', function(){ if(wallet){ $('q').value=wallet; q=wallet; if(board) renderAll(); } else connectWallet().then(walletUi); });
+  $('switchWallet').addEventListener('click', async function(){ var eth=window.ethereum; if(!eth) return;
+    try{ await eth.request({method:'wallet_requestPermissions',params:[{eth_accounts:{}}]}); }catch(e){ /* wallet may not support it; fall through to accounts */ }
+    try{ var a=await eth.request({method:'eth_requestAccounts'}); if(a&&a[0]){ wallet=a[0].toLowerCase(); $('q').value=wallet; q=wallet; localStorage.setItem('kd_points_wallet',wallet); if(board) renderAll(); } }catch(e){}
+    walletUi(); });
+  $('disconnectWallet').addEventListener('click', function(){ wallet=null; q=''; $('q').value=''; localStorage.removeItem('kd_points_wallet'); walletUi(); if(board) renderAll(); toast('Wallet forgotten on this page. Your seat is unchanged.'); });
+  if(window.ethereum && window.ethereum.on) window.ethereum.on('accountsChanged', function(a){ if(a&&a[0]&&wallet){ wallet=a[0].toLowerCase(); $('q').value=wallet; q=wallet; localStorage.setItem('kd_points_wallet',wallet); walletUi(); if(board) renderAll(); } });
+  var saved=localStorage.getItem('kd_points_wallet'); if(saved){ q=saved; wallet=saved; $('q').value=saved; } walletUi();
 
   // ---- daily check-in (free signature)
   async function doCheckin(){
