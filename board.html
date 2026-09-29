@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>King Drop · throne.</title>
+<meta name="description" content="White vs Black. The desk keeps score.">
+<meta property="og:title" content="King Drop · throne.">
+<meta property="og:description" content="White vs Black. The desk keeps score.">
+<meta property="og:image" content="https://throne.network/arena/og-board.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="/throne-favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050605;--panel:#0A0C0B;--panel2:#0D100F;--fg:#F2F4F0;--dim:#9BA39E;--faint:#5E6663;--line:rgba(255,255,255,.07);--line2:rgba(255,255,255,.14);--mint:#39F194;--gold:#D4AF37;--mono:'JetBrains Mono',ui-monospace,monospace;--sans:Inter,system-ui,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 var(--sans)}
+a{color:var(--mint);text-decoration:none}a:hover{color:var(--fg)}
+.mono{font-family:var(--mono)}
+.wrap{max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px)}
+.nav{display:flex;justify-content:space-between;align-items:center;height:72px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);font-weight:600;font-size:20px;letter-spacing:-.01em}
+.brand b{color:var(--mint);font-weight:600}
+.links{display:flex;align-items:center;gap:clamp(14px,2.2vw,32px);font-size:14px;white-space:nowrap}
+.links a{color:var(--dim)}.links a:hover{color:var(--fg)}
+@media (max-width:720px){.links a.hide{display:none}}
+.pill{padding:9px 16px;border:1px solid var(--mint);border-radius:3px;color:var(--mint);font-family:var(--mono);font-size:13px;cursor:pointer;background:none}
+.pill:hover{background:var(--mint);color:var(--bg)}
+.pill.ghost{border-color:var(--line);color:var(--fg);cursor:default}.pill.ghost:hover{background:none;color:var(--fg)}
+h1{margin:0;font-size:clamp(48px,6vw,80px);font-weight:600;letter-spacing:-.045em;line-height:1}
+h1 .i{position:relative;display:inline-block}
+h1 .i img{position:absolute;left:50%;top:-.06em;width:.3em;height:.3em;transform:translateX(-50%)}
+.sub{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:13px;color:var(--dim);flex-wrap:wrap}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--mint);flex-shrink:0}
+.hero{margin-top:32px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+@media (max-width:720px){.hero{grid-template-columns:1fr}}
+.side{padding:40px clamp(20px,3vw,44px) 36px;display:flex;flex-direction:column;gap:28px;min-width:0}
+.side.w{background:var(--fg);color:var(--bg)}
+.side.b{background:var(--panel2);border-left:1px solid var(--line)}
+@media (max-width:720px){.side.b{border-left:0;border-top:1px solid var(--line)}}
+.side .name{font-size:clamp(56px,9vw,136px);font-weight:600;letter-spacing:-.055em;line-height:.85}
+.side .top{display:flex;justify-content:space-between;align-items:flex-start}
+.side .meta{display:flex;flex-direction:column;gap:8px;padding-top:10px;font-family:var(--mono);font-size:12px}
+.side.w .meta{align-items:flex-end;color:var(--faint)}.side.b .meta{align-items:flex-start;color:var(--dim)}
+.tag{padding:3px 7px;border:1px solid currentColor;border-radius:2px;white-space:nowrap}
+.side.b .tag{color:var(--mint);border-color:rgba(57,241,148,.5)}
+.pts{display:flex;flex-direction:column;gap:6px}.side.b .pts{align-items:flex-end}
+.pts .l{font-family:var(--mono);font-size:12px}.side.w .pts .l{color:var(--faint)}.side.b .pts .l{color:var(--dim)}
+.pts .v{font-family:var(--mono);font-size:clamp(36px,4.4vw,64px);font-weight:600;letter-spacing:-.03em;line-height:1}
+.side.b .pts .v{color:var(--mint)}
+.king{display:flex;align-items:center;gap:14px;padding-top:20px;font-family:var(--mono);font-size:14px;flex-wrap:wrap}
+.side.w .king{border-top:1px solid rgba(5,6,5,.12)}.side.b .king{border-top:1px solid var(--line)}
+.king .ml{margin-left:auto}
+.threat{display:flex;align-items:center;gap:6px;color:var(--gold);font-size:12px;white-space:nowrap}
+.bar{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.bar .track{display:flex;height:6px;border-radius:3px;overflow:hidden;background:var(--panel2)}
+.bar .track .w{background:var(--fg)}.bar .track .b{flex:1;background:var(--mint)}
+.bar .lbl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;color:var(--dim)}
+.drop{margin-top:32px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);border:1px solid rgba(57,241,148,.35);border-radius:3px;overflow:hidden;background:var(--panel2)}
+@media (max-width:720px){.drop{grid-template-columns:1fr}}
+.drop .em{display:flex;align-items:center;justify-content:center;padding:40px;border-right:1px solid rgba(57,241,148,.25);background:var(--bg)}
+.drop .em img{width:100%;max-width:300px;height:auto}
+.drop .body{padding:44px clamp(24px,3.4vw,52px);display:flex;flex-direction:column;gap:28px;min-width:0}
+.drop .h{font-size:clamp(48px,6.4vw,96px);font-weight:600;letter-spacing:-.05em;line-height:.92}
+.drop .nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-family:var(--mono)}
+.drop .nums div{padding:16px 0 16px 20px;display:flex;flex-direction:column;gap:6px;border-left:1px solid var(--line)}
+.drop .nums div:first-child{padding-left:0;border-left:0}
+.drop .nums span:first-child{font-size:12px;color:var(--dim)}
+.drop .nums span:last-child{font-size:clamp(22px,2.4vw,32px);font-weight:600}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 20px;background:var(--mint);color:var(--bg);border-radius:3px;font-weight:600;font-size:15px;cursor:pointer;border:0;font-family:var(--sans)}
+.btn:hover{background:var(--fg);color:var(--bg)}
+.btn.line{background:none;color:var(--fg);border:1px solid var(--line2)}.btn.line:hover{border-color:var(--fg);background:none}
+.grid{margin-top:48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;align-items:start}
+.sec{display:flex;flex-direction:column;gap:14px}
+.sec.full{grid-column:1 / -1}
+.sech{display:flex;justify-content:space-between;align-items:baseline}
+.sech b{font-size:20px;font-weight:600;white-space:nowrap}
+.sech span{font-family:var(--mono);font-size:12px;color:var(--dim)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:3px}
+.pieces{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.ph{display:flex;justify-content:space-between;height:36px;align-items:center;padding:0 14px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:12px;color:var(--dim)}
+.prow{display:grid;grid-template-columns:26px 28px minmax(0,1fr) auto 44px;align-items:center;gap:6px;height:40px;padding:0 14px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:13px}
+.prow:last-child{border-bottom:0}
+.prow .a{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prow .p{text-align:right}
+.prow .t{display:flex;justify-content:flex-end;align-items:center;gap:4px;font-size:11px;color:var(--mint)}
+.prow.me{background:rgba(57,241,148,.06)}
+.seat{padding:28px 24px;display:flex;flex-direction:column;gap:16px}
+.seat p{margin:0;color:var(--dim);line-height:1.5}
+.seat .row{display:flex;align-items:center;gap:16px}
+.seat .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kv{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--line)}
+.kv div{padding:16px 24px;display:flex;flex-direction:column;gap:6px}
+.kv div+div{border-left:1px solid var(--line)}
+.kv .l{font-family:var(--mono);font-size:12px;color:var(--dim)}
+.kv .v{font-family:var(--mono);font-size:22px;font-weight:600}
+.line{padding:14px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:13px}
+.line:last-child{border-bottom:0}
+.line .d{color:var(--dim)}
+.lnk{color:var(--fg);cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(242,244,240,.3);font-family:var(--sans)}
+.lnk:hover{color:var(--mint)}
+.chart{padding:20px 20px 14px}
+.bars{display:flex;align-items:flex-end;gap:10px;height:160px;border-bottom:1px solid var(--line)}
+.bars .day{flex:1;display:flex;align-items:flex-end;justify-content:center;gap:3px;height:100%}
+.bars .day i{display:block;width:9px}
+.bars .day i.w{background:var(--fg)}.bars .day i.b{background:var(--mint)}
+.dl{display:flex;gap:10px;padding-top:8px}
+.dl span{flex:1;text-align:center;font-family:var(--mono);font-size:11px;color:var(--dim)}
+.leg{display:flex;gap:16px;padding-top:12px;font-family:var(--mono);font-size:11px;color:var(--dim)}
+.leg span{display:flex;align-items:center;gap:6px}.leg i{width:8px;height:8px;display:inline-block}
+.res{margin-top:64px;display:flex;flex-direction:column;gap:14px}
+.rt{font-family:var(--mono);font-size:13px}
+.rh,.rr{display:grid;grid-template-columns:70px 110px 1fr 1fr 1fr 1.3fr;align-items:center;padding:0 20px;border-bottom:1px solid var(--line)}
+.rh{height:40px;font-size:12px;color:var(--dim)}.rr{height:44px}
+.rr:last-child{border-bottom:0}
+.rr .r{text-align:right}
+.rr .h{display:flex;justify-content:flex-end;align-items:center;gap:10px}
+.rr.empty{color:var(--faint)}
+@media (max-width:720px){.rh,.rr{grid-template-columns:50px 80px 1fr 1fr;padding:0 14px}.rh .r:nth-child(5),.rr .r:nth-child(5),.rh .h,.rr .h{display:none}}
+.copy{width:12px;height:12px;border:1px solid var(--dim);border-radius:2px;position:relative;cursor:pointer;display:inline-block}
+.copy:hover{border-color:var(--mint)}
+.copy:before{content:"";position:absolute;left:3px;top:-4px;width:9px;height:9px;border:1px solid var(--dim);border-radius:2px;background:var(--panel)}
+.how{margin-top:64px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:24px;padding-top:32px;border-top:1px solid var(--line)}
+@media (max-width:720px){.how{grid-template-columns:1fr}}
+.how b{font-size:20px;font-weight:600}
+.how .li{display:grid;grid-template-columns:48px 1fr;padding:16px 0;border-bottom:1px solid var(--line);line-height:1.5}
+.how .li span:first-child{font-family:var(--mono);color:var(--mint)}
+footer{margin-top:80px;padding:28px 0 40px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--dim);gap:16px;flex-wrap:wrap}
+footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
+.modalbg{position:fixed;inset:0;z-index:50;background:rgba(5,6,5,.86);display:none;align-items:center;justify-content:center;padding:20px}
+.modalbg.on{display:flex}
+.modal{width:100%;max-width:480px;background:var(--panel);border:1px solid var(--line);border-radius:3px;display:flex;flex-direction:column;max-height:92vh;overflow:auto}
+.mh{display:flex;justify-content:space-between;align-items:center;height:48px;padding:0 20px;border-bottom:1px solid var(--line);flex-shrink:0}
+.mh .t{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px}
+.mh .t small{font-family:var(--mono);font-size:11px;color:var(--faint);font-weight:400}
+.mh .x{cursor:pointer;font-size:18px;line-height:1;color:var(--dim)}.mh .x:hover{color:var(--fg)}
+.mb{padding:28px 24px 24px;display:flex;flex-direction:column;gap:20px;flex:1}
+.mb h2{margin:0;font-size:32px;font-weight:600;letter-spacing:-.03em;line-height:1}
+.mb p{margin:0;font-size:14.5px;line-height:1.6;color:var(--dim)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opt{border-radius:3px;padding:18px 16px 16px;display:flex;flex-direction:column;gap:14px;cursor:pointer;border:1px solid}
+.opt.w{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.opt.b{background:var(--panel2);border-color:rgba(57,241,148,.45)}
+.opt:hover{border-color:var(--mint)}
+.opt.off{opacity:.45;cursor:not-allowed}
+.opt .n{font-size:26px;font-weight:600;letter-spacing:-.03em;line-height:1}
+.opt .s{font-family:var(--mono);font-size:11.5px;line-height:1.5}
+.opt.w .s{color:var(--faint)}.opt.b .s{color:var(--dim)}
+.note{font-size:13.5px;padding:10px 12px;border:1px solid var(--line);border-radius:3px;background:var(--panel2)}
+.err{font-family:var(--mono);font-size:12px;color:#FF6B57;min-height:0}
+.forme{align-self:center;font-size:13.5px;color:var(--dim);cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(155,163,158,.4)}
+.forme:hover{color:var(--mint)}
+.mf{margin-top:auto;text-align:center;font-family:var(--mono);font-size:11px;color:var(--faint);padding-top:14px;border-top:1px solid var(--line)}
+.ticket{border:1px solid var(--gold);border-radius:3px;background:var(--panel2);display:grid;grid-template-columns:minmax(0,1fr) 112px}
+.ticket .tl{padding:14px 16px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.ticket .tl .k{font-family:var(--mono);font-size:11px;color:var(--dim);white-space:nowrap}
+.ticket .tl .n{font-size:36px;font-weight:600;letter-spacing:-.045em;line-height:.9}
+.ticket .tl .m{display:flex;gap:18px;font-family:var(--mono);font-size:12px;white-space:nowrap;flex-wrap:wrap}
+.ticket .tl .m i{color:var(--dim);font-style:normal}
+.ticket .tr{border-left:1px dashed rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center}
+.ticket .tr.w{background:var(--fg)}
+.hidden{display:none !important}
+.empty{padding:22px 14px;font-family:var(--mono);font-size:12px;color:var(--faint)}
+
+/* pot banner */
+.pot{margin-top:28px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:16px 20px;border:1px solid rgba(57,241,148,.35);border-radius:3px;background:var(--panel2)}
+.pot b{color:var(--mint);font-weight:600;font-size:clamp(17px,2vw,22px);letter-spacing:-.01em}
+.pot span{font-family:var(--mono);font-size:12px;color:var(--dim)}
+/* the gap */
+.gap{margin:4px 24px 14px;padding:14px 16px;border:1px solid rgba(57,241,148,.35);border-radius:3px;background:rgba(57,241,148,.06);display:flex;flex-direction:column;gap:6px}
+.gap b{font-size:18px;font-weight:600;letter-spacing:-.01em}.gap b i{color:var(--mint);font-style:normal}
+.gap span{font-family:var(--mono);font-size:12px;color:var(--dim)}
+.gap a{color:var(--mint);text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(57,241,148,.35)}
+.pot.power{border-color:var(--gold);background:rgba(212,175,55,.08)}.pot.power b{color:var(--gold)}
+.ph{font-family:var(--mono);font-size:11px;color:var(--gold);border:1px solid rgba(212,175,55,.5);border-radius:2px;padding:2px 6px;margin-left:8px}
+/* seat stats v2 */
+.kv3{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line)}
+.kv3>div{padding:16px 24px;display:flex;flex-direction:column;gap:4px;border-right:1px solid var(--line)}
+.kv3>div:last-child{border-right:0}
+.kv3 .l{font-family:var(--mono);font-size:11px;color:var(--dim)}.kv3 .v{font-size:28px;font-weight:600;letter-spacing:-.02em}.kv3 .s{font-family:var(--mono);font-size:11px;color:var(--faint)}
+@media (max-width:720px){.kv3{grid-template-columns:1fr 1fr}.kv3>div:nth-child(2){border-right:0}.kv3>div:last-child{grid-column:1/-1;border-top:1px solid var(--line)}}
+.holdbox{margin:12px 24px 0;padding:12px 14px;border:1px dashed rgba(57,241,148,.35);border-radius:3px;font-family:var(--mono);font-size:12px;color:var(--dim);line-height:1.6}
+.holdbox b{color:var(--mint);font-weight:500}
+.soon{font-family:var(--mono);font-size:11px;color:var(--faint);border:1px solid var(--line2);border-radius:2px;padding:1px 6px;margin-left:6px}
+/* leaderboard */
+.lb{display:flex;flex-direction:column}
+.lb .r{display:grid;grid-template-columns:36px 28px minmax(0,1fr) 90px 100px 110px 56px;gap:10px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:12.5px}
+.lb .r:last-child{border-bottom:0}
+.lb .r.h{color:var(--dim);font-size:11px;text-transform:lowercase}
+.lb .r .n{text-align:right}
+.lb .r.me{background:rgba(57,241,148,.10);border-left:3px solid var(--mint);color:var(--mint);font-weight:600;font-size:14px}
+.lb .r img{width:18px;height:18px;display:block}
+.lb .r .ell{color:var(--faint);grid-column:1/-1;text-align:center;padding:4px 0}
+@media (max-width:720px){.lb .r{grid-template-columns:30px 22px minmax(0,1fr) 80px 56px}.lb .r .hide-m{display:none}}
+/* seat on top */
+#seatWrap{margin-top:18px}
+#seat .card.strip{flex-direction:row;align-items:center;gap:20px;padding:18px 24px}
+@media (max-width:640px){#seat .card.strip{flex-direction:column;align-items:stretch}}
+#seatOn{display:grid;grid-template-columns:1fr 1fr}
+#seatOn>div:first-child,#seatOn .gap,#seatOn .atkline,#seatOn .steps{grid-column:1/-1}
+#seatOn .kv{border-right:1px solid var(--line)}
+.sharebox{display:flex;flex-direction:column;justify-content:center;gap:10px;padding:14px 24px;border-bottom:1px solid var(--line)}
+@media (max-width:720px){#seatOn{grid-template-columns:1fr}#seatOn .kv{border-right:0}}
+/* welcome splash + toast */
+.splash{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;z-index:60;padding:20px}
+.splash.on{display:flex}
+.splash .in{background:var(--panel);border:1px solid rgba(57,241,148,.35);border-radius:4px;padding:28px 28px 22px;max-width:560px;width:100%;display:flex;flex-direction:column;gap:14px}
+.splash h2{margin:0;font-size:clamp(22px,3vw,30px);letter-spacing:-.02em;line-height:1.15}
+.splash h2 b{color:var(--mint);font-weight:600}
+.splash .k{font-family:var(--mono);font-size:12px;color:var(--dim)}
+.splash ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.splash li{display:grid;grid-template-columns:24px 1fr;gap:10px;font-size:14.5px;line-height:1.5}
+.splash li b{font-family:var(--mono);color:var(--mint);font-weight:500}
+.splash .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--panel2);border:1px solid rgba(57,241,148,.4);border-radius:3px;padding:12px 16px;font-family:var(--mono);font-size:12.5px;color:var(--fg);opacity:0;transition:all .25s;z-index:55;pointer-events:none;max-width:92vw}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast b{color:var(--mint);font-weight:500}
+/* card modal */
+.cardm{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
+.cardm.on{display:flex}
+.cardm .in{background:var(--panel);border:1px solid var(--line2);border-radius:4px;padding:16px;max-width:820px;width:100%;display:flex;flex-direction:column;gap:12px}
+.cardm canvas{width:100%;height:auto;border-radius:3px;display:block}
+.cardm .acts{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+/* attack + streak */
+.sq .atk{position:absolute;top:4px;left:4px;width:11px;height:11px}
+.atkline{margin:0 24px 12px;padding:10px 12px;border:1px solid rgba(255,107,87,.45);border-radius:3px;background:rgba(255,107,87,.07);font-family:var(--mono);font-size:12px;color:#FF6B57;line-height:1.6}
+.atkline b{color:var(--fg);font-weight:500}
+.potNote{font-family:var(--mono);font-size:11px;color:var(--faint);margin-top:6px}
+/* chessboard */
+.boardwrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,360px);gap:24px;align-items:start}
+@media (max-width:900px){.boardwrap{grid-template-columns:1fr}}
+.chess{position:relative;aspect-ratio:1/1;max-width:640px;width:100%;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);border:1px solid var(--line2);border-radius:3px;overflow:hidden;background:var(--panel)}
+.sq{position:relative;display:flex;align-items:center;justify-content:center}
+.sq.l{background:#111513}.sq.d{background:#0A0C0B}
+.sq img{width:72%;height:72%;cursor:pointer;transition:transform .12s}
+.sq img:hover{transform:scale(1.12)}
+.sq.me:after{content:"";position:absolute;inset:3px;border:1px solid var(--mint);border-radius:2px;pointer-events:none}
+.sq .thr{position:absolute;top:4px;right:4px;width:10px;height:10px}
+.openseat{cursor:pointer}.openseat .osn{font-family:var(--mono);font-size:11px;color:rgba(242,244,240,.18);border:1px dashed rgba(242,244,240,.12);border-radius:4px;width:46%;height:46%;display:flex;align-items:center;justify-content:center;transition:all .15s}.openseat:hover .osn{color:var(--mint);border-color:var(--mint);box-shadow:0 0 14px rgba(57,241,148,.25)}
+.hover{position:absolute;z-index:5;pointer-events:none;background:var(--panel2);border:1px solid var(--line2);border-radius:3px;padding:12px 14px;min-width:220px;font-family:var(--mono);font-size:12px;line-height:1.7;box-shadow:0 8px 30px rgba(0,0,0,.5);display:none}
+.hover.on{display:block}
+.hover .h1{font-family:var(--sans);font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px}
+.hover .row{display:flex;justify-content:space-between;gap:16px}.hover .row span:first-child{color:var(--dim)}
+.pos{color:var(--mint)}.neg{color:#FF6B57}
+.feed{display:flex;flex-direction:column}
+.feed .ev{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:11px 14px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:12px;line-height:1.5}
+.feed .ev:last-child{border-bottom:0}
+.feed .ev .t{color:var(--faint);white-space:nowrap}.feed .ev>span:first-child{min-width:0;overflow-wrap:anywhere}
+.feed .ev.w .who{color:var(--fg)}.feed .ev.b .who{color:var(--mint)}
+.feed .ev.ev-lead{background:rgba(57,241,148,.06)}
+.feed .ev.ev-threat .who{color:var(--gold)}
+/* lead chart */
+.chartbox{padding:16px 16px 10px}
+.chartbox svg{width:100%;height:260px;display:block}
+.ctl{display:flex;gap:6px;font-family:var(--mono);font-size:11px}
+.ctl button{background:none;border:1px solid var(--line2);color:var(--dim);border-radius:2px;padding:3px 8px;cursor:pointer;font-family:var(--mono);font-size:11px}
+.ctl button.on{border-color:var(--mint);color:var(--mint)}
+/* next steps */
+.steps{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.steps .st{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px;line-height:1.5}
+.steps .st:last-child{border-bottom:0}
+.steps .st b{font-family:var(--mono);color:var(--mint);font-weight:500}
+.steps .st a{color:var(--mint);text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(57,241,148,.35)}
+.mult{font-size:11px;color:var(--gold);margin-left:4px}
+
+/* name modal */
+.nm .f{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.nm label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+.nm input{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:3px;padding:11px 12px;color:var(--fg);font:inherit;font-size:14px;outline:none}
+.nm input:focus{border-color:var(--mint)}
+.nm .code{display:inline-block;background:var(--bg);border:1px dashed var(--line);border-radius:3px;padding:8px 12px;font-family:var(--mono);font-size:18px;letter-spacing:.08em;color:var(--gold)}
+.nm .row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.nm .row .btn{height:40px;font-size:14px;padding:0 16px;text-decoration:none}
+.nm .ok{color:var(--mint)} .nm .err{color:#ff6b6b;font-size:13px;margin-top:8px;display:block}
+.nm .help{font-size:12.5px;color:var(--dim);line-height:1.6;margin-top:8px}
+.nm .vbadge{color:var(--mint);font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="nav">
+    <a class="brand" href="/"><img src="/arena/crown.svg" width="24" height="24" alt=""><span>throne<b>.</b></span></a>
+    <div class="links">
+      <a class="hide" href="#how">How it works</a>
+      <a class="hide" href="/points">Points</a>
+      <a class="hide" href="https://docs.throne.network">Docs</a>
+      <a class="hide" href="https://x.com/thronedefi">@thronedefi</a>
+      <button class="pill" id="navBtn">connect</button>
+    </div>
+  </nav>
+
+  <div style="padding:40px 0 4px;display:flex;flex-direction:column;gap:14px">
+    <h1>K<span class="i">ı<img src="/arena/crown.svg" alt=""></span>ng Drop</h1>
+    <div class="sub" style="display:none"><span class="dot"></span><span id="subline">white vs black · season zero · loading</span></div>
+  </div>
+
+  <div class="pot" id="pot"><b id="potText">This week's drop: season points, your piece, and first pick of the Court.</b><span id="potSub">closes sunday midnight utc</span><span class="potNote" style="flex-basis:100%">$THRONE holders score up to 1.5x</span></div>
+
+  <div class="grid" id="seatWrap">
+    <div class="sec full" id="seat">
+      <div class="sech"><b>Your seat</b><span id="seatAddr" style="color:var(--mint)"></span></div>
+      <div class="card seat strip" id="seatOff">
+        <div style="display:flex;flex-direction:column;gap:6px;flex:1;min-width:0">
+          <p style="margin:0;font-size:16px;font-weight:600">See your seat, your gap, your streak.</p>
+          <p class="mono" style="margin:0;font-size:11.5px;color:var(--faint)">Read only. Nothing to sign until you pick a side, and that signature is free.</p>
+        </div>
+        <button class="btn" id="connectBtn" style="width:auto;padding:12px 26px">Connect</button>
+      </div>
+      <div class="card seat hidden" id="seatAssigned" style="border-color:rgba(57,241,148,.35)">
+        <div class="row"><img id="asEm" src="/arena/emblem-black-128.svg" width="48" height="48" alt=""><span id="asText" style="font-size:15px;line-height:1.5">You're on Black (assigned). Pick a side to confirm, or keep it.</span></div>
+        <div class="two"><button class="btn" id="pickBtn">Pick</button><button class="btn line" id="keepBtn">Keep Black</button></div>
+      </div>
+      <div class="card hidden" id="seatOn">
+        <div style="padding:20px 24px;display:flex;align-items:center;gap:16px;border-bottom:1px solid var(--line)">
+          <img id="seatPiece" src="/arena/pieces/black-16-pawn.svg" width="48" height="48" alt="">
+          <div style="display:flex;flex-direction:column;gap:4px;flex:1;min-width:0">
+            <span style="font-size:17px;font-weight:600" id="seatTitle">Black</span>
+            <span class="mono" style="font-size:12px;color:var(--dim)" id="seatRank">no points yet this season</span>
+          </div>
+          <img id="seatEm" src="/arena/emblem-black-128.svg" width="32" height="32" alt="">
+        </div>
+        <div class="kv3" style="grid-column:1/-1">
+          <div><span class="l">points</span><span class="v" id="seatSeason">0</span><span class="s"><span id="seatWeek">0</span> this week</span></div>
+          <div><span class="l">dollars traded</span><span class="v" id="seatVol">$0</span><span class="s"><span id="seatVolWeek">$0</span> this week</span></div>
+          <div><span class="l" id="seatEstL">est. this week's drop for your seat</span><span class="v" id="seatEst" style="color:var(--gold)">—</span><span class="s" id="seatEstS">posts when the token switch is on</span></div>
+        </div>
+        <div class="holdbox" id="seatHold" style="grid-column:1/-1">—</div>
+        <div class="sharebox"><span class="mono" style="font-size:11px;color:var(--dim)">share card</span><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn line" id="cardBtn" style="width:auto;padding:9px 14px;font-size:13px">Preview my card</button><button class="btn" id="cardPost" style="width:auto;padding:9px 14px;font-size:13px">Post on X</button></div></div>
+        <div class="gap hidden" id="seatGapBox"><b id="seatGapText"></b><span id="seatGapSub"></span></div>
+        <div class="atkline hidden" id="seatAtk"></div>
+        <div class="line"><span class="d">drop eligibility</span><span id="seatQual" style="text-align:right">—</span></div>
+        <div class="line"><span class="d">daily check-in</span><span id="seatCheckin" style="display:flex;align-items:center;gap:10px;justify-content:flex-end">—</span></div>
+        <div class="line"><span class="d">multiplier</span><span id="seatMult" style="text-align:right">—</span></div>
+        <div class="line"><span class="d">streak</span><span id="seatStreak">—</span></div>
+        <div class="line"><span class="d">next rank</span><span id="seatNext">—</span></div>
+        <div class="line"><span class="d">next piece</span><span id="seatNextPiece" style="display:flex;align-items:center;gap:8px">—</span></div>
+        <div class="line"><span class="d">name</span><span id="seatName" style="display:flex;align-items:center;gap:10px;justify-content:flex-end">—</span></div>
+        <div class="line"><span class="lnk" id="switchBtn">Switch side</span><span class="mono" style="font-size:12px;color:var(--faint)" id="switchNote">once per season</span></div>
+        <div class="steps hidden" id="seatSteps" style="padding:4px 24px 10px">
+          <div class="st"><b>01</b><span><a href="https://trade.throne.network">Trade the desk</a>. Every trade scores for you and your side. 1 point per $10.</span></div>
+          <div class="st"><b>02</b><span>Watch this panel. The venue publishes trader rows once an hour; rank, points and the gap update within minutes of each publish.</span></div>
+          <div class="st"><b>03</b><span>Sunday midnight UTC (8pm ET) the week closes and the King Drop lands. $20,000 taker volume in the week to be paid. Results post here and on <a href="https://x.com/thronedefi">@thronedefi</a>.</span></div>
+          <div class="st"><b>04</b><span>Hold 100k $THRONE through the week for 1.25x points, 500k for 1.5x.</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- sunday drop hero (first 24h after a close) -->
+  <div class="drop hidden" id="dropHero">
+    <div class="em"><img id="dropEm" src="/arena/emblem-black-512.svg" alt=""></div>
+    <div class="body">
+      <span class="mono" style="font-size:13px;color:var(--mint)" id="dropWk">week 1 · closed sunday midnight utc</span>
+      <span class="h" id="dropH">Black took<br>the week.</span>
+      <div class="nums">
+        <div><span id="dropL1">black</span><span id="dropV1" style="color:var(--mint)">—</span></div>
+        <div><span id="dropL2">white</span><span id="dropV2">—</span></div>
+        <div><span>margin</span><span id="dropV3">—</span></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:13px">
+        <span style="color:var(--dim)">hash <span style="color:var(--fg)" id="dropHash">—</span></span>
+        <a class="btn" href="#seat">See your drop.</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- live hero -->
+  <div class="hero" id="liveHero">
+    <div class="side w">
+      <div class="top">
+        <span class="name">White</span>
+        <div class="meta"><span id="wCount">— traders</span><span class="tag hidden" id="wTag"></span></div>
+      </div>
+      <div class="pts"><span class="l">points this week</span><span class="v" id="wPts">—</span></div>
+      <div class="king">
+        <img src="/arena/pieces/white-01-king.svg" width="32" height="32" alt="">
+        <span style="color:var(--faint)">king</span>
+        <span id="wKing" style="white-space:nowrap">—</span>
+        <span class="threat hidden" id="wThreat" title="Black's top wallet out-scored this king this week"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M2.5,8 L2.5,3 L5,5 L8,1.5 L11,5 L13.5,3 L13.5,8 Z"/><path d="M8,10.5 L8,15 M5.8,12.8 L8,15 L10.2,12.8"/></svg>crown under threat</span>
+        <span class="ml" style="font-weight:600" id="wKingPts">—</span>
+      </div>
+    </div>
+    <div class="side b">
+      <div class="top">
+        <div class="meta"><span id="bCount">— traders</span><span class="tag hidden" id="bTag"></span></div>
+        <span class="name">Black</span>
+      </div>
+      <div class="pts"><span class="l">points this week</span><span class="v" id="bPts">—</span></div>
+      <div class="king">
+        <span style="font-weight:600" id="bKingPts">—</span>
+        <span class="threat hidden" id="bThreat" title="White's top wallet out-scored this king this week"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#D4AF37" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M2.5,8 L2.5,3 L5,5 L8,1.5 L11,5 L13.5,3 L13.5,8 Z"/><path d="M8,10.5 L8,15 M5.8,12.8 L8,15 L10.2,12.8"/></svg>crown under threat</span>
+        <span class="ml" style="display:flex;align-items:center;gap:14px;white-space:nowrap"><span id="bKing">—</span><span style="color:var(--dim)">king</span></span>
+        <img src="/arena/pieces/black-01-king.svg" width="32" height="32" alt="">
+      </div>
+    </div>
+  </div>
+  <div class="bar" id="shareBar">
+    <div class="track"><div class="w" id="shareW" style="width:50%"></div><div class="b"></div></div>
+    <div class="lbl"><span id="shareWl">white —</span><span id="shareMid">share of points this week</span><span id="shareBl">black —</span></div>
+  </div>
+
+  <div class="grid">
+    <div class="sec full">
+      <div class="sech"><b>The board</b><span id="boardHint">32 pieces · 32 wallets · hover a piece</span></div>
+      <div class="boardwrap">
+        <div style="position:relative">
+          <div class="chess" id="chess"></div>
+          <div class="hover" id="hover"></div>
+        </div>
+        <div class="sec" style="gap:14px">
+          <div class="sech"><b>Movers</b><span title="the venue publishes trader rows once an hour; the board picks them up within minutes">venue posts hourly</span></div>
+          <div class="card feed" id="feed"><div class="empty">quiet until the season opens.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec full">
+      <div class="sech"><b>The lead</b><span>daily candles · white minus black</span></div>
+      <div class="card chartbox"><svg id="leadChart" viewBox="0 0 800 260"></svg><div class="mono" style="font-size:11px;color:var(--faint);padding-top:8px" id="chartNote">white points minus black points, this week. above zero white leads, below zero black leads.</div></div>
+    </div>
+
+    <div class="sec full">
+      <div class="sech"><b>Leaderboard</b><span>top 20 by season points · <span class="lnk" id="piecesToggle">show pieces by side</span></span></div>
+      <div class="card lb" id="lb"></div>
+      <div class="pieces hidden" id="piecesWrap" style="margin-top:14px">
+        <div class="card"><div class="ph"><span>white</span><span>pts</span></div><div id="wPieces"></div></div>
+        <div class="card"><div class="ph"><span>black</span><span>pts</span></div><div id="bPieces"></div></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sech"><b>The week</b><span>points per day</span></div>
+      <div class="card chart">
+        <div class="bars" id="bars"></div>
+        <div class="dl" id="dayLabels"></div>
+        <div class="leg"><span><i style="background:var(--fg)"></i>white</span><span><i style="background:var(--mint)"></i>black</span></div>
+      </div>
+      <div class="mono" style="font-size:12px;line-height:1.6;color:var(--dim)" id="lastWeekLine">no weeks closed yet</div>
+    </div>
+  </div>
+
+  <div class="res" id="results">
+    <span style="font-size:20px;font-weight:600">Results</span>
+    <div class="card rt">
+      <div class="rh"><span>week</span><span>winner</span><span class="r">white</span><span class="r">black</span><span class="r">margin</span><span class="h">hash</span></div>
+      <div id="resRows"></div>
+    </div>
+  </div>
+
+  <div class="how" id="how">
+    <b>How it works</b>
+    <div>
+      <div class="li"><span>01</span><span>Every wallet that trades is in. You're assigned a side; pick one once a season to make it yours.</span></div>
+      <div class="li"><span>02</span><span>Trade the desk; taker volume earns points for you and your side. 1 point per $10.</span></div>
+      <div class="li"><span>03</span><span>Weeks close Sunday midnight UTC (8pm ET); the side with more points takes the King Drop, split by points. $20,000 taker volume in the week to be paid. The losing side's king and queen still get paid: 10% of the drop, 7/3 between them. The final hour before the close is power hour: every point counts 1.5x.</span></div>
+      <div class="li"><span>04</span><span>Hold $THRONE through the week and your points multiply: 100k for 1.25x, 500k for 1.5x, measured on your lowest balance of the week. Beta list wallets score 2x. Combined cap 2x.</span></div>
+      <div class="li"><span>05</span><span>Top 16 on each side hold the pieces. Points set your place in line when the Court opens.</span></div>
+      <div class="li"><span>06</span><span>Results are published with a hash so anyone can check them against the venue's public data.</span></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="brand" style="font-size:15px"><img src="/arena/crown.svg" width="18" height="18" alt=""><span>throne<b>.</b></span></div>
+    <div class="l"><a href="https://docs.throne.network">Docs</a><a href="/terms">Terms</a><a href="https://x.com/thronedefi">@thronedefi</a></div>
+    <span class="mono" style="font-size:12px">this is a defi experiment, please use at your own risk.</span>
+  </footer>
+</div>
+
+<!-- onboarding / pick modal -->
+<div class="modalbg" id="modal">
+  <div class="modal">
+    <div class="mh"><div class="t"><img src="/arena/crown.svg" width="16" height="16" alt="">King Drop <small>white vs black</small></div><span class="x" id="mClose">×</span></div>
+    <div class="mb" id="mPick">
+      <h2 id="mTitle">Pick your side.</h2>
+      <p>The desk keeps score. Every trade you make earns points for you and for your side. Each week the side with more points takes the King Drop, a weekly reward for the traders who made it happen. Your points also set your place in line when the Court opens.</p>
+      <div class="opts">
+        <div class="opt w" id="optW"><img src="/arena/emblem-white-128.svg" width="64" height="64" alt=""><div><div class="n">White</div><div class="s"><span id="optWc">—</span> traders<br>moves first</div></div></div>
+        <div class="opt b" id="optB"><img src="/arena/emblem-black-128.svg" width="64" height="64" alt=""><div><div class="n">Black</div><div class="s"><span id="optBc">—</span> traders<br>answers every move</div></div></div>
+      </div>
+      <span class="note hidden" id="fullMsg"></span>
+      <span class="forme" id="forMe">Pick for me.</span>
+      <span class="err" id="mErr"></span>
+      <span class="mf">one wallet · one side · one season · switch once from the board · sides open for the first 48h of each week, then lock</span>
+    </div>
+    <div class="mb hidden" id="mDone">
+      <div style="display:flex;align-items:center;gap:16px">
+        <img id="dEm" src="/arena/emblem-black-128.svg" width="72" height="72" alt="">
+        <div style="display:flex;flex-direction:column;gap:8px"><h2 id="dTitle">You're on Black.</h2><span style="font-size:14.5px;color:var(--dim)">Trade to earn. The week closes Sunday midnight UTC.</span></div>
+      </div>
+      <div class="ticket">
+        <div class="tl"><span class="k" id="tK">throne. · king drop · black</span><span class="n" id="tN">Black</span><div class="m"><span><i>wallet</i> <span id="tW">—</span></span><span><i>season</i> zero</span></div></div>
+        <div class="tr" id="tR"><img id="tEm" src="/arena/emblem-black-128.svg" width="72" height="72" alt=""></div>
+      </div>
+      <div class="steps">
+        <div class="st"><b>01</b><span><a href="https://trade.throne.network">Trade the desk</a>. Every trade scores for you and <span class="dSide">your side</span>. 1 point per $10.</span></div>
+        <div class="st"><b>02</b><span>Watch the board. Your seat shows your rank, your points this week, and how far you are from the next piece.</span></div>
+        <div class="st"><b>03</b><span>Sunday midnight UTC (8pm ET) the week closes and the King Drop lands. $20,000 taker volume in the week to be paid. Results post here and on <a href="https://x.com/thronedefi">@thronedefi</a>.</span></div>
+        <div class="st"><b>04</b><span>Hold 100k $THRONE through the week for 1.25x points, 500k for 1.5x.</span></div>
+      </div>
+      <a class="btn" id="shareX" target="_blank" rel="noreferrer">Post it on X</a>
+      <span class="forme" id="toBoard" style="text-decoration:none">Go to the board</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- name / x handle modal -->
+<div class="modalbg" id="nameModal">
+  <div class="modal nm">
+    <div class="mh"><div class="t"><img src="/arena/crown.svg" width="16" height="16" alt="">Your name <small>on the board</small></div><span class="x" id="nmClose">×</span></div>
+    <div class="mb" id="nmStep1">
+      <h2>Put a name on your seat.</h2>
+      <p>Names show on the board, the points page, share cards and the King Drop channel. One free signature, no transaction. Add your X handle and verify it to get the check.</p>
+      <div class="f"><label>Name</label><input id="nmName" maxlength="20" placeholder="3 to 20 characters" autocomplete="off" spellcheck="false"></div>
+      <div class="f"><label>X handle (optional)</label><input id="nmHandle" maxlength="16" placeholder="@handle" autocomplete="off" spellcheck="false"></div>
+      <span class="err" id="nmErr"></span>
+      <div class="row"><button class="btn" id="nmSave">Sign and save</button><button class="btn line" id="nmCancel">Cancel</button></div>
+    </div>
+    <div class="mb hidden" id="nmStep2">
+      <h2>Verify <span id="nmH">@handle</span>.</h2>
+      <p>Post this code from your X account, then paste the link to the post. We read the public post, no login, no API keys.</p>
+      <div style="margin-top:10px"><span class="code" id="nmCode">KD-000000</span></div>
+      <div class="row"><a class="btn" id="nmTweet" target="_blank" rel="noreferrer">Post it on X</a></div>
+      <div class="f"><label>Link to your post</label><input id="nmUrl" placeholder="https://x.com/you/status/…" autocomplete="off" spellcheck="false"></div>
+      <span class="err" id="nmErr2"></span>
+      <div class="row"><button class="btn" id="nmVerify">Verify</button><button class="btn line" id="nmLater">Later</button></div>
+      <p class="help">Verified handles replace your name everywhere on the board. You can change the name or handle any time; changing the handle asks for a new verification.</p>
+    </div>
+    <div class="mb hidden" id="nmStep3">
+      <h2 class="ok">Done.</h2>
+      <p id="nmDoneText">You are on the board as <b id="nmDoneName">—</b>.</p>
+      <div class="row"><button class="btn" id="nmDoneBtn">Back to the board</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="splash" id="splash"><div class="in">
+  <span class="k">king drop · season zero</span>
+  <h2><b>923,000 $THRONE</b> in King Drop rewards for points, from now to oct 18.</h2>
+  <ul>
+    <li><b>01</b><span>Trade the desk. Every trade scores 1 point per $10 for you and your side, White or Black.</span></li>
+    <li><b>02</b><span>The side with more points takes the drop, split by points. The losing king and queen still get paid.</span></li>
+    <li><b>03</b><span>Hold $THRONE for up to 1.5x points. Top 16 per side hold the pieces.</span></li>
+  </ul>
+  <div class="acts"><button class="btn" id="splashConnect" style="width:auto;padding:11px 20px">Connect and see my seat</button><a class="btn line" href="https://trade.throne.network" style="width:auto;padding:11px 20px;text-decoration:none">Trade the desk</a><button class="btn line" id="splashClose" style="width:auto;padding:11px 16px">Just look</button></div>
+</div></div>
+<div class="toast" id="toast"></div>
+<div class="cardm" id="cardModal"><div class="in"><canvas id="cardCanvas" width="1200" height="630"></canvas><div class="acts"><button class="btn line" id="cardClose" style="width:auto;padding:9px 14px;font-size:13px">Close</button><a class="btn line" id="cardDl" download="king-drop-card.png" style="width:auto;padding:9px 14px;font-size:13px;text-decoration:none">Download PNG</a><a class="btn" id="cardX" target="_blank" rel="noreferrer" style="width:auto;padding:9px 14px;font-size:13px;text-decoration:none">Post on X</a></div><p class="mono" style="margin:0;font-size:11px;color:var(--faint)">download the card, then attach it to the post. the post text is prefilled.</p></div></div>
+<script>
+(function(){
+  var API = '/api/arena';
+  var TOKEN_PRICE = null; // usd per $THRONE, from dexscreener; null until loaded
+  fetch('https://api.dexscreener.com/latest/dex/tokens/0x72dc556fff14115c077a540921e5F35499a4DCa7').then(function(r){return r.json();}).then(function(j){ var p=(j.pairs||[]).sort(function(a,b){return (b.liquidity&&b.liquidity.usd||0)-(a.liquidity&&a.liquidity.usd||0);})[0]; if(p&&p.priceUsd){ TOKEN_PRICE=+p.priceUsd; if(board) renderSeat(); } }).catch(function(){});
+  // payout estimate, per the published split: 10% of the drop to the trailing king and queen (7/3); of the remaining 90%,
+  // 80% to the winning side by this week's points and 20% to the winning side's sixteen pieces weighted king (16) to pawn (1).
+  function estimateDrop(me, side){
+    var potQ = parseInt(new URLSearchParams(location.search).get('pot')||'',10); var pot = (board && board.pot) || (potQ>0 ? potQ : null);
+    if(!pot || !me) return null;
+    var sp = board.split || {trailingKQ:0.10,kqWeights:[0.7,0.3],sideShare:0.72,pieceShare:0.18};
+    var mine = board.sides[side], other = board.sides[side==='white'?'black':'white'];
+    var ahead = mine.pts > other.pts && mine.pts > 0;
+    if(ahead){ var v = pot*sp.sideShare*(me.week/mine.pts); if(me.rank && me.rank<=16){ var w=17-me.rank; v += pot*sp.pieceShare*(w/136); } return v; }
+    if(me.rank===1) return pot*sp.trailingKQ*sp.kqWeights[0];
+    if(me.rank===2) return pot*sp.trailingKQ*sp.kqWeights[1];
+    return 0;
+  }
+  var $ = function(id){ return document.getElementById(id); };
+  var PIECES = ['king','queen','rook','rook','bishop','bishop','knight','knight','pawn','pawn','pawn','pawn','pawn','pawn','pawn','pawn'];
+  var fmt = function(n){ return (Math.round(n||0)).toLocaleString('en-US'); };
+  var short = function(a){ return a ? a.slice(0,6)+'…'+a.slice(-4) : '—'; };
+  // display name: verified @handle > name > short address. names ride along on the board payload.
+  var disp = function(a){ var n = board && board.names && a && board.names[a.toLowerCase()]; if(!n) return short(a); return (n.handle && n.verified) ? '@'+n.handle : n.name; };
+  var nameRec = function(a){ return (board && board.names && a && board.names[a.toLowerCase()]) || null; };
+  var pieceSrc = function(side, rank){ return '/arena/pieces/'+side+'-'+String(rank).padStart(2,'0')+'-'+PIECES[rank-1]+'.svg'; };
+  var cap = function(s){ return s.charAt(0).toUpperCase()+s.slice(1); };
+
+  var season = null, board = null, wallet = null, mine = null;
+
+  // ---- countdown ----
+  function fmtMs(ms){ if(ms<=0) return '0h 00m'; var d=Math.floor(ms/864e5), h=Math.floor(ms%864e5/36e5), m=Math.floor(ms%36e5/6e4); return (d>0?d+'d ':'')+h+'h '+String(m).padStart(2,'0')+'m'; }
+  function subline(){
+    if(!season) return;
+    var s = 'white vs black · season zero · ';
+    if(season.rehearsal) s = '<span style="color:var(--gold)">rehearsal</span> · real desk volume since '+String(season.rehearsalStart||'').slice(5,10).replace('-','/')+' · nothing here counts · ';
+    if(season.state==='pre') s += 'opens fri oct 9 · 7pm est · <span style="color:var(--fg)">'+fmtMs(season.opens-Date.now())+'</span>';
+    else if(season.state==='ended') s += 'season closed';
+    else { s += 'week '+season.week+' of '+season.weeks+' · closes sunday midnight utc · <span style="color:var(--fg)">'+fmtMs(season.closes-Date.now())+'</span>'; var ms = season.closes-Date.now(); if(ms>0 && ms<=3600e3) s += '<span class="ph">power hour · 1.5x</span>'; else if(ms>3600e3) s += ' · <span style="color:var(--faint)">power hour from 6pm est sunday</span>'; }
+    $('subline').innerHTML = s;
+  }
+  setInterval(function(){ subline(); if(board) renderPot(); }, 30000);
+
+  // ---- render board ----
+  function renderPieces(side, list){
+    var el = $(side==='white'?'wPieces':'bPieces'); el.innerHTML='';
+    if(!list || !list.length){ el.innerHTML = '<div class="empty">'+(season && season.state==='pre' ? 'pieces are held from the first trade of the season.' : 'no points yet.')+'</div>'; return; }
+    var promos = (board.promotions||[]).filter(function(p){return p.side===side;}).map(function(p){return p.addr;});
+    list.forEach(function(p){
+      var col = p.rank<=2 ? 'var(--gold)' : p.rank<=8 ? 'var(--fg)' : 'var(--dim)';
+      var row = document.createElement('div'); row.className='prow'+(wallet && p.addr===wallet?' me':''); row.style.color=col;
+      row.innerHTML = '<span>'+String(p.rank).padStart(2,'0')+'</span><img src="'+pieceSrc(side,p.rank)+'" width="22" height="22" alt=""><span class="a">'+disp(p.addr)+'</span><span class="p">'+fmt(p.season)+'</span><span class="t">'+(promos.indexOf(p.addr)>=0?'<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#39F194" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><title>promoted into the top 8 this week</title><path d="M3,8.5 L8,3.5 L13,8.5"/><path d="M3,13.5 L8,8.5 L13,13.5"/></svg>':'')+(p.mult&&p.mult>1?'<span class="mult">'+p.mult+'x</span>':'')+'</span>';
+      el.appendChild(row);
+    });
+  }
+  function renderDays(){
+    var bars=$('bars'), lbls=$('dayLabels'); bars.innerHTML=''; lbls.innerHTML='';
+    var days = (board.days||[]);
+    var max = 1; days.forEach(function(d){ max=Math.max(max,d.white,d.black); });
+    var start = season && season.opens ? new Date(season.opens) : new Date();
+    var n = season && season.week===1 ? 10 : 7;
+    var byDate={}; days.forEach(function(d){ byDate[d.date]=d; });
+    var today = new Date().toISOString().slice(0,10);
+    for(var i=0;i<n;i++){
+      var dt = new Date(start.getTime()+i*864e5); var key = dt.toISOString().slice(0,10); var d = byDate[key];
+      var day=document.createElement('div'); day.className='day';
+      day.innerHTML='<i class="w" style="height:'+(d?Math.round(d.white/max*150):0)+'px"></i><i class="b" style="height:'+(d?Math.round(d.black/max*150):0)+'px"></i>';
+      bars.appendChild(day);
+      var l=document.createElement('span'); l.textContent = d||key<=today ? ['sun','mon','tue','wed','thu','fri','sat'][dt.getUTCDay()] : '–'; if(key===today) l.style.color='var(--mint)'; lbls.appendChild(l);
+    }
+  }
+  function renderResults(){
+    var el=$('resRows'); el.innerHTML='';
+    var rs = board.results||[]; var byWeek={}; rs.forEach(function(r){byWeek[r.week]=r;});
+    var weeks = (season&&season.weeks)||9;
+    for(var i=1;i<=weeks;i++){
+      var r=byWeek[i]; var row=document.createElement('div');
+      if(r){
+        row.className='rr';
+        var wc = r.winner==='black'?'var(--mint)':r.winner==='white'?'var(--fg)':'var(--dim)';
+        row.innerHTML='<span>'+String(i).padStart(2,'0')+'</span><span style="color:'+wc+'">'+r.winner+'</span><span class="r">'+fmt(r.white)+'</span><span class="r">'+fmt(r.black)+'</span><span class="r">'+fmt(r.margin)+'</span><span class="h"><a href="'+API+'/results?week='+i+'" target="_blank" style="color:var(--mint)">'+r.hash.slice(0,4)+'…'+r.hash.slice(-4)+'</a><span class="copy" title="copy" data-h="'+r.hash+'"></span></span>';
+      } else if(season && season.state==='live' && i===season.week){
+        row.className='rr';
+        row.innerHTML='<span>'+String(i).padStart(2,'0')+'</span><span style="color:var(--mint)">live</span><span class="r">'+fmt(board.sides.white.pts)+'</span><span class="r">'+fmt(board.sides.black.pts)+'</span><span class="r">'+fmt(Math.abs(board.sides.white.pts-board.sides.black.pts))+'</span><span class="h" style="color:var(--dim)">–</span>';
+      } else {
+        row.className='rr empty';
+        row.innerHTML='<span>'+String(i).padStart(2,'0')+'</span><span>–</span><span class="r">–</span><span class="r">–</span><span class="r">–</span><span class="h">–</span>';
+      }
+      el.appendChild(row);
+    }
+    el.querySelectorAll('.copy').forEach(function(c){ c.addEventListener('click',function(){ try{navigator.clipboard.writeText(c.getAttribute('data-h'));}catch(e){} }); });
+    var last = rs[rs.length-1];
+    $('lastWeekLine').innerHTML = last ? 'week '+last.week+' · '+last.winner+(last.winner==='draw'?'':' won')+' · '+fmt(last.white)+' to '+fmt(last.black)+' · hash <a href="#results">'+last.hash.slice(0,4)+'…'+last.hash.slice(-4)+'</a>' : (season&&season.state==='pre' ? 'week 1 opens fri oct 9 · 7pm est · closes sun oct 11' : 'no weeks closed yet');
+  }
+  function seasonTotals(){ var t={white:0,black:0,wc:0,bc:0}; Object.keys(board.wallets||{}).forEach(function(a){ var w=board.wallets[a]; if(w.season>0){ t[w.side]+=w.season; t[w.side==='white'?'wc':'bc']++; } }); return t; }
+  function renderHero(){
+    var W=board.sides.white, B=board.sides.black;
+    var pre = board.state==='pre';
+    if(board.week===0 && !pre){ document.querySelectorAll('.hero .pts .l').forEach(function(x){ x.textContent='points · pre-season'; }); }
+    if(pre){ var st0=seasonTotals(); $('wPts').textContent=fmt(Math.round(st0.white)); $('bPts').textContent=fmt(Math.round(st0.black)); $('wCount').textContent=fmt(st0.wc)+' traders'; $('bCount').textContent=fmt(st0.bc)+' traders'; document.querySelectorAll('.hero .pts .l').forEach(function(x){ x.textContent='season points · week 1 opens oct 9'; }); }
+    else { $('wPts').textContent=fmt(W.pts); $('bPts').textContent=fmt(B.pts); $('wCount').textContent=fmt(W.wallets)+' traders'; $('bCount').textContent=fmt(B.wallets)+' traders'; if(board.week!==0) document.querySelectorAll('.hero .pts .l').forEach(function(x){ x.textContent='points this week'; }); }
+    $('wKing').textContent = W.king?disp(W.king.addr):'—'; $('wKingPts').textContent = W.king?fmt(W.king.season)+' pts':'—';
+    $('bKing').textContent = B.king?disp(B.king.addr):'—'; $('bKingPts').textContent = B.king?fmt(B.king.season)+' pts':'—';
+    $('wThreat').classList.toggle('hidden', !(board.threat&&board.threat.white)); $('bThreat').classList.toggle('hidden', !(board.threat&&board.threat.black));
+    var st=board.streak||{};
+    $('wTag').classList.add('hidden'); $('bTag').classList.add('hidden');
+    if(st.count>=2){ var win=st.side, lose=win==='white'?'black':'white'; $(win==='white'?'wTag':'bTag').textContent='won '+st.count+' straight'; $(win==='white'?'wTag':'bTag').classList.remove('hidden'); $(lose==='white'?'wTag':'bTag').textContent='revenge week'; $(lose==='white'?'wTag':'bTag').classList.remove('hidden'); }
+    var sw = board.share ? board.share.white : .5; if(pre){ var st1=seasonTotals(); var tt=st1.white+st1.black; sw = tt? st1.white/tt : .5; }
+    $('shareW').style.width=(sw*100).toFixed(1)+'%'; if($('shareMid')) $('shareMid').textContent = pre ? 'share of season points' : (board.week===0 ? 'share of pre-season points' : 'share of points this week'); $('shareWl').textContent='white '+(sw*100).toFixed(1)+'%'; $('shareBl').textContent='black '+((1-sw)*100).toFixed(1)+'%';
+    // sunday drop hero: first 24h after the latest close
+    var last=(board.results||[])[board.results.length-1];
+    var show = last && (Date.now()-last.closes) < 864e5 && last.winner!=='draw';
+    $('dropHero').classList.toggle('hidden', !show); $('liveHero').classList.toggle('hidden', !!show); $('shareBar').classList.toggle('hidden', !!show);
+    if(show){ var w=last.winner, l=w==='white'?'black':'white'; $('dropEm').src='/arena/emblem-'+w+'-512.svg'; $('dropWk').textContent='week '+last.week+' · closed sunday midnight utc'; $('dropH').innerHTML=cap(w)+' took<br>the week.'; $('dropL1').textContent=w; $('dropV1').textContent=fmt(last[w]); $('dropL2').textContent=l; $('dropV2').textContent=fmt(last[l]); $('dropV3').textContent=fmt(last.margin); $('dropHash').textContent=last.hash.slice(0,4)+'…'+last.hash.slice(-4); }
+  }
+
+  // ---- pot banner ----
+  function renderPot(){
+    var closes = season && season.closes ? new Date(season.closes) : null;
+    var when = closes ? closes.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}).toLowerCase()+' · midnight utc' : 'sunday midnight utc';
+    var ph = board && board.powerHour; var pot = $('pot');
+    var potQ = parseInt(new URLSearchParams(location.search).get('pot')||'',10); var potV = (board && board.pot) || (potQ>0 ? potQ : null);
+    if(potV && !(ph && ph.active)){ pot.classList.remove('power');
+      var big='<span style="font-family:var(--sans);font-size:clamp(24px,2.8vw,34px);color:var(--mint);font-weight:600;letter-spacing:-.02em">'+fmt(potV)+' $THRONE</span>';
+      if(board && board.week===0){ $('potText').innerHTML = big+' <span style="color:var(--fg)">· King Drop rewards for points</span>'; $('potSub').textContent = 'pre-season: from now until oct 18'; }
+      else if(season && season.state==='pre'){ $('potText').innerHTML = big+' <span style="color:var(--fg)">· King Drop rewards for points</span>'; $('potSub').textContent = 'week 1: oct 9 to oct 18'; }
+      else { $('potText').innerHTML = big+' <span style="color:var(--fg)">· King Drop rewards for points</span>'; $('potSub').textContent = 'week '+(board?board.week:'')+': closes '+when+(closes?localTime(+closes):''); }
+      return; }
+    if(ph && ph.active){ pot.classList.add('power'); $('potText').textContent = 'Power hour. Every point counts 1.5x until the close.'; $('potSub').textContent = 'closes in '+fmtMs(ph.closesAt-Date.now())+(season&&season.rehearsal?' · rehearsal':''); return; }
+    pot.classList.remove('power');
+    if(season && season.rehearsal){ $('potText').textContent = 'Rehearsal. Real wallets, real desk volume, no drop. Season zero opens Oct 9.'; $('potSub').textContent = 'clears before week 1'; return; }
+    { $('potText').textContent = "This week's drop: season points, your piece, and first pick of the Court."; $('potSub').textContent = (season&&season.state==='pre') ? 'week 1 opens fri oct 9 · 7pm est'+localTime(+season.opens) : 'week '+(board?board.week:'')+' · closes '+when+(closes?localTime(+closes):''); }
+  }
+  // ---- chessboard: white on ranks 1-2 (bottom), black on 7-8 (top). rank 1..16 -> classic setup order.
+  var SETUP = [['rook',3],['knight',7],['bishop',5],['queen',2],['king',1],['bishop',6],['knight',8],['rook',4]]; // back rank left->right: piece, rank index used
+  function renderChess(){
+    var pcW=(board.pieces.white||[]).length, pcB=(board.pieces.black||[]).length, wl=Object.keys(board.wallets||{}).filter(function(a){return board.wallets[a].season>0;}).length;
+    var tap = window.matchMedia && matchMedia('(pointer:coarse)').matches ? 'tap a piece' : 'hover a piece';
+    $('boardHint').textContent = (pcW+pcB)+' of 32 pieces · '+wl+' wallets scoring · '+tap;
+    var el=$('chess'); el.innerHTML='';
+    var hov=$('hover');
+    var place = {}; // "r,c" -> {side, rank}
+    // white back rank = row 7 (bottom), pawns row 6; black back rank row 0, pawns row 1
+    SETUP.forEach(function(p,c){ place['7,'+c]={side:'white',rank:p[1]}; place['0,'+c]={side:'black',rank:p[1]}; });
+    for(var c=0;c<8;c++){ place['6,'+c]={side:'white',rank:9+c}; place['1,'+c]={side:'black',rank:9+c}; }
+    for(var r=0;r<8;r++) for(var c=0;c<8;c++){
+      var sq=document.createElement('div'); sq.className='sq '+(((r+c)%2)?'d':'l');
+      var pl=place[r+','+c];
+      if(pl && board){
+        var list=board.pieces[pl.side]||[]; var w=list[pl.rank-1];
+        if(w){
+          var img=document.createElement('img'); img.src=pieceSrc(pl.side, pl.rank); img.alt=pl.side+' '+PIECES[pl.rank-1];
+          if(wallet && w.addr===wallet) sq.classList.add('me');
+          if(w.attacked) sq.innerHTML+='<svg class="atk" viewBox="0 0 16 16" fill="none" stroke="#FF6B57" stroke-width="1.6" stroke-linecap="round"><path d="M3,13 L11,5 M10,3 L13,6 M5,11 L2,14 M6,9 L4,13 L7,11"/></svg>';
+          if(pl.rank===1 && board.threat && board.threat[pl.side]) sq.innerHTML+='<svg class="thr" viewBox="0 0 16 16" fill="none" stroke="#D4AF37" stroke-width="1.5"><path d="M2.5,8 L2.5,3 L5,5 L8,1.5 L11,5 L13.5,3 L13.5,8 Z"/><path d="M8,10.5 L8,15 M5.8,12.8 L8,15 L10.2,12.8"/></svg>';
+          (function(w,pl,sq){
+            var show=function(e){ var pn=w.pnlWeek||0, ps=w.pnlSeason||0;
+              hov.innerHTML='<div class="h1"><img src="'+pieceSrc(pl.side,pl.rank)+'" width="18" height="18" alt="">'+cap(pl.side)+' '+PIECES[pl.rank-1]+' <span style="color:var(--dim);font-weight:400">#'+pl.rank+'</span></div>'
+                +'<div class="row"><span>wallet</span><span>'+disp(w.addr)+'</span></div>'
+                +'<div class="row"><span>season</span><span>'+fmt(w.season)+' pts</span></div>'
+                +'<div class="row"><span>this week</span><span>'+fmt(w.week)+' pts</span></div>'
+                +'<div class="row"><span>traded</span><span>$'+fmt(w.vol)+'</span></div>'
+                +(function(){ var e=estimateDrop(w, pl.side); return e==null?'':'<div class="row"><span>est. drop</span><span style="color:var(--mint)">'+fmt(e)+' $THRONE</span></div>'; })()
+                +(w.weekVol < ((board.rules&&board.rules.claimFloorUsd)||20000) ? '<div class="row"><span>to be paid</span><span style="color:var(--gold)">$'+fmt(((board.rules&&board.rules.claimFloorUsd)||20000)-w.weekVol)+' more this week</span></div>' : '')
+                +(w.mult>1?'<div class="row"><span>multiplier</span><span style="color:var(--gold)">'+w.mult+'x</span></div>':'')
+                +(w.streak?'<div class="row"><span>streak</span><span>'+w.streak+' day'+(w.streak>1?'s':'')+'</span></div>':'')
+                +(w.attacked?'<div class="row"><span>under attack</span><span style="color:#FF6B57">by '+disp(w.attacked.addr)+'</span></div>':'');
+              hov.classList.add('on'); move(e); };
+            var move=function(e){ var host=el.parentNode.getBoundingClientRect(); var x=(e.clientX-host.left)+14, y=(e.clientY-host.top)+14; if(x+240>host.width) x=x-260; if(y+180>host.height) y=y-190; hov.style.left=x+'px'; hov.style.top=y+'px'; };
+            var hide=function(){ hov.classList.remove('on'); };
+            sq.addEventListener('mouseenter',show); sq.addEventListener('mousemove',move); sq.addEventListener('mouseleave',hide);
+            sq.addEventListener('click',function(e){ if(hov.classList.contains('on')&&e.pointerType==='touch'){hide();} else show(e); });
+          })(w,pl,sq);
+          sq.appendChild(img);
+        } else {
+          // open seat: faint number, card with what it takes, click goes to the desk
+          sq.classList.add('openseat'); sq.innerHTML='<span class="osn">'+pl.rank+'</span>';
+          (function(pl,sq){
+            var show=function(e){ var ps=board.pieces[pl.side]||[]; var need = pl.rank<=ps.length+1 ? 'any points take it' : 'trade to claim'; var share = board.pot ? board.pot*((board.split&&board.split.pieceShare)||0.18)*((17-pl.rank)/136) : 0;
+              hov.innerHTML='<div class="h1"><img src="'+pieceSrc(pl.side,pl.rank)+'" width="18" height="18" alt="" style="opacity:.5">'+cap(pl.side)+' '+PIECES[pl.rank-1]+' <span style="color:var(--dim);font-weight:400">#'+pl.rank+' · open</span></div>'
+                +'<div class="row"><span>to sit here</span><span>'+need+'</span></div>'
+                +(share?'<div class="row"><span>piece share if '+pl.side+' wins</span><span style="color:var(--mint)">'+fmt(share)+' $THRONE</span></div>':'')
+                +'<div class="row" style="margin-top:6px"><span style="color:var(--mint)">click to trade the desk →</span></div>';
+              hov.classList.add('on'); move(e); };
+            var move=function(e){ var host=el.parentNode.getBoundingClientRect(); var x=(e.clientX-host.left)+14, y=(e.clientY-host.top)+14; if(x+240>host.width) x=x-260; if(y+180>host.height) y=y-190; hov.style.left=x+'px'; hov.style.top=y+'px'; };
+            var hide=function(){ hov.classList.remove('on'); };
+            sq.addEventListener('mouseenter',show); sq.addEventListener('mousemove',move); sq.addEventListener('mouseleave',hide);
+            sq.addEventListener('click',function(){ window.open('https://trade.throne.network','_blank','noopener'); });
+          })(pl,sq);
+        }
+      }
+      el.appendChild(sq);
+    }
+  }
+  // ---- leaderboard: top 20 across both sides by season points, you highlighted ----
+  function renderLeaderboard(){
+    var el=$('lb'); if(!el||!board) return;
+    var rows=[]; ['white','black'].forEach(function(sd){ (board.pieces[sd]||[]).forEach(function(p){ rows.push(Object.assign({side:sd},p)); }); });
+    Object.keys(board.wallets||{}).forEach(function(a){ var w=board.wallets[a]; if(w.season>0 && !rows.some(function(r){return r.addr===a;})) rows.push({addr:a,side:w.side,piece:w.piece,rank:w.rank,season:w.season,week:w.week,vol:w.vol,mult:w.mult}); });
+    rows.sort(function(a,b){ return b.season-a.season; });
+    if(!rows.length){ el.innerHTML='<div class="empty">no points yet this season.</div>'; return; }
+    var h='<div class="r h"><span>#</span><span></span><span>wallet</span><span class="n">pts</span><span class="n hide-m">$ traded</span><span class="hide-m">piece</span><span class="n">mult</span></div>';
+    var top=rows.slice(0,20), meIdx=rows.findIndex(function(r){return wallet && r.addr===wallet;});
+    var line=function(r,i){ var me=wallet&&r.addr===wallet; return '<div class="r'+(me?' me':'')+'"><span>'+(i+1)+'</span><img src="/arena/emblem-'+r.side+'-128.svg" alt=""><span style="overflow:hidden;text-overflow:ellipsis">'+(me?'you · ':'')+disp(r.addr)+'</span><span class="n">'+fmt(r.season)+'</span><span class="n hide-m">$'+fmt(r.vol||0)+'</span><span class="hide-m">'+(r.piece?r.piece+' #'+r.rank:'—')+'</span><span class="n" style="color:'+(r.mult>1?'var(--gold)':'inherit')+'">'+(r.mult||1)+'x</span></div>'; };
+    top.forEach(function(r,i){ h+=line(r,i); });
+    if(meIdx>=20){ h+='<div class="r"><span class="ell">···</span></div>'+line(rows[meIdx],meIdx); }
+    el.innerHTML=h;
+  }
+  // ---- movers feed ----
+  function ago(t){ var m=Math.round((Date.now()-t)/6e4); return m<1?'now':m<60?m+' min ago':Math.round(m/60)+'h ago'; }
+  function renderFeed(){
+    var el=$('feed'); var evs=(board&&board.events)||[];
+    if(!evs.length){ el.innerHTML='<div class="empty">'+(season&&season.state==='pre'?'quiet until the season opens.':'no moves yet this refresh.')+'</div>'; return; }
+    el.innerHTML='';
+    evs.slice(0,18).forEach(function(e){
+      var d=document.createElement('div'); d.className='ev '+(e.side==='white'?'w':'b')+' ev-'+e.type; var txt='';
+      if(e.type==='points') txt='<span class="who">'+disp(e.addr)+'</span> · '+e.side+' · <span class="pos">+'+fmt(e.pts)+' pts</span>';
+      else if(e.type==='joined') txt='<span class="who">'+disp(e.addr)+'</span> joined '+e.side+(e.pts?' · +'+fmt(e.pts)+' pts':'');
+      else if(e.type==='piece') txt='<span class="who">'+disp(e.addr)+'</span> '+(e.from?e.from+' → ':'takes a ')+e.to+' · #'+e.rank+' '+e.side;
+      else if(e.type==='lead') txt='<span class="who">'+cap(e.side)+' takes the lead</span> · '+e.share+'%';
+      else if(e.type==='threat') txt='<span class="who">crown under threat</span> · '+e.side+' king out-scored';
+      else if(e.type==='attack') txt='<span class="who">'+disp(e.addr)+'</span> · '+e.side+' '+e.piece+' under attack by '+disp(e.by);
+      else if(e.type==='power') txt='<span style="color:var(--gold)">power hour</span> · every point counts '+(e.mult||1.5)+'x until the close';
+      else if(e.type==='named') txt='<span class="who">'+(e.name||disp(e.addr))+'</span> '+(e.verified?'verified on X':'claims a name')+' · '+e.side;
+      d.innerHTML='<span>'+txt+'</span><span class="t">'+ago(e.t)+'</span>'; el.appendChild(d);
+    });
+  }
+  // ---- lead chart: daily candles of the lead (white points minus black points). x axis = the whole week.
+  function niceStep(m){ var p=Math.pow(10,Math.floor(Math.log10(m||1))); var n=m/p; var st = n<=1?0.25:n<=2?0.5:n<=5?1:2; return st*p; }
+  function kfmt(v){ var a=Math.abs(v); var t=a>=1e6?(a/1e6).toFixed(1)+'m':a>=1e3?(a/1e3).toFixed(a>=1e4?0:1)+'k':String(Math.round(a)); return (v<0?'-':v>0?'+':'')+t; }
+  function renderChart(){
+    var svg=$('leadChart'); var ser=(board&&board.series)||[];
+    var W=Math.max(320, svg.clientWidth||svg.parentNode.clientWidth||800), H=260, padL=52, padR=16, padT=18, padB=28;
+    svg.setAttribute('viewBox','0 0 '+W+' '+H); svg.style.height=H+'px';
+    var t0 = board && board.opens ? +board.opens : (ser[0]?ser[0].t:Date.now()-864e5);
+    var t1 = board && board.closes ? +board.closes : Date.now();
+    if(season && season.state==='pre'){ t0=+season.opens; t1=+season.closes; }
+    var DAY=864e5, nDays=Math.max(1, Math.ceil((t1-t0)/DAY));
+    var X=function(t){ return padL+(W-padL-padR)*Math.min(1,Math.max(0,(t-t0)/Math.max(1,t1-t0))); };
+    var dayW=(W-padL-padR)/nDays, bodyW=Math.max(6, Math.min(28, dayW*0.5));
+    var mid=padT+(H-padT-padB)/2, half=(H-padT-padB)/2;
+    var out='';
+    // day columns + labels
+    var days=['sun','mon','tue','wed','thu','fri','sat'];
+    for(var i=0;i<=nDays;i++){ var t=t0+i*DAY, x=X(Math.min(t,t1)); out+='<line x1="'+x.toFixed(1)+'" y1="'+padT+'" x2="'+x.toFixed(1)+'" y2="'+(H-padB)+'" stroke="rgba(255,255,255,.06)"/>'; if(i<nDays){ var d=new Date(t); out+='<text x="'+(x+6).toFixed(1)+'" y="'+(H-9)+'" fill="#5E6663" font-family="JetBrains Mono" font-size="11">'+days[d.getUTCDay()]+(i===0?' open':'')+'</text>'; } }
+    out+='<text x="'+(W-padR).toFixed(1)+'" y="'+(H-9)+'" text-anchor="end" fill="#5E6663" font-family="JetBrains Mono" font-size="11">close</text>';
+    // candles from series
+    var buckets=[]; ser.forEach(function(p){ var v=p.w-p.b; var i=Math.min(nDays-1, Math.max(0, Math.floor((p.t-t0)/DAY))); var c=buckets[i]; if(!c){ buckets[i]={i:i,o:v,h:v,l:v,c:v,n:1,t:p.t}; } else { c.h=Math.max(c.h,v); c.l=Math.min(c.l,v); c.c=v; c.n++; c.t=p.t; } });
+    var vals=[]; buckets.forEach(function(c){ if(c){ vals.push(c.h,c.l); } });
+    var mx=Math.max.apply(null,[1].concat(vals.map(Math.abs))); var step=niceStep(mx); var top=Math.ceil(mx/step)*step; if(top<step*2) top=step*2;
+    var Y=function(v){ return mid-(v/top)*half; };
+    for(var v=-top; v<=top+1e-9; v+=step){ var y=Y(v); out+='<line x1="'+padL+'" y1="'+y.toFixed(1)+'" x2="'+(W-padR)+'" y2="'+y.toFixed(1)+'" stroke="'+(Math.abs(v)<1e-9?'rgba(255,255,255,.22)':'rgba(255,255,255,.06)')+'"/>'; out+='<text x="'+(padL-8)+'" y="'+(y+4).toFixed(1)+'" text-anchor="end" fill="#5E6663" font-family="JetBrains Mono" font-size="11">'+kfmt(v)+'</text>'; }
+    out+='<text x="'+(padL+6)+'" y="'+(padT+11)+'" fill="#F2F4F0" font-family="JetBrains Mono" font-size="11" opacity=".7">white leads</text><text x="'+(padL+6)+'" y="'+(H-padB-6)+'" fill="#39F194" font-family="JetBrains Mono" font-size="11" opacity=".8">black leads</text>';
+    if(!ser.length){ out+='<text x="'+(W/2)+'" y="'+(mid-10)+'" text-anchor="middle" fill="#5E6663" font-family="JetBrains Mono" font-size="12">'+(season&&season.state==='pre'?'the first candle prints when week 1 opens.':'collecting the first points…')+'</text>'; svg.innerHTML=out; return; }
+    var prevClose=null, lastC=null, todayIdx=Math.min(nDays-1, Math.floor((Date.now()-t0)/DAY));
+    for(var k=0;k<nDays;k++){
+      var c=buckets[k]; if(!c) continue;
+      // open of a day = previous day's close when we have one, so gaps between days show as real moves
+      var o = prevClose==null ? c.o : prevClose; var h=Math.max(c.h,o), l=Math.min(c.l,o);
+      var cx=X(t0+(k+0.5)*DAY), up=c.c>=o, col=up?'#F2F4F0':'#39F194', live=(k===todayIdx && (season&&season.state==='live'));
+      var yO=Y(o), yC=Y(c.c), bodyTop=Math.min(yO,yC), bodyH=Math.max(1.5, Math.abs(yO-yC));
+      out+='<line x1="'+cx.toFixed(1)+'" y1="'+Y(h).toFixed(1)+'" x2="'+cx.toFixed(1)+'" y2="'+Y(l).toFixed(1)+'" stroke="'+col+'" stroke-width="1.5" opacity=".9"/>';
+      out+='<rect x="'+(cx-bodyW/2).toFixed(1)+'" y="'+bodyTop.toFixed(1)+'" width="'+bodyW.toFixed(1)+'" height="'+bodyH.toFixed(1)+'" rx="1" fill="'+(live?'rgba(0,0,0,0)':col)+'" stroke="'+col+'" stroke-width="1.5"'+(live?' stroke-dasharray="3 2"':'')+'/>';
+      out+='';
+      prevClose=c.c; lastC={c:c, cx:cx, col:col};
+    }
+    if(lastC){ var lv=lastC.c.c; var lx=lastC.cx+bodyW/2+10, an='start'; if(lastC.cx > W-150){ lx=lastC.cx-bodyW/2-10; an='end'; }
+      out+='<text x="'+lx.toFixed(1)+'" y="'+(Y(lv)+4).toFixed(1)+'" text-anchor="'+an+'" fill="'+(lv>=0?'#F2F4F0':'#39F194')+'" font-family="JetBrains Mono" font-size="12" font-weight="500">'+(lv>=0?'white':'black')+' +'+fmt(Math.abs(lv))+'</text>'; }
+    svg.innerHTML=out;
+    $('chartNote').textContent='one candle per day. the line is white points minus black points: above zero white leads, below zero black leads. wicks are the day\'s extremes, the dashed candle is today, still printing.';
+  }
+  var _rz; window.addEventListener('resize', function(){ clearTimeout(_rz); _rz=setTimeout(function(){ if(board) renderChart(); }, 150); });
+  function render(){ if(!board) return; renderPot(); renderHero(); renderChess(); renderFeed(); renderChart(); renderLeaderboard(); renderPieces('white',board.pieces.white); renderPieces('black',board.pieces.black); renderDays(); renderResults(); renderSeat(); }
+
+  // ---- wallet / seat ----
+  function setNav(){ var b=$('navBtn'); if(wallet){ b.textContent=disp(wallet); b.className='pill ghost'; } else { b.textContent='connect'; b.className='pill'; } $('seatAddr').textContent = wallet?disp(wallet):''; }
+  function renderSeat(){
+    $('seatOff').classList.toggle('hidden', !!wallet); if(board) renderLeaderboard();
+    if(!wallet||!mine){ $('seatAssigned').classList.add('hidden'); $('seatOn').classList.add('hidden'); return; }
+    var side=mine.side, me = board && board.wallets ? board.wallets[wallet] : null;
+    if(mine.source==='default'){
+      $('seatAssigned').classList.remove('hidden'); $('seatOn').classList.add('hidden');
+      $('asEm').src='/arena/emblem-'+side+'-128.svg'; $('asText').textContent="You're on "+cap(side)+" (assigned). Pick a side to confirm, or keep it."; $('keepBtn').textContent='Keep '+cap(side);
+      return;
+    }
+    $('seatAssigned').classList.add('hidden'); $('seatOn').classList.remove('hidden');
+    $('seatEm').src='/arena/emblem-'+side+'-128.svg';
+    var rank = me&&me.rank, piece = me&&me.piece;
+    $('seatPiece').src = piece ? pieceSrc(side, rank) : '/arena/emblem-'+side+'-128.svg';
+    $('seatTitle').textContent = cap(side)+(piece?' · '+piece:'');
+    $('seatRank').textContent = rank ? 'rank #'+rank+' on '+side : 'no points yet this season';
+    $('seatWeek').textContent = fmt(me?me.week:0); $('seatSeason').textContent = fmt(me?me.season:0);
+    document.querySelectorAll('.kv3 .s').forEach(function(x){ if(x.textContent.indexOf('this week')>-1 || x.textContent.indexOf('pre-season')>-1){ x.innerHTML = x.innerHTML.replace(/(this week|pre-season)/, board.week===0?'pre-season':'this week'); } });
+    $('seatVol').textContent = '$'+fmt(me?me.vol||0:0); $('seatVolWeek').textContent = '$'+fmt(me?me.weekVol||0:0);
+    var est = estimateDrop(me, side);
+    if(est===null){ $('seatEst').textContent='—'; $('seatEstS').textContent='posts when the token switch is on'; }
+    else { var usdv = TOKEN_PRICE ? ' <span style="color:var(--fg);font-size:.7em">≈ $'+fmt(Math.round(est*TOKEN_PRICE))+'</span>' : ''; $('seatEst').innerHTML = fmt(Math.round(est))+' <span style="font-size:.7em">$THRONE</span>'+usdv; var ahead = board.sides[side].pts > board.sides[side==='white'?'black':'white'].pts; var basis = board.week===0 ? 'if week 1 closed with today\'s standings' : 'if the week closed now'; $('seatEstS').textContent = (ahead ? basis+' · your share of the winning side' : (me&&me.rank<=2 ? basis+' · trailing '+(me.rank===1?'king':'queen')+' share' : 'your side is behind · take the lead to earn from the drop')) + (TOKEN_PRICE ? ' · at $'+TOKEN_PRICE.toPrecision(3)+' per $THRONE' : ''); }
+    // $THRONE holdings and multiplier verification
+    var hold = me ? (me.hold||0) : 0, HT2=(board.rules&&board.rules.holdTiers)||[{min:500000,mult:1.5},{min:100000,mult:1.25}]; var tiers2=HT2.slice().sort(function(a,b){return a.min-b.min;});
+    var hm = me ? (me.holdMult||1) : 1;
+    var hb = '<b>'+fmt(Math.round(hold))+' $THRONE</b> in this wallet · holder tier <b>'+hm+'x</b>';
+    if(hold < tiers2[0].min) hb += '<br><span style="color:var(--gold)">Get '+tiers2[0].mult+'x to '+tiers2[tiers2.length-1].mult+'x more points by simply holding $THRONE in this wallet: '+fmt(tiers2[0].min)+' for '+tiers2[0].mult+'x, '+fmt(tiers2[tiers2.length-1].min)+' for '+tiers2[tiers2.length-1].mult+'x.</span>';
+    hb += '<br>LP in the $THRONE pools for up to 1.7x <span class="soon">coming soon</span>';
+    $('seatHold').innerHTML = hb;
+    var list = board.pieces[side]||[];
+    // gap to next rank / next piece uses the top-16 list when the wallet is in range
+    var nextRank = null, nextPiece = null;
+    if(rank && rank>1){ var above=list[rank-2]; if(above) nextRank='<span style="color:var(--mint)">+'+fmt(above.season-(me.season||0)+1)+' pts</span> to #'+(rank-1); }
+    if(!piece){ var p16=list[15]||list[list.length-1]; if(p16) nextPiece='<span style="color:var(--mint)">+'+fmt(p16.season-(me?me.season:0)+1)+' pts</span> to <img src="'+pieceSrc(side,16)+'" width="20" height="20" alt="">'; else nextPiece='first trade takes a pawn'; }
+    else if(rank>1){ var nr=rank-1; while(nr>1 && PIECES[nr-1]===piece) nr--; var tgt=list[nr-1]; if(tgt && PIECES[nr-1]!==piece) nextPiece='<span style="color:var(--mint)">+'+fmt(tgt.season-me.season+1)+' pts</span> to <img src="'+pieceSrc(side,nr)+'" width="20" height="20" alt="">'; else nextPiece='—'; }
+    else nextPiece='you hold the crown';
+    $('seatNext').innerHTML = nextRank||'—'; $('seatNextPiece').innerHTML = nextPiece||'—';
+    // the gap: dollars of taker volume to take the next piece, at this wallet's multiplier
+    var g = me && me.gap;
+    if(g && g.usd){ $('seatGapBox').classList.remove('hidden');
+      var verb = piece ? 'take the '+g.piece : 'take a seat as a '+g.piece;
+      $('seatGapText').innerHTML = '<i>$'+fmt(g.usd)+'</i> of volume to '+verb+'.';
+      $('seatGapSub').innerHTML = 'passes #'+g.rank+' '+disp(g.addr)+(me.mult>1?' · at your '+me.mult+'x':'')+(board.powerHour&&board.powerHour.active?' · <span style="color:var(--gold)">power hour: 1.5x until the close</span>':'')+' · <a href="https://trade.throne.network">trade the desk</a>'; }
+    else if(me && rank===1){ $('seatGapBox').classList.remove('hidden'); $('seatGapText').innerHTML='You hold the crown.'; var chaser=list[1]; $('seatGapSub').textContent = chaser ? '#2 '+disp(chaser.addr)+' is '+fmt((me.season||0)-chaser.season)+' pts behind' : 'no one behind you yet'; }
+    else $('seatGapBox').classList.add('hidden');
+    // multiplier: what you have and what gets you the next tier
+    var HT=(board.rules&&board.rules.holdTiers)||[{min:500000,mult:1.5},{min:100000,mult:1.25}], CAPM=(board.rules&&board.rules.maxMultiplier)||2;
+    var mult = me ? (me.mult||1) : 1, hold = me ? (me.hold||0) : 0, isBeta = !!(me && me.beta && (board.rules&&board.rules.betaMultiplier)>1);
+    var mtxt = '<b style="color:var(--mint)">'+mult+'x</b>';
+    if(mult>=CAPM) mtxt += ' <span class="mono" style="font-size:12px;color:var(--dim)">· '+(isBeta?'beta list':'holder')+' · at the cap</span>';
+    else { var tiers=HT.slice().sort(function(a,b){return a.min-b.min;}); var nxt=null; for(var q=0;q<tiers.length;q++){ if(hold<tiers[q].min){ nxt=tiers[q]; break; } }
+      if(nxt) mtxt += ' <span class="mono" style="font-size:12px;color:var(--dim)">· '+(hold>0?'hold '+fmt(nxt.min-hold)+' more':'hold '+fmt(nxt.min))+' $THRONE through the week for '+nxt.mult+'x</span>'; }
+    $('seatMult').innerHTML = mtxt;
+    // streak
+    var st = me ? (me.streak||0) : 0;
+    $('seatStreak').innerHTML = st ? '<b>'+st+' day'+(st>1?'s':'')+'</b> <span class="mono" style="font-size:12px;color:'+(me.activeToday?'var(--dim)':'var(--gold)')+'">· '+(me.activeToday?'scored today':'trade today to keep it')+'</span>' : '<span class="mono" style="font-size:12px;color:var(--dim)">no streak · one trade starts it</span>';
+    // under attack
+    var atk = me && me.attacked;
+    if(atk && piece){ $('seatAtk').classList.remove('hidden'); $('seatAtk').innerHTML = 'your '+piece+' is under attack. <b>'+disp(atk.addr)+'</b> (#'+atk.rank+') is out-scoring you this week with '+fmt(atk.weekPts)+' pts, '+fmt(atk.gapPts)+' pts behind you for the season.'; }
+    else $('seatAtk').classList.add('hidden');
+    // drop eligibility: $20k taker volume in the week to be paid from that week's drop
+    var floor = (board.rules && board.rules.claimFloorUsd) || 20000;
+    if(me){ $('seatQual').innerHTML = me.weekVol >= floor ? '<span style="color:var(--mint)">qualified · $'+fmt(me.weekVol)+' this week</span>' : '<span style="color:var(--gold)">$'+fmt(floor - me.weekVol)+' more</span> <span style="color:var(--faint)">to reach $'+fmt(floor)+' this week</span>'; }
+    else $('seatQual').innerHTML = '<span style="color:var(--faint)">trade $'+fmt(floor)+' this week to be paid</span>';
+    // daily check-in: +100 pts a day, +300 for all seven, counted once you qualify
+    var ci = me || {}; var cpts = (board.rules && board.rules.checkinPts) || 100;
+    $('seatCheckin').innerHTML = (ci.checkinToday ? '<span style="color:var(--mint)">checked in today</span>' : '<span class="lnk" id="checkinBtn">Check in · +'+cpts+' pts</span>')
+      + ' <span class="mono" style="font-size:12px;color:var(--faint)">'+(ci.checkins||0)+'/7 this week'+(ci.checkins && !ci.checkinLive ? ' · pending until qualified' : '')+'</span>';
+    if($('checkinBtn')) $('checkinBtn').addEventListener('click', doCheckin);
+    var nr = nameRec(wallet);
+    $('seatName').innerHTML = (nr ? '<b>'+esc(nr.name)+'</b>'+(nr.handle ? ' <span class="mono" style="font-size:12px;color:var(--dim)">@'+esc(nr.handle)+(nr.verified?' <span style="color:var(--mint)">✓</span>':' · unverified')+'</span>' : '') : '<span style="color:var(--faint)">no name yet</span>')
+      + ' <span class="lnk" id="nameBtn" style="font-size:13px">'+(nr ? (nr.handle && !nr.verified ? 'verify' : 'edit') : 'set your name')+'</span>';
+    $('nameBtn').addEventListener('click', function(){ openNameModal(nr && nr.handle && !nr.verified ? 2 : 1); });
+    var lk = board.sideLock || {};
+    $('switchBtn').classList.toggle('hidden', !!mine.switched || !!lk.locked);
+    $('switchNote').textContent = mine.switched ? 'switched this season' : (lk.locked ? 'sides locked · open again for the first 48h of next week' : 'once per season · open for the first 48h of each week');
+    $('seatSteps').classList.toggle('hidden', !!(me && me.season > 0));
+  }
+
+  async function connect(){
+    if(!window.ethereum){ alert('No wallet found in this browser. Open this page in your wallet app, or use the desk on desktop.'); return; }
+    try{ var accs = await window.ethereum.request({method:'eth_requestAccounts'}); wallet = (accs[0]||'').toLowerCase(); }catch(e){ return; }
+    if(!wallet) return; setNav(); await loadMine(); renderSeat();
+    if(mine && mine.source==='default') openModal('pick');
+  }
+  async function loadMine(){ try{ mine = await fetch(API+'/side?wallet='+wallet,{cache:'no-store'}).then(function(r){return r.json();}); }catch(e){ mine=null; } }
+
+  // ---- modal ----
+  var modalKind='pick';
+  function openModal(kind){ modalKind=kind||'pick'; $('mPick').classList.remove('hidden'); $('mDone').classList.add('hidden'); $('mErr').textContent=''; $('mTitle').textContent = kind==='switch' ? 'Switch side.' : 'Pick your side.';
+    var c = (mine&&mine.counts)||(season&&season.counts)||{white:0,black:0}; $('optWc').textContent=fmt(c.white); $('optBc').textContent=fmt(c.black);
+    var full = (mine&&mine.capFull)||(season&&season.capFull)||null;
+    $('optW').classList.toggle('off', full==='white'); $('optB').classList.toggle('off', full==='black');
+    $('fullMsg').classList.toggle('hidden', !full); if(full) $('fullMsg').textContent = cap(full)+' is full this week. '+cap(full==='white'?'black':'white')+' is open.';
+    if(kind==='switch' && mine){ $(mine.side==='white'?'optW':'optB').classList.add('off'); }
+    $('modal').classList.add('on'); }
+  function closeModal(){ $('modal').classList.remove('on'); }
+  function msgFor(side, kind){ return 'throne. king drop\n'+(kind==='switch'?'switch to':'join')+' '+side+'\nwallet '+wallet+'\nseason zero\n\nThis signature is free and sends no transaction.'; }
+  async function choose(side){
+    if(!wallet){ await connect(); if(!wallet) return; }
+    var full = (mine&&mine.capFull)||null; if(full===side){ $('mErr').textContent=cap(side)+' is full this week.'; return; }
+    var kind = (mine && mine.source==='picked') ? 'switch' : 'pick';
+    if(kind==='switch' && mine.side===side){ $('mErr').textContent="You're already on "+cap(side)+'.'; return; }
+    $('mErr').textContent='waiting for your wallet…';
+    var sig; try{ sig = await window.ethereum.request({method:'personal_sign', params:[msgFor(side,kind), wallet]}); }catch(e){ $('mErr').textContent='signature cancelled.'; return; }
+    var r = await fetch(API+'/'+kind,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({wallet:wallet,side:side,sig:sig})}).then(function(r){return r.json();}).catch(function(){return {error:'network error'};});
+    if(!r.ok){ $('mErr').textContent = r.error||'something went wrong.'; return; }
+    await loadMine(); renderSeat(); done(side);
+    // a pick or switch moves this wallet's points to the other side: rebuild the board now instead of waiting for the cron
+    try{ var nb = await fetch(API+'/board?refresh=1&t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}); if(nb && nb.sides){ board=nb; render(); } }catch(e){}
+  }
+  function done(side){
+    $('mPick').classList.add('hidden'); $('mDone').classList.remove('hidden');
+    $('dEm').src='/arena/emblem-'+side+'-128.svg'; $('tEm').src='/arena/emblem-'+side+'-128.svg'; $('dTitle').textContent="You're on "+cap(side)+'.';
+    $('tK').textContent='throne. · king drop · '+side; document.querySelectorAll('.dSide').forEach(function(x){ x.textContent=cap(side); }); $('tN').textContent=cap(side); $('tW').textContent=disp(wallet); $('tR').className='tr'+(side==='white'?' w':'');
+    var text = "I'm on "+cap(side)+" for season zero of King Drop on the throne. desk. Stocks and crypto perps, every trade scores for my side.\n\nthrone.network/board";
+    $('shareX').href='https://x.com/intent/post?text='+encodeURIComponent(text);
+  }
+  $('optW').addEventListener('click',function(){ if(!this.classList.contains('off')) choose('white'); });
+  $('optB').addEventListener('click',function(){ if(!this.classList.contains('off')) choose('black'); });
+  $('forMe').addEventListener('click',async function(){ if(!wallet){ await connect(); if(!wallet) return; } var full=(mine&&mine.capFull)||null; var side = mine ? mine.side : 'black'; if(full===side) side = side==='white'?'black':'white'; if(mine && mine.source==='default' && (mine.capFull!==mine.side)){ closeModal(); return; } choose(side); });
+
+  // ---- daily check-in (free signature)
+  async function doCheckin(){
+    if(!wallet || !window.ethereum) return;
+    var btn=$('checkinBtn'); if(btn) btn.textContent='sign in your wallet…';
+    try{
+      var g = await fetch(API+'/checkin?wallet='+wallet,{cache:'no-store'}).then(function(r){return r.json();});
+      if(g.checkedInToday){ toast('Already checked in today.'); renderSeat(); return; }
+      var hex='0x'+Array.from(new TextEncoder().encode(g.message)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+      var sig = await window.ethereum.request({method:'personal_sign',params:[hex,wallet]});
+      var r = await fetch(API+'/checkin',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({wallet:wallet,sig:sig})}).then(function(x){return x.json();});
+      if(r.error){ toast(r.error); if(btn) btn.textContent='Check in'; return; }
+      toast('Checked in. '+r.days.length+'/7 this week · +'+fmt(r.pts)+' pts once you clear $20,000.'); refreshNow();
+    }catch(e){ if(btn) btn.textContent='Check in'; }
+  }
+  // ---- name modal
+  function esc(t){ return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  var nmCode = null;
+  function nmShow(step){ [1,2,3].forEach(function(i){ $('nmStep'+i).classList.toggle('hidden', i!==step); }); $('nameModal').classList.add('on'); }
+  async function openNameModal(step){
+    if(!wallet){ if(window.ethereum){ try{ var accs = await window.ethereum.request({method:'eth_requestAccounts'}); wallet=(accs[0]||'').toLowerCase(); }catch(e){ return; } } else return; }
+    var nr = nameRec(wallet); $('nmName').value = nr ? nr.name : ''; $('nmHandle').value = nr && nr.handle ? '@'+nr.handle : ''; $('nmErr').textContent=''; $('nmErr2').textContent='';
+    try{ var g = await fetch(API+'/name?wallet='+wallet,{cache:'no-store'}).then(function(r){return r.json();}); nmCode = g.code; if(g.name){ $('nmName').value=g.name; $('nmHandle').value=g.handle?'@'+g.handle:''; } }catch(e){}
+    if(step===2){ nmPrepVerify($('nmHandle').value.replace(/^@/,'')); } else nmShow(1);
+  }
+  function nmPrepVerify(handle){ $('nmH').textContent='@'+handle; $('nmCode').textContent=nmCode||'—'; var text='Claiming my seat on the King Drop board. '+(nmCode||'')+' \n\n923,000 $THRONE on the line. Trade the desk, score for your side.\nthrone.network/points'; $('nmTweet').href='https://x.com/intent/post?text='+encodeURIComponent(text); $('nmUrl').value=''; nmShow(2); }
+  $('nmSave').addEventListener('click', async function(){
+    var name = $('nmName').value.trim().replace(/\s+/g,' '), handle = $('nmHandle').value.trim().replace(/^@/,''); $('nmErr').textContent='';
+    if(name.length<3){ $('nmErr').textContent='Name needs at least 3 characters.'; return; }
+    var msg = 'throne. king drop\nname '+name+(handle?'\nx @'+handle:'')+'\nwallet '+wallet+'\nseason zero\n\nThis signature is free and sends no transaction.';
+    var hex = '0x'+Array.from(new TextEncoder().encode(msg)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+    var sig; try{ sig = await window.ethereum.request({method:'personal_sign', params:[hex, wallet]}); }catch(e){ $('nmErr').textContent='Signature declined.'; return; }
+    var r; try{ r = await fetch(API+'/name',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({wallet:wallet,name:name,handle:handle,sig:sig})}).then(function(x){return x.json();}); }catch(e){ $('nmErr').textContent='Network error.'; return; }
+    if(r.error){ $('nmErr').textContent=r.error; return; }
+    nmCode = r.code || nmCode;
+    if(handle && !r.verified){ nmPrepVerify(handle); } else { $('nmDoneName').textContent = r.verified ? '@'+r.handle : name; nmShow(3); }
+    refreshNow();
+  });
+  $('nmVerify').addEventListener('click', async function(){
+    var u = $('nmUrl').value.trim(); $('nmErr2').textContent=''; if(!u){ $('nmErr2').textContent='Paste the link to your post.'; return; }
+    var r; try{ r = await fetch(API+'/name/verify',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({wallet:wallet,url:u})}).then(function(x){return x.json();}); }catch(e){ $('nmErr2').textContent='Network error.'; return; }
+    if(r.error){ $('nmErr2').textContent=r.error; return; }
+    $('nmDoneName').textContent='@'+r.handle+' ✓'; nmShow(3); refreshNow();
+  });
+  function refreshNow(){ fetch(API+'/board?refresh=1',{cache:'no-store'}).then(function(r){return r.json();}).then(function(b){ if(b&&b.wallets){ board=b; render(); } }).catch(function(){}); }
+  ['nmClose','nmCancel','nmLater','nmDoneBtn'].forEach(function(id){ $(id).addEventListener('click', function(){ $('nameModal').classList.remove('on'); }); });
+  $('mClose').addEventListener('click', closeModal); $('toBoard').addEventListener('click', closeModal);
+  $('modal').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
+  $('connectBtn').addEventListener('click', connect); $('navBtn').addEventListener('click', function(){ if(!wallet) connect(); });
+  $('pickBtn').addEventListener('click', function(){ openModal('pick'); });
+  $('keepBtn').addEventListener('click', function(){ if(mine) choose(mine.side); });
+  $('switchBtn').addEventListener('click', function(){ openModal('switch'); });
+
+
+  // ---- UX bits: ranks toggle, tap hint, local time ----
+  $('piecesToggle').addEventListener('click', function(){ var w=$('piecesWrap'); var open=w.classList.toggle('hidden'); this.textContent = open ? 'show pieces by side' : 'hide pieces by side'; });
+  function localTime(ms){ try{ var d=new Date(ms); var tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''; if(/New_York|Toronto|Detroit/.test(tz)) return ''; return ' · your time '+d.toLocaleString(undefined,{weekday:'short',hour:'numeric',minute:'2-digit'}).toLowerCase(); }catch(e){ return ''; } }
+
+  // ---- share card (client-side PNG) ----
+  var CROWN='M-24,10 L-24,-14 L-13,-6 L0,-26 L13,-6 L24,-14 L24,10 Z';
+  function loadImg(src){ return new Promise(function(res){ var im=new Image(); im.onload=function(){res(im)}; im.onerror=function(){res(null)}; im.src=src; }); }
+  function rr(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+  function drawCrown(ctx,cx,cy,scale,fill,stroke,lw){ ctx.save(); ctx.translate(cx,cy); ctx.scale(scale,scale); var p=new Path2D(CROWN); ctx.fillStyle=fill; ctx.strokeStyle=stroke; ctx.lineWidth=lw/scale; ctx.lineJoin='round'; ctx.fill(p); ctx.stroke(p); rr(ctx,-24,10,48,9,4.5); ctx.fill(); ctx.stroke(); ctx.restore(); }
+  async function renderCard(){
+    if(!wallet||!mine||!board) return null;
+    var me = board.wallets[wallet]||{}; var side=mine.side; var rank=me.rank, piece=me.piece;
+    var cv=$('cardCanvas'), ctx=cv.getContext('2d'); var W=1200,H=630;
+    try{ await document.fonts.ready; }catch(e){}
+    var mint='#39F194', fg='#F2F4F0', dim='#9AA39D', faint='#5E6663', gold='#D4AF37';
+    var isKing = rank===1, atk = !!me.attacked;
+    // background
+    ctx.fillStyle='#050605'; ctx.fillRect(0,0,W,H);
+    var g=ctx.createRadialGradient(W*0.78,H*0.45,20,W*0.78,H*0.45,520); g.addColorStop(0, isKing?'rgba(212,175,55,.14)':(side==='white'?'rgba(242,244,240,.10)':'rgba(57,241,148,.12)')); g.addColorStop(1,'rgba(0,0,0,0)'); ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle='rgba(255,255,255,.035)'; ctx.lineWidth=1; for(var x=0;x<W;x+=70){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); } for(var y=0;y<H;y+=70){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+    // logo
+    drawCrown(ctx,84,80,0.62,'#229959',mint,2); ctx.fillStyle=fg; ctx.font='600 28px Inter, system-ui, sans-serif'; ctx.textBaseline='middle'; ctx.fillText('throne.',112,80);
+    ctx.fillStyle=faint; ctx.font='500 16px "JetBrains Mono", monospace'; ctx.textAlign='right'; ctx.fillText('king drop · season zero · week '+(board.week||1), W-64, 80); ctx.textAlign='left';
+    // piece image big on the right
+    var pimg = await loadImg(piece ? pieceSrc(side, rank) : '/arena/emblem-'+side+'-512.svg');
+    if(pimg){ var ps=300; ctx.save(); ctx.globalAlpha=0.95; ctx.drawImage(pimg, W-64-ps, 150, ps, ps); ctx.restore(); }
+    // headline
+    ctx.fillStyle=fg; ctx.font='600 20px "JetBrains Mono", monospace'; ctx.fillStyle=dim; ctx.fillText(disp(wallet), 64, 170);
+    ctx.fillStyle = isKing ? gold : fg; ctx.font='600 84px Inter, system-ui, sans-serif'; ctx.textBaseline='alphabetic';
+    var title = piece ? cap(side)+' '+piece : cap(side)+' · no piece yet';
+    ctx.fillText(title, 60, 262);
+    ctx.fillStyle=dim; ctx.font='500 28px Inter, system-ui, sans-serif'; ctx.fillText(rank ? 'rank #'+rank+' of '+((board.sides[side]&&board.sides[side].wallets)||'—')+' on '+cap(side) : 'trade the desk to take a seat', 64, 306);
+    // stats row
+    var stats=[['season pts',fmt(me.season||0)],['this week',fmt(me.week||0)],['streak',(me.streak||0)+'d'],['multiplier',(me.mult||1)+'x']];
+    var sx=64; stats.forEach(function(st){ ctx.fillStyle=faint; ctx.font='500 14px "JetBrains Mono", monospace'; ctx.fillText(st[0], sx, 372); ctx.fillStyle=fg; ctx.font='600 40px Inter, system-ui, sans-serif'; ctx.fillText(st[1], sx, 416); sx += Math.max(180, ctx.measureText(st[1]).width+70); });
+    // status line
+    ctx.font='500 18px "JetBrains Mono", monospace';
+    if(atk){ ctx.fillStyle='#FF6B57'; ctx.fillText('under attack · '+disp(me.attacked.addr)+' is coming for my '+piece, 64, 472); }
+    else if(isKing){ ctx.fillStyle=gold; ctx.fillText('holding the crown for '+cap(side), 64, 472); }
+    else if(me.gap && me.gap.usd){ ctx.fillStyle=mint; ctx.fillText('$'+fmt(me.gap.usd)+' of volume from the '+me.gap.piece, 64, 472); }
+    else { ctx.fillStyle=dim; ctx.fillText('every trade on the desk scores for '+cap(side), 64, 472); }
+    // lead bar
+    var shW = board.share ? board.share.white : 0.5; var bx=64, by=538, bw=W-128, bh=8;
+    ctx.fillStyle='#F2F4F0'; rr(ctx,bx,by,bw*shW,bh,4); ctx.fill(); ctx.fillStyle=mint; rr(ctx,bx+bw*shW,by,bw*(1-shW),bh,4); ctx.fill();
+    ctx.fillStyle=faint; ctx.font='500 14px "JetBrains Mono", monospace'; ctx.fillText('white '+Math.round(shW*100)+'%', bx, 572); ctx.textAlign='right'; ctx.fillText('black '+Math.round((1-shW)*100)+'%', bx+bw, 572); ctx.textAlign='center'; ctx.fillText('share of points this week', bx+bw/2, 572); ctx.textAlign='left';
+    ctx.fillStyle=faint; ctx.font='500 16px "JetBrains Mono", monospace'; ctx.fillText('throne.network/board', 64, 606);
+    return cv;
+  }
+  function cardText(){
+    var me = board&&board.wallets[wallet]||{}; var side=mine?mine.side:''; var piece=me.piece, rank=me.rank;
+    var t;
+    if(me.attacked) t = "Someone is coming for my "+piece+" on "+cap(side)+". Not today.\n\nKing Drop on the throne. desk: stocks and crypto perps, every trade scores for your side.";
+    else if(rank===1) t = "Holding the crown for "+cap(side)+" on King Drop. Come take it.\n\nthrone. desk: stocks and crypto perps, every trade scores for your side.";
+    else if(piece) t = cap(side)+" "+piece+", rank #"+rank+" on King Drop. "+fmt(me.season||0)+" season points and counting.\n\nthrone. desk: stocks and crypto perps, every trade scores for your side.";
+    else t = "I'm on "+cap(side)+" for season zero of King Drop on the throne. desk. Stocks and crypto perps, every trade scores for my side.";
+    return t+"\n\nthrone.network/board";
+  }
+  async function openCard(){ if(!wallet){ await connect(); if(!wallet) return; } var cv=await renderCard(); if(!cv) return; $('cardModal').classList.add('on'); try{ $('cardDl').href=cv.toDataURL('image/png'); }catch(e){} $('cardX').href='https://x.com/intent/post?text='+encodeURIComponent(cardText()); }
+  $('cardBtn').addEventListener('click', openCard);
+  $('cardPost').addEventListener('click', openCard);
+  $('cardClose').addEventListener('click', function(){ $('cardModal').classList.remove('on'); });
+  $('cardModal').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('on'); });
+
+  // ---- welcome splash (once per device per 7 days) and returning-wallet toast ----
+  function seenSplash(){ try{ var t=+localStorage.getItem('kd_splash')||0; return Date.now()-t < 7*864e5; }catch(e){ return false; } }
+  function markSplash(){ try{ localStorage.setItem('kd_splash', String(Date.now())); }catch(e){} }
+  function showSplash(){ $('splash').classList.add('on'); }
+  function hideSplash(){ $('splash').classList.remove('on'); markSplash(); }
+  $('splashClose').addEventListener('click', hideSplash);
+  $('splash').addEventListener('click', function(e){ if(e.target===this) hideSplash(); });
+  $('splashConnect').addEventListener('click', async function(){ hideSplash(); await connect(); });
+  var _toastT; function toast(html){ var t=$('toast'); t.innerHTML=html; t.classList.add('on'); clearTimeout(_toastT); _toastT=setTimeout(function(){ t.classList.remove('on'); }, 6000); }
+  var splashDecided=false;
+  function maybeWelcome(){
+    if(splashDecided) return; splashDecided=true;
+    if(wallet && board && mine){ var me=board.wallets[wallet]; if(me && me.season>0){ toast('welcome back · <b>'+cap(mine.side)+(me.piece?' '+me.piece:'')+'</b> · rank #'+me.rank+' · '+fmt(me.season)+' pts'+(me.attacked?' · <span style="color:#FF6B57">under attack</span>':'')+(me.gap&&me.gap.usd?' · $'+fmt(me.gap.usd)+' to the '+me.gap.piece:'')); markSplash(); return; } }
+    if(!seenSplash()) showSplash();
+  }
+
+  // ---- load ----
+  async function load(){
+    try{ season = await fetch(API+'/season',{cache:'no-store'}).then(function(r){return r.json();}); }catch(e){}
+    subline(); renderPot();
+    try{ board = await fetch(API+'/board?t='+Math.floor(Date.now()/60000),{cache:'no-store'}).then(function(r){return r.json();}); }catch(e){}
+    if(board && board.error && !board.sides){ board=null; }
+    if(board) render();
+    // silent reconnect if the wallet is already authorized
+    if(window.ethereum){ try{ var accs = await window.ethereum.request({method:'eth_accounts'}); if(accs&&accs[0]){ wallet=accs[0].toLowerCase(); setNav(); await loadMine(); renderSeat(); } }catch(e){} }
+    maybeWelcome();
+  }
+  load(); setInterval(load, 600000);
+})();
+</script>
+</body>
+</html>
