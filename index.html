@@ -151,6 +151,19 @@ footer a:hover{color:var(--fg)}
 .contract button:hover{border-color:var(--mint);color:var(--mint)}
 .legal{margin-top:22px;font-family:var(--mono);font-size:11px;color:var(--faint);line-height:1.7}
 @media (max-width:760px){footer .grid{grid-template-columns:1fr 1fr}}
+
+/* King Drop strip: live from the arena worker */
+.kdstrip{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:18px 0 6px;padding:12px 16px;border:1px solid rgba(57,241,148,.22);border-radius:12px;background:linear-gradient(180deg,rgba(57,241,148,.07),rgba(57,241,148,.015));text-decoration:none;color:inherit;font-size:13px;transition:border-color .2s}
+.kdstrip:hover{border-color:rgba(57,241,148,.5)}
+.kdstrip .kd-pot b{color:var(--mint,#39F194);font-weight:700}
+.kdstrip .kd-bar{position:relative;flex:1 1 140px;min-width:120px;height:6px;border-radius:999px;background:rgba(212,175,55,.45);overflow:hidden}
+.kdstrip .kd-bar i{position:absolute;left:0;top:0;bottom:0;background:#F4F4F0;transition:width .8s}
+.kdstrip .kd-side{font-size:12px;color:var(--dim,#9BA39E);white-space:nowrap}
+.kdstrip .kd-side b{color:var(--fg,#F2F4F0)}
+.kdstrip .kd-b b{color:#D4AF37}
+.kdstrip .kd-meta{font-size:12px;color:var(--dim,#9BA39E)}
+.kdstrip .kd-go{margin-left:auto;font-size:12px;color:var(--mint,#39F194);white-space:nowrap}
+@media(max-width:640px){.kdstrip{gap:10px}.kdstrip .kd-meta{display:none}.kdstrip .kd-go{margin-left:0}}
 </style>
 </head>
 <body>
@@ -164,7 +177,6 @@ footer a:hover{color:var(--fg)}
     <span class="status" id="status"><i></i><span id="statusText">connecting</span></span>
     <div class="links">
       <a href="#fees">How it works</a>
-      <a href="#ledger">Ledger</a>
       <a href="#markets">Markets</a>
       <a href="/points">Points</a>
       <a href="https://docs.throne.network">Docs</a>
@@ -185,9 +197,18 @@ footer a:hover{color:var(--fg)}
     <div class="stats" id="stats">
       <div class="stat"><div class="lbl" id="lVol">desk</div><div class="v num" id="sVol">open</div><div class="s" id="sVolSub">stocks and crypto · 24/7 · robinhood chain</div></div>
       <div class="stat"><div class="lbl" id="lFees">markets</div><div class="v num gold" id="sFees">stocks + crypto</div><div class="s" id="sFeesSub">TSLA, NVDA, gold, indices, BTC and more · one margin account</div></div>
-      <div class="stat"><div class="lbl" id="lUsers">season zero</div><div class="v num" id="sUsers">live</div><div class="s" id="sUsersSub">1 pt per $10 · 2x for beta wallets</div></div>
+      <div class="stat"><div class="lbl" id="lUsers">king drop</div><div class="v num" id="sUsers">923,000</div><div class="s" id="sUsersSub">$THRONE a week to traders · 1 pt per $10 · <a href="/board" style="color:var(--mint,#39F194)">the board</a></div></div>
       <div class="stat"><div class="lbl">$THRONE · market cap</div><div class="v num" id="sMcap">—</div><div class="s" id="sPrice">—</div></div>
     </div>
+
+    <a class="kdstrip" id="kdstrip" href="/board">
+      <span class="kd-pot"><b id="kdPot">923,000 $THRONE</b> on the line this week</span>
+      <span class="kd-bar"><i id="kdBar" style="width:50%"></i></span>
+      <span class="kd-side kd-w">White <b id="kdW">—</b></span>
+      <span class="kd-side kd-b"><b id="kdB">—</b> Black</span>
+      <span class="kd-meta" id="kdMeta">every trade scores for your side</span>
+      <span class="kd-go">the board →</span>
+    </a>
   </div>
 
   <div class="tape" id="tape" aria-label="live markets"><div class="track" id="track"></div></div>
@@ -345,7 +366,7 @@ footer a:hover{color:var(--fg)}
         <p style="margin-top:10px;max-width:300px">A perp desk for stocks and crypto, and the vault it pays. On Robinhood Chain.</p>
         <p class="mono" style="margin-top:10px;font-size:11px;color:var(--faint)">Long live the king.</p>
       </div>
-      <div><h4>protocol</h4><a href="https://trade.throne.network">The desk</a><a href="#fees">How it works</a><a href="#ledger">Ledger</a><a href="/points">Points</a></div>
+      <div><h4>protocol</h4><a href="https://trade.throne.network">The desk</a><a href="#fees">How it works</a><a href="/points">Points</a></div>
       <div><h4>resources</h4><a href="https://docs.throne.network">Docs</a><a href="https://docs.throne.network/referrals.html">Referrals</a><a href="/terms">Terms</a><a href="https://docs.throne.network/risks.html">Risks</a></div>
       <div><h4>court</h4><a href="https://x.com/thronedefi">@thronedefi</a><a href="https://dexscreener.com/robinhood/0x4c5daa1d7be101298eb5302c085a752ab9078da226621d78c63a9a8e518d3702">$THRONE chart</a><a href="https://docs.throne.network/support.html">Support</a></div>
     </div>
@@ -388,7 +409,7 @@ footer a:hover{color:var(--fg)}
   function setQuiet(){
     $('lVol').textContent='desk'; $('sVol').textContent='open'; $('sVolSub').textContent='stocks and crypto · 24/7 · robinhood chain';
     $('lFees').textContent='markets'; $('sFees').textContent='stocks + crypto'; $('sFeesSub').textContent='TSLA, NVDA, gold, indices, BTC and more · one margin account';
-    $('lUsers').textContent='season zero'; $('sUsers').textContent='live'; $('sUsersSub').textContent='1 pt per $10 · 2x for beta wallets';
+    
     var mc=$('sMcap').parentNode; mc.innerHTML='<div class="lbl">trading competition</div><div class="v num gold">next</div><div class="s">two sides · details soon</div>';
     var led=document.getElementById('ledger'); if(led){ led.style.display='none'; var hr=led.previousElementSibling; if(hr && hr.tagName==='HR') hr.style.display='none'; }
   }
@@ -429,7 +450,7 @@ footer a:hover{color:var(--fg)}
       $('lFees').textContent = 'fees earned by the desk'; $('sFees').textContent = fmtUsd(totFees, totFees<1000?2:0); $('sFeesSub').textContent = 'since open · accruing to the Court';
       var users = t ? +t.activeUser : 0;
       if(users >= MIN_TRADERS){ $('lUsers').textContent = 'traders · today'; $('sUsers').textContent = users; $('sUsersSub').textContent = 'wallets that traded today'; }
-      else { $('lUsers').textContent = 'season zero'; $('sUsers').textContent = 'live'; $('sUsersSub').textContent = '1 pt per $10 · 2x for beta wallets'; }
+      
       if(!post.length){ $('ledgerBody').innerHTML = '<div class="empty"><b>Open.</b> The first row lands once the venue closes today\'s UTC day.</div>'; return; }
       var h = '<table class="tbl"><thead><tr><th>day (utc)</th><th class="num">desk volume</th><th class="num">traders</th><th class="num">fees earned</th><th class="num">status</th></tr></thead><tbody>';
       post.forEach(function(r){
@@ -472,6 +493,17 @@ footer a:hover{color:var(--fg)}
     }).catch(function(){ $('tape').style.display='none'; });
   }
   loadMarkets(); setInterval(loadMarkets, 30000);
+  // King Drop strip: live side share from the arena worker (no dates here on purpose)
+  (function kingDrop(){
+    fetch('/api/arena/board',{cache:'no-store'}).then(function(r){return r.json();}).then(function(b){
+      if(!b||!b.sides) return; var W=b.sides.white.pts||0, B=b.sides.black.pts||0, t=W+B, ws=t?W/t:.5;
+      var n=Object.keys(b.wallets||{}).filter(function(a){return b.wallets[a].season>0;}).length;
+      $('kdPot').textContent=(b.pot||923000).toLocaleString('en-US')+' $THRONE';
+      $('kdBar').style.width=Math.round(ws*100)+'%';
+      $('kdW').textContent=Math.round(ws*100)+'%'; $('kdB').textContent=(100-Math.round(ws*100))+'%';
+      $('kdMeta').textContent=n+' wallet'+(n===1?'':'s')+' scoring · every trade scores for your side';
+    }).catch(function(){});
+  })();
 
   // ---- copy CA ----
   $('copyCa').addEventListener('click', function(){
