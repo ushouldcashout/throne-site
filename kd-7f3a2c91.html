@@ -468,7 +468,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
       <span class="note hidden" id="fullMsg"></span>
       <span class="forme" id="forMe">Pick for me.</span>
       <span class="err" id="mErr"></span>
-      <span class="mf">one wallet · one side · one season · switch once from the board</span>
+      <span class="mf">one wallet · one side · one season · switch once from the board · sides lock for the final 48h of each week</span>
     </div>
     <div class="mb hidden" id="mDone">
       <div style="display:flex;align-items:center;gap:16px">
@@ -636,6 +636,9 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
   // ---- chessboard: white on ranks 1-2 (bottom), black on 7-8 (top). rank 1..16 -> classic setup order.
   var SETUP = [['rook',3],['knight',7],['bishop',5],['queen',2],['king',1],['bishop',6],['knight',8],['rook',4]]; // back rank left->right: piece, rank index used
   function renderChess(){
+    var pcW=(board.pieces.white||[]).length, pcB=(board.pieces.black||[]).length, wl=Object.keys(board.wallets||{}).filter(function(a){return board.wallets[a].season>0;}).length;
+    var tap = window.matchMedia && matchMedia('(pointer:coarse)').matches ? 'tap a piece' : 'hover a piece';
+    $('boardHint').textContent = (pcW+pcB)+' of 32 pieces · '+wl+' wallets scoring · '+tap;
     var el=$('chess'); el.innerHTML='';
     var hov=$('hover');
     var place = {}; // "r,c" -> {side, rank}
@@ -815,7 +818,9 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     var atk = me && me.attacked;
     if(atk && piece){ $('seatAtk').classList.remove('hidden'); $('seatAtk').innerHTML = 'your '+piece+' is under attack. <b>'+short(atk.addr)+'</b> (#'+atk.rank+') is out-scoring you this week with '+fmt(atk.weekPts)+' pts, '+fmt(atk.gapPts)+' pts behind you for the season.'; }
     else $('seatAtk').classList.add('hidden');
-    $('switchBtn').classList.toggle('hidden', !!mine.switched); $('switchNote').textContent = mine.switched ? 'switched this season' : 'once per season';
+    var lk = board.sideLock || {};
+    $('switchBtn').classList.toggle('hidden', !!mine.switched || !!lk.locked);
+    $('switchNote').textContent = mine.switched ? 'switched this season' : (lk.locked ? 'sides locked until the sunday close' : 'once per season · locks for the final 48h of each week');
     $('seatSteps').classList.toggle('hidden', !!(me && me.season > 0));
   }
 
@@ -871,7 +876,6 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
 
   // ---- UX bits: ranks toggle, tap hint, local time ----
   $('piecesToggle').addEventListener('click', function(){ var w=$('piecesWrap'); var open=w.classList.toggle('hidden'); this.textContent = open ? 'show pieces by side' : 'hide pieces by side'; });
-  if(window.matchMedia && matchMedia('(pointer:coarse)').matches){ $('boardHint').textContent='32 pieces · 32 wallets · tap a piece'; }
   function localTime(ms){ try{ var d=new Date(ms); var tz=Intl.DateTimeFormat().resolvedOptions().timeZone||''; if(/New_York|Toronto|Detroit/.test(tz)) return ''; return ' · your time '+d.toLocaleString(undefined,{weekday:'short',hour:'numeric',minute:'2-digit'}).toLowerCase(); }catch(e){ return ''; } }
 
   // ---- share card (client-side PNG) ----
