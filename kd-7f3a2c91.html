@@ -468,7 +468,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
       <span class="note hidden" id="fullMsg"></span>
       <span class="forme" id="forMe">Pick for me.</span>
       <span class="err" id="mErr"></span>
-      <span class="mf">one wallet · one side · one season · switch once from the board · sides lock for the final 48h of each week</span>
+      <span class="mf">one wallet · one side · one season · switch once from the board · sides open for the first 48h of each week, then lock</span>
     </div>
     <div class="mb hidden" id="mDone">
       <div style="display:flex;align-items:center;gap:16px">
@@ -820,7 +820,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     else $('seatAtk').classList.add('hidden');
     var lk = board.sideLock || {};
     $('switchBtn').classList.toggle('hidden', !!mine.switched || !!lk.locked);
-    $('switchNote').textContent = mine.switched ? 'switched this season' : (lk.locked ? 'sides locked until the sunday close' : 'once per season · locks for the final 48h of each week');
+    $('switchNote').textContent = mine.switched ? 'switched this season' : (lk.locked ? 'sides locked · open again for the first 48h of next week' : 'once per season · open for the first 48h of each week');
     $('seatSteps').classList.toggle('hidden', !!(me && me.season > 0));
   }
 
