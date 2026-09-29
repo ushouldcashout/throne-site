@@ -264,6 +264,18 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
 .steps .st b{font-family:var(--mono);color:var(--mint);font-weight:500}
 .steps .st a{color:var(--mint);text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(57,241,148,.35)}
 .mult{font-size:11px;color:var(--gold);margin-left:4px}
+
+/* name modal */
+.nm .f{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.nm label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+.nm input{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:3px;padding:11px 12px;color:var(--fg);font:inherit;font-size:14px;outline:none}
+.nm input:focus{border-color:var(--mint)}
+.nm .code{display:inline-block;background:var(--bg);border:1px dashed var(--line);border-radius:3px;padding:8px 12px;font-family:var(--mono);font-size:18px;letter-spacing:.08em;color:var(--gold)}
+.nm .row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.nm .row .btn{height:40px;font-size:14px;padding:0 16px;text-decoration:none}
+.nm .ok{color:var(--mint)} .nm .err{color:#ff6b6b;font-size:13px;margin-top:8px;display:block}
+.nm .help{font-size:12.5px;color:var(--dim);line-height:1.6;margin-top:8px}
+.nm .vbadge{color:var(--mint);font-size:12px}
 </style>
 </head>
 <body>
@@ -322,6 +334,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
         <div class="line"><span class="d">streak</span><span id="seatStreak">—</span></div>
         <div class="line"><span class="d">next rank</span><span id="seatNext">—</span></div>
         <div class="line"><span class="d">next piece</span><span id="seatNextPiece" style="display:flex;align-items:center;gap:8px">—</span></div>
+        <div class="line"><span class="d">name</span><span id="seatName" style="display:flex;align-items:center;gap:10px;justify-content:flex-end">—</span></div>
         <div class="line"><span class="lnk" id="switchBtn">Switch side</span><span class="mono" style="font-size:12px;color:var(--faint)" id="switchNote">once per season</span></div>
         <div class="steps hidden" id="seatSteps" style="padding:4px 24px 10px">
           <div class="st"><b>01</b><span><a href="https://trade.throne.network">Trade the desk</a>. Every trade scores for you and your side. 1 point per $10.</span></div>
@@ -491,6 +504,37 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
   </div>
 </div>
 
+
+<!-- name / x handle modal -->
+<div class="modalbg" id="nameModal">
+  <div class="modal nm">
+    <div class="mh"><div class="t"><img src="/arena/crown.svg" width="16" height="16" alt="">Your name <small>on the board</small></div><span class="x" id="nmClose">×</span></div>
+    <div class="mb" id="nmStep1">
+      <h2>Put a name on your seat.</h2>
+      <p>Names show on the board, the points page, share cards and the King Drop channel. One free signature, no transaction. Add your X handle and verify it to get the check.</p>
+      <div class="f"><label>Name</label><input id="nmName" maxlength="20" placeholder="3 to 20 characters" autocomplete="off" spellcheck="false"></div>
+      <div class="f"><label>X handle (optional)</label><input id="nmHandle" maxlength="16" placeholder="@handle" autocomplete="off" spellcheck="false"></div>
+      <span class="err" id="nmErr"></span>
+      <div class="row"><button class="btn" id="nmSave">Sign and save</button><button class="btn line" id="nmCancel">Cancel</button></div>
+    </div>
+    <div class="mb hidden" id="nmStep2">
+      <h2>Verify <span id="nmH">@handle</span>.</h2>
+      <p>Post this code from your X account, then paste the link to the post. We read the public post, no login, no API keys.</p>
+      <div style="margin-top:10px"><span class="code" id="nmCode">KD-000000</span></div>
+      <div class="row"><a class="btn" id="nmTweet" target="_blank" rel="noreferrer">Post it on X</a></div>
+      <div class="f"><label>Link to your post</label><input id="nmUrl" placeholder="https://x.com/you/status/…" autocomplete="off" spellcheck="false"></div>
+      <span class="err" id="nmErr2"></span>
+      <div class="row"><button class="btn" id="nmVerify">Verify</button><button class="btn line" id="nmLater">Later</button></div>
+      <p class="help">Verified handles replace your name everywhere on the board. You can change the name or handle any time; changing the handle asks for a new verification.</p>
+    </div>
+    <div class="mb hidden" id="nmStep3">
+      <h2 class="ok">Done.</h2>
+      <p id="nmDoneText">You are on the board as <b id="nmDoneName">—</b>.</p>
+      <div class="row"><button class="btn" id="nmDoneBtn">Back to the board</button></div>
+    </div>
+  </div>
+</div>
+
 <div class="splash" id="splash"><div class="in">
   <span class="k">king drop · season zero</span>
   <h2><b>923,000 $THRONE</b> in King Drop rewards for points, from now to oct 18.</h2>
@@ -525,6 +569,9 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
   var PIECES = ['king','queen','rook','rook','bishop','bishop','knight','knight','pawn','pawn','pawn','pawn','pawn','pawn','pawn','pawn'];
   var fmt = function(n){ return (Math.round(n||0)).toLocaleString('en-US'); };
   var short = function(a){ return a ? a.slice(0,6)+'…'+a.slice(-4) : '—'; };
+  // display name: verified @handle > name > short address. names ride along on the board payload.
+  var disp = function(a){ var n = board && board.names && a && board.names[a.toLowerCase()]; if(!n) return short(a); return (n.handle && n.verified) ? '@'+n.handle : n.name; };
+  var nameRec = function(a){ return (board && board.names && a && board.names[a.toLowerCase()]) || null; };
   var pieceSrc = function(side, rank){ return '/arena/pieces/'+side+'-'+String(rank).padStart(2,'0')+'-'+PIECES[rank-1]+'.svg'; };
   var cap = function(s){ return s.charAt(0).toUpperCase()+s.slice(1); };
 
@@ -551,7 +598,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     list.forEach(function(p){
       var col = p.rank<=2 ? 'var(--gold)' : p.rank<=8 ? 'var(--fg)' : 'var(--dim)';
       var row = document.createElement('div'); row.className='prow'+(wallet && p.addr===wallet?' me':''); row.style.color=col;
-      row.innerHTML = '<span>'+String(p.rank).padStart(2,'0')+'</span><img src="'+pieceSrc(side,p.rank)+'" width="22" height="22" alt=""><span class="a">'+short(p.addr)+'</span><span class="p">'+fmt(p.season)+'</span><span class="t">'+(promos.indexOf(p.addr)>=0?'<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#39F194" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><title>promoted into the top 8 this week</title><path d="M3,8.5 L8,3.5 L13,8.5"/><path d="M3,13.5 L8,8.5 L13,13.5"/></svg>':'')+(p.mult&&p.mult>1?'<span class="mult">'+p.mult+'x</span>':'')+'</span>';
+      row.innerHTML = '<span>'+String(p.rank).padStart(2,'0')+'</span><img src="'+pieceSrc(side,p.rank)+'" width="22" height="22" alt=""><span class="a">'+disp(p.addr)+'</span><span class="p">'+fmt(p.season)+'</span><span class="t">'+(promos.indexOf(p.addr)>=0?'<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#39F194" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><title>promoted into the top 8 this week</title><path d="M3,8.5 L8,3.5 L13,8.5"/><path d="M3,13.5 L8,8.5 L13,13.5"/></svg>':'')+(p.mult&&p.mult>1?'<span class="mult">'+p.mult+'x</span>':'')+'</span>';
       el.appendChild(row);
     });
   }
@@ -601,8 +648,8 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     if(board.week===0 && !pre){ document.querySelectorAll('.hero .pts .l').forEach(function(x){ x.textContent='points · pre-season'; }); }
     if(pre){ var st0=seasonTotals(); $('wPts').textContent=fmt(Math.round(st0.white)); $('bPts').textContent=fmt(Math.round(st0.black)); $('wCount').textContent=fmt(st0.wc)+' traders'; $('bCount').textContent=fmt(st0.bc)+' traders'; document.querySelectorAll('.hero .pts .l').forEach(function(x){ x.textContent='season points · week 1 opens oct 9'; }); }
     else { $('wPts').textContent=fmt(W.pts); $('bPts').textContent=fmt(B.pts); $('wCount').textContent=fmt(W.wallets)+' traders'; $('bCount').textContent=fmt(B.wallets)+' traders'; if(board.week!==0) document.querySelectorAll('.hero .pts .l').forEach(function(x){ x.textContent='points this week'; }); }
-    $('wKing').textContent = W.king?short(W.king.addr):'—'; $('wKingPts').textContent = W.king?fmt(W.king.season)+' pts':'—';
-    $('bKing').textContent = B.king?short(B.king.addr):'—'; $('bKingPts').textContent = B.king?fmt(B.king.season)+' pts':'—';
+    $('wKing').textContent = W.king?disp(W.king.addr):'—'; $('wKingPts').textContent = W.king?fmt(W.king.season)+' pts':'—';
+    $('bKing').textContent = B.king?disp(B.king.addr):'—'; $('bKingPts').textContent = B.king?fmt(B.king.season)+' pts':'—';
     $('wThreat').classList.toggle('hidden', !(board.threat&&board.threat.white)); $('bThreat').classList.toggle('hidden', !(board.threat&&board.threat.black));
     var st=board.streak||{};
     $('wTag').classList.add('hidden'); $('bTag').classList.add('hidden');
@@ -658,14 +705,14 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
           (function(w,pl,sq){
             var show=function(e){ var pn=w.pnlWeek||0, ps=w.pnlSeason||0;
               hov.innerHTML='<div class="h1"><img src="'+pieceSrc(pl.side,pl.rank)+'" width="18" height="18" alt="">'+cap(pl.side)+' '+PIECES[pl.rank-1]+' <span style="color:var(--dim);font-weight:400">#'+pl.rank+'</span></div>'
-                +'<div class="row"><span>wallet</span><span>'+short(w.addr)+'</span></div>'
+                +'<div class="row"><span>wallet</span><span>'+disp(w.addr)+'</span></div>'
                 +'<div class="row"><span>season</span><span>'+fmt(w.season)+' pts</span></div>'
                 +'<div class="row"><span>this week</span><span>'+fmt(w.week)+' pts</span></div>'
                 +'<div class="row"><span>pnl · week</span><span class="'+(pn>=0?'pos':'neg')+'">'+(pn>=0?'+':'−')+'$'+fmt(Math.abs(pn))+'</span></div>'
                 +'<div class="row"><span>pnl · season</span><span class="'+(ps>=0?'pos':'neg')+'">'+(ps>=0?'+':'−')+'$'+fmt(Math.abs(ps))+'</span></div>'
                 +(w.mult>1?'<div class="row"><span>multiplier</span><span style="color:var(--gold)">'+w.mult+'x</span></div>':'')
                 +(w.streak?'<div class="row"><span>streak</span><span>'+w.streak+' day'+(w.streak>1?'s':'')+'</span></div>':'')
-                +(w.attacked?'<div class="row"><span>under attack</span><span style="color:#FF6B57">by '+short(w.attacked.addr)+'</span></div>':'');
+                +(w.attacked?'<div class="row"><span>under attack</span><span style="color:#FF6B57">by '+disp(w.attacked.addr)+'</span></div>':'');
               hov.classList.add('on'); move(e); };
             var move=function(e){ var host=el.parentNode.getBoundingClientRect(); var x=(e.clientX-host.left)+14, y=(e.clientY-host.top)+14; if(x+240>host.width) x=x-260; if(y+180>host.height) y=y-190; hov.style.left=x+'px'; hov.style.top=y+'px'; };
             var hide=function(){ hov.classList.remove('on'); };
@@ -687,7 +734,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     if(!rows.length){ el.innerHTML='<div class="empty">no points yet this season.</div>'; return; }
     var h='<div class="r h"><span>#</span><span></span><span>wallet</span><span class="n">pts</span><span class="n hide-m">$ traded</span><span class="hide-m">piece</span><span class="n">mult</span></div>';
     var top=rows.slice(0,20), meIdx=rows.findIndex(function(r){return wallet && r.addr===wallet;});
-    var line=function(r,i){ var me=wallet&&r.addr===wallet; return '<div class="r'+(me?' me':'')+'"><span>'+(i+1)+'</span><img src="/arena/emblem-'+r.side+'-128.svg" alt=""><span style="overflow:hidden;text-overflow:ellipsis">'+(me?'you · ':'')+short(r.addr)+'</span><span class="n">'+fmt(r.season)+'</span><span class="n hide-m">$'+fmt(r.vol||0)+'</span><span class="hide-m">'+(r.piece?r.piece+' #'+r.rank:'—')+'</span><span class="n" style="color:'+(r.mult>1?'var(--gold)':'inherit')+'">'+(r.mult||1)+'x</span></div>'; };
+    var line=function(r,i){ var me=wallet&&r.addr===wallet; return '<div class="r'+(me?' me':'')+'"><span>'+(i+1)+'</span><img src="/arena/emblem-'+r.side+'-128.svg" alt=""><span style="overflow:hidden;text-overflow:ellipsis">'+(me?'you · ':'')+disp(r.addr)+'</span><span class="n">'+fmt(r.season)+'</span><span class="n hide-m">$'+fmt(r.vol||0)+'</span><span class="hide-m">'+(r.piece?r.piece+' #'+r.rank:'—')+'</span><span class="n" style="color:'+(r.mult>1?'var(--gold)':'inherit')+'">'+(r.mult||1)+'x</span></div>'; };
     top.forEach(function(r,i){ h+=line(r,i); });
     if(meIdx>=20){ h+='<div class="r"><span class="ell">···</span></div>'+line(rows[meIdx],meIdx); }
     el.innerHTML=h;
@@ -700,13 +747,14 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     el.innerHTML='';
     evs.slice(0,18).forEach(function(e){
       var d=document.createElement('div'); d.className='ev '+(e.side==='white'?'w':'b')+' ev-'+e.type; var txt='';
-      if(e.type==='points') txt='<span class="who">'+short(e.addr)+'</span> · '+e.side+' · <span class="pos">+'+fmt(e.pts)+' pts</span>';
-      else if(e.type==='joined') txt='<span class="who">'+short(e.addr)+'</span> joined '+e.side+(e.pts?' · +'+fmt(e.pts)+' pts':'');
-      else if(e.type==='piece') txt='<span class="who">'+short(e.addr)+'</span> '+(e.from?e.from+' → ':'takes a ')+e.to+' · #'+e.rank+' '+e.side;
+      if(e.type==='points') txt='<span class="who">'+disp(e.addr)+'</span> · '+e.side+' · <span class="pos">+'+fmt(e.pts)+' pts</span>';
+      else if(e.type==='joined') txt='<span class="who">'+disp(e.addr)+'</span> joined '+e.side+(e.pts?' · +'+fmt(e.pts)+' pts':'');
+      else if(e.type==='piece') txt='<span class="who">'+disp(e.addr)+'</span> '+(e.from?e.from+' → ':'takes a ')+e.to+' · #'+e.rank+' '+e.side;
       else if(e.type==='lead') txt='<span class="who">'+cap(e.side)+' takes the lead</span> · '+e.share+'%';
       else if(e.type==='threat') txt='<span class="who">crown under threat</span> · '+e.side+' king out-scored';
-      else if(e.type==='attack') txt='<span class="who">'+short(e.addr)+'</span> · '+e.side+' '+e.piece+' under attack by '+short(e.by);
+      else if(e.type==='attack') txt='<span class="who">'+disp(e.addr)+'</span> · '+e.side+' '+e.piece+' under attack by '+disp(e.by);
       else if(e.type==='power') txt='<span style="color:var(--gold)">power hour</span> · every point counts '+(e.mult||1.5)+'x until the close';
+      else if(e.type==='named') txt='<span class="who">'+(e.name||disp(e.addr))+'</span> '+(e.verified?'verified on X':'claims a name')+' · '+e.side;
       d.innerHTML='<span>'+txt+'</span><span class="t">'+ago(e.t)+'</span>'; el.appendChild(d);
     });
   }
@@ -758,7 +806,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
   function render(){ if(!board) return; renderPot(); renderHero(); renderChess(); renderFeed(); renderChart(); renderLeaderboard(); renderPieces('white',board.pieces.white); renderPieces('black',board.pieces.black); renderDays(); renderResults(); renderSeat(); }
 
   // ---- wallet / seat ----
-  function setNav(){ var b=$('navBtn'); if(wallet){ b.textContent=short(wallet); b.className='pill ghost'; } else { b.textContent='connect'; b.className='pill'; } $('seatAddr').textContent = wallet?short(wallet):''; }
+  function setNav(){ var b=$('navBtn'); if(wallet){ b.textContent=disp(wallet); b.className='pill ghost'; } else { b.textContent='connect'; b.className='pill'; } $('seatAddr').textContent = wallet?disp(wallet):''; }
   function renderSeat(){
     $('seatOff').classList.toggle('hidden', !!wallet); if(board) renderLeaderboard();
     if(!wallet||!mine){ $('seatAssigned').classList.add('hidden'); $('seatOn').classList.add('hidden'); return; }
@@ -800,8 +848,8 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     if(g && g.usd){ $('seatGapBox').classList.remove('hidden');
       var verb = piece ? 'take the '+g.piece : 'take a seat as a '+g.piece;
       $('seatGapText').innerHTML = '<i>$'+fmt(g.usd)+'</i> of volume to '+verb+'.';
-      $('seatGapSub').innerHTML = 'passes #'+g.rank+' '+short(g.addr)+(me.mult>1?' · at your '+me.mult+'x':'')+(board.powerHour&&board.powerHour.active?' · <span style="color:var(--gold)">power hour: 1.5x until the close</span>':'')+' · <a href="https://trade.throne.network">trade the desk</a>'; }
-    else if(me && rank===1){ $('seatGapBox').classList.remove('hidden'); $('seatGapText').innerHTML='You hold the crown.'; var chaser=list[1]; $('seatGapSub').textContent = chaser ? '#2 '+short(chaser.addr)+' is '+fmt((me.season||0)-chaser.season)+' pts behind' : 'no one behind you yet'; }
+      $('seatGapSub').innerHTML = 'passes #'+g.rank+' '+disp(g.addr)+(me.mult>1?' · at your '+me.mult+'x':'')+(board.powerHour&&board.powerHour.active?' · <span style="color:var(--gold)">power hour: 1.5x until the close</span>':'')+' · <a href="https://trade.throne.network">trade the desk</a>'; }
+    else if(me && rank===1){ $('seatGapBox').classList.remove('hidden'); $('seatGapText').innerHTML='You hold the crown.'; var chaser=list[1]; $('seatGapSub').textContent = chaser ? '#2 '+disp(chaser.addr)+' is '+fmt((me.season||0)-chaser.season)+' pts behind' : 'no one behind you yet'; }
     else $('seatGapBox').classList.add('hidden');
     // multiplier: what you have and what gets you the next tier
     var HT=(board.rules&&board.rules.holdTiers)||[{min:500000,mult:1.5},{min:100000,mult:1.25}], CAPM=(board.rules&&board.rules.maxMultiplier)||2;
@@ -816,8 +864,12 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     $('seatStreak').innerHTML = st ? '<b>'+st+' day'+(st>1?'s':'')+'</b> <span class="mono" style="font-size:12px;color:'+(me.activeToday?'var(--dim)':'var(--gold)')+'">· '+(me.activeToday?'scored today':'trade today to keep it')+'</span>' : '<span class="mono" style="font-size:12px;color:var(--dim)">no streak · one trade starts it</span>';
     // under attack
     var atk = me && me.attacked;
-    if(atk && piece){ $('seatAtk').classList.remove('hidden'); $('seatAtk').innerHTML = 'your '+piece+' is under attack. <b>'+short(atk.addr)+'</b> (#'+atk.rank+') is out-scoring you this week with '+fmt(atk.weekPts)+' pts, '+fmt(atk.gapPts)+' pts behind you for the season.'; }
+    if(atk && piece){ $('seatAtk').classList.remove('hidden'); $('seatAtk').innerHTML = 'your '+piece+' is under attack. <b>'+disp(atk.addr)+'</b> (#'+atk.rank+') is out-scoring you this week with '+fmt(atk.weekPts)+' pts, '+fmt(atk.gapPts)+' pts behind you for the season.'; }
     else $('seatAtk').classList.add('hidden');
+    var nr = nameRec(wallet);
+    $('seatName').innerHTML = (nr ? '<b>'+esc(nr.name)+'</b>'+(nr.handle ? ' <span class="mono" style="font-size:12px;color:var(--dim)">@'+esc(nr.handle)+(nr.verified?' <span style="color:var(--mint)">✓</span>':' · unverified')+'</span>' : '') : '<span style="color:var(--faint)">no name yet</span>')
+      + ' <span class="lnk" id="nameBtn" style="font-size:13px">'+(nr ? (nr.handle && !nr.verified ? 'verify' : 'edit') : 'set your name')+'</span>';
+    $('nameBtn').addEventListener('click', function(){ openNameModal(nr && nr.handle && !nr.verified ? 2 : 1); });
     var lk = board.sideLock || {};
     $('switchBtn').classList.toggle('hidden', !!mine.switched || !!lk.locked);
     $('switchNote').textContent = mine.switched ? 'switched this season' : (lk.locked ? 'sides locked · open again for the first 48h of next week' : 'once per season · open for the first 48h of each week');
@@ -859,13 +911,45 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
   function done(side){
     $('mPick').classList.add('hidden'); $('mDone').classList.remove('hidden');
     $('dEm').src='/arena/emblem-'+side+'-128.svg'; $('tEm').src='/arena/emblem-'+side+'-128.svg'; $('dTitle').textContent="You're on "+cap(side)+'.';
-    $('tK').textContent='throne. · king drop · '+side; document.querySelectorAll('.dSide').forEach(function(x){ x.textContent=cap(side); }); $('tN').textContent=cap(side); $('tW').textContent=short(wallet); $('tR').className='tr'+(side==='white'?' w':'');
+    $('tK').textContent='throne. · king drop · '+side; document.querySelectorAll('.dSide').forEach(function(x){ x.textContent=cap(side); }); $('tN').textContent=cap(side); $('tW').textContent=disp(wallet); $('tR').className='tr'+(side==='white'?' w':'');
     var text = "I'm on "+cap(side)+" for season zero of King Drop on the throne. desk. Stocks and crypto perps, every trade scores for my side.\n\nthrone.network/board";
     $('shareX').href='https://x.com/intent/post?text='+encodeURIComponent(text);
   }
   $('optW').addEventListener('click',function(){ if(!this.classList.contains('off')) choose('white'); });
   $('optB').addEventListener('click',function(){ if(!this.classList.contains('off')) choose('black'); });
   $('forMe').addEventListener('click',async function(){ if(!wallet){ await connect(); if(!wallet) return; } var full=(mine&&mine.capFull)||null; var side = mine ? mine.side : 'black'; if(full===side) side = side==='white'?'black':'white'; if(mine && mine.source==='default' && (mine.capFull!==mine.side)){ closeModal(); return; } choose(side); });
+
+  // ---- name modal
+  function esc(t){ return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  var nmCode = null;
+  function nmShow(step){ [1,2,3].forEach(function(i){ $('nmStep'+i).classList.toggle('hidden', i!==step); }); $('nameModal').classList.add('on'); }
+  async function openNameModal(step){
+    if(!wallet){ if(window.ethereum){ try{ var accs = await window.ethereum.request({method:'eth_requestAccounts'}); wallet=(accs[0]||'').toLowerCase(); }catch(e){ return; } } else return; }
+    var nr = nameRec(wallet); $('nmName').value = nr ? nr.name : ''; $('nmHandle').value = nr && nr.handle ? '@'+nr.handle : ''; $('nmErr').textContent=''; $('nmErr2').textContent='';
+    try{ var g = await fetch(API+'/name?wallet='+wallet,{cache:'no-store'}).then(function(r){return r.json();}); nmCode = g.code; if(g.name){ $('nmName').value=g.name; $('nmHandle').value=g.handle?'@'+g.handle:''; } }catch(e){}
+    if(step===2){ nmPrepVerify($('nmHandle').value.replace(/^@/,'')); } else nmShow(1);
+  }
+  function nmPrepVerify(handle){ $('nmH').textContent='@'+handle; $('nmCode').textContent=nmCode||'—'; var text='Claiming my seat on the King Drop board. '+(nmCode||'')+' \n\n923,000 $THRONE on the line. Trade the desk, score for your side.\nthrone.network/points'; $('nmTweet').href='https://x.com/intent/post?text='+encodeURIComponent(text); $('nmUrl').value=''; nmShow(2); }
+  $('nmSave').addEventListener('click', async function(){
+    var name = $('nmName').value.trim().replace(/\s+/g,' '), handle = $('nmHandle').value.trim().replace(/^@/,''); $('nmErr').textContent='';
+    if(name.length<3){ $('nmErr').textContent='Name needs at least 3 characters.'; return; }
+    var msg = 'throne. king drop\nname '+name+(handle?'\nx @'+handle:'')+'\nwallet '+wallet+'\nseason zero\n\nThis signature is free and sends no transaction.';
+    var hex = '0x'+Array.from(new TextEncoder().encode(msg)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+    var sig; try{ sig = await window.ethereum.request({method:'personal_sign', params:[hex, wallet]}); }catch(e){ $('nmErr').textContent='Signature declined.'; return; }
+    var r; try{ r = await fetch(API+'/name',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({wallet:wallet,name:name,handle:handle,sig:sig})}).then(function(x){return x.json();}); }catch(e){ $('nmErr').textContent='Network error.'; return; }
+    if(r.error){ $('nmErr').textContent=r.error; return; }
+    nmCode = r.code || nmCode;
+    if(handle && !r.verified){ nmPrepVerify(handle); } else { $('nmDoneName').textContent = r.verified ? '@'+r.handle : name; nmShow(3); }
+    refreshNow();
+  });
+  $('nmVerify').addEventListener('click', async function(){
+    var u = $('nmUrl').value.trim(); $('nmErr2').textContent=''; if(!u){ $('nmErr2').textContent='Paste the link to your post.'; return; }
+    var r; try{ r = await fetch(API+'/name/verify',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({wallet:wallet,url:u})}).then(function(x){return x.json();}); }catch(e){ $('nmErr2').textContent='Network error.'; return; }
+    if(r.error){ $('nmErr2').textContent=r.error; return; }
+    $('nmDoneName').textContent='@'+r.handle+' ✓'; nmShow(3); refreshNow();
+  });
+  function refreshNow(){ fetch(API+'/board?refresh=1',{cache:'no-store'}).then(function(r){return r.json();}).then(function(b){ if(b&&b.wallets){ board=b; render(); } }).catch(function(){}); }
+  ['nmClose','nmCancel','nmLater','nmDoneBtn'].forEach(function(id){ $(id).addEventListener('click', function(){ $('nameModal').classList.remove('on'); }); });
   $('mClose').addEventListener('click', closeModal); $('toBoard').addEventListener('click', closeModal);
   $('modal').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
   $('connectBtn').addEventListener('click', connect); $('navBtn').addEventListener('click', function(){ if(!wallet) connect(); });
@@ -901,7 +985,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     var pimg = await loadImg(piece ? pieceSrc(side, rank) : '/arena/emblem-'+side+'-512.svg');
     if(pimg){ var ps=300; ctx.save(); ctx.globalAlpha=0.95; ctx.drawImage(pimg, W-64-ps, 150, ps, ps); ctx.restore(); }
     // headline
-    ctx.fillStyle=fg; ctx.font='600 20px "JetBrains Mono", monospace'; ctx.fillStyle=dim; ctx.fillText(short(wallet), 64, 170);
+    ctx.fillStyle=fg; ctx.font='600 20px "JetBrains Mono", monospace'; ctx.fillStyle=dim; ctx.fillText(disp(wallet), 64, 170);
     ctx.fillStyle = isKing ? gold : fg; ctx.font='600 84px Inter, system-ui, sans-serif'; ctx.textBaseline='alphabetic';
     var title = piece ? cap(side)+' '+piece : cap(side)+' · no piece yet';
     ctx.fillText(title, 60, 262);
@@ -911,7 +995,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     var sx=64; stats.forEach(function(st){ ctx.fillStyle=faint; ctx.font='500 14px "JetBrains Mono", monospace'; ctx.fillText(st[0], sx, 372); ctx.fillStyle=fg; ctx.font='600 40px Inter, system-ui, sans-serif'; ctx.fillText(st[1], sx, 416); sx += Math.max(180, ctx.measureText(st[1]).width+70); });
     // status line
     ctx.font='500 18px "JetBrains Mono", monospace';
-    if(atk){ ctx.fillStyle='#FF6B57'; ctx.fillText('under attack · '+short(me.attacked.addr)+' is coming for my '+piece, 64, 472); }
+    if(atk){ ctx.fillStyle='#FF6B57'; ctx.fillText('under attack · '+disp(me.attacked.addr)+' is coming for my '+piece, 64, 472); }
     else if(isKing){ ctx.fillStyle=gold; ctx.fillText('holding the crown for '+cap(side), 64, 472); }
     else if(me.gap && me.gap.usd){ ctx.fillStyle=mint; ctx.fillText('$'+fmt(me.gap.usd)+' of volume from the '+me.gap.piece, 64, 472); }
     else { ctx.fillStyle=dim; ctx.fillText('every trade on the desk scores for '+cap(side), 64, 472); }
