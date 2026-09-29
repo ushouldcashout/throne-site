@@ -219,15 +219,15 @@
   <div class="hero">
     <div class="kicker"><span class="live">●</span> <span id="kickerText">season zero · pre-season · from now to oct 18</span></div>
     <h1>King Drop <span class="accent">points</span></h1>
-    <p class="sub">every wallet on the desk is on <b>White</b> or <b>Black</b>. every trade scores <b>1 point per $10</b> of taker volume for your side. the side with more points takes the drop, split by points. the top sixteen wallets on each side hold its pieces, king to pawn.</p>
+    <p class="sub">Every wallet on the desk is on <b>White</b> or <b>Black</b>. Every trade scores <b>1 point per $10</b> of taker volume for your side. The side with more points takes the drop, split by points. The top sixteen wallets on each side hold its pieces, king to pawn.</p>
     <div class="potstrip">
       <div class="pot" id="potBig">923,000<small>$THRONE on the line</small></div>
       <div class="sep"></div>
-      <div><div class="k">window</div><div class="v" id="windowText">from now to oct 18</div></div>
+      <div><div class="k">window</div><div class="v" id="windowText">From now to Oct 18</div></div>
       <div class="sep"></div>
       <div><div class="k" id="countK">closes in</div><div class="v gold" id="countdown">—</div></div>
       <div class="sep"></div>
-      <div><div class="k">next</div><div class="v" id="nextText">week 1 opens fri oct 9</div></div>
+      <div><div class="k">next</div><div class="v" id="nextText">Week 1 opens Fri Oct 9</div></div>
     </div>
   </div>
 
@@ -238,7 +238,7 @@
       <div class="body">
         <div class="name">White chess team</div>
         <div class="pts"><span id="wPts">—</span><small>pts</small></div>
-        <div class="meta"><b id="wTraders">—</b> traders · <b id="wVol">—</b> traded<br>king <span id="wKing">—</span></div>
+        <div class="meta"><b id="wTraders">—</b> traders · <b id="wVol">—</b> traded<br>King <span id="wKing">—</span></div>
         <span class="lead" id="wLead">—</span>
       </div>
     </div>
@@ -254,15 +254,15 @@
       <div class="body">
         <div class="name">Black chess team</div>
         <div class="pts"><span id="bPts">—</span><small>pts</small></div>
-        <div class="meta"><b id="bTraders">—</b> traders · <b id="bVol">—</b> traded<br>king <span id="bKing">—</span></div>
+        <div class="meta"><b id="bTraders">—</b> traders · <b id="bVol">—</b> traded<br>King <span id="bKing">—</span></div>
         <span class="lead" id="bLead">—</span>
       </div>
     </div>
   </div>
 
   <div class="yourow">
-    <div class="searchbar"><input id="q" placeholder="find your seat · paste your address (0x...)" autocomplete="off" spellcheck="false" /></div>
-    <button class="connect" id="connect">use my wallet</button>
+    <div class="searchbar"><input id="q" placeholder="Find your seat · paste your address (0x...)" autocomplete="off" spellcheck="false" /></div>
+    <button class="connect" id="connect">Use my wallet</button>
   </div>
   <div class="youcard" id="you">
     <div class="yl">
@@ -272,7 +272,7 @@
     <div class="yr"><div class="ypts" id="yPts">—</div><div class="yest" id="yEst">—</div></div>
   </div>
 
-  <div class="sect"><h2>The pieces · 16 seats a side</h2><div class="hint">est. drop = your cut if <b>week 1 closed with today's standings</b> · pre-season points carry into the season</div></div>
+  <div class="sect"><h2>The pieces · 16 seats a side</h2><div class="hint">Est. drop = your cut if <b>week 1 closed with today's standings</b> · pre-season points carry into the season</div></div>
   <div class="teams">
     <div class="team white" id="teamW">
       <div class="head"><div class="t"><img src="/arena/pieces/white-01-king.svg" alt="">White chess team</div><div class="s" id="wHead">—</div></div>
@@ -286,32 +286,32 @@
     </div>
   </div>
 
-  <div class="sect"><h2>The challengers · ranks 17 and beyond</h2><div class="hint">both sides, by season points · <b>the gap</b> is the taker volume needed to take seat 16 on your side</div></div>
+  <div class="sect"><h2>The challengers · ranks 17 and beyond</h2><div class="hint">Both sides, by season points · <b>the gap</b> is the taker volume needed to take seat 16 on your side</div></div>
   <div class="boardcard">
     <table>
       <thead><tr><th>rank</th><th>address · side</th><th class="gap-col">the gap</th><th class="r vol-col">traded</th><th class="r">points</th></tr></thead>
-      <tbody id="rows"><tr><td colspan="5" class="loading">loading the board...</td></tr></tbody>
+      <tbody id="rows"><tr><td colspan="5" class="loading">Loading the board...</td></tr></tbody>
     </table>
     <button class="more" id="more" style="display:none">show all</button>
   </div>
 
-  <div class="sect"><h2>How points work</h2><div class="hint">full rules and the live board: <a href="/kd-7f3a2c91" style="color:var(--gold)">the board</a></div></div>
+  <div class="sect"><h2>How points work</h2><div class="hint">Full rules and the live board: <a href="/kd-7f3a2c91" style="color:var(--gold)">the board</a></div></div>
   <div class="how">
-    <div class="tile"><div class="n">01 · SCORE</div><div class="h">1 point per $10</div><p>taker volume only, on any market on the desk. points count from your first trade. the venue posts rows hourly; the board refreshes every ten minutes.</p></div>
-    <div class="tile"><div class="n">02 · MULTIPLY</div><div class="h">hold $THRONE, score more</div><p>hold <b>100k</b> through the week for <b>1.25x</b>, <b>500k</b> for <b>1.5x</b>. beta list wallets score <b>2x</b>. combined cap 2x. the week's lowest balance sets the tier.</p></div>
-    <div class="tile"><div class="n">03 · PIECES</div><div class="h">sixteen seats a side</div><p>king, queen, two rooks, two bishops, two knights, eight pawns, by season points. seats change hands live. a wallet directly below you out-scoring you this week puts your piece <b>under attack</b>. you may switch sides once a season, and only in the <b>first 48 hours</b> of a week. after that, sides lock until the next week opens.</p></div>
-    <div class="tile"><div class="n">04 · CLOSE</div><div class="h">sunday 7pm est</div><p>weeks run friday to sunday close. from week 1 the final hour is <b>power hour</b>: points above your 6pm baseline score <b>1.5x</b>. results publish with a hash on the board.</p></div>
+    <div class="tile"><div class="n">01 · SCORE</div><div class="h">1 point per $10</div><p>Taker volume only, on any market on the desk. Points count from your first trade. The venue posts rows hourly; the board refreshes every ten minutes.</p></div>
+    <div class="tile"><div class="n">02 · MULTIPLY</div><div class="h">Hold $THRONE, score more</div><p>Hold <b>100k</b> through the week for <b>1.25x</b>, <b>500k</b> for <b>1.5x</b>. Beta list wallets score <b>2x</b>. Combined cap 2x. The week's lowest balance sets the tier.</p></div>
+    <div class="tile"><div class="n">03 · PIECES</div><div class="h">Sixteen seats a side</div><p>King, queen, two rooks, two bishops, two knights, eight pawns, by season points. Seats change hands live. A wallet directly below you out-scoring you this week puts your piece <b>under attack</b>. You may switch sides once a season, and only in the <b>first 48 hours</b> of a week. After that, sides lock until the next week opens.</p></div>
+    <div class="tile"><div class="n">04 · CLOSE</div><div class="h">Sunday 7pm EST</div><p>Weeks run Friday to Sunday close. From week 1 the final hour is <b>power hour</b>: points above your 6pm baseline score <b>1.5x</b>. Results publish with a hash on the board.</p></div>
   </div>
   <div class="split">
-    <div class="tile"><div class="n">WINNING SIDE</div><div class="big">72%</div><p>of the drop to every wallet on the winning side, split by that week's points. <b>$6,969</b> taker volume in the week to qualify.</p></div>
-    <div class="tile"><div class="n">WINNING PIECES</div><div class="big">18%</div><p>to the winning side's sixteen pieces, weighted king to pawn. the king takes 16 shares, the queen 15, down to one share per pawn.</p></div>
-    <div class="tile"><div class="n">LOSING KING &amp; QUEEN</div><div class="big gold">10%</div><p>the losing side's king and queen still get paid, <b>7% and 3%</b> of the drop. leading your side is worth it either way.</p></div>
+    <div class="tile"><div class="n">WINNING SIDE</div><div class="big">72%</div><p>Of the drop to every wallet on the winning side, split by that week's points. <b>$6,969</b> taker volume in the week to qualify.</p></div>
+    <div class="tile"><div class="n">WINNING PIECES</div><div class="big">18%</div><p>To the winning side's sixteen pieces, weighted king to pawn. The king takes 16 shares, the queen 15, down to one share per pawn.</p></div>
+    <div class="tile"><div class="n">LOSING KING &amp; QUEEN</div><div class="big gold">10%</div><p>The losing side's king and queen still get paid, <b>7% and 3%</b> of the drop. Leading your side is worth it either way.</p></div>
   </div>
 
-  <p class="note">rankings follow the venue's hourly public rows. formula: points = taker volume x 0.1 x multiplier. estimates use the published split and the current $THRONE price and are not a promise of payment. figures are live until each week closes; the closed result is what pays.</p>
+  <p class="note">Rankings follow the venue's hourly public rows. Formula: points = taker volume x 0.1 x multiplier. Estimates use the published split and the current $THRONE price and are not a promise of payment. Figures are live until each week closes; the closed result is what pays.</p>
 
   <footer>
-    <span>throne. · this is a defi experiment, please use at your own risk</span>
+    <span>throne. · This is a DeFi experiment, please use at your own risk.</span>
     <span><a href="/">throne.network</a> · <a href="https://x.com/thronedefi">@thronedefi</a></span>
   </footer>
 </div>
@@ -370,21 +370,21 @@
     var W=board.sides.white, B=board.sides.black, tot=W.pts+B.pts;
     var pre=!!board.preseason;
     $('potBig').innerHTML=fmt(board.pot||923000)+'<small>$THRONE on the line</small>';
-    if(pre){ $('kickerText').textContent='season zero · pre-season · from now to oct 18'; $('windowText').textContent='from now to oct 18'; $('nextText').textContent='week 1 opens fri oct 9'; $('countK').textContent='week 1 closes in'; }
-    else { $('kickerText').textContent='season zero · week '+board.week+' of '+board.weeks; $('windowText').textContent='week '+board.week+' · closes sunday 7pm est'; $('nextText').textContent=board.week<board.weeks?'week '+(board.week+1)+' opens monday':'final week'; $('countK').textContent='closes in'; }
+    if(pre){ $('kickerText').textContent='season zero · pre-season · from now to oct 18'; $('windowText').textContent='From now to Oct 18'; $('nextText').textContent='Week 1 opens Fri Oct 9'; $('countK').textContent='week 1 closes in'; }
+    else { $('kickerText').textContent='season zero · week '+board.week+' of '+board.weeks; $('windowText').textContent='Week '+board.week+' · closes Sunday 7pm EST'; $('nextText').textContent=board.week<board.weeks?'Week '+(board.week+1)+' opens Monday':'Final week'; $('countK').textContent='closes in'; }
     countdown();
     $('wPts').textContent=fmt(W.pts); $('bPts').textContent=fmt(B.pts);
     var wl=LIST.filter(function(r){return r.side==='white';}), bl=LIST.filter(function(r){return r.side==='black';});
     $('wTraders').textContent=fmt(wl.length); $('bTraders').textContent=fmt(bl.length);
     $('wVol').textContent=usd(W.vol); $('bVol').textContent=usd(B.vol);
-    $('wKing').textContent=W.king?short(W.king.addr)+' · '+fmt(W.king.season)+' pts':'open';
-    $('bKing').textContent=B.king?short(B.king.addr)+' · '+fmt(B.king.season)+' pts':'open';
+    $('wKing').textContent=W.king?short(W.king.addr)+' · '+fmt(W.king.season)+' pts':'Open';
+    $('bKing').textContent=B.king?short(B.king.addr)+' · '+fmt(B.king.season)+' pts':'Open';
     var ws=tot>0?W.pts/tot:0.5; $('tug').style.width=Math.round(ws*100)+'%';
     $('wShare').textContent=Math.round(ws*100)+'%'; $('bShare').textContent=(100-Math.round(ws*100))+'%';
     var lead=W.pts>=B.pts?'white':'black', by=Math.abs(W.pts-B.pts);
-    $('gapText').innerHTML=(tot>0?cap(lead)+' leads by<b>'+fmt(by)+' pts</b>':'no points yet<b>—</b>');
+    $('gapText').innerHTML=(tot>0?cap(lead)+' leads by<b>'+fmt(by)+' pts</b>':'No points yet<b>—</b>');
     function leadTag(el,side){ var l=side==='white'?W:B; var on=tot>0&&lead===side; var thr=board.threat&&board.threat[side];
-      el.className='lead'+(on?' on':(thr?' threat':'')); el.textContent=on?'leading':(thr?'king under threat':(tot>0?'trailing':'—')); }
+      el.className='lead'+(on?' on':(thr?' threat':'')); el.textContent=on?'Leading':(thr?'King under threat':(tot>0?'Trailing':'—')); }
     leadTag($('wLead'),'white'); leadTag($('bLead'),'black');
   }
 
@@ -396,16 +396,16 @@
         var royal=i<=2;
         out+='<div class="seatrow'+(royal?' royal':'')+(isMe(w.addr)?' me':'')+'" data-a="'+w.addr+'">'
           +'<div class="pc"><img src="'+pieceSrc(side,i)+'" alt="'+PIECES[i-1]+'"></div>'
-          +'<div class="who"><div class="pn">'+PIECES[i-1]+' · #'+i+'</div><div class="ad"><a href="/kd-7f3a2c91" title="'+w.addr+'">'+short(w.addr)+'</a>'+badges(w)+'</div></div>'
+          +'<div class="who"><div class="pn">'+cap(PIECES[i-1])+' · #'+i+'</div><div class="ad"><a href="/kd-7f3a2c91" title="'+w.addr+'">'+short(w.addr)+'</a>'+badges(w)+'</div></div>'
           +'<div class="num"><div class="p">'+fmt(w.season)+'</div><div class="v">'+usd(w.vol)+' traded</div></div>'
           +estCell(w)+'</div>';
       } else {
         var last=rows[rows.length-1]; var need=last?Math.max(1,Math.round(last.season)):1;
         out+='<div class="seatrow open">'
           +'<div class="pc">'+i+'</div>'
-          +'<div class="who"><div class="pn">'+PIECES[i-1]+' · #'+i+'</div><div class="open-hint">open seat · '+(i===rows.length+1?'<b>any points</b> take it':'trade to claim')+'</div></div>'
+          +'<div class="who"><div class="pn">'+cap(PIECES[i-1])+' · #'+i+'</div><div class="open-hint">Open seat · '+(i===rows.length+1?'<b>any points</b> take it':'trade to claim')+'</div></div>'
           +'<div class="num"><div class="p" style="color:var(--faint);font-weight:400">—</div></div>'
-          +'<div class="est"><div class="e">'+(board.pot?fmt(board.pot*(board.split?board.split.pieceShare:0.18)*((17-i)/136))+' $THRONE':'—')+'</div><div class="u">piece share if '+side+' wins</div></div>'
+          +'<div class="est"><div class="e">'+(board.pot?fmt(board.pot*(board.split?board.split.pieceShare:0.18)*((17-i)/136))+' $THRONE':'—')+'</div><div class="u">Piece share if '+side+' wins</div></div>'
           +'</div>';
       }
     }
@@ -417,15 +417,15 @@
     var ch=LIST.filter(function(r){return !r.piece;});
     var vis=(showAll||q)?ch:ch.slice(0,34); // ranks 17-50 by default
     var tb=$('rows');
-    if(!ch.length){ tb.innerHTML='<tr><td colspan="5" class="loading">'+(LIST.length<32?'seats are still open on both sides. trade the desk and take one.':'no challengers yet.')+'</td></tr>'; $('more').style.display='none'; return; }
+    if(!ch.length){ tb.innerHTML='<tr><td colspan="5" class="loading">'+(LIST.length<32?'Seats are still open on both sides. Trade the desk and take one.':'No challengers yet.')+'</td></tr>'; $('more').style.display='none'; return; }
     var filtered=q?vis.filter(function(r){return r.addr.indexOf(q)>-1;}):vis;
-    if(!filtered.length){ tb.innerHTML='<tr><td colspan="5" class="loading">address not found below the pieces. check the seats above, or trade the desk to take one.</td></tr>'; }
+    if(!filtered.length){ tb.innerHTML='<tr><td colspan="5" class="loading">Address not found below the pieces. Check the seats above, or trade the desk to take one.</td></tr>'; }
     else tb.innerHTML=filtered.map(function(r){
       var i=LIST.indexOf(r)+1;
       var gap=r.gap&&r.gap.usd?'<b>'+usd(r.gap.usd)+'</b> to seat 16':'—';
-      return '<tr class="'+(isMe(r.addr)?'me':'')+'"><td class="rank">'+String(i).padStart(2,'0')+'</td><td>'+short(r.addr)+'<span class="sidetag '+r.side+'">'+r.side.toUpperCase()+'</span> '+badges(r)+'</td><td class="gapcell gap-col">'+gap+'</td><td class="r vol-col" style="color:var(--dim)">'+usd(r.vol)+'</td><td class="r" style="font-weight:700">'+fmt(r.season)+'</td></tr>';
+      return '<tr class="'+(isMe(r.addr)?'me':'')+'"><td class="rank">'+String(i).padStart(2,'0')+'</td><td>'+short(r.addr)+'<span class="sidetag '+r.side+'">'+cap(r.side)+'</span> '+badges(r)+'</td><td class="gapcell gap-col">'+gap+'</td><td class="r vol-col" style="color:var(--dim)">'+usd(r.vol)+'</td><td class="r" style="font-weight:700">'+fmt(r.season)+'</td></tr>';
     }).join('');
-    $('more').style.display=(ch.length>34&&!q)?'block':'none'; $('more').textContent=showAll?'show top 50':'show all '+ch.length+' challengers';
+    $('more').style.display=(ch.length>34&&!q)?'block':'none'; $('more').textContent=showAll?'Show top 50':'Show all '+ch.length+' challengers';
   }
 
   function renderYou(){
@@ -434,12 +434,12 @@
     var w=hit, overall=LIST.indexOf(w)+1; you.classList.add('show');
     $('yImg').src=w.piece?pieceSrc(w.side,w.rank):pieceSrc(w.side,16); $('yImg').style.opacity=w.piece?1:0.45;
     $('yAddr').textContent=short(w.addr)+' · '+cap(w.side);
-    var m=[]; m.push(w.piece?cap(w.piece)+' #'+w.rank:'no piece yet'); m.push('overall #'+overall); m.push(usd(w.vol)+' traded'); if(w.mult>1) m.push(w.mult+'x multiplier');
+    var m=[]; m.push(w.piece?cap(w.piece)+' #'+w.rank:'No piece yet'); m.push('Overall #'+overall); m.push(usd(w.vol)+' traded'); if(w.mult>1) m.push(w.mult+'x multiplier');
     if(!w.piece&&w.gap&&w.gap.usd) m.push(usd(w.gap.usd)+' more to take seat 16'); else if(w.gap&&w.gap.usd) m.push(usd(w.gap.usd)+' more to take the '+w.gap.piece+' from '+short(w.gap.addr));
-    if(w.attacked) m.push('under attack by '+short(w.attacked.addr));
+    if(w.attacked) m.push('Under attack by '+short(w.attacked.addr));
     $('yMeta').textContent=m.join(' · ');
     $('yPts').textContent=fmt(w.season)+' pts';
-    var e=estimate(w); $('yEst').innerHTML=e==null?'—':'est. <b>'+fmt(e)+' $THRONE</b>'+(PRICE?' ≈ '+usd(e*PRICE):'')+' if week 1 closed now';
+    var e=estimate(w); $('yEst').innerHTML=e==null?'—':'Est. <b>'+fmt(e)+' $THRONE</b>'+(PRICE?' ≈ '+usd(e*PRICE):'')+' if week 1 closed now';
   }
 
   function renderAll(){ renderHero(); renderTeam('white'); renderTeam('black'); renderChallengers(); renderYou(); }
@@ -447,7 +447,7 @@
   $('q').addEventListener('input',function(e){ q=e.target.value.trim().toLowerCase(); if(board) renderAll(); if(q&&$('you').classList.contains('show')&&$('you').scrollIntoView) $('you').scrollIntoView({behavior:'smooth',block:'center'}); });
   $('more').addEventListener('click',function(){ showAll=!showAll; renderChallengers(); });
   $('connect').addEventListener('click',function(){
-    var eth=window.ethereum; if(!eth){ $('connect').textContent='no wallet found'; return; }
+    var eth=window.ethereum; if(!eth){ $('connect').textContent='No wallet found'; return; }
     eth.request({method:'eth_requestAccounts'}).then(function(a){ if(a&&a[0]){ $('q').value=a[0]; q=a[0].toLowerCase(); localStorage.setItem('kd_points_wallet',q); if(board) renderAll(); } }).catch(function(){});
   });
   var saved=localStorage.getItem('kd_points_wallet'); if(saved){ q=saved; $('q').value=saved; }
@@ -457,7 +457,7 @@
       if(!b||!b.wallets) throw new Error('no board'); board=b;
       LIST=Object.keys(b.wallets).map(function(a){ var w=b.wallets[a]; w.addr=a.toLowerCase(); return w; }).filter(function(w){return w.season>0;}).sort(function(x,y){return y.season-x.season;});
       renderAll();
-    }).catch(function(){ $('rows').innerHTML='<tr><td colspan="5" class="loading">could not reach the board. refresh to retry.</td></tr>'; });
+    }).catch(function(){ $('rows').innerHTML='<tr><td colspan="5" class="loading">Could not reach the board. Refresh to retry.</td></tr>'; });
   }
   load(); setInterval(load,600000);
 })();
