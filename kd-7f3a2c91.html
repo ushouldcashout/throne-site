@@ -296,7 +296,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     <div class="sub" style="display:none"><span class="dot"></span><span id="subline">white vs black · season zero · loading</span></div>
   </div>
 
-  <div class="pot" id="pot"><b id="potText">This week's drop: season points, your piece, and first pick of the Court.</b><span id="potSub">closes sunday 7pm est</span><span class="potNote" style="flex-basis:100%">$THRONE holders score up to 1.5x</span></div>
+  <div class="pot" id="pot"><b id="potText">This week's drop: season points, your piece, and first pick of the Court.</b><span id="potSub">closes sunday midnight utc</span><span class="potNote" style="flex-basis:100%">$THRONE holders score up to 1.5x</span></div>
 
   <div class="grid" id="seatWrap">
     <div class="sec full" id="seat">
@@ -330,6 +330,8 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
         <div class="sharebox"><span class="mono" style="font-size:11px;color:var(--dim)">share card</span><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn line" id="cardBtn" style="width:auto;padding:9px 14px;font-size:13px">Preview my card</button><button class="btn" id="cardPost" style="width:auto;padding:9px 14px;font-size:13px">Post on X</button></div></div>
         <div class="gap hidden" id="seatGapBox"><b id="seatGapText"></b><span id="seatGapSub"></span></div>
         <div class="atkline hidden" id="seatAtk"></div>
+        <div class="line"><span class="d">drop eligibility</span><span id="seatQual" style="text-align:right">—</span></div>
+        <div class="line"><span class="d">daily check-in</span><span id="seatCheckin" style="display:flex;align-items:center;gap:10px;justify-content:flex-end">—</span></div>
         <div class="line"><span class="d">multiplier</span><span id="seatMult" style="text-align:right">—</span></div>
         <div class="line"><span class="d">streak</span><span id="seatStreak">—</span></div>
         <div class="line"><span class="d">next rank</span><span id="seatNext">—</span></div>
@@ -339,7 +341,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
         <div class="steps hidden" id="seatSteps" style="padding:4px 24px 10px">
           <div class="st"><b>01</b><span><a href="https://trade.throne.network">Trade the desk</a>. Every trade scores for you and your side. 1 point per $10.</span></div>
           <div class="st"><b>02</b><span>Watch this panel. The venue publishes trader rows once an hour; rank, points and the gap update within minutes of each publish.</span></div>
-          <div class="st"><b>03</b><span>Sunday 7pm EST the week closes and the King Drop lands. Results post here and on <a href="https://x.com/thronedefi">@thronedefi</a>.</span></div>
+          <div class="st"><b>03</b><span>Sunday midnight UTC (8pm ET) the week closes and the King Drop lands. $20,000 taker volume in the week to be paid. Results post here and on <a href="https://x.com/thronedefi">@thronedefi</a>.</span></div>
           <div class="st"><b>04</b><span>Hold 100k $THRONE through the week for 1.25x points, 500k for 1.5x.</span></div>
         </div>
       </div>
@@ -351,7 +353,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
   <div class="drop hidden" id="dropHero">
     <div class="em"><img id="dropEm" src="/arena/emblem-black-512.svg" alt=""></div>
     <div class="body">
-      <span class="mono" style="font-size:13px;color:var(--mint)" id="dropWk">week 1 · closed sunday 7pm est</span>
+      <span class="mono" style="font-size:13px;color:var(--mint)" id="dropWk">week 1 · closed sunday midnight utc</span>
       <span class="h" id="dropH">Black took<br>the week.</span>
       <div class="nums">
         <div><span id="dropL1">black</span><span id="dropV1" style="color:var(--mint)">—</span></div>
@@ -453,7 +455,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     <div>
       <div class="li"><span>01</span><span>Every wallet that trades is in. You're assigned a side; pick one once a season to make it yours.</span></div>
       <div class="li"><span>02</span><span>Trade the desk; taker volume earns points for you and your side. 1 point per $10.</span></div>
-      <div class="li"><span>03</span><span>Weeks close Sunday 7pm EST; the side with more points takes the King Drop, split by points. The losing side's king and queen still get paid: 10% of the drop, 7/3 between them. The final hour before the close is power hour: every point counts 1.5x.</span></div>
+      <div class="li"><span>03</span><span>Weeks close Sunday midnight UTC (8pm ET); the side with more points takes the King Drop, split by points. $20,000 taker volume in the week to be paid. The losing side's king and queen still get paid: 10% of the drop, 7/3 between them. The final hour before the close is power hour: every point counts 1.5x.</span></div>
       <div class="li"><span>04</span><span>Hold $THRONE through the week and your points multiply: 100k for 1.25x, 500k for 1.5x, measured on your lowest balance of the week. Beta list wallets score 2x. Combined cap 2x.</span></div>
       <div class="li"><span>05</span><span>Top 16 on each side hold the pieces. Points set your place in line when the Court opens.</span></div>
       <div class="li"><span>06</span><span>Results are published with a hash so anyone can check them against the venue's public data.</span></div>
@@ -486,7 +488,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     <div class="mb hidden" id="mDone">
       <div style="display:flex;align-items:center;gap:16px">
         <img id="dEm" src="/arena/emblem-black-128.svg" width="72" height="72" alt="">
-        <div style="display:flex;flex-direction:column;gap:8px"><h2 id="dTitle">You're on Black.</h2><span style="font-size:14.5px;color:var(--dim)">Trade to earn. The week closes Sunday 7pm EST.</span></div>
+        <div style="display:flex;flex-direction:column;gap:8px"><h2 id="dTitle">You're on Black.</h2><span style="font-size:14.5px;color:var(--dim)">Trade to earn. The week closes Sunday midnight UTC.</span></div>
       </div>
       <div class="ticket">
         <div class="tl"><span class="k" id="tK">throne. · king drop · black</span><span class="n" id="tN">Black</span><div class="m"><span><i>wallet</i> <span id="tW">—</span></span><span><i>season</i> zero</span></div></div>
@@ -495,7 +497,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
       <div class="steps">
         <div class="st"><b>01</b><span><a href="https://trade.throne.network">Trade the desk</a>. Every trade scores for you and <span class="dSide">your side</span>. 1 point per $10.</span></div>
         <div class="st"><b>02</b><span>Watch the board. Your seat shows your rank, your points this week, and how far you are from the next piece.</span></div>
-        <div class="st"><b>03</b><span>Sunday 7pm EST the week closes and the King Drop lands. Results post here and on <a href="https://x.com/thronedefi">@thronedefi</a>.</span></div>
+        <div class="st"><b>03</b><span>Sunday midnight UTC (8pm ET) the week closes and the King Drop lands. $20,000 taker volume in the week to be paid. Results post here and on <a href="https://x.com/thronedefi">@thronedefi</a>.</span></div>
         <div class="st"><b>04</b><span>Hold 100k $THRONE through the week for 1.25x points, 500k for 1.5x.</span></div>
       </div>
       <a class="btn" id="shareX" target="_blank" rel="noreferrer">Post it on X</a>
@@ -585,7 +587,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     if(season.rehearsal) s = '<span style="color:var(--gold)">rehearsal</span> · real desk volume since '+String(season.rehearsalStart||'').slice(5,10).replace('-','/')+' · nothing here counts · ';
     if(season.state==='pre') s += 'opens fri oct 9 · 7pm est · <span style="color:var(--fg)">'+fmtMs(season.opens-Date.now())+'</span>';
     else if(season.state==='ended') s += 'season closed';
-    else { s += 'week '+season.week+' of '+season.weeks+' · closes sunday 7pm est · <span style="color:var(--fg)">'+fmtMs(season.closes-Date.now())+'</span>'; var ms = season.closes-Date.now(); if(ms>0 && ms<=3600e3) s += '<span class="ph">power hour · 1.5x</span>'; else if(ms>3600e3) s += ' · <span style="color:var(--faint)">power hour from 6pm est sunday</span>'; }
+    else { s += 'week '+season.week+' of '+season.weeks+' · closes sunday midnight utc · <span style="color:var(--fg)">'+fmtMs(season.closes-Date.now())+'</span>'; var ms = season.closes-Date.now(); if(ms>0 && ms<=3600e3) s += '<span class="ph">power hour · 1.5x</span>'; else if(ms>3600e3) s += ' · <span style="color:var(--faint)">power hour from 6pm est sunday</span>'; }
     $('subline').innerHTML = s;
   }
   setInterval(function(){ subline(); if(board) renderPot(); }, 30000);
@@ -660,13 +662,13 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     var last=(board.results||[])[board.results.length-1];
     var show = last && (Date.now()-last.closes) < 864e5 && last.winner!=='draw';
     $('dropHero').classList.toggle('hidden', !show); $('liveHero').classList.toggle('hidden', !!show); $('shareBar').classList.toggle('hidden', !!show);
-    if(show){ var w=last.winner, l=w==='white'?'black':'white'; $('dropEm').src='/arena/emblem-'+w+'-512.svg'; $('dropWk').textContent='week '+last.week+' · closed sunday 7pm est'; $('dropH').innerHTML=cap(w)+' took<br>the week.'; $('dropL1').textContent=w; $('dropV1').textContent=fmt(last[w]); $('dropL2').textContent=l; $('dropV2').textContent=fmt(last[l]); $('dropV3').textContent=fmt(last.margin); $('dropHash').textContent=last.hash.slice(0,4)+'…'+last.hash.slice(-4); }
+    if(show){ var w=last.winner, l=w==='white'?'black':'white'; $('dropEm').src='/arena/emblem-'+w+'-512.svg'; $('dropWk').textContent='week '+last.week+' · closed sunday midnight utc'; $('dropH').innerHTML=cap(w)+' took<br>the week.'; $('dropL1').textContent=w; $('dropV1').textContent=fmt(last[w]); $('dropL2').textContent=l; $('dropV2').textContent=fmt(last[l]); $('dropV3').textContent=fmt(last.margin); $('dropHash').textContent=last.hash.slice(0,4)+'…'+last.hash.slice(-4); }
   }
 
   // ---- pot banner ----
   function renderPot(){
     var closes = season && season.closes ? new Date(season.closes) : null;
-    var when = closes ? closes.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}).toLowerCase()+' · 7pm est' : 'sunday 7pm est';
+    var when = closes ? closes.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}).toLowerCase()+' · midnight utc' : 'sunday midnight utc';
     var ph = board && board.powerHour; var pot = $('pot');
     var potQ = parseInt(new URLSearchParams(location.search).get('pot')||'',10); var potV = (board && board.pot) || (potQ>0 ? potQ : null);
     if(potV && !(ph && ph.active)){ pot.classList.remove('power');
@@ -866,6 +868,15 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     var atk = me && me.attacked;
     if(atk && piece){ $('seatAtk').classList.remove('hidden'); $('seatAtk').innerHTML = 'your '+piece+' is under attack. <b>'+disp(atk.addr)+'</b> (#'+atk.rank+') is out-scoring you this week with '+fmt(atk.weekPts)+' pts, '+fmt(atk.gapPts)+' pts behind you for the season.'; }
     else $('seatAtk').classList.add('hidden');
+    // drop eligibility: $20k taker volume in the week to be paid from that week's drop
+    var floor = (board.rules && board.rules.claimFloorUsd) || 20000;
+    if(me){ $('seatQual').innerHTML = me.weekVol >= floor ? '<span style="color:var(--mint)">qualified · $'+fmt(me.weekVol)+' this week</span>' : '<span style="color:var(--gold)">$'+fmt(floor - me.weekVol)+' more</span> <span style="color:var(--faint)">to reach $'+fmt(floor)+' this week</span>'; }
+    else $('seatQual').innerHTML = '<span style="color:var(--faint)">trade $'+fmt(floor)+' this week to be paid</span>';
+    // daily check-in: +100 pts a day, +300 for all seven, counted once you qualify
+    var ci = me || {}; var cpts = (board.rules && board.rules.checkinPts) || 100;
+    $('seatCheckin').innerHTML = (ci.checkinToday ? '<span style="color:var(--mint)">checked in today</span>' : '<span class="lnk" id="checkinBtn">Check in · +'+cpts+' pts</span>')
+      + ' <span class="mono" style="font-size:12px;color:var(--faint)">'+(ci.checkins||0)+'/7 this week'+(ci.checkins && !ci.checkinLive ? ' · pending until qualified' : '')+'</span>';
+    if($('checkinBtn')) $('checkinBtn').addEventListener('click', doCheckin);
     var nr = nameRec(wallet);
     $('seatName').innerHTML = (nr ? '<b>'+esc(nr.name)+'</b>'+(nr.handle ? ' <span class="mono" style="font-size:12px;color:var(--dim)">@'+esc(nr.handle)+(nr.verified?' <span style="color:var(--mint)">✓</span>':' · unverified')+'</span>' : '') : '<span style="color:var(--faint)">no name yet</span>')
       + ' <span class="lnk" id="nameBtn" style="font-size:13px">'+(nr ? (nr.handle && !nr.verified ? 'verify' : 'edit') : 'set your name')+'</span>';
@@ -919,6 +930,20 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
   $('optB').addEventListener('click',function(){ if(!this.classList.contains('off')) choose('black'); });
   $('forMe').addEventListener('click',async function(){ if(!wallet){ await connect(); if(!wallet) return; } var full=(mine&&mine.capFull)||null; var side = mine ? mine.side : 'black'; if(full===side) side = side==='white'?'black':'white'; if(mine && mine.source==='default' && (mine.capFull!==mine.side)){ closeModal(); return; } choose(side); });
 
+  // ---- daily check-in (free signature)
+  async function doCheckin(){
+    if(!wallet || !window.ethereum) return;
+    var btn=$('checkinBtn'); if(btn) btn.textContent='sign in your wallet…';
+    try{
+      var g = await fetch(API+'/checkin?wallet='+wallet,{cache:'no-store'}).then(function(r){return r.json();});
+      if(g.checkedInToday){ toast('Already checked in today.'); renderSeat(); return; }
+      var hex='0x'+Array.from(new TextEncoder().encode(g.message)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+      var sig = await window.ethereum.request({method:'personal_sign',params:[hex,wallet]});
+      var r = await fetch(API+'/checkin',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({wallet:wallet,sig:sig})}).then(function(x){return x.json();});
+      if(r.error){ toast(r.error); if(btn) btn.textContent='Check in'; return; }
+      toast('Checked in. '+r.days.length+'/7 this week · +'+fmt(r.pts)+' pts once you clear $20,000.'); refreshNow();
+    }catch(e){ if(btn) btn.textContent='Check in'; }
+  }
   // ---- name modal
   function esc(t){ return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
   var nmCode = null;

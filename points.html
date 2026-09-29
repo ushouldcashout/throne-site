@@ -335,7 +335,7 @@
       <img id="yImg" src="/arena/pieces/white-09-pawn.svg" alt="">
       <div><div class="yk">YOUR SEAT</div><div class="yaddr"><span id="yAddr">—</span><span class="nm" id="yName">set your name</span></div><div class="ymeta" id="yMeta">—</div></div>
     </div>
-    <div class="yr"><div class="ypts" id="yPts">—</div><div class="yest" id="yEst">—</div></div>
+    <div class="yr"><div class="ypts" id="yPts">—</div><div class="yest" id="yEst">—</div><div class="yest" id="yQual">—</div><div class="yest" id="yCheck">—</div></div>
   </div>
 
   <div class="sim" id="sim">
@@ -380,15 +380,15 @@
     <div class="tile"><div class="n">01 · SCORE</div><div class="h">1 point per $10</div><p>Taker volume only, on any market on the desk. Points count from your first trade. The venue posts rows hourly; the board refreshes every ten minutes.</p></div>
     <div class="tile"><div class="n">02 · MULTIPLY</div><div class="h">Hold $THRONE, score more</div><p>Hold <b>100k</b> through the week for <b>1.25x</b>, <b>500k</b> for <b>1.5x</b>. Beta list wallets score <b>2x</b>. Combined cap 2x. The week's lowest balance sets the tier.</p></div>
     <div class="tile"><div class="n">03 · PIECES</div><div class="h">Sixteen seats a side</div><p>King, queen, two rooks, two bishops, two knights, eight pawns, by season points. Seats change hands live. A wallet directly below you out-scoring you this week puts your piece <b>under attack</b>. You may switch sides once a season, and only in the <b>first 48 hours</b> of a week. After that, sides lock until the next week opens.</p></div>
-    <div class="tile"><div class="n">04 · CLOSE</div><div class="h">Sunday 7pm EST</div><p>Weeks run Friday to Sunday close. From week 1 the final hour is <b>power hour</b>: points above your 6pm baseline score <b>1.5x</b>. Results publish with a hash on the board.</p></div>
+    <div class="tile"><div class="n">04 · CHECK IN &amp; CLOSE</div><div class="h">Check in daily, close Sunday</div><p>One free signature a day is <b>+100 points</b>, all seven days <b>+300</b> more, counted once you clear the $20,000 floor. Weeks close <b>Sunday midnight UTC</b> (8pm ET). The final hour is <b>power hour</b>: points above your 11pm UTC baseline score <b>1.5x</b>. Results publish with a hash.</p></div>
   </div>
   <div class="split">
-    <div class="tile"><div class="n">WINNING SIDE</div><div class="big">72%</div><p>Of the drop to every wallet on the winning side, split by that week's points. <b>$6,969</b> taker volume in the week to qualify.</p></div>
-    <div class="tile"><div class="n">WINNING PIECES</div><div class="big">18%</div><p>To the winning side's sixteen pieces, weighted king to pawn. The king takes 16 shares, the queen 15, down to one share per pawn.</p></div>
+    <div class="tile"><div class="n">WINNING SIDE</div><div class="big">72%</div><p>Of the drop to every wallet on the winning side, split by that week's points. <b>$20,000</b> taker volume in the week to be paid; points count either way.</p></div>
+    <div class="tile"><div class="n">WINNING PIECES</div><div class="big">18%</div><p>To the winning side's sixteen pieces, weighted king to pawn. The king takes 16 shares, the queen 15, down to one share per pawn. Same $20,000 floor.</p></div>
     <div class="tile"><div class="n">LOSING KING &amp; QUEEN</div><div class="big gold">10%</div><p>The losing side's king and queen still get paid, <b>7% and 3%</b> of the drop. Leading your side is worth it either way.</p></div>
   </div>
 
-  <p class="note">Rankings follow the venue's hourly public rows. Formula: points = taker volume x 0.1 x multiplier. Estimates use the published split and the current $THRONE price and are not a promise of payment. Figures are live until each week closes; the closed result is what pays. Names are chosen by wallets and signed; an X handle with a check was verified against a public post.</p>
+  <p class="note">$20,000 taker volume in a week is the floor to be paid from that week's drop; points, seats and check-ins count regardless. Rankings follow the venue's hourly public rows. Formula: points = taker volume x 0.1 x multiplier. Estimates use the published split and the current $THRONE price and are not a promise of payment. Figures are live until each week closes; the closed result is what pays. Names are chosen by wallets and signed; an X handle with a check was verified against a public post.</p>
 
   <footer>
     <span>throne. · This is a DeFi experiment, please use at your own risk.</span>
@@ -466,6 +466,8 @@
   function estimate(w){ return estimateFor(w.side, w.week, w.rank); }
   function estCell(w){
     var e=estimate(w); if(e==null) return '<div class="est"><div class="e">—</div></div>';
+    var floor=(board.rules&&board.rules.claimFloorUsd)||20000; var qual=(w.weekVol||0)>=floor;
+    if(!qual) return '<div class="est"><div class="e" style="color:var(--faint)">'+fmt(e)+' $THRONE</div><div class="u" style="color:var(--gold)">'+usd(floor-(w.weekVol||0))+' more to be paid</div></div>';
     return '<div class="est"><div class="e">'+fmt(e)+' $THRONE</div><div class="u">'+(PRICE?'≈ '+usd(e*PRICE):'&nbsp;')+'</div></div>';
   }
   function badges(w){
@@ -475,6 +477,7 @@
     if(w.attacked) b.push('<span class="badge atk" title="'+esc(disp(w.attacked.addr))+' is out-scoring this seat this week">⚔ under attack</span>');
     if(w.streak>=2) b.push('<span class="badge streak">'+w.streak+'-day streak</span>');
     if(w.activeToday) b.push('<span class="badge story">traded today</span>');
+    if(w.checkins) b.push('<span class="badge story">'+w.checkins+'/7 check-ins</span>');
     var st=storyFor(w.addr); if(st) b.push('<span class="badge story">'+esc(st)+'</span>');
     return b.join('');
   }
@@ -537,7 +540,7 @@
     countUp($('potNum'), board.pot||923000);
     if(ph){ $('kickerText').textContent='power hour · every point counts 1.5x'; $('countK').textContent='closes in'; }
     else if(pre){ $('kickerText').textContent='season zero · pre-season · from now to oct 18'; $('windowText').textContent='From now to Oct 18'; $('nextText').textContent='Week 1 opens Fri Oct 9'; $('countK').textContent='week 1 closes in'; }
-    else { $('kickerText').textContent='season zero · week '+board.week+' of '+board.weeks; $('windowText').textContent='Week '+board.week+' · closes Sunday 7pm EST'; $('nextText').textContent=board.week<board.weeks?'Week '+(board.week+1)+' opens Monday':'Final week'; $('countK').textContent='closes in'; }
+    else { $('kickerText').textContent='season zero · week '+board.week+' of '+board.weeks; $('windowText').textContent='Week '+board.week+' · closes Sunday midnight UTC'; $('nextText').textContent=board.week<board.weeks?'Week '+(board.week+1)+' opens Monday':'Final week'; $('countK').textContent='closes in'; }
     countdown();
     countUp($('wPts'), W.pts); countUp($('bPts'), B.pts);
     var wl=LIST.filter(function(r){return r.side==='white';}), bl=LIST.filter(function(r){return r.side==='black';});
@@ -635,7 +638,12 @@
     if(w.attacked) m.push('Under attack by '+disp(w.attacked.addr));
     $('yMeta').textContent=m.join(' · ');
     $('yPts').textContent=fmt(w.season)+' pts';
-    var e=estimate(w); $('yEst').innerHTML=e==null?'—':'Est. <b>'+fmt(e)+' $THRONE</b>'+(PRICE?' ≈ '+usd(e*PRICE):'')+' if week 1 closed now';
+    var e=estimate(w); var floor=(board.rules&&board.rules.claimFloorUsd)||20000; var qual=(w.weekVol||0)>=floor;
+    $('yEst').innerHTML=e==null?'—':'Est. <b>'+fmt(e)+' $THRONE</b>'+(PRICE?' ≈ '+usd(e*PRICE):'')+' if week 1 closed now';
+    $('yQual').innerHTML=qual?'<span style="color:var(--mint)">Qualified</span> · '+usd(w.weekVol)+' traded this week':'<span style="color:var(--gold)">'+usd(floor-(w.weekVol||0))+' more</span> to reach the '+usd(floor)+' floor and be paid';
+    var cp=(board.rules&&board.rules.checkinPts)||100;
+    $('yCheck').innerHTML=(w.checkinToday?'<span style="color:var(--mint)">Checked in today</span>':(wallet&&wallet===w.addr?'<span class="nm" id="checkinBtn" style="color:var(--green)">Check in · +'+cp+' pts</span>':'<span style="color:var(--faint)">Daily check-in +'+cp+' pts</span>'))+' <span style="color:var(--faint)">· '+(w.checkins||0)+'/7 this week'+(w.checkins&&!w.checkinLive?' · pending until qualified':'')+'</span>';
+    var cb=$('checkinBtn'); if(cb) cb.addEventListener('click', doCheckin);
     renderSim();
     // moment: rank improved since last visit
     try{ var k='kd_pts_rank_'+w.addr, prev=parseInt(localStorage.getItem(k)||'0',10); if(prev&&overall<prev) toast('You climbed from <b>#'+prev+'</b> to <b>#'+overall+'</b> since your last visit.', true); localStorage.setItem(k,String(overall)); }catch(err){}
@@ -663,7 +671,8 @@
     // side totals shift too
     var S={white:{pts:board.sides.white.pts},black:{pts:board.sides.black.pts}}; S[side].pts+=pts;
     var est=estimateFor(side, week, rank<=16?rank:null, S);
-    $('simEst').textContent=est==null?'—':fmt(est)+' $THRONE'; $('simEstS').textContent=(PRICE&&est!=null?'≈ '+usd(est*PRICE)+' · ':'')+'if week 1 closed like this';
+    var floorS=(board.rules&&board.rules.claimFloorUsd)||20000; var volS=(me?me.weekVol:0)+add;
+    $('simEst').textContent=est==null?'—':fmt(est)+' $THRONE'; $('simEstS').textContent=volS<floorS?'needs '+usd(floorS-volS)+' more to reach the '+usd(floorS)+' floor':(PRICE&&est!=null?'≈ '+usd(est*PRICE)+' · ':'')+'if week 1 closed like this';
   }
   $('simRange').addEventListener('input', renderSim);
 
@@ -688,6 +697,20 @@
   $('connect').addEventListener('click', connectWallet);
   var saved=localStorage.getItem('kd_points_wallet'); if(saved){ q=saved; wallet=saved; $('q').value=saved; }
 
+  // ---- daily check-in (free signature)
+  async function doCheckin(){
+    if(!wallet){ await connectWallet(); if(!wallet) return; }
+    var btn=$('checkinBtn'); if(btn) btn.textContent='sign in your wallet…';
+    try{
+      var g=await fetch(API+'/checkin?wallet='+wallet,{cache:'no-store'}).then(function(r){return r.json();});
+      if(g.checkedInToday){ toast('Already checked in today.'); return; }
+      var hex='0x'+Array.from(new TextEncoder().encode(g.message)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+      var sig=await window.ethereum.request({method:'personal_sign',params:[hex,wallet]});
+      var r=await fetch(API+'/checkin',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({wallet:wallet,sig:sig})}).then(function(x){return x.json();});
+      if(r.error){ toast(r.error); if(btn) btn.textContent='Check in'; return; }
+      toast('Checked in. <b>'+r.days.length+'/7</b> this week · +'+fmt(r.pts)+' pts once you clear $20,000.', r.days.length>=7); load(true);
+    }catch(e){ if(btn) btn.textContent='Check in'; }
+  }
   // ---- name modal
   var nmCode=null;
   function nmShow(step){ [1,2,3].forEach(function(i){ $('nmStep'+i).classList.toggle('hidden', i!==step); }); $('nameModal').classList.add('on'); }
