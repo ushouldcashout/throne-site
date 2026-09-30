@@ -29,6 +29,10 @@ a{color:var(--mint);text-decoration:none}a:hover{color:var(--fg)}
 @media (max-width:720px){.links a.hide{display:none}}
 .pill{padding:9px 16px;border:1px solid var(--mint);border-radius:3px;color:var(--mint);font-family:var(--mono);font-size:13px;cursor:pointer;background:none}
 .pill:hover{background:var(--mint);color:var(--bg)}
+.pill.launch{background:var(--mint);color:var(--bg);text-decoration:none;font-weight:600;font-family:var(--sans);display:inline-flex;align-items:center;gap:6px}.pill.launch:hover{background:#2fd985;color:var(--bg)}
+.pot .cta{margin-left:auto}.pot .cta .btn{height:38px;font-size:14px;text-decoration:none;padding:0 16px}
+.ctaRow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:14px 24px;border-top:1px solid var(--line)}.ctaRow .btn{text-decoration:none;height:40px;font-size:14px;padding:0 18px}
+.tradeCta{margin-top:40px;padding:28px;border:1px solid rgba(57,241,148,.35);border-radius:3px;background:var(--panel2);display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}.tradeCta h3{margin:0 0 6px;font-size:clamp(20px,2.4vw,28px);letter-spacing:-.02em}.tradeCta p{margin:0;color:var(--dim);font-size:14px}.tradeCta .btn{text-decoration:none;height:46px;padding:0 24px}
 .pill.ghost{border-color:var(--line);color:var(--fg);cursor:default}.pill.ghost:hover{background:none;color:var(--fg)}
 h1{margin:0;font-size:clamp(48px,6vw,80px);font-weight:600;letter-spacing:-.045em;line-height:1}
 h1 .i{position:relative;display:inline-block}
@@ -288,6 +292,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
       <a class="hide" href="/points">Points</a>
       <a class="hide" href="https://docs.throne.network">Docs</a>
       <a class="hide" href="https://x.com/thronedefi">@thronedefi</a>
+      <a class="pill launch" href="https://trade.throne.network" target="_blank" rel="noopener">Launch app ↗</a>
       <button class="pill" id="navBtn">connect</button>
     </div>
   </nav>
@@ -297,7 +302,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     <div class="sub" style="display:none"><span class="dot"></span><span id="subline">white vs black · season zero · loading</span></div>
   </div>
 
-  <div class="pot" id="pot"><b id="potText">This week's drop: season points, your piece, and first pick of the Court.</b><span id="potSub">closes sunday midnight utc</span><span class="potNote" style="flex-basis:100%">$THRONE holders score up to 1.5x</span></div>
+  <div class="pot" id="pot"><b id="potText">This week's drop: season points, your piece, and first pick of the Court.</b><span id="potSub">closes sunday midnight utc</span><span class="cta"><a class="btn" href="https://trade.throne.network" target="_blank" rel="noopener">Trade now</a></span><span class="potNote" style="flex-basis:100%">$THRONE holders score up to 1.5x</span></div>
 
   <div class="grid" id="seatWrap">
     <div class="sec full" id="seat">
@@ -307,7 +312,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
           <p style="margin:0;font-size:16px;font-weight:600">See your seat, your gap, your streak.</p>
           <p class="mono" style="margin:0;font-size:11.5px;color:var(--faint)">Read only. Nothing to sign until you pick a side, and that signature is free.</p>
         </div>
-        <button class="btn" id="connectBtn" style="width:auto;padding:12px 26px">Connect</button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn" href="https://trade.throne.network" target="_blank" rel="noopener" style="width:auto;padding:12px 22px;text-decoration:none">Trade now</a><button class="btn line" id="connectBtn" style="width:auto;padding:12px 22px">Connect</button></div>
       </div>
       <div class="card seat hidden" id="seatAssigned" style="border-color:rgba(57,241,148,.35)">
         <div class="row"><img id="asEm" src="/arena/emblem-black-128.svg" width="48" height="48" alt=""><span id="asText" style="font-size:15px;line-height:1.5">You're on Black (assigned). Pick a side to confirm, or keep it.</span></div>
@@ -328,6 +333,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
           <div><span class="l" id="seatEstL">est. this week's drop for your seat</span><span class="v" id="seatEst" style="color:var(--gold)">—</span><span class="s" id="seatEstS">posts when the token switch is on</span></div>
         </div>
         <div class="holdbox" id="seatHold" style="grid-column:1/-1">—</div>
+        <div class="ctaRow"><a class="btn" href="https://trade.throne.network" target="_blank" rel="noopener">Trade now, every trade scores</a><span class="mono" style="font-size:12px;color:var(--faint)">1 point per $10 · $20,000 in the week to be paid</span></div>
         <div class="sharebox"><span class="mono" style="font-size:11px;color:var(--dim)">share card</span><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn line" id="cardBtn" style="width:auto;padding:9px 14px;font-size:13px">Preview my card</button><button class="btn" id="cardPost" style="width:auto;padding:9px 14px;font-size:13px">Post on X</button></div></div>
         <div class="gap hidden" id="seatGapBox"><b id="seatGapText"></b><span id="seatGapSub"></span></div>
         <div class="atkline hidden" id="seatAtk"></div>
@@ -462,6 +468,8 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
       <div class="li"><span>06</span><span>Results are published with a hash so anyone can check them against the venue's public data.</span></div>
     </div>
   </div>
+
+  <div class="tradeCta"><div><h3>The board only moves when you trade.</h3><p>Stocks and crypto perps, open all week including weekends. Deposit USDG on Robinhood Chain or USDC from Arbitrum, Base, Optimism, Ethereum or BNB.</p></div><a class="btn" href="https://trade.throne.network" target="_blank" rel="noopener">Launch app ↗</a></div>
 
   <footer>
     <div class="brand" style="font-size:15px"><img src="/arena/crown.svg" width="18" height="18" alt=""><span>throne<b>.</b></span></div>
@@ -1051,11 +1059,11 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
   function cardText(){
     var me = board&&board.wallets[wallet]||{}; var side=mine?mine.side:''; var piece=me.piece, rank=me.rank;
     var t;
-    if(me.attacked) t = "Someone is coming for my "+piece+" on "+cap(side)+". Not today.\n\nKing Drop on the throne. desk: stocks and crypto perps, every trade scores for your side.";
-    else if(rank===1) t = "Holding the crown for "+cap(side)+" on King Drop. Come take it.\n\nthrone. desk: stocks and crypto perps, every trade scores for your side.";
-    else if(piece) t = cap(side)+" "+piece+", rank #"+rank+" on King Drop. "+fmt(me.season||0)+" season points and counting.\n\nthrone. desk: stocks and crypto perps, every trade scores for your side.";
-    else t = "I'm on "+cap(side)+" for season zero of King Drop on the throne. desk. Stocks and crypto perps, every trade scores for my side.";
-    return t+"\n\nthrone.network/board";
+    if(me.attacked) t = "Someone is coming for my "+piece+" on "+cap(side)+". Not today.\n\n$THRONE, trade desk: stocks and crypto perps, every trade scores for your side.";
+    else if(rank===1) t = "Holding the crown for "+cap(side)+" on King Drop. Come take it.\n\n$THRONE, trade desk: stocks and crypto perps, every trade scores for your side.";
+    else if(piece) t = cap(side)+" "+piece+", rank #"+rank+" on King Drop. "+fmt(me.season||0)+" season points and counting.\n\n$THRONE, trade desk: stocks and crypto perps, every trade scores for your side.";
+    else t = "I'm on "+cap(side)+" for season zero of King Drop.\n\n$THRONE, trade desk: stocks and crypto perps, every trade scores for my side.";
+    return t+"\nthrone.network/board";
   }
   async function openCard(){ if(!wallet){ await connect(); if(!wallet) return; } var cv=await renderCard(); if(!cv) return; $('cardModal').classList.add('on'); try{ $('cardDl').href=cv.toDataURL('image/png'); }catch(e){} $('cardX').href='https://x.com/intent/post?text='+encodeURIComponent(cardText()); }
   $('cardBtn').addEventListener('click', openCard);
