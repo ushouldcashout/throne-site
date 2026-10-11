@@ -50,7 +50,7 @@ a:hover{color:#C9A646}
         <span style="font-size:clamp(44px,5.6vw,86px);color:#B5B0A5">The Court collects.</span>
         <span style="font-size:clamp(54px,7vw,106px);font-style:italic;color:#C9A646">Depositors get paid first.</span>
       </h1>
-      <p style="margin:0;max-width:44ch;font-size:clamp(18px,1.4vw,21px);line-height:1.55;color:#B5B0A5;text-wrap:pretty">Fees, votes and emissions from where stocks trade on chain, caught in one house, paid out weekly on a ledger anyone can read.</p>
+      <p style="margin:0;max-width:44ch;font-size:clamp(18px,1.4vw,21px);line-height:1.55;color:#B5B0A5;text-wrap:pretty">Fees, votes and emissions from where stocks trade on chain, caught in one house, paid out weekly.</p>
       <div style="display:flex;gap:40px;flex-wrap:wrap;font-size:19px">
         <a href="court/" style="white-space:nowrap">Read the ledger →</a>
         <a href="#key" style="white-space:nowrap">Take the key →</a>
@@ -81,12 +81,17 @@ a:hover{color:#C9A646}
           <span id="t_vol" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:24px;color:#C9A646"><span id="deskVolV">·</span></span>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:24px 32px;margin-top:24px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:24px 28px;margin-top:24px">
         <div style="display:flex;flex-direction:column;gap:8px">
-          <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#C9A646"></span>carry trade sim apy</span>
+          <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#C9A646"></span>court sim apy</span>
           <a href="terminal/" style="text-decoration:none;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:24px;color:#C9A646"><span id="simApyV">·</span></a>
           <span style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;font-size:13px;color:#8A867C"><span id="simApySub">$1M deposited into the vaults</span></span>
           <a href="terminal/" style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#39F194;text-decoration:underline;text-underline-offset:3px">terminal →</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#C9A646"></span>carry trade sim</span>
+          <a href="terminal/" style="text-decoration:none;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:24px;color:#C9A646"><span id="carryPnlV">·</span></a>
+          <span style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;font-size:13px;color:#8A867C"><span id="carrySub">P&amp;L since 1 oct</span></span>
         </div>
         <div style="display:flex;flex-direction:column;gap:8px">
           <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#39F194"></span>votes + bounty</span>
@@ -341,8 +346,9 @@ a:hover{color:#C9A646}
     try{
       const t=await courtData.terminal(); const m=t&&t.sim1m; if(!m||!isFinite(m.apyAllIn)) throw new Error('no sim');
       $('simApyV').textContent=(m.apyAllIn*100).toFixed(1)+'%';
+      const c=t.carry&&t.carry.totals; if(c&&isFinite(c.funding)){ $('carryPnlV').textContent=(c.funding>=0?'+':'-')+'$'+Math.abs(c.funding).toFixed(2); $('carrySub').textContent='P&L since 1 oct · '+(c.annOnCapital*100).toFixed(1)+'% apy · $'+Math.round(c.capital).toLocaleString('en-US')+' at work'; } else { $('carryPnlV').textContent='unreachable'; }
       $('simApySub').textContent='$1M deposited into the vaults';
-    }catch(e){ $('simApyV').textContent='unreachable'; }
+    }catch(e){ $('simApyV').textContent='unreachable'; $('carryPnlV').textContent='unreachable'; }
   })();
 })();
 </script>
