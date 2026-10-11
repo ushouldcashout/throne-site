@@ -65,6 +65,14 @@ a:hover{color:#C9A646}
       <span style="white-space:nowrap">morpho net {{ morphoNet }}</span><span>·</span>
       <span style="white-space:nowrap">fables pool apr {{ poolApr }}</span>
     </div>
+    <div style="border-top:1px solid rgba(237,233,223,0.12);padding:14px 0 0;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:13px;color:#B5B0A5;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline">
+      <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#C9A646;border-bottom:1px dotted #C9A646">SIM</span>
+      <span style="white-space:nowrap">the same books at <span style="color:#EDE9DF">$1,000,000</span></span><span>·</span>
+      <span style="white-space:nowrap"><span style="color:#C9A646">{{ sim1mCap }}</span> on capital</span><span>·</span>
+      <span style="white-space:nowrap"><span style="color:#C9A646">{{ sim1mAll }}</span> all-in</span><span>·</span>
+      <span style="white-space:nowrap">carry filled to its OI cap ({{ sim1mCarry }} notional), the rest in Senior at Morpho's rate</span><span>·</span>
+      <span style="white-space:nowrap;color:#8A867C">not open for deposits</span>
+    </div>
   </section>
 
   <section style="border-top:1px solid rgba(237,233,223,0.4);padding:24px 0 clamp(56px,7vw,96px)">
@@ -175,7 +183,7 @@ a:hover{color:#C9A646}
 
 
 <script src="../dc-lite.js?v=5"></script>
-<script src="../court.js?v=5"></script>
+<script src="../court.js?v=6"></script>
 <script>
 class Component extends DCLogic {
   state = { d: null, status: 'loading', k: 0, blink: false, now: Date.now() };
@@ -307,6 +315,9 @@ class Component extends DCLogic {
       topCap: d && ok(b.apyOnCapital) ? pct1(b.apyOnCapital * k) : D,
       topAll: d && ok(b.apyAllIn) ? pct1(b.apyAllIn * k) : D,
       capTotal: usd0(b.capital),
+      sim1mCap: d && d.sim1m && ok(d.sim1m.apyOnCapital) ? pct1(d.sim1m.apyOnCapital) : D,
+      sim1mAll: d && d.sim1m && ok(d.sim1m.apyAllIn) ? pct1(d.sim1m.apyAllIn) : D,
+      sim1mCarry: d && d.sim1m ? usd0(d.sim1m.carryNotional) : D,
       realized: usd0(b.realizedSinceLaunch),
       blendDays: ok(b.days) ? b.days : D,
       morphoNet: pct2(mo.netApy),
