@@ -103,6 +103,8 @@ footer a:hover{color:var(--fg)}
       <a href="#pays">how it pays</a>
       <a href="#sources">income</a>
       <a href="court/">ledger</a>
+      <a href="court/bounty/">bounty</a>
+      <a href="app/">app</a>
       <a class="muted" href="https://trade.throne.network">desk</a>
       <a class="muted" href="https://throne.network/board">king drop</a>
     </div>
@@ -115,25 +117,37 @@ footer a:hover{color:var(--fg)}
 <header class="hero">
   <div>
     <span class="tag">The Yield Court</span> <span class="tag gold">Robinhood Chain</span>
-    <h1>Where the chain's yield <em>gets paid out.</em></h1>
-    <p class="lead">A USDG vault with two sides. Depositors sit senior and get paid first. The Court sits junior, does the messy work, and shows every dollar on a public ledger. We never quote a rate.</p>
+    <h1>Own the yield layer of Robinhood Chain. <em>Pay depositors first.</em></h1>
+    <p class="lead">One house doing what Yearn, Votium and Redacted did on Curve, on the chain where stocks trade on chain. Park USDG and sit senior: paid first, every week. Lock $THRONE and run the Court: the votes, the Bounty market, the desk's fees. Every dollar that comes in is on a public ledger. We never quote a rate; we show you the receipts.</p>
     <div class="cta">
-      <a class="btn primary" href="court/">See what the Court received</a>
-      <a class="btn" href="#pays">How it pays</a>
+      <a class="btn primary" href="court/">Show me the receipts</a>
+      <a class="btn" href="#mission">The mission</a>
     </div>
   </div>
 
   <div class="ledgercard" id="heroLedger">
-    <div class="hd"><span>court income · last 7 UTC days</span><b id="liveTag">reading…</b></div>
+    <div class="hd"><span>court income · since launch, 13 sep</span><b id="liveTag">reading…</b></div>
     <div class="tiles">
-      <div class="tile"><div class="k">desk fees</div><div class="v live" id="t_desk">–</div><div class="n">builder fee, perp taker volume · live</div></div>
-      <div class="tile"><div class="k">desk volume</div><div class="v" id="t_vol">–</div><div class="n">7 days, all markets · live</div></div>
-      <div class="tile"><div class="k">swap fees</div><div class="v" id="t_swap">not live</div><div class="n">throne / usdg pool · wiring</div></div>
-      <div class="tile"><div class="k">votes + Bounty</div><div class="v" id="t_votes">not live</div><div class="n">with Fables' token</div></div>
+      <div class="tile"><div class="k">court income</div><div class="v live" id="t_total">–</div><div class="n">desk + pons, realized · <span id="t_7d">–</span> last 7 days</div></div>
+      <div class="tile"><div class="k">desk fees</div><div class="v" id="t_desk">–</div><div class="n">builder fee on perp volume · live</div></div>
+      <div class="tile"><div class="k">pons fees</div><div class="v" id="t_pons">–</div><div class="n"><span id="t_pons_eth">–</span> ETH, THRONE/ETH swaps · live</div></div>
+      <div class="tile"><div class="k">desk volume</div><div class="v" id="t_vol">–</div><div class="n">all markets since launch · live</div></div>
     </div>
     <div class="ft"><span id="asof">–</span><a href="court/">full ledger →</a></div>
   </div>
 </header>
+
+<section id="mission">
+  <div class="eyebrow">The mission</div>
+  <h2>Every chain gets one yield court. We are taking this one.</h2>
+  <p class="sub">On Curve the money was not in the DEX. It was in the three things that grew on top: the vault that put deposits to work, the aggregator that owned the votes, and the market that sold them. Robinhood Chain is about to run the same play with Fables. We are building all three sides of the table at once, and we are early enough that nobody is sitting in the chair.</p>
+  <div class="grid3">
+    <div class="card mint"><h3>01 · Take the votes</h3><p>Our partner Sink locks FABLES and votes the pool as one block. The Court is the anchor holder of vlSINK. $THRONE lockers point it. Whoever controls the votes controls where the chain's liquidity goes, and gets paid by everyone who wants it.</p><div class="foot">with Fables' token</div></div>
+    <div class="card gold"><h3>02 · Run the market</h3><p>Bounty is where projects pay for votes. They post, voters get paid, the Court keeps 5%. Scales with other people's votes, not ours.</p><div class="foot"><a href="court/bounty/" style="color:var(--gold);text-decoration:none">see the Bounty board →</a></div></div>
+    <div class="card"><h3>03 · Pay depositors first</h3><p>USDG into Senior sits in Morpho and takes first claim on everything the Court earns. The Court takes the first loss. That is the whole product: a boring deposit with a loud ledger behind it.</p><div class="foot"><a href="app/" style="color:var(--mint);text-decoration:none">see the app →</a></div></div>
+  </div>
+  <p class="quote">The desk fills the room. The King Drop hands out the key. The Court is the house.</p>
+</section>
 
 <section id="court">
   <div class="eyebrow">What it is</div>
@@ -172,12 +186,12 @@ footer a:hover{color:var(--fg)}
 
 <section id="sources">
   <div class="eyebrow">Where the income comes from</div>
-  <h2>Five sources. Each one marked live or not.</h2>
+  <h2>Five sources. Two live today, each one marked.</h2>
   <p class="sub">The ledger only shows realized income. A source that is not live yet says so; it never shows an estimate.</p>
   <div class="sources">
     <div class="src"><b>Desk fees</b><span>Builder fee on every perp trade tagged to Throne on the shared venue. Read daily from the venue's public statistics.</span><span class="tag">live</span></div>
-    <div class="src"><b>Swap fees</b><span>Protocol-owned THRONE/USDG liquidity on Fables earns the pool's swap fees.</span><span class="tag dim">wiring</span></div>
-    <div class="src"><b>Fables rewards</b><span>Weekly LP rewards and the creator-fee pot paid to the THRONE/USDG pool's liquidity.</span><span class="tag dim">wiring</span></div>
+    <div class="src"><b>Pons fees</b><span>Creator fee on every THRONE/ETH swap on pons, credited in ETH to the Court's recipient. Read from the fee escrow on chain, event by event.</span><span class="tag">live</span></div>
+    <div class="src"><b>Fables pool</b><span>Protocol-owned THRONE/USDG liquidity on Fables: swap fees plus weekly rewards and the creator-fee pot.</span><span class="tag dim">wiring</span></div>
     <div class="src"><b>Votes</b><span>The Court's share of the fees and incentives collected by Sink's block, where the Court is the anchor vlSINK holder.</span><span class="tag gold">with Fables' token</span></div>
     <div class="src"><b>Bounty</b><span>Projects post incentives for votes on their pool; voters get paid; the Court keeps 5%.</span><span class="tag gold">after Fables TGE</span></div>
   </div>
@@ -213,22 +227,22 @@ footer a:hover{color:var(--fg)}
 
 </div>
 
+<script src="court.js"></script>
 <script>
 (async function(){
   const fmt = n => '$' + n.toLocaleString(undefined,{maximumFractionDigits:0});
+  const set=(id,v)=>document.getElementById(id).textContent=v;
   try {
-    const r = await fetch('https://api.orderly.org/md/volume/builder/daily_stats?broker_id=throne', {cache:'no-store'});
-    const rows = await r.json();
-    const byDay = rows.map(x => ({ d: String(x.date).slice(0,10), fee: +x.builderFee||0, vol: (+x.takerVolume||0)+(+x.makerVolume||0) })).sort((a,b)=>a.d<b.d?-1:1);
-    const last7 = byDay.slice(-7);
-    const fee = last7.reduce((s,x)=>s+x.fee,0), vol = last7.reduce((s,x)=>s+x.vol,0);
-    document.getElementById('t_desk').textContent = fmt(fee);
-    document.getElementById('t_vol').textContent = fmt(vol);
-    document.getElementById('liveTag').textContent = 'live · venue statistics';
-    document.getElementById('asof').textContent = (last7[0]||{}).d + ' → ' + (last7[last7.length-1]||{}).d + ' · UTC days';
+    const L = await courtData.ledger();
+    if (!L.rows.length) throw new Error('no rows');
+    let fee=0, vol=0, pu=0, pe=0, tot7=0;
+    for (const x of L.rows) { fee+=x.deskFee; vol+=x.deskVol; pu+=x.ponsUsd||0; pe+=x.ponsEth||0; }
+    for (const x of L.rows.slice(-7)) tot7 += x.total;
+    set('t_total', fmt(fee+pu)); set('t_7d', fmt(tot7)); set('t_desk', L.desk?fmt(fee):'unreachable'); set('t_pons', L.pons?fmt(pu):'unreachable'); set('t_pons_eth', L.pons?pe.toFixed(2):'–'); set('t_vol', fmt(vol));
+    set('liveTag', 'live · venue statistics + chain');
+    set('asof', L.launch + ' → ' + L.rows[L.rows.length-1].d + ' · UTC days');
   } catch (e) {
-    document.getElementById('liveTag').textContent = 'venue unreachable';
-    document.getElementById('asof').textContent = 'could not read the venue right now';
+    set('liveTag', 'sources unreachable'); set('asof', 'could not read the sources right now; nothing is estimated');
   }
 })();
 </script>
