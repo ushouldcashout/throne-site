@@ -81,8 +81,8 @@
       const as = t.dataset.as;
       const frag = document.createDocumentFragment();
       list.forEach((item) => {
-        const holder = document.createElement('div');
-        holder.innerHTML = t.innerHTML;
+        const tt = document.createElement('template'); tt.innerHTML = t.innerHTML;
+        const holder = tt.content;
         compile(holder);
         const scope = { [as]: item };
         holder.querySelectorAll('*').forEach((el) => { el.__scoped = true; bindEl(el, vals, scope); });
@@ -93,7 +93,7 @@
     root.querySelectorAll('template[data-if]').forEach((t) => {
       let n = t.nextSibling; while (n && n.__gen) { const d = n; n = n.nextSibling; d.remove(); }
       if (!get(vals, t.dataset.if)) return;
-      const holder = document.createElement('div'); holder.innerHTML = t.innerHTML; compile(holder);
+      const tt = document.createElement('template'); tt.innerHTML = t.innerHTML; const holder = tt.content; compile(holder);
       holder.querySelectorAll('*').forEach((el) => bindEl(el, vals, {}));
       const frag = document.createDocumentFragment();
       [...holder.childNodes].forEach((c) => { c.__gen = true; frag.appendChild(c); });
