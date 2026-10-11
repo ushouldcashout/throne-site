@@ -48,15 +48,15 @@ a:hover{color:#C9A646}
     <p style="margin:0;max-width:60ch;color:#B5B0A5;font-size:clamp(18px,1.4vw,20px);text-wrap:pretty">Since $THRONE launched on 13 September. One row per UTC day. Read from chain and from the venue's public statistics. Nothing here is projected.</p>
   </section>
 
-  <section style="border-top:1px solid rgba(237,233,223,0.4);border-bottom:1px solid rgba(237,233,223,0.4);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr))">
+  <section style="border-top:1px solid rgba(237,233,223,0.4);border-bottom:1px solid rgba(237,233,223,0.4);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))">
     <div style="padding:20px 18px 20px 0;display:flex;flex-direction:column;gap:10px;border-right:1px solid rgba(237,233,223,0.12)">
       <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;white-space:nowrap"><span style="width:12px;height:2px;background:{{ deskMark }}"></span>desk fees</span>
-      <span id="t_desk" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:26px;color:{{ deskColor }};white-space:nowrap">{{ tDesk }}</span>
+      <span id="t_desk" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:clamp(16px,1.3vw,22px);letter-spacing:-0.02em;color:{{ deskColor }};white-space:nowrap">{{ tDesk }}</span>
       <span style="font-size:13px;line-height:1.45;color:#8A867C">builder fee on perp volume · <span id="t_desk_range" style="font-family:'JetBrains Mono',monospace">{{ deskRange }}</span></span>
     </div>
     <div style="padding:20px 18px;display:flex;flex-direction:column;gap:10px;border-right:1px solid rgba(237,233,223,0.12)">
       <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;white-space:nowrap"><span style="width:12px;height:2px;background:{{ ponsMark }}"></span>pons fees</span>
-      <span id="t_pons" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:26px;color:{{ ponsColor }};white-space:nowrap">{{ tPons }}</span>
+      <span id="t_pons" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:clamp(16px,1.3vw,22px);letter-spacing:-0.02em;color:{{ ponsColor }};white-space:nowrap">{{ tPons }}</span>
       <span style="font-size:13px;line-height:1.45;color:#8A867C"><span id="t_pons_eth" style="font-family:'JetBrains Mono',monospace">{{ ponsEth }}</span> eth credited · <span id="t_pons_claim" style="font-family:'JetBrains Mono',monospace">{{ ponsClaim }}</span> claimable</span>
     </div>
     <div style="padding:20px 18px;display:flex;flex-direction:column;gap:10px;border-right:1px solid rgba(237,233,223,0.12)">
@@ -71,17 +71,17 @@ a:hover{color:#C9A646}
     </div>
     <div style="padding:20px 18px;display:flex;flex-direction:column;gap:10px;border-right:1px solid rgba(237,233,223,0.12)">
       <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#C9A646;white-space:nowrap"><span style="width:12px;height:2px;background:{{ totalMark }}"></span>court income</span>
-      <span id="t_total" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:clamp(22px,1.9vw,30px);line-height:1;letter-spacing:-0.03em;color:{{ totalColor }};white-space:nowrap">{{ tTotal }}</span>
+      <span id="t_total" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:clamp(18px,1.5vw,26px);line-height:1;letter-spacing:-0.03em;color:{{ totalColor }};white-space:nowrap">{{ tTotal }}</span>
       <span style="font-size:13px;line-height:1.45;color:#8A867C">live sources only · <span id="t_days" style="font-family:'JetBrains Mono',monospace">{{ tDays }}</span> utc days</span>
     </div>
     <div style="padding:20px 18px;display:flex;flex-direction:column;gap:10px;border-right:1px solid rgba(237,233,223,0.12)">
       <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;white-space:nowrap"><span style="width:12px;height:2px;background:{{ deskMark }}"></span>desk volume</span>
-      <span id="t_vol" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:26px;color:{{ deskColor }};white-space:nowrap">{{ tVol }}</span>
+      <span id="t_vol" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:clamp(16px,1.3vw,22px);letter-spacing:-0.02em;color:{{ deskColor }};white-space:nowrap">{{ tVol }}</span>
       <span style="font-size:13px;line-height:1.45;color:#8A867C">all markets, same window</span>
     </div>
     <div style="padding:20px 18px;display:flex;flex-direction:column;gap:10px;border-right:1px solid rgba(237,233,223,0.12)">
       <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;white-space:nowrap"><span style="width:12px;height:2px;background:{{ deskMark }}"></span>active traders</span>
-      <span id="t_users" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:26px;color:{{ deskColor }};white-space:nowrap">{{ tUsers }}</span>
+      <span id="t_users" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:clamp(16px,1.3vw,22px);letter-spacing:-0.02em;color:{{ deskColor }};white-space:nowrap">{{ tUsers }}</span>
       <span style="font-size:13px;line-height:1.45;color:#8A867C">peak day in window</span>
     </div>
     <div style="padding:20px 0 20px 18px;display:flex;flex-direction:column;gap:10px">
