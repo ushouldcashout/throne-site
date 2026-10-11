@@ -91,7 +91,7 @@ input::placeholder{color:#6E6B63}
             </tr>
           </thead>
           <tbody>
-            <sc-for list="{{ examples }}" as="x" hint-placeholder-count="3">
+            <template data-for="examples" data-as="x">
               <tr style="border-bottom:1px solid rgba(237,233,223,0.1);opacity:0.5">
                 <td style="padding:14px 12px 14px 0;vertical-align:top"><div style="color:#EDE9DF;white-space:nowrap">{{ x.pool }}</div><div style="font-family:'Inter Tight',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C;margin-top:4px;white-space:nowrap">example row · not a real Bounty</div></td>
                 <td style="padding:14px 12px;vertical-align:top;color:#8A867C">-</td>
@@ -100,7 +100,7 @@ input::placeholder{color:#6E6B63}
                 <td style="padding:14px 12px;vertical-align:top;text-align:right;color:#B5B0A5">next</td>
                 <td style="padding:14px 0 14px 12px;vertical-align:top;text-align:right;font-family:'Inter Tight',sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C">example</td>
               </tr>
-            </sc-for>
+            </template>
           </tbody>
         </table>
       </div>
