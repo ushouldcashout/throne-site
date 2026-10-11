@@ -89,11 +89,6 @@ a:hover{color:#C9A646}
           <a href="terminal/" style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#39F194;text-decoration:underline;text-underline-offset:3px">terminal →</a>
         </div>
         <div style="display:flex;flex-direction:column;gap:8px">
-          <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#C9A646"></span>carry trade sim</span>
-          <a href="terminal/" style="text-decoration:none;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:24px;color:#C9A646"><span id="carryPnlV">·</span></a>
-          <span style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;font-size:13px;color:#8A867C"><span id="carrySub">P&amp;L since 1 oct</span></span>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:8px">
           <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#39F194"></span>votes + bounty</span>
           <span style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:#39F194;padding-top:6px">coming soon</span>
           <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#8A867C">with Fables' token</span>
@@ -309,7 +304,7 @@ a:hover{color:#C9A646}
 
 
 
-<script src="court.js?v=6"></script>
+<script src="court.js?v=7"></script>
 <script>
 (function(){
   const $=id=>document.getElementById(id);
@@ -346,9 +341,8 @@ a:hover{color:#C9A646}
     try{
       const t=await courtData.terminal(); const m=t&&t.sim1m; if(!m||!isFinite(m.apyAllIn)) throw new Error('no sim');
       $('simApyV').textContent=(m.apyAllIn*100).toFixed(1)+'%';
-      const c=t.carry&&t.carry.totals; if(c&&isFinite(c.funding)){ $('carryPnlV').textContent=(c.funding>=0?'+':'-')+'$'+Math.abs(c.funding).toFixed(2); $('carrySub').textContent='P&L since 1 oct · '+(c.annOnCapital*100).toFixed(1)+'% apy · $'+Math.round(c.capital).toLocaleString('en-US')+' at work'; } else { $('carryPnlV').textContent='unreachable'; }
       $('simApySub').textContent='$1M deposited into the vaults';
-    }catch(e){ $('simApyV').textContent='unreachable'; $('carryPnlV').textContent='unreachable'; }
+    }catch(e){ $('simApyV').textContent='unreachable'; }
   })();
 })();
 </script>

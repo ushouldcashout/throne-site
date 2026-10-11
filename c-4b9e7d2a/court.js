@@ -65,10 +65,8 @@ window.courtData = (function () {
     return { rows, desk: dk.status === 'fulfilled', pons: P, fables: FB, eth: X, launch: LAUNCH };
   }
 
-  // ---- terminal: the Court's capital at work (live books + clearly labelled simulations) ----
+  // ---- terminal: the Court's capital at work (live books + a clearly labelled simulation) ----
   const MORPHO_VAULT = '0xBeEff033F34C046626B8D0A041844C5d1A5409dd'; // Steakhouse USDG (Morpho Vaults V2)
-  const CARRY = { since: '2026-10-01T00:00:00Z', leverage: 1.5, bufferOfMargin: 1.0, openCostBps: 19, oiCap: 0.10,
-    markets: [ { symbol: 'PERP_ETH_USDC', label: 'ETH', notional: 50000 }, { symbol: 'PERP_NVDA_USDC', label: 'NVDA', notional: 4000 } ] };
   const SENIOR_SIM_DEPOSIT = 100000; // simulated treasury USDG parked in Senior (Morpho), for the terminal only
 
   async function morpho() {
@@ -77,46 +75,11 @@ window.courtData = (function () {
     const j = await r.json(); const v = j.data && j.data.vaultV2ByAddress; if (!v) throw new Error('morpho: vault not found');
     return { name: v.name, symbol: v.symbol, netApy: v.netApy, apy: v.apy, tvlUsd: v.totalAssetsUsd, idleUsd: v.idleAssetsUsd, src: 'api.morpho.org · live' };
   }
-  async function fundingSince(symbol, sinceMs) {
-    let rows = [], page = 1;
-    while (page <= 10) {
-      const j = await (await fetch('https://api.orderly.org/v1/public/funding_rate_history?symbol=' + symbol + '&size=500&page=' + page)).json();
-      const r = (j.data && j.data.rows) || []; rows = rows.concat(r);
-      if (!r.length || r[r.length - 1].funding_rate_timestamp < sinceMs) break; page++;
-    }
-    return rows.filter(x => x.funding_rate_timestamp >= sinceMs).sort((a, b) => a.funding_rate_timestamp - b.funding_rate_timestamp);
-  }
-  async function carry() {
-    const sinceMs = Date.parse(CARRY.since);
-    const out = { since: CARRY.since, sim: true, params: { leverage: CARRY.leverage, bufferOfMargin: CARRY.bufferOfMargin, openCostBps: CARRY.openCostBps, oiCap: CARRY.oiCap }, markets: [] };
-    for (const m of CARRY.markets) {
-      try {
-        const [hist, fut] = await Promise.all([fundingSince(m.symbol, sinceMs), (await fetch('https://api.orderly.org/v1/public/futures/' + m.symbol)).json()]);
-        const f = fut.data || {};
-        const mark = +f.mark_price || 0, oiUsd = (+f.open_interest || 0) * (+f.index_price || mark);
-        const capacity = oiUsd * CARRY.oiCap, notional = Math.min(m.notional, capacity || m.notional);
-        const margin = notional / CARRY.leverage, buffer = margin * CARRY.bufferOfMargin, capital = notional + margin + buffer;
-        let funding = 0, neg = 0, negStreak = 0, worst = 0; const series = [];
-        for (const r of hist) { const pnl = r.funding_rate * notional; funding += pnl; if (r.funding_rate < 0) { neg++; negStreak++; } else negStreak = 0; if (pnl < worst) worst = pnl; series.push({ t: r.funding_rate_timestamp, rate: r.funding_rate, pnl, cum: funding }); }
-        const periods = hist.length, days = periods / 3;
-        const openCost = notional * CARRY.openCostBps / 1e4;
-        const meanRate = periods ? hist.reduce((a, r) => a + r.funding_rate, 0) / periods : 0;
-        out.markets.push({ symbol: m.symbol, label: m.label, notional, capital, margin, buffer, mark, oiUsd, capacity, periods, days,
-          funding, openCost, net: funding - openCost, negPeriods: neg, negStreak, worstPeriod: worst, lastRate: hist.length ? hist[hist.length - 1].funding_rate : null, estNextRate: f.est_funding_rate != null ? +f.est_funding_rate : null,
-          annOnNotional: meanRate * 1095, annOnCapital: capital ? (meanRate * 1095 * notional) / capital : 0, series });
-      } catch (e) { out.markets.push({ symbol: m.symbol, label: m.label, error: String(e.message || e) }); }
-    }
-    const ok = out.markets.filter(x => !x.error);
-    out.totals = { notional: ok.reduce((a, x) => a + x.notional, 0), capital: ok.reduce((a, x) => a + x.capital, 0), funding: ok.reduce((a, x) => a + x.funding, 0), net: ok.reduce((a, x) => a + x.net, 0) };
-    out.totals.annOnCapital = out.totals.capital ? ok.reduce((a, x) => a + x.annOnCapital * x.capital, 0) / out.totals.capital : 0;
-    return out;
-  }
   // everything the terminal page needs, in one call
   async function terminal() {
-    const [L, mp, cy] = await Promise.allSettled([ledger(), morpho(), carry()]);
+    const [L, mp] = await Promise.allSettled([ledger(), morpho()]);
     const led = L.status === 'fulfilled' ? L.value : { rows: [], launch: LAUNCH };
     const M = mp.status === 'fulfilled' ? mp.value : null;
-    const C = cy.status === 'fulfilled' ? cy.value : null;
     const rows = led.rows || [];
     const sum = k => rows.reduce((a, x) => a + (x[k] || 0), 0);
     const last30 = rows.slice(-30), d30 = Math.max(1, last30.length);
@@ -131,28 +94,21 @@ window.courtData = (function () {
     // senior (simulated treasury deposit at Morpho's live rate)
     const senior = { sim: true, deposit: SENIOR_SIM_DEPOSIT, morpho: M, annOnCapital: M ? M.netApy : null, perYear: M ? SENIOR_SIM_DEPOSIT * M.netApy : null };
     // blend
-    const capital = (polCapital || 0) + (C ? C.totals.capital : 0) + SENIOR_SIM_DEPOSIT;
-    const annIncomeCapital = (pol.annOnCapital ? pol.annOnCapital * polCapital : 0) + (C ? C.totals.annOnCapital * C.totals.capital : 0) + (senior.perYear || 0);
+    const capital = (polCapital || 0) + SENIOR_SIM_DEPOSIT;
+    const annIncomeCapital = (pol.annOnCapital ? pol.annOnCapital * polCapital : 0) + (senior.perYear || 0);
     const annIncomeAll = annIncomeCapital + pons.runRate + desk.runRate;
-    // SIMULATION at a stated capital: POL as it is today, the carry book filled to its OI capacity
-    // (10% of each market's open interest, capital = notional + margin + buffer), the remainder in
-    // Senior at Morpho's live net rate. Not open for deposits; nothing here is a projection of income,
-    // every rate is today's measured one applied to a larger book.
+    // SIMULATION at a stated capital: the Fables POL position as it is today, everything else in
+    // Senior at Morpho's live net rate, plus the pons + desk fee streams on top. Not open for deposits;
+    // every rate is today's measured one applied to a larger book, nothing is a projection.
     const simAt = (total) => {
       let left = total, income = 0;
       const polC = Math.min(polCapital || 0, left); income += pol.annOnCapital ? pol.annOnCapital * polC : 0; left -= polC;
-      const perNotional = 1 + (1 + CARRY.bufferOfMargin) / CARRY.leverage; // capital per $1 of notional
-      let carryNotional = 0, carryCapital = 0;
-      for (const m of (C ? C.markets.filter(x => !x.error && x.capacity > 0) : [])) {
-        const cap = Math.min(m.capacity * perNotional, left); const n = cap / perNotional;
-        income += m.annOnNotional * n; carryNotional += n; carryCapital += cap; left -= cap;
-      }
       const seniorC = Math.max(0, left); income += M ? seniorC * M.netApy : 0;
       const all = income + pons.runRate + desk.runRate;
-      return { sim: true, capital: total, pol: polC, carryNotional, carryCapital, senior: seniorC, annIncomeCapital: income, annIncomeAll: all, apyOnCapital: income / total, apyAllIn: all / total };
+      return { sim: true, capital: total, pol: polC, senior: seniorC, annIncomeCapital: income, annIncomeAll: all, apyOnCapital: income / total, apyAllIn: all / total };
     };
     const sim1m = simAt(1000000);
-    return { launch: led.launch, rows, pol, pons, desk, carry: C, senior, sim1m, blend: { capital, annIncomeCapital, annIncomeAll, apyOnCapital: capital ? annIncomeCapital / capital : null, apyAllIn: capital ? annIncomeAll / capital : null, realizedSinceLaunch: sum('total'), days: rows.length } };
+    return { launch: led.launch, rows, pol, pons, desk, senior, sim1m, blend: { capital, annIncomeCapital, annIncomeAll, apyOnCapital: capital ? annIncomeCapital / capital : null, apyAllIn: capital ? annIncomeAll / capital : null, realizedSinceLaunch: sum('total'), days: rows.length } };
   }
-  return { desk, pons, fables, ethUsd, ledger, morpho, carry, terminal, LAUNCH, POL_SHARE };
+  return { desk, pons, fables, ethUsd, ledger, morpho, terminal, LAUNCH, POL_SHARE };
 })();
