@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>throne. · The Yield Court of Robinhood Chain</title>
+<meta name="description" content="A yield vault for Robinhood Chain with two sides. USDG depositors sit senior and get paid first. The Court does the rest and shows every dollar on a public ledger.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="https://throne.network/throne-favicon-64.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050605;--panel:#0b0d0b;--panel2:#0f1210;--line:#1c201d;--fg:#F2F4F0;--dim:#9BA39E;--faint:#5E6663;--mint:#39F194;--green:#229959;--gold:#D4AF37;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace;--sans:"Plus Jakarta Sans",Inter,system-ui,sans-serif;--body:Inter,system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1140px;margin:0 auto;padding:0 24px}
+nav{position:sticky;top:0;z-index:5;background:rgba(5,6,5,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--sans);font-weight:800;font-size:22px;letter-spacing:-.02em}
+.brand b{color:var(--mint)}
+.crown{width:26px;height:26px}
+nav .links{display:flex;gap:24px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+nav .links a{color:var(--dim);text-decoration:none}
+nav .links a:hover{color:var(--fg)}
+nav .links a.muted{color:var(--faint)}
+.btn{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:12px 18px;border:1px solid var(--line);color:var(--fg);display:inline-block;border-radius:4px;transition:.15s}
+.btn:hover{border-color:var(--mint)}
+.btn.primary{background:var(--mint);color:#031;border-color:var(--mint);font-weight:500}
+.btn.primary:hover{background:#5ff6a8}
+.tag{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mint);border:1px solid rgba(57,241,148,.35);padding:5px 9px;border-radius:3px}
+.tag.gold{color:var(--gold);border-color:rgba(212,175,55,.4)}
+.tag.dim{color:var(--faint);border-color:var(--line)}
+.hero{padding:96px 0 72px;display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center;border-bottom:1px solid var(--line)}
+h1{font-family:var(--sans);font-weight:800;font-size:clamp(40px,5.8vw,68px);line-height:1;letter-spacing:-.035em;margin:22px 0 20px}
+h1 em{font-style:normal;color:var(--mint)}
+.lead{font-size:19px;color:var(--dim);max-width:560px}
+.cta{margin-top:32px;display:flex;gap:12px;flex-wrap:wrap}
+.ledgercard{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.ledgercard .hd{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.ledgercard .hd b{color:var(--mint);font-weight:500}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line)}
+.tile{background:var(--panel);padding:18px}
+.tile .k{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.tile .v{font-family:var(--mono);font-size:26px;margin:8px 0 4px;font-weight:500}
+.tile .v.live{color:var(--mint)}
+.tile .n{font-size:12px;color:var(--faint)}
+.ledgercard .ft{padding:12px 18px;font-size:12px;color:var(--faint);border-top:1px solid var(--line);display:flex;justify-content:space-between}
+.ledgercard .ft a{color:var(--mint);text-decoration:none}
+section{padding:88px 0;border-bottom:1px solid var(--line)}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mint);margin-bottom:14px}
+h2{font-family:var(--sans);font-weight:800;font-size:clamp(30px,3.8vw,44px);letter-spacing:-.03em;line-height:1.08;max-width:780px}
+.sub{margin-top:14px;color:var(--dim);font-size:17px;max-width:640px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:28px 24px 24px}
+.card.gold{border-color:rgba(212,175,55,.45)}
+.card.mint{border-color:rgba(57,241,148,.45)}
+.card h3{font-family:var(--sans);font-weight:700;font-size:20px;margin-bottom:10px;letter-spacing:-.01em}
+.card.gold h3{color:var(--gold)}
+.card.mint h3{color:var(--mint)}
+.card p{color:var(--dim);font-size:15px}
+.card .foot{margin-top:16px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.flow{margin-top:44px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.step{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:22px 20px}
+.step .n{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.1em}
+.step h4{font-family:var(--sans);font-weight:700;font-size:17px;margin:8px 0 6px}
+.step p{font-size:14px;color:var(--dim)}
+.step.first{border-color:rgba(242,244,240,.35)}
+.step.second{border-color:rgba(212,175,55,.45)}
+.step.second h4{color:var(--gold)}
+.step.rest{border-color:rgba(57,241,148,.45)}
+.step.rest h4{color:var(--mint)}
+.sources{margin-top:44px;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.src{display:grid;grid-template-columns:1.2fr 2fr auto;gap:18px;align-items:center;padding:18px 22px;border-bottom:1px solid var(--line);background:var(--panel)}
+.src:last-child{border-bottom:0}
+.src b{font-family:var(--sans);font-weight:700;font-size:16px}
+.src span{color:var(--dim);font-size:14px}
+.dist{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:44px}
+.dist .card p b{color:var(--fg);font-weight:500}
+.quote{margin-top:36px;padding-left:16px;border-left:2px solid var(--gold);color:var(--dim);max-width:760px}
+details{border-top:1px solid var(--line)}
+details:last-of-type{border-bottom:1px solid var(--line)}
+summary{cursor:pointer;list-style:none;padding:20px 0;font-family:var(--sans);font-weight:600;font-size:17px;display:flex;justify-content:space-between}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--mint)}
+details[open] summary::after{content:"\2013"}
+details p{padding-bottom:22px;color:var(--dim);max-width:760px}
+.faq{margin-top:36px}
+footer{padding:36px 0 56px;font-family:var(--mono);font-size:12px;color:var(--faint);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer a{color:var(--faint);text-decoration:none}
+footer a:hover{color:var(--fg)}
+@media(max-width:900px){.hero{grid-template-columns:1fr;padding:56px 0 48px}.grid3,.flow,.dist{grid-template-columns:1fr}.src{grid-template-columns:1fr}nav .links{display:none}section{padding:64px 0}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#"><svg class="crown" viewBox="0 0 24 24" fill="none"><path d="M3 18h18v2H3zM3 16l1.5-9 4.5 4 3-6 3 6 4.5-4L21 16z" fill="#39F194"/></svg><span>throne<b>.</b></span></a>
+    <div class="links">
+      <a href="#court">the court</a>
+      <a href="#pays">how it pays</a>
+      <a href="#sources">income</a>
+      <a href="court/">ledger</a>
+      <a class="muted" href="https://trade.throne.network">desk</a>
+      <a class="muted" href="https://throne.network/board">king drop</a>
+    </div>
+    <a class="btn primary" href="court/">See the ledger</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<header class="hero">
+  <div>
+    <span class="tag">The Yield Court</span> <span class="tag gold">Robinhood Chain</span>
+    <h1>Where the chain's yield <em>gets paid out.</em></h1>
+    <p class="lead">A USDG vault with two sides. Depositors sit senior and get paid first. The Court sits junior, does the messy work, and shows every dollar on a public ledger. We never quote a rate.</p>
+    <div class="cta">
+      <a class="btn primary" href="court/">See what the Court received</a>
+      <a class="btn" href="#pays">How it pays</a>
+    </div>
+  </div>
+
+  <div class="ledgercard" id="heroLedger">
+    <div class="hd"><span>court income · last 7 UTC days</span><b id="liveTag">reading…</b></div>
+    <div class="tiles">
+      <div class="tile"><div class="k">desk fees</div><div class="v live" id="t_desk">–</div><div class="n">builder fee, perp taker volume · live</div></div>
+      <div class="tile"><div class="k">desk volume</div><div class="v" id="t_vol">–</div><div class="n">7 days, all markets · live</div></div>
+      <div class="tile"><div class="k">swap fees</div><div class="v" id="t_swap">not live</div><div class="n">throne / usdg pool · wiring</div></div>
+      <div class="tile"><div class="k">votes + Bounty</div><div class="v" id="t_votes">not live</div><div class="n">with Fables' token</div></div>
+    </div>
+    <div class="ft"><span id="asof">–</span><a href="court/">full ledger →</a></div>
+  </div>
+</header>
+
+<section id="court">
+  <div class="eyebrow">What it is</div>
+  <h2>Two sides. Senior gets paid first.</h2>
+  <p class="sub">The same shape as private credit, with the collateral on chain: a senior claim on a pool of cash flows that swing week to week, and a junior that takes the swing and the first hit.</p>
+  <div class="grid3">
+    <div class="card">
+      <h3>Senior · USDG</h3>
+      <p>A thin vault of ours over Morpho's Steakhouse USDG vault on Robinhood Chain. USDG in, all of it to Morpho; our contract adds the weekly epochs and the first-loss hook, nothing else. Depositors get Morpho's rate plus first claim on Court income, paid weekly in USDG. Redeem at Morpho's liquidity. Senior never lends to the Court.</p>
+      <div class="foot">opens November · after audit</div>
+    </div>
+    <div class="card gold">
+      <h3>The Court · junior</h3>
+      <p>Holds the Court's position in the votes on Fables (the chain's equities DEX) through our partner Sink, runs Bounty where those votes are bought, launches tokens, and collects the desk's fees. Pays Senior first, keeps the rest, takes the first loss. Everything it earns is on the ledger, by source, by UTC day.</p>
+      <div class="foot">treasury capital first · $THRONE lockers later</div>
+    </div>
+    <div class="card mint">
+      <h3>$THRONE · the key</h3>
+      <p>Lock $THRONE for 16 weeks (vlTHRONE) to direct where the Court's votes point and earn a published share of what they capture. Stake it alongside USDG to take a seat in the Court. Holding it already counts: 100k and 500k balances score 1.25x and 1.5x in the King Drop.</p>
+      <div class="foot">vlTHRONE · 16-week lock · with Sink's launch</div>
+    </div>
+  </div>
+</section>
+
+<section id="pays">
+  <div class="eyebrow">How it pays</div>
+  <h2>Income arrives weekly. Then the waterfall.</h2>
+  <p class="sub">Every source lands in the Court. Senior takes its claim first, lockers take their share, the Court keeps what is left as first-loss capital. No number on this page is a projection.</p>
+  <div class="flow">
+    <div class="step"><div class="n">00</div><h4>Morpho's rate</h4><p>Senior's USDG sits in Morpho the whole time and earns whatever Morpho pays. That part is not ours and we do not quote it.</p></div>
+    <div class="step first"><div class="n">01 · first</div><h4>Senior's claim</h4><p>First claim on Court income up to a target spread over Morpho, paid weekly in USDG.</p></div>
+    <div class="step second"><div class="n">02 · second</div><h4>vlTHRONE lockers</h4><p>A published share of what the Court's votes capture goes to the $THRONE lockers who directed them.</p></div>
+    <div class="step rest"><div class="n">03 · the rest</div><h4>The Court keeps it</h4><p>Excess income stays in the Court as the first-loss capital behind Senior. On the ledger, by source, by week.</p></div>
+  </div>
+</section>
+
+<section id="sources">
+  <div class="eyebrow">Where the income comes from</div>
+  <h2>Five sources. Each one marked live or not.</h2>
+  <p class="sub">The ledger only shows realized income. A source that is not live yet says so; it never shows an estimate.</p>
+  <div class="sources">
+    <div class="src"><b>Desk fees</b><span>Builder fee on every perp trade tagged to Throne on the shared venue. Read daily from the venue's public statistics.</span><span class="tag">live</span></div>
+    <div class="src"><b>Swap fees</b><span>Protocol-owned THRONE/USDG liquidity on Fables earns the pool's swap fees.</span><span class="tag dim">wiring</span></div>
+    <div class="src"><b>Fables rewards</b><span>Weekly LP rewards and the creator-fee pot paid to the THRONE/USDG pool's liquidity.</span><span class="tag dim">wiring</span></div>
+    <div class="src"><b>Votes</b><span>The Court's share of the fees and incentives collected by Sink's block, where the Court is the anchor vlSINK holder.</span><span class="tag gold">with Fables' token</span></div>
+    <div class="src"><b>Bounty</b><span>Projects post incentives for votes on their pool; voters get paid; the Court keeps 5%.</span><span class="tag gold">after Fables TGE</span></div>
+  </div>
+</section>
+
+<section id="distribution">
+  <div class="eyebrow">Distribution</div>
+  <h2>The desk is how people arrive.</h2>
+  <p class="sub">A vault with no users is a contract. The desk and the King Drop are the front door: traders show up every week, $THRONE reaches their wallets, and every trade earns the Court a fee. The Court is the house.</p>
+  <div class="dist">
+    <div class="card"><h3>The desk</h3><p>Stocks and crypto perps on Robinhood Chain through a shared venue. Deep books from day one without writing an exchange. <b>Every trade tagged to Throne is the first row on the ledger.</b></p><div class="foot"><a href="https://trade.throne.network" style="color:var(--mint);text-decoration:none">trade.throne.network →</a></div></div>
+    <div class="card"><h3>The King Drop</h3><p>A weekly team competition on the desk. Two sides, a board, 923,000 $THRONE a week, a public hash of every result. <b>This is how $THRONE got into thousands of wallets before the Court opened.</b></p><div class="foot"><a href="https://throne.network/board" style="color:var(--mint);text-decoration:none">the board →</a></div></div>
+  </div>
+  <p class="quote">Fill the room, hand out the key, then open the house.</p>
+</section>
+
+<section id="faq">
+  <div class="eyebrow">Questions</div>
+  <h2>Things people ask first.</h2>
+  <div class="faq">
+    <details><summary>What is the rate?</summary><p>We do not quote one. Senior earns Morpho's rate, which Morpho publishes, plus whatever the Court pays it each week, which the ledger publishes. Add them yourself; we will not do it for you on a marketing page.</p></details>
+    <details><summary>Can Senior lose money?</summary><p>Senior holds nothing that can lose principal except Morpho itself. The Court's income can be zero in a week; Senior's claim is then simply unpaid that week. Senior never lends to the Court.</p></details>
+    <details><summary>Who takes the first loss?</summary><p>The Court. Its own capital sits behind Senior and absorbs Morpho bad debt first, up to what it holds.</p></details>
+    <details><summary>Where do the votes come from?</summary><p>From our partner Sink, the vote aggregator for Fables on Robinhood Chain. The Court is Sink's anchor holder; $THRONE lockers decide where the Court's weight points.</p></details>
+    <details><summary>Why is the desk not the main thing?</summary><p>Because a perp desk on a shared venue is a distribution channel, not a business. It brings traders and fees. The Court is where the fees, votes and launches turn into something a USDG depositor can hold.</p></details>
+  </div>
+</section>
+
+<footer>
+  <span>throne. · Robinhood Chain · private v2</span>
+  <span><a href="court/">ledger</a> · <a href="https://docs.throne.network">docs</a> · <a href="https://x.com/thronedefi">x</a></span>
+</footer>
+
+</div>
+
+<script>
+(async function(){
+  const fmt = n => '$' + n.toLocaleString(undefined,{maximumFractionDigits:0});
+  try {
+    const r = await fetch('https://api.orderly.org/md/volume/builder/daily_stats?broker_id=throne', {cache:'no-store'});
+    const rows = await r.json();
+    const byDay = rows.map(x => ({ d: String(x.date).slice(0,10), fee: +x.builderFee||0, vol: (+x.takerVolume||0)+(+x.makerVolume||0) })).sort((a,b)=>a.d<b.d?-1:1);
+    const last7 = byDay.slice(-7);
+    const fee = last7.reduce((s,x)=>s+x.fee,0), vol = last7.reduce((s,x)=>s+x.vol,0);
+    document.getElementById('t_desk').textContent = fmt(fee);
+    document.getElementById('t_vol').textContent = fmt(vol);
+    document.getElementById('liveTag').textContent = 'live · venue statistics';
+    document.getElementById('asof').textContent = (last7[0]||{}).d + ' → ' + (last7[last7.length-1]||{}).d + ' · UTC days';
+  } catch (e) {
+    document.getElementById('liveTag').textContent = 'venue unreachable';
+    document.getElementById('asof').textContent = 'could not read the venue right now';
+  }
+})();
+</script>
+</body>
+</html>
