@@ -134,7 +134,25 @@ window.courtData = (function () {
     const capital = (polCapital || 0) + (C ? C.totals.capital : 0) + SENIOR_SIM_DEPOSIT;
     const annIncomeCapital = (pol.annOnCapital ? pol.annOnCapital * polCapital : 0) + (C ? C.totals.annOnCapital * C.totals.capital : 0) + (senior.perYear || 0);
     const annIncomeAll = annIncomeCapital + pons.runRate + desk.runRate;
-    return { launch: led.launch, rows, pol, pons, desk, carry: C, senior, blend: { capital, annIncomeCapital, annIncomeAll, apyOnCapital: capital ? annIncomeCapital / capital : null, apyAllIn: capital ? annIncomeAll / capital : null, realizedSinceLaunch: sum('total'), days: rows.length } };
+    // SIMULATION at a stated capital: POL as it is today, the carry book filled to its OI capacity
+    // (10% of each market's open interest, capital = notional + margin + buffer), the remainder in
+    // Senior at Morpho's live net rate. Not open for deposits; nothing here is a projection of income,
+    // every rate is today's measured one applied to a larger book.
+    const simAt = (total) => {
+      let left = total, income = 0;
+      const polC = Math.min(polCapital || 0, left); income += pol.annOnCapital ? pol.annOnCapital * polC : 0; left -= polC;
+      const perNotional = 1 + (1 + CARRY.bufferOfMargin) / CARRY.leverage; // capital per $1 of notional
+      let carryNotional = 0, carryCapital = 0;
+      for (const m of (C ? C.markets.filter(x => !x.error && x.capacity > 0) : [])) {
+        const cap = Math.min(m.capacity * perNotional, left); const n = cap / perNotional;
+        income += m.annOnNotional * n; carryNotional += n; carryCapital += cap; left -= cap;
+      }
+      const seniorC = Math.max(0, left); income += M ? seniorC * M.netApy : 0;
+      const all = income + pons.runRate + desk.runRate;
+      return { sim: true, capital: total, pol: polC, carryNotional, carryCapital, senior: seniorC, annIncomeCapital: income, annIncomeAll: all, apyOnCapital: income / total, apyAllIn: all / total };
+    };
+    const sim1m = simAt(1000000);
+    return { launch: led.launch, rows, pol, pons, desk, carry: C, senior, sim1m, blend: { capital, annIncomeCapital, annIncomeAll, apyOnCapital: capital ? annIncomeCapital / capital : null, apyAllIn: capital ? annIncomeAll / capital : null, realizedSinceLaunch: sum('total'), days: rows.length } };
   }
   return { desk, pons, fables, ethUsd, ledger, morpho, carry, terminal, LAUNCH, POL_SHARE };
 })();

@@ -83,7 +83,7 @@ a:hover{color:#C9A646}
         <div style="display:flex;flex-direction:column;gap:8px">
           <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#C9A646"></span>court sim apy</span>
           <a href="terminal/" style="text-decoration:none;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:24px;color:#C9A646"><span id="simApyV">·</span></a>
-          <a href="terminal/" style="text-decoration:none;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;font-size:13px;color:#8A867C"><span id="simApySub">on the court's capital at work · terminal →</span></a>
+          <a href="terminal/" style="text-decoration:none;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;font-size:13px;color:#8A867C"><span id="simApySub">$1,000,000 simulation · not open for deposits · terminal →</span></a>
         </div>
         <div style="display:flex;flex-direction:column;gap:8px">
           <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#4A4740"></span>votes + bounty</span>
@@ -301,7 +301,7 @@ a:hover{color:#C9A646}
 
 
 
-<script src="court.js?v=5"></script>
+<script src="court.js?v=6"></script>
 <script>
 (function(){
   const $=id=>document.getElementById(id);
@@ -336,9 +336,9 @@ a:hover{color:#C9A646}
   })();
   (async()=>{
     try{
-      const t=await courtData.terminal(); const b=t&&t.blend; if(!b||b.apyOnCapital==null) throw new Error('no blend');
-      $('simApyV').textContent=(b.apyOnCapital*100).toFixed(1)+'%';
-      $('simApySub').textContent='on '+usd0(b.capital)+' at work · live + sim · terminal →';
+      const t=await courtData.terminal(); const m=t&&t.sim1m; if(!m||!isFinite(m.apyAllIn)) throw new Error('no sim');
+      $('simApyV').textContent=(m.apyAllIn*100).toFixed(1)+'%';
+      $('simApySub').textContent='$1,000,000 simulation · '+(m.apyOnCapital*100).toFixed(1)+'% before pons + desk income · not open for deposits · terminal →';
     }catch(e){ $('simApyV').textContent='unreachable'; }
   })();
 })();
