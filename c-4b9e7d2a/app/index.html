@@ -3,228 +3,283 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>App · the Court · throne.</title>
+<title>throne. · the Court · app</title>
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#050605;--panel:#0b0d0b;--panel2:#0f1210;--line:#1c201d;--fg:#F2F4F0;--dim:#9BA39E;--faint:#5E6663;--mint:#39F194;--gold:#D4AF37;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace;--sans:"Plus Jakarta Sans",Inter,system-ui,sans-serif;--body:Inter,system-ui,sans-serif}
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--fg);font-family:var(--body);-webkit-font-smoothing:antialiased}
-a{color:inherit}
-.wrap{max-width:1140px;margin:0 auto;padding:0 24px 80px}
-nav{display:flex;align-items:center;justify-content:space-between;height:64px;border-bottom:1px solid var(--line);margin-bottom:36px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--sans);font-weight:800;font-size:22px;letter-spacing:-.02em}
-.brand b{color:var(--mint)}
-nav .r{font-family:var(--mono);font-size:12px;color:var(--faint);letter-spacing:.06em;display:flex;align-items:center;gap:14px}
-nav .r a{color:var(--faint);text-decoration:none}
-.connect{font-family:var(--sans);font-weight:700;font-size:13px;padding:9px 14px;border-radius:4px;border:1px solid var(--line);background:var(--panel2);color:var(--faint);cursor:not-allowed}
-.tag{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mint);border:1px solid rgba(57,241,148,.35);padding:5px 9px;border-radius:3px;margin-right:8px}
-.tag.gold{color:var(--gold);border-color:rgba(212,175,55,.4)}
-.tag.dim{color:var(--faint);border-color:var(--line)}
-h1{font-family:var(--sans);font-size:clamp(30px,4.4vw,48px);letter-spacing:-.03em;margin:16px 0 8px;line-height:1.02;font-weight:800}
-h1 em{font-style:normal;color:var(--mint)}
-.sub{color:var(--dim);font-size:15px;max-width:760px;line-height:1.6;margin:0 0 28px}
-.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:24px}
-.tab{font-family:var(--sans);font-weight:700;font-size:14px;padding:12px 16px;color:var(--faint);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
-.tab.on{color:var(--fg);border-color:var(--mint)}
-.tab.gold.on{border-color:var(--gold)}
-.pane{display:none}.pane.on{display:block}
-.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:6px}
-.panel .hd{display:flex;justify-content:space-between;align-items:baseline;padding:18px 20px;border-bottom:1px solid var(--line)}
-.panel .hd h2{font-family:var(--sans);font-size:20px;font-weight:700;letter-spacing:-.02em}
-.panel .hd span{font-family:var(--mono);font-size:12px;color:var(--faint)}
-.form{padding:18px 20px;display:grid;gap:12px}
-.field label{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
-.field .in{display:flex;align-items:center;justify-content:space-between;background:var(--panel2);border:1px solid var(--line);border-radius:4px;padding:14px;font-family:var(--mono);font-size:18px;color:var(--faint)}
-.field .in b{font-size:11px;letter-spacing:.1em;color:var(--mint);font-weight:500}
-.field .in .tok{font-size:13px;color:var(--fg);display:flex;align-items:center;gap:8px}
-.chips{display:flex;gap:6px}
-.chip{font-family:var(--mono);font-size:11px;padding:5px 9px;border:1px solid var(--line);border-radius:3px;color:var(--faint)}
-.chip.on{color:var(--gold);border-color:rgba(212,175,55,.4)}
-.kv div{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #111412;font-family:var(--mono);font-size:13px}
-.kv div:last-child{border-bottom:0}
-.kv span:first-child{color:var(--dim)}
-.kv .g{color:var(--gold)}.kv .m{color:var(--mint)}
-.btn{display:block;width:100%;text-align:center;padding:15px;border-radius:4px;font-family:var(--sans);font-weight:700;font-size:14px;border:1px solid var(--line);color:var(--faint);background:var(--panel2);cursor:not-allowed}
-.btn.mint{background:rgba(57,241,148,.1);border-color:rgba(57,241,148,.35);color:var(--mint)}
-.btn.gold{background:rgba(212,175,55,.12);border-color:rgba(212,175,55,.35);color:var(--gold)}
-.fine{font-family:var(--mono);font-size:11px;color:var(--faint);line-height:1.6}
-.pos{padding:6px 20px 14px}
-.stat{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:18px 20px}
-.stat div{background:var(--panel2);border:1px solid var(--line);border-radius:4px;padding:14px}
-.stat .k{font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.04em}
-.stat .v{font-family:var(--mono);font-size:22px;margin-top:8px}
-.stat .v.off{color:var(--faint);font-size:16px}
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
-.step{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:16px}
-.step .n{font-family:var(--mono);font-size:11px;color:var(--mint);letter-spacing:.1em;margin-bottom:6px}
-.step h4{font-family:var(--sans);font-size:15px;margin-bottom:4px}
-.step p{font-size:13px;color:var(--dim);line-height:1.5}
-.wire{margin-top:30px;padding:16px 18px;border:1px dashed rgba(212,175,55,.4);border-radius:6px;font-family:var(--mono);font-size:12px;color:var(--dim);line-height:1.7}
-.wire b{color:var(--gold)}
-@media(max-width:900px){.grid{grid-template-columns:1fr}.steps{grid-template-columns:1fr}}
+html,body{margin:0;padding:0;background:#070806}
+body{background-color:#070806;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.93 0 0 0 0 0.91 0 0 0 0 0.87 0 0 0 .07 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");-webkit-font-smoothing:antialiased}
+a{color:#EDE9DF;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:6px}
+a:hover{color:#C9A646}
+::selection{background:#C9A646;color:#070806}
+input::placeholder{color:#5F5C55}
+.hv:hover{color:#EDE9DF !important}
 </style>
 </head>
 <body>
-<div class="wrap">
 
-<nav>
-  <a class="brand" href="../"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M3 18h18v2H3zM3 16l1.5-9 4.5 4 3-6 3 6 4.5-4L21 16z" fill="#39F194"/></svg><span>throne<b>.</b></span></a>
-  <div class="r"><a href="../">the court</a> · <a href="../court/">ledger</a> · <a href="../court/bounty/">bounty</a> · app <span class="connect">Connect · off</span></div>
-</nav>
+<div style="min-height:100vh;color:#EDE9DF;font-family:'Inter Tight',sans-serif;font-size:18px;line-height:1.55">
+<div style="max-width:1440px;margin:0 auto;padding:0 clamp(20px,5vw,72px)">
 
-<span class="tag">The Court · app</span><span class="tag dim">preview · nothing here moves money</span>
-<h1>Three ways in. <em>One ledger behind all of them.</em></h1>
-<p class="sub">Deposit USDG and sit senior. Lock $THRONE and run the votes. Stake $THRONE with USDG and take a seat in the junior side. Every button on this page is off until the contracts are audited and live; the layout is what ships.</p>
+  <header style="padding-top:22px;display:flex;flex-direction:column;gap:12px;border-bottom:1px solid rgba(237,233,223,0.22);padding-bottom:14px">
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:14px;letter-spacing:0.02em;color:#B5B0A5">
+      <a href="../" style="font-family:'Instrument Serif',serif;font-size:22px;color:#EDE9DF;letter-spacing:-0.01em;text-decoration:none">throne.</a>
+      <span>·</span><span style="white-space:nowrap">the Yield Court of Robinhood Chain</span>
+      <span>·</span><span style="white-space:nowrap">UTC day <span style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;color:#EDE9DF">{{ dayNum }}</span> since launch</span>
+      <span>·</span>
+      <span style="white-space:nowrap;display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#5F5C55"></span>preview</span>
+      <span style="margin-left:auto;display:flex;align-items:center;gap:20px;white-space:nowrap">
+        <span style="font-size:14px;color:#8A867C;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px;cursor:not-allowed">Connect · off</span>
+        <svg width="18" height="18" viewBox="-28 -34 56 56" aria-label="throne crown"><path d="M-24,10 L-24,-14 L-13,-6 L0,-26 L13,-6 L24,-14 L24,10 Z" fill="#C9A646"></path><rect x="-24" y="13" width="48" height="7" fill="#C9A646"></rect></svg>
+      </span>
+    </div>
+    <nav style="display:flex;gap:clamp(16px,2.6vw,36px);flex-wrap:wrap;font-size:12px;letter-spacing:0.16em;text-transform:uppercase">
+      <a href="../#court" style="text-decoration:none;color:#B5B0A5" class="hv">the Court</a>
+      <a href="../court/" style="text-decoration:none;color:#B5B0A5" class="hv">ledger</a>
+      <a href="../court/bounty/" style="text-decoration:none;color:#B5B0A5" class="hv">Bounty</a>
+      <a href="../app/" style="color:#C9A646;text-decoration-color:#C9A646">app</a>
+      <a href="https://trade.throne.network" style="text-decoration:none;color:#B5B0A5" class="hv">desk</a>
+      <a href="https://throne.network/board" style="text-decoration:none;color:#B5B0A5" class="hv">King Drop</a>
+    </nav>
+  </header>
 
-<div class="tabs">
-  <div class="tab on" data-t="senior">Senior · USDG</div>
-  <div class="tab gold" data-t="lock">Lock · vlTHRONE</div>
-  <div class="tab gold" data-t="seat">Seat · the Court</div>
-</div>
+  <section style="padding:clamp(48px,7vw,96px) 0 clamp(40px,5vw,64px);display:flex;flex-direction:column;gap:28px">
+    <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">THE COURT · APP · PREVIEW · NOTHING HERE MOVES MONEY</span>
+    <h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;line-height:0.92;letter-spacing:-0.04em;display:flex;flex-direction:column;gap:4px">
+      <span style="font-size:clamp(56px,7.4vw,108px)">Three ways in.</span>
+      <span style="font-size:clamp(40px,5vw,76px);font-style:italic;color:#C9A646">One ledger behind all of them.</span>
+    </h1>
+    <p style="margin:0;max-width:64ch;color:#B5B0A5;font-size:clamp(18px,1.4vw,20px);text-wrap:pretty">Deposit USDG and sit senior. Lock $THRONE and run the votes. Stake $THRONE with USDG and take a seat in the junior side. Every action on this page is off until the contracts are audited and live; the layout is what ships.</p>
+  </section>
 
-<!-- SENIOR -->
-<div class="pane on" id="senior">
-  <div class="grid">
-    <div class="panel">
-      <div class="hd"><h2>Deposit USDG</h2><span>paid first · opens November</span></div>
-      <div class="form">
-        <div class="field"><label><span>you deposit</span><span>balance —</span></label><div class="in"><span>0.00</span><span class="tok">USDG <b>MAX</b></span></div></div>
-        <div class="field"><label><span>you receive</span><span>1 : 1 at open</span></label><div class="in"><span>0.00</span><span class="tok">sUSDG</span></div></div>
-        <div class="kv">
-          <div><span>where it sits</span><span>Morpho · Steakhouse USDG vault</span></div>
-          <div><span>what you get</span><span>Morpho's rate + first claim on Court income</span></div>
-          <div><span>paid</span><span>weekly, in USDG, at epoch close</span></div>
-          <div><span>redeem</span><span>any epoch, at Morpho's liquidity</span></div>
-          <div><span>first loss</span><span class="g">the Court, not you</span></div>
+  <div role="tablist" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid rgba(237,233,223,0.4);border-bottom:1px solid rgba(237,233,223,0.22)">
+    <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+      <div class="tab" data-t="{{ t.id }}" role="tab" onClick="{{ t.go }}" style="padding:clamp(14px,2vw,24px) clamp(10px,2vw,28px) 0;cursor:pointer;border-right:1px solid {{ t.sep }};display:flex;flex-direction:column;gap:clamp(12px,1.6vw,20px)" class="hv">
+        <span style="font-family:'Instrument Serif',serif;font-size:clamp(36px,5vw,64px);line-height:1;letter-spacing:-0.035em;color:{{ t.color }}">{{ t.label }}</span>
+        <span style="height:1px;background:{{ t.rule }}"></span>
+      </div>
+    </sc-for>
+  </div>
+
+  <div id="senior" style="display:{{ showSenior }};padding:clamp(40px,5vw,72px) 0">
+    <div style="display:flex;flex-wrap:wrap;gap:clamp(40px,6vw,96px);align-items:flex-start">
+      <div style="flex:11 1 520px;min-width:0;display:flex;flex-direction:column;gap:6px">
+        <span style="font-family:'Instrument Serif',serif;font-size:clamp(34px,3.4vw,48px);letter-spacing:-0.02em;margin-bottom:14px">Deposit USDG</span>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:8px 0;border-bottom:1px solid rgba(237,233,223,0.3)">
+          <span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C;white-space:nowrap">you deposit</span>
+          <span style="display:flex;align-items:baseline;gap:14px;min-width:0">
+            <input value="{{ sen }}" onChange="{{ onSen }}" placeholder="0.00" inputmode="decimal" style="width:100%;min-width:0;max-width:300px;background:transparent;border:0;outline:none;padding:0;text-align:right;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:clamp(32px,3.4vw,48px);color:#EDE9DF">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#B5B0A5">USDG</span>
+            <span style="font-size:13px;color:#8A867C;text-decoration:underline;text-underline-offset:4px;cursor:pointer">max</span>
+          </span>
         </div>
-        <div class="btn mint">Deposit · not live</div>
-        <p class="fine">Requests settle once per 7-day epoch. Deposit requests mint at the close of the epoch they were made in; redeem requests are paid from the same close. Senior never lends to the Court and holds nothing that can lose principal except Morpho itself. No rate is quoted anywhere in this app.</p>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:14px 0;border-bottom:1px solid rgba(237,233,223,0.3)">
+          <span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C;white-space:nowrap">you receive</span>
+          <span style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;justify-content:flex-end"><span style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:24px">{{ senOut }} sUSDG</span><span style="font-size:13px;color:#8A867C;white-space:nowrap">1 : 1 at open</span></span>
+        </div>
+        <dl style="margin:18px 0 0;display:flex;flex-direction:column">
+          <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">where it sits</dt><dd style="margin:0;text-align:right">Morpho · Steakhouse USDG vault</dd></div>
+          <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">what you get</dt><dd style="margin:0;text-align:right">Morpho's rate + first claim on Court income</dd></div>
+          <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">paid</dt><dd style="margin:0;text-align:right">weekly, in USDG, at epoch close</dd></div>
+          <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">redeem</dt><dd style="margin:0;text-align:right">any epoch, at Morpho's liquidity</dd></div>
+          <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0"><dt style="color:#8A867C">first loss</dt><dd style="margin:0;text-align:right;color:#C9A646">the Court, not you</dd></div>
+        </dl>
+        <span style="margin-top:24px;font-size:22px;color:#C9A646;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:7px;cursor:not-allowed;align-self:flex-start;white-space:nowrap">Deposit · not live</span>
+        <p style="margin:16px 0 0;max-width:62ch;font-size:14px;line-height:1.6;color:#8A867C;text-wrap:pretty">Requests settle once per 7-day epoch. Deposit requests mint at the close of the epoch they were made in; redeem requests are paid from the same close. Senior never lends to the Court and holds nothing that can lose principal except Morpho itself.</p>
+      </div>
+      <div style="flex:9 1 360px;min-width:0;display:flex;flex-direction:column;gap:24px;border-top:1px solid rgba(237,233,223,0.22);padding-top:20px">
+        <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">your position</span>
+        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 32px">
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">deposited</span><span style="font-family:'JetBrains Mono',monospace;font-size:28px;color:#6E6B63">-</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">claimable this epoch</span><span style="font-family:'JetBrains Mono',monospace;font-size:28px;color:#6E6B63">-</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">paid to you, all time</span><span style="font-family:'JetBrains Mono',monospace;font-size:28px;color:#6E6B63">-</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">pending request</span><span style="font-family:'JetBrains Mono',monospace;font-size:28px;color:#6E6B63">none</span></div>
+        </div>
+        <dl style="margin:0;display:flex;flex-direction:column;border-top:1px solid rgba(237,233,223,0.1)">
+          <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">epoch</dt><dd style="margin:0;font-family:'JetBrains Mono',monospace;color:#6E6B63">- · closes -</dd></div>
+          <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0"><dt style="color:#8A867C">court income this epoch</dt><dd style="margin:0"><a href="../court/" style="white-space:nowrap">on the ledger →</a></dd></div>
+        </dl>
       </div>
     </div>
-    <div>
-      <div class="panel">
-        <div class="hd"><h2>Your position</h2><span>not connected</span></div>
-        <div class="stat">
-          <div><div class="k">deposited</div><div class="v off">—</div></div>
-          <div><div class="k">claimable this epoch</div><div class="v off">—</div></div>
-          <div><div class="k">paid to you, all time</div><div class="v off">—</div></div>
-          <div><div class="k">pending request</div><div class="v off">none</div></div>
-        </div>
-        <div class="pos kv">
-          <div><span>epoch</span><span>— · closes —</span></div>
-          <div><span>court income this epoch</span><span class="m">on the ledger →</span></div>
-        </div>
+    <div style="margin-top:clamp(56px,7vw,96px);display:flex;flex-wrap:wrap;gap:clamp(40px,6vw,96px)">
+      <div style="flex:1 1 420px;min-width:0;display:flex;flex-direction:column;gap:14px;border-top:1px solid rgba(237,233,223,0.22);padding-top:20px">
+        <span style="font-family:'Instrument Serif',serif;font-size:clamp(28px,2.6vw,36px);letter-spacing:-0.02em">Arrive from another chain</span>
+        <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">Rift · November</span>
+        <dl style="margin:0;display:flex;flex-direction:column">
+          <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt>USDC on Base</dt><dd style="margin:0;color:#8A867C;text-align:right">→ USDG → Senior, one order</dd></div>
+          <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt>USDT on Ethereum</dt><dd style="margin:0;color:#8A867C;text-align:right">→ USDG → Senior, one order</dd></div>
+          <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0"><dt>a Hyperliquid balance</dt><dd style="margin:0;color:#8A867C;text-align:right">→ USDG → Senior, one order</dd></div>
+        </dl>
       </div>
-      <div class="panel" style="margin-top:14px">
-        <div class="hd"><h2>Arrive from another chain</h2><span>Rift · November</span></div>
-        <div class="pos kv">
-          <div><span>USDC on Base</span><span>→ USDG → Senior, one order</span></div>
-          <div><span>USDT on Ethereum</span><span>→ USDG → Senior, one order</span></div>
-          <div><span>a Hyperliquid balance</span><span>→ USDG → Senior, one order</span></div>
-        </div>
-      </div>
+      <ol style="flex:1 1 420px;min-width:0;margin:0;padding:20px 0 0;list-style:none;display:flex;flex-direction:column;gap:22px;border-top:1px solid rgba(237,233,223,0.22)">
+        <li style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap"><span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#8A867C">01</span><span style="font-family:'Instrument Serif',serif;font-size:36px;line-height:1;letter-spacing:-0.02em">Request</span><span style="flex:1 1 220px;font-size:15px;color:#8A867C">deposit USDG; it is held, not deployed, until the epoch closes</span></li>
+        <li style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;padding-left:28px"><span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#8A867C">02</span><span style="font-family:'Instrument Serif',serif;font-size:36px;line-height:1;letter-spacing:-0.02em">Close</span><span style="flex:1 1 220px;font-size:15px;color:#8A867C">every 7 days: income measured, Senior paid first, shares minted at one price</span></li>
+        <li style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;padding-left:56px"><span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#8A867C">03</span><span style="font-family:'Instrument Serif',serif;font-size:36px;line-height:1;letter-spacing:-0.02em;font-style:italic;color:#C9A646">Claim or stay</span></li>
+      </ol>
     </div>
   </div>
-  <div class="steps">
-    <div class="step"><div class="n">01</div><h4>Request</h4><p>Deposit USDG. It is held, not deployed, until the epoch closes.</p></div>
-    <div class="step"><div class="n">02</div><h4>Close</h4><p>Every 7 days: income measured, Senior paid first, shares minted at one price.</p></div>
-    <div class="step"><div class="n">03</div><h4>Claim or stay</h4><p>Claim your USDG any epoch, or leave it and keep first claim.</p></div>
-  </div>
-</div>
 
-<!-- LOCK -->
-<div class="pane" id="lock">
-  <div class="grid">
-    <div class="panel">
-      <div class="hd"><h2>Lock $THRONE</h2><span>vlTHRONE · with Sink's TGE</span></div>
-      <div class="form">
-        <div class="field"><label><span>you lock</span><span>balance —</span></label><div class="in"><span>0</span><span class="tok">THRONE <b>MAX</b></span></div></div>
-        <div class="field"><label><span>term</span><span>fixed</span></label><div class="chips"><span class="chip on">16 weeks</span><span class="chip">no other terms</span></div></div>
-        <div class="kv">
-          <div><span>you get</span><span>vlTHRONE · 1 : 1, non-transferable</span></div>
-          <div><span>votes</span><span>where the Court's vlSINK points, every epoch</span></div>
-          <div><span>income</span><span class="g">50% of vote income (fees + Bounties), pull-claim, USDG</span></div>
-          <div><span>not paid to lockers</span><span>desk fees · pons fees · Senior's fee</span></div>
-          <div><span>unlock</span><span>by you, after expiry · no slashing, no early exit</span></div>
+  <div id="lock" style="display:{{ showLock }};padding:clamp(40px,5vw,72px) 0">
+    <div style="display:flex;flex-wrap:wrap;gap:clamp(40px,6vw,96px);align-items:flex-start">
+      <div style="flex:11 1 520px;min-width:0;display:flex;flex-direction:column;gap:6px">
+        <span style="font-family:'Instrument Serif',serif;font-size:clamp(34px,3.4vw,48px);letter-spacing:-0.02em;margin-bottom:14px">Lock $THRONE</span>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:8px 0;border-bottom:1px solid rgba(237,233,223,0.3)">
+          <span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C;white-space:nowrap">you lock</span>
+          <span style="display:flex;align-items:baseline;gap:14px;min-width:0">
+            <input value="{{ lockAmt }}" onChange="{{ onLock }}" placeholder="0" inputmode="decimal" style="width:100%;min-width:0;max-width:300px;background:transparent;border:0;outline:none;padding:0;text-align:right;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:clamp(32px,3.4vw,48px);color:#EDE9DF">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#B5B0A5">THRONE</span>
+            <span style="font-size:13px;color:#8A867C;text-decoration:underline;text-underline-offset:4px;cursor:pointer">max</span>
+          </span>
         </div>
-        <div class="btn gold">Lock · not live</div>
-        <p class="fine">Locking is governance, not capital. A lock does not sit in the junior side and takes no loss. Vesting round tokens can be locked from day one. Seat stake does not count as vlTHRONE.</p>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:14px 0;border-bottom:1px solid rgba(237,233,223,0.3)">
+          <span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C;white-space:nowrap">term</span>
+          <span style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;justify-content:flex-end"><span style="font-family:'JetBrains Mono',monospace;font-size:24px;color:#C9A646;white-space:nowrap">16 weeks</span><span style="font-size:13px;color:#8A867C;white-space:nowrap">fixed, no other terms</span></span>
+        </div>
+        <dl style="margin:18px 0 0;display:flex;flex-direction:column">
+          <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">you get</dt><dd style="margin:0;text-align:right">vlTHRONE, 1 : 1, non-transferable</dd></div>
+          <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">votes</dt><dd style="margin:0;text-align:right">where the Court's vlSINK points, every epoch</dd></div>
+          <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">income</dt><dd style="margin:0;text-align:right;color:#C9A646">50% of vote income (fees + Bounties), pull-claim, USDG</dd></div>
+          <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">not paid to lockers</dt><dd style="margin:0;text-align:right">desk fees · pons fees · Senior's fee</dd></div>
+          <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0"><dt style="color:#8A867C">unlock</dt><dd style="margin:0;text-align:right">by you, after expiry · no slashing, no early exit</dd></div>
+        </dl>
+        <span style="margin-top:24px;font-size:22px;color:#C9A646;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:7px;cursor:not-allowed;align-self:flex-start;white-space:nowrap">Lock · not live</span>
+        <p style="margin:16px 0 0;max-width:62ch;font-size:14px;line-height:1.6;color:#8A867C;text-wrap:pretty">Locking is governance, not capital. A lock does not sit in the junior side and takes no loss. Vesting round tokens can be locked from day one. Seat stake does not count as vlTHRONE.</p>
+      </div>
+      <div style="flex:9 1 360px;min-width:0;display:flex;flex-direction:column;gap:24px;border-top:1px solid rgba(237,233,223,0.22);padding-top:20px">
+        <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">your position</span>
+        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 32px">
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">locked</span><span style="font-family:'JetBrains Mono',monospace;font-size:28px;color:#6E6B63">-</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">unlocks</span><span style="font-family:'JetBrains Mono',monospace;font-size:28px;color:#6E6B63">-</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">claimable</span><span style="font-family:'JetBrains Mono',monospace;font-size:28px;color:#6E6B63">-</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">claimed, all time</span><span style="font-family:'JetBrains Mono',monospace;font-size:28px;color:#6E6B63">-</span></div>
+        </div>
       </div>
     </div>
-    <div>
-      <div class="panel">
-        <div class="hd"><h2>Your lock</h2><span>not connected</span></div>
-        <div class="stat">
-          <div><div class="k">locked</div><div class="v off">—</div></div>
-          <div><div class="k">unlocks</div><div class="v off">—</div></div>
-          <div><div class="k">claimable</div><div class="v off">—</div></div>
-          <div><div class="k">claimed, all time</div><div class="v off">—</div></div>
-        </div>
-      </div>
-      <div class="panel" style="margin-top:14px">
-        <div class="hd"><h2>This epoch's vote</h2><span>the Court's vlSINK</span></div>
-        <div class="pos kv">
-          <div><span>THRONE / USDG</span><span>—%</span></div>
-          <div><span>Court Launch pools</span><span>—%</span></div>
-          <div><span>Bounty-weighted</span><span>—%</span></div>
-          <div><span>cast</span><span>Thursday, by Sink, as one block</span></div>
-        </div>
-        <div style="padding:0 20px 18px"><div class="btn">Vote · not live</div></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- SEAT -->
-<div class="pane" id="seat">
-  <div class="grid">
-    <div class="panel">
-      <div class="hd"><h2>Take a seat</h2><span>junior · first loss · after 8 to 12 weeks of ledger</span></div>
-      <div class="form">
-        <div class="field"><label><span>you deposit</span><span>balance —</span></label><div class="in"><span>0.00</span><span class="tok">USDG <b>MAX</b></span></div></div>
-        <div class="field"><label><span>$THRONE stake · 20% of deposit</span><span>auto-filled</span></label><div class="in"><span>0</span><span class="tok">THRONE</span></div></div>
-        <div class="kv">
-          <div><span>you take</span><span class="g">first loss behind Senior</span></div>
-          <div><span>you keep</span><span>the Court's excess income, pro rata</span></div>
-          <div><span>your stake</span><span>locked while seated · not vlTHRONE · does not vote</span></div>
-          <div><span>exit</span><span>one epoch's notice</span></div>
-          <div><span>cap</span><span>junior ≤ 20% of senior + junior</span></div>
-        </div>
-        <div class="btn gold">Take a seat · not live</div>
-        <p class="fine">Capped, audited, pausable. Treasury capital sits here first; seats open to $THRONE holders once the ledger has 8 to 12 weeks of history. Capital, not governance: a seat earns the excess and absorbs the loss; it does not point the votes.</p>
-      </div>
-    </div>
-    <div>
-      <div class="panel">
-        <div class="hd"><h2>Your seat</h2><span>not connected</span></div>
-        <div class="stat">
-          <div><div class="k">deposited</div><div class="v off">—</div></div>
-          <div><div class="k">stake</div><div class="v off">—</div></div>
-          <div><div class="k">earned, all time</div><div class="v off">—</div></div>
-          <div><div class="k">status</div><div class="v off">—</div></div>
-        </div>
-      </div>
-      <div class="panel" style="margin-top:14px">
-        <div class="hd"><h2>The junior side today</h2><span>live when open</span></div>
-        <div class="pos kv">
-          <div><span>junior capital</span><span>—</span></div>
-          <div><span>senior capital</span><span>—</span></div>
-          <div><span>junior share</span><span>— / 20% cap</span></div>
-          <div><span>losses absorbed, all time</span><span>—</span></div>
-        </div>
-      </div>
+    <div style="margin-top:clamp(56px,7vw,96px);max-width:760px;display:flex;flex-direction:column;gap:14px;border-top:1px solid rgba(237,233,223,0.22);padding-top:20px">
+      <span style="font-family:'Instrument Serif',serif;font-size:clamp(28px,2.6vw,36px);letter-spacing:-0.02em">This epoch's vote</span>
+      <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">the Court's vlSINK</span>
+      <dl style="margin:0;display:flex;flex-direction:column">
+        <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt>THRONE / USDG</dt><dd style="margin:0;font-family:'JetBrains Mono',monospace;color:#6E6B63">-%</dd></div>
+        <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt>Court Launch pools</dt><dd style="margin:0;font-family:'JetBrains Mono',monospace;color:#6E6B63">-%</dd></div>
+        <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt>Bounty-weighted</dt><dd style="margin:0;font-family:'JetBrains Mono',monospace;color:#6E6B63">-%</dd></div>
+        <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0"><dt style="color:#8A867C">cast</dt><dd style="margin:0;text-align:right">Thursday, by Sink, as one block</dd></div>
+      </dl>
+      <span style="margin-top:10px;font-size:22px;color:#C9A646;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:7px;cursor:not-allowed;align-self:flex-start;white-space:nowrap">Vote · not live</span>
     </div>
   </div>
+
+  <div id="seat" style="display:{{ showSeat }};padding:clamp(40px,5vw,72px) 0">
+    <div style="display:flex;flex-wrap:wrap;gap:clamp(40px,6vw,96px);align-items:flex-start">
+      <div style="flex:11 1 520px;min-width:0;display:flex;flex-direction:column;gap:6px">
+        <span style="font-family:'Instrument Serif',serif;font-size:clamp(34px,3.4vw,48px);letter-spacing:-0.02em;margin-bottom:14px">Take a seat</span>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:8px 0;border-bottom:1px solid rgba(237,233,223,0.3)">
+          <span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C;white-space:nowrap">you deposit</span>
+          <span style="display:flex;align-items:baseline;gap:14px;min-width:0">
+            <input value="{{ seatAmt }}" onChange="{{ onSeat }}" placeholder="0.00" inputmode="decimal" style="width:100%;min-width:0;max-width:300px;background:transparent;border:0;outline:none;padding:0;text-align:right;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:clamp(32px,3.4vw,48px);color:#EDE9DF">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#B5B0A5">USDG</span>
+            <span style="font-size:13px;color:#8A867C;text-decoration:underline;text-underline-offset:4px;cursor:pointer">max</span>
+          </span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:14px 0;border-bottom:1px solid rgba(237,233,223,0.3)">
+          <span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C">$THRONE stake</span>
+          <span style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;justify-content:flex-end"><span style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:24px;color:#C9A646;white-space:nowrap">{{ stakeThr }} THRONE</span><span style="font-size:13px;color:#8A867C;white-space:nowrap">20% of deposit, auto-filled</span></span>
+        </div>
+        <dl style="margin:18px 0 0;display:flex;flex-direction:column">
+          <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">you take</dt><dd style="margin:0;text-align:right;color:#C9A646">first loss behind Senior</dd></div>
+          <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">you keep</dt><dd style="margin:0;text-align:right">the Court's excess income, pro rata</dd></div>
+          <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">your stake</dt><dd style="margin:0;text-align:right">locked while seated · not vlTHRONE · does not vote</dd></div>
+          <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">exit</dt><dd style="margin:0;text-align:right">one epoch's notice</dd></div>
+          <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0"><dt style="color:#8A867C">cap</dt><dd style="margin:0;text-align:right">junior ≤ 20% of senior + junior</dd></div>
+        </dl>
+        <span style="margin-top:24px;font-size:22px;color:#C9A646;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:7px;cursor:not-allowed;align-self:flex-start;white-space:nowrap">Take a seat · not live</span>
+        <p style="margin:16px 0 0;max-width:62ch;font-size:14px;line-height:1.6;color:#8A867C;text-wrap:pretty">Capped, audited, pausable. Treasury capital sits here first; seats open to $THRONE holders once the ledger has 8 to 12 weeks of history. Capital, not governance: a seat earns the excess and absorbs the loss; it does not point the votes.</p>
+      </div>
+      <div style="flex:9 1 360px;min-width:0;display:flex;flex-direction:column;gap:24px;border-top:1px solid rgba(237,233,223,0.22);padding-top:20px">
+        <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">your position</span>
+        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 32px">
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">deposited</span><span style="font-family:'JetBrains Mono',monospace;font-size:28px;color:#6E6B63">-</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">stake</span><span style="font-family:'JetBrains Mono',monospace;font-size:28px;color:#6E6B63">-</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">earned, all time</span><span style="font-family:'JetBrains Mono',monospace;font-size:28px;color:#6E6B63">-</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">status</span><span style="font-family:'JetBrains Mono',monospace;font-size:28px;color:#6E6B63">-</span></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:clamp(56px,7vw,96px);max-width:760px;display:flex;flex-direction:column;gap:14px;border-top:1px solid rgba(237,233,223,0.22);padding-top:20px">
+      <span style="font-family:'Instrument Serif',serif;font-size:clamp(28px,2.6vw,36px);letter-spacing:-0.02em">The junior side today</span>
+      <dl style="margin:0;display:flex;flex-direction:column">
+        <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">junior capital</dt><dd style="margin:0;font-family:'JetBrains Mono',monospace;color:#6E6B63">-</dd></div>
+        <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">senior capital</dt><dd style="margin:0;font-family:'JetBrains Mono',monospace;color:#6E6B63">-</dd></div>
+        <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">junior share</dt><dd style="margin:0;font-family:'JetBrains Mono',monospace;color:#6E6B63">- / 20% cap</dd></div>
+        <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0"><dt style="color:#8A867C">losses absorbed, all time</dt><dd style="margin:0;font-family:'JetBrains Mono',monospace;color:#6E6B63">-</dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <aside style="margin:clamp(24px,4vw,48px) 0 clamp(56px,7vw,96px);border-left:1px solid #C9A646;padding:4px 0 4px 24px;max-width:88ch;display:flex;flex-direction:column;gap:10px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.7;color:#8A867C">
+    <span style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#C9A646">Wireframe notes</span>
+    <span style="text-wrap:pretty">Three tabs, one layout: action column left, position column right. Gold marks anything that takes risk or decides; bone is Senior and anything paid first. All amounts in mono. The only percentages on the page are structural: 20% stake, 50% locker share, 5% Bounty cut, 20% junior cap. Never an APY, never a projection. Actions carry their status in the label so no modal is needed. Connect lives in the masthead and is the only thing that changes the position column. Mobile: tabs stay as three words, smaller; columns stack action then position.</span>
+  </aside>
+
+  <footer style="border-top:1px solid rgba(237,233,223,0.4);padding:26px 0 48px;font-size:13px;line-height:1.7;color:#8A867C;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap">
+    <span style="max-width:110ch">throne. · Robinhood Chain · set in Instrument Serif, Inter Tight and JetBrains Mono · every number on this page is realized and read from chain or from the venue's public statistics · nothing is projected</span>
+    <span style="font-family:'JetBrains Mono',monospace">app · end</span>
+  </footer>
+
+</div>
 </div>
 
-<div class="wire"><b>Wireframe notes for design.</b> Three tabs, one layout: action card left, position card right, three-step strip under Senior only. Mint = Senior and anything that pays first; gold = the Court, lockers and anything that takes risk. All amounts in mono. No percentages anywhere except the fixed structural ones (20% stake, 50% locker share, 5% Bounty cut, 20% junior cap). Never an APY, never a projection. Buttons carry their status in the label ("· not live") so no modal is needed. Connect sits in the nav, right side, and is the only thing that changes the right-hand cards. Mobile: tabs scroll horizontally, cards stack action-then-position.</div>
 
-</div>
+<script src="../dc-lite.js"></script>
+
 <script>
-document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));document.querySelectorAll('.pane').forEach(x=>x.classList.remove('on'));t.classList.add('on');document.getElementById(t.dataset.t).classList.add('on');}));
+class Component extends DCLogic {
+  state = { tab: 'senior', sen: '', lockAmt: '', seatAmt: '', price: null };
+
+  componentDidMount() {
+    const h = (location.hash || '').replace('#', '');
+    if (['senior', 'lock', 'seat'].includes(h)) this.setState({ tab: h });
+    fetch('https://api.dexscreener.com/latest/dex/tokens/0x72dc556fff14115c077a540921e5F35499a4DCa7')
+      .then(r => r.json())
+      .then(j => {
+        const ps = (j.pairs || []).filter(p => /USDG/i.test((p.quoteToken || {}).symbol || '') || /USDG/i.test((p.baseToken || {}).symbol || ''))
+          .sort((a, b) => ((b.liquidity || {}).usd || 0) - ((a.liquidity || {}).usd || 0));
+        const p = ps[0] && Number(ps[0].priceUsd);
+        if (p > 0) this.setState({ price: p });
+      })
+      .catch(() => {});
+  }
+
+  renderVals() {
+    const S = this.state;
+    const clean = (v) => v.replace(/[^0-9.,]/g, '');
+    const num = (v) => parseFloat(String(v).replace(/,/g, '')) || 0;
+    const f2 = (x) => x.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const launch = Date.UTC(2026, 8, 13);
+    const seat = num(S.seatAmt);
+    const stake = seat && S.price ? Math.round(seat * 0.2 / S.price).toLocaleString('en-US') : (seat ? '-' : '0');
+    const tabs = [['senior', 'Senior'], ['lock', 'Lock'], ['seat', 'Seat']].map(([id, label], i) => ({
+      id, label,
+      go: () => { this.setState({ tab: id }); try { history.replaceState(null, '', '#' + id); } catch (e) {} },
+      color: S.tab === id ? '#C9A646' : '#B5B0A5',
+      rule: S.tab === id ? '#C9A646' : 'transparent',
+      sep: i < 2 ? 'rgba(237,233,223,0.12)' : 'transparent'
+    }));
+    return {
+      dayNum: Math.floor((Date.now() - launch) / 864e5) + 1,
+      tabs,
+      showSenior: S.tab === 'senior' ? 'block' : 'none',
+      showLock: S.tab === 'lock' ? 'block' : 'none',
+      showSeat: S.tab === 'seat' ? 'block' : 'none',
+      sen: S.sen, onSen: (e) => this.setState({ sen: clean(e.target.value) }),
+      senOut: num(S.sen) ? f2(num(S.sen)) : '0.00',
+      lockAmt: S.lockAmt, onLock: (e) => this.setState({ lockAmt: clean(e.target.value) }),
+      seatAmt: S.seatAmt, onSeat: (e) => this.setState({ seatAmt: clean(e.target.value) }),
+      stakeThr: stake
+    };
+  }
+}
+window.Component = Component;
 </script>
 </body>
 </html>
