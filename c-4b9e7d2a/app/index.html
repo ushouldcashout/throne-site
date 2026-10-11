@@ -54,12 +54,12 @@ input::placeholder{color:#5F5C55}
   </section>
 
   <div role="tablist" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid rgba(237,233,223,0.4);border-bottom:1px solid rgba(237,233,223,0.22)">
-    <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+    <template data-for="tabs" data-as="t">
       <div class="tab" data-t="{{ t.id }}" role="tab" onClick="{{ t.go }}" style="padding:clamp(14px,2vw,24px) clamp(10px,2vw,28px) 0;cursor:pointer;border-right:1px solid {{ t.sep }};display:flex;flex-direction:column;gap:clamp(12px,1.6vw,20px)" class="hv">
         <span style="font-family:'Instrument Serif',serif;font-size:clamp(36px,5vw,64px);line-height:1;letter-spacing:-0.035em;color:{{ t.color }}">{{ t.label }}</span>
         <span style="height:1px;background:{{ t.rule }}"></span>
       </div>
-    </sc-for>
+    </template>
   </div>
 
   <div id="senior" style="display:{{ showSenior }};padding:clamp(40px,5vw,72px) 0">
