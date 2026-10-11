@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>App · the Court · throne.</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050605;--panel:#0b0d0b;--panel2:#0f1210;--line:#1c201d;--fg:#F2F4F0;--dim:#9BA39E;--faint:#5E6663;--mint:#39F194;--gold:#D4AF37;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace;--sans:"Plus Jakarta Sans",Inter,system-ui,sans-serif;--body:Inter,system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1140px;margin:0 auto;padding:0 24px 80px}
+nav{display:flex;align-items:center;justify-content:space-between;height:64px;border-bottom:1px solid var(--line);margin-bottom:36px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--sans);font-weight:800;font-size:22px;letter-spacing:-.02em}
+.brand b{color:var(--mint)}
+nav .r{font-family:var(--mono);font-size:12px;color:var(--faint);letter-spacing:.06em;display:flex;align-items:center;gap:14px}
+nav .r a{color:var(--faint);text-decoration:none}
+.connect{font-family:var(--sans);font-weight:700;font-size:13px;padding:9px 14px;border-radius:4px;border:1px solid var(--line);background:var(--panel2);color:var(--faint);cursor:not-allowed}
+.tag{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mint);border:1px solid rgba(57,241,148,.35);padding:5px 9px;border-radius:3px;margin-right:8px}
+.tag.gold{color:var(--gold);border-color:rgba(212,175,55,.4)}
+.tag.dim{color:var(--faint);border-color:var(--line)}
+h1{font-family:var(--sans);font-size:clamp(30px,4.4vw,48px);letter-spacing:-.03em;margin:16px 0 8px;line-height:1.02;font-weight:800}
+h1 em{font-style:normal;color:var(--mint)}
+.sub{color:var(--dim);font-size:15px;max-width:760px;line-height:1.6;margin:0 0 28px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:24px}
+.tab{font-family:var(--sans);font-weight:700;font-size:14px;padding:12px 16px;color:var(--faint);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab.on{color:var(--fg);border-color:var(--mint)}
+.tab.gold.on{border-color:var(--gold)}
+.pane{display:none}.pane.on{display:block}
+.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:6px}
+.panel .hd{display:flex;justify-content:space-between;align-items:baseline;padding:18px 20px;border-bottom:1px solid var(--line)}
+.panel .hd h2{font-family:var(--sans);font-size:20px;font-weight:700;letter-spacing:-.02em}
+.panel .hd span{font-family:var(--mono);font-size:12px;color:var(--faint)}
+.form{padding:18px 20px;display:grid;gap:12px}
+.field label{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.field .in{display:flex;align-items:center;justify-content:space-between;background:var(--panel2);border:1px solid var(--line);border-radius:4px;padding:14px;font-family:var(--mono);font-size:18px;color:var(--faint)}
+.field .in b{font-size:11px;letter-spacing:.1em;color:var(--mint);font-weight:500}
+.field .in .tok{font-size:13px;color:var(--fg);display:flex;align-items:center;gap:8px}
+.chips{display:flex;gap:6px}
+.chip{font-family:var(--mono);font-size:11px;padding:5px 9px;border:1px solid var(--line);border-radius:3px;color:var(--faint)}
+.chip.on{color:var(--gold);border-color:rgba(212,175,55,.4)}
+.kv div{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #111412;font-family:var(--mono);font-size:13px}
+.kv div:last-child{border-bottom:0}
+.kv span:first-child{color:var(--dim)}
+.kv .g{color:var(--gold)}.kv .m{color:var(--mint)}
+.btn{display:block;width:100%;text-align:center;padding:15px;border-radius:4px;font-family:var(--sans);font-weight:700;font-size:14px;border:1px solid var(--line);color:var(--faint);background:var(--panel2);cursor:not-allowed}
+.btn.mint{background:rgba(57,241,148,.1);border-color:rgba(57,241,148,.35);color:var(--mint)}
+.btn.gold{background:rgba(212,175,55,.12);border-color:rgba(212,175,55,.35);color:var(--gold)}
+.fine{font-family:var(--mono);font-size:11px;color:var(--faint);line-height:1.6}
+.pos{padding:6px 20px 14px}
+.stat{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:18px 20px}
+.stat div{background:var(--panel2);border:1px solid var(--line);border-radius:4px;padding:14px}
+.stat .k{font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.04em}
+.stat .v{font-family:var(--mono);font-size:22px;margin-top:8px}
+.stat .v.off{color:var(--faint);font-size:16px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.step{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:16px}
+.step .n{font-family:var(--mono);font-size:11px;color:var(--mint);letter-spacing:.1em;margin-bottom:6px}
+.step h4{font-family:var(--sans);font-size:15px;margin-bottom:4px}
+.step p{font-size:13px;color:var(--dim);line-height:1.5}
+.wire{margin-top:30px;padding:16px 18px;border:1px dashed rgba(212,175,55,.4);border-radius:6px;font-family:var(--mono);font-size:12px;color:var(--dim);line-height:1.7}
+.wire b{color:var(--gold)}
+@media(max-width:900px){.grid{grid-template-columns:1fr}.steps{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav>
+  <a class="brand" href="../"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M3 18h18v2H3zM3 16l1.5-9 4.5 4 3-6 3 6 4.5-4L21 16z" fill="#39F194"/></svg><span>throne<b>.</b></span></a>
+  <div class="r"><a href="../">the court</a> · <a href="../court/">ledger</a> · <a href="../court/bounty/">bounty</a> · app <span class="connect">Connect · off</span></div>
+</nav>
+
+<span class="tag">The Court · app</span><span class="tag dim">preview · nothing here moves money</span>
+<h1>Three ways in. <em>One ledger behind all of them.</em></h1>
+<p class="sub">Deposit USDG and sit senior. Lock $THRONE and run the votes. Stake $THRONE with USDG and take a seat in the junior side. Every button on this page is off until the contracts are audited and live; the layout is what ships.</p>
+
+<div class="tabs">
+  <div class="tab on" data-t="senior">Senior · USDG</div>
+  <div class="tab gold" data-t="lock">Lock · vlTHRONE</div>
+  <div class="tab gold" data-t="seat">Seat · the Court</div>
+</div>
+
+<!-- SENIOR -->
+<div class="pane on" id="senior">
+  <div class="grid">
+    <div class="panel">
+      <div class="hd"><h2>Deposit USDG</h2><span>paid first · opens November</span></div>
+      <div class="form">
+        <div class="field"><label><span>you deposit</span><span>balance —</span></label><div class="in"><span>0.00</span><span class="tok">USDG <b>MAX</b></span></div></div>
+        <div class="field"><label><span>you receive</span><span>1 : 1 at open</span></label><div class="in"><span>0.00</span><span class="tok">sUSDG</span></div></div>
+        <div class="kv">
+          <div><span>where it sits</span><span>Morpho · Steakhouse USDG vault</span></div>
+          <div><span>what you get</span><span>Morpho's rate + first claim on Court income</span></div>
+          <div><span>paid</span><span>weekly, in USDG, at epoch close</span></div>
+          <div><span>redeem</span><span>any epoch, at Morpho's liquidity</span></div>
+          <div><span>first loss</span><span class="g">the Court, not you</span></div>
+        </div>
+        <div class="btn mint">Deposit · not live</div>
+        <p class="fine">Requests settle once per 7-day epoch. Deposit requests mint at the close of the epoch they were made in; redeem requests are paid from the same close. Senior never lends to the Court and holds nothing that can lose principal except Morpho itself. No rate is quoted anywhere in this app.</p>
+      </div>
+    </div>
+    <div>
+      <div class="panel">
+        <div class="hd"><h2>Your position</h2><span>not connected</span></div>
+        <div class="stat">
+          <div><div class="k">deposited</div><div class="v off">—</div></div>
+          <div><div class="k">claimable this epoch</div><div class="v off">—</div></div>
+          <div><div class="k">paid to you, all time</div><div class="v off">—</div></div>
+          <div><div class="k">pending request</div><div class="v off">none</div></div>
+        </div>
+        <div class="pos kv">
+          <div><span>epoch</span><span>— · closes —</span></div>
+          <div><span>court income this epoch</span><span class="m">on the ledger →</span></div>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:14px">
+        <div class="hd"><h2>Arrive from another chain</h2><span>Rift · November</span></div>
+        <div class="pos kv">
+          <div><span>USDC on Base</span><span>→ USDG → Senior, one order</span></div>
+          <div><span>USDT on Ethereum</span><span>→ USDG → Senior, one order</span></div>
+          <div><span>a Hyperliquid balance</span><span>→ USDG → Senior, one order</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="steps">
+    <div class="step"><div class="n">01</div><h4>Request</h4><p>Deposit USDG. It is held, not deployed, until the epoch closes.</p></div>
+    <div class="step"><div class="n">02</div><h4>Close</h4><p>Every 7 days: income measured, Senior paid first, shares minted at one price.</p></div>
+    <div class="step"><div class="n">03</div><h4>Claim or stay</h4><p>Claim your USDG any epoch, or leave it and keep first claim.</p></div>
+  </div>
+</div>
+
+<!-- LOCK -->
+<div class="pane" id="lock">
+  <div class="grid">
+    <div class="panel">
+      <div class="hd"><h2>Lock $THRONE</h2><span>vlTHRONE · with Sink's TGE</span></div>
+      <div class="form">
+        <div class="field"><label><span>you lock</span><span>balance —</span></label><div class="in"><span>0</span><span class="tok">THRONE <b>MAX</b></span></div></div>
+        <div class="field"><label><span>term</span><span>fixed</span></label><div class="chips"><span class="chip on">16 weeks</span><span class="chip">no other terms</span></div></div>
+        <div class="kv">
+          <div><span>you get</span><span>vlTHRONE · 1 : 1, non-transferable</span></div>
+          <div><span>votes</span><span>where the Court's vlSINK points, every epoch</span></div>
+          <div><span>income</span><span class="g">50% of vote income (fees + Bounties), pull-claim, USDG</span></div>
+          <div><span>not paid to lockers</span><span>desk fees · pons fees · Senior's fee</span></div>
+          <div><span>unlock</span><span>by you, after expiry · no slashing, no early exit</span></div>
+        </div>
+        <div class="btn gold">Lock · not live</div>
+        <p class="fine">Locking is governance, not capital. A lock does not sit in the junior side and takes no loss. Vesting round tokens can be locked from day one. Seat stake does not count as vlTHRONE.</p>
+      </div>
+    </div>
+    <div>
+      <div class="panel">
+        <div class="hd"><h2>Your lock</h2><span>not connected</span></div>
+        <div class="stat">
+          <div><div class="k">locked</div><div class="v off">—</div></div>
+          <div><div class="k">unlocks</div><div class="v off">—</div></div>
+          <div><div class="k">claimable</div><div class="v off">—</div></div>
+          <div><div class="k">claimed, all time</div><div class="v off">—</div></div>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:14px">
+        <div class="hd"><h2>This epoch's vote</h2><span>the Court's vlSINK</span></div>
+        <div class="pos kv">
+          <div><span>THRONE / USDG</span><span>—%</span></div>
+          <div><span>Court Launch pools</span><span>—%</span></div>
+          <div><span>Bounty-weighted</span><span>—%</span></div>
+          <div><span>cast</span><span>Thursday, by Sink, as one block</span></div>
+        </div>
+        <div style="padding:0 20px 18px"><div class="btn">Vote · not live</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SEAT -->
+<div class="pane" id="seat">
+  <div class="grid">
+    <div class="panel">
+      <div class="hd"><h2>Take a seat</h2><span>junior · first loss · after 8 to 12 weeks of ledger</span></div>
+      <div class="form">
+        <div class="field"><label><span>you deposit</span><span>balance —</span></label><div class="in"><span>0.00</span><span class="tok">USDG <b>MAX</b></span></div></div>
+        <div class="field"><label><span>$THRONE stake · 20% of deposit</span><span>auto-filled</span></label><div class="in"><span>0</span><span class="tok">THRONE</span></div></div>
+        <div class="kv">
+          <div><span>you take</span><span class="g">first loss behind Senior</span></div>
+          <div><span>you keep</span><span>the Court's excess income, pro rata</span></div>
+          <div><span>your stake</span><span>locked while seated · not vlTHRONE · does not vote</span></div>
+          <div><span>exit</span><span>one epoch's notice</span></div>
+          <div><span>cap</span><span>junior ≤ 20% of senior + junior</span></div>
+        </div>
+        <div class="btn gold">Take a seat · not live</div>
+        <p class="fine">Capped, audited, pausable. Treasury capital sits here first; seats open to $THRONE holders once the ledger has 8 to 12 weeks of history. Capital, not governance: a seat earns the excess and absorbs the loss; it does not point the votes.</p>
+      </div>
+    </div>
+    <div>
+      <div class="panel">
+        <div class="hd"><h2>Your seat</h2><span>not connected</span></div>
+        <div class="stat">
+          <div><div class="k">deposited</div><div class="v off">—</div></div>
+          <div><div class="k">stake</div><div class="v off">—</div></div>
+          <div><div class="k">earned, all time</div><div class="v off">—</div></div>
+          <div><div class="k">status</div><div class="v off">—</div></div>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:14px">
+        <div class="hd"><h2>The junior side today</h2><span>live when open</span></div>
+        <div class="pos kv">
+          <div><span>junior capital</span><span>—</span></div>
+          <div><span>senior capital</span><span>—</span></div>
+          <div><span>junior share</span><span>— / 20% cap</span></div>
+          <div><span>losses absorbed, all time</span><span>—</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wire"><b>Wireframe notes for design.</b> Three tabs, one layout: action card left, position card right, three-step strip under Senior only. Mint = Senior and anything that pays first; gold = the Court, lockers and anything that takes risk. All amounts in mono. No percentages anywhere except the fixed structural ones (20% stake, 50% locker share, 5% Bounty cut, 20% junior cap). Never an APY, never a projection. Buttons carry their status in the label ("· not live") so no modal is needed. Connect sits in the nav, right side, and is the only thing that changes the right-hand cards. Mobile: tabs scroll horizontally, cards stack action-then-position.</div>
+
+</div>
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));document.querySelectorAll('.pane').forEach(x=>x.classList.remove('on'));t.classList.add('on');document.getElementById(t.dataset.t).classList.add('on');}));
+</script>
+</body>
+</html>
