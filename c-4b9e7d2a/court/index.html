@@ -60,9 +60,9 @@ a:hover{color:#C9A646}
       <span style="font-size:13px;line-height:1.45;color:#8A867C"><span id="t_pons_eth" style="font-family:'JetBrains Mono',monospace">{{ ponsEth }}</span> eth credited · <span id="t_pons_claim" style="font-family:'JetBrains Mono',monospace">{{ ponsClaim }}</span> claimable</span>
     </div>
     <div style="padding:20px 18px;display:flex;flex-direction:column;gap:10px;border-right:1px solid rgba(237,233,223,0.12)">
-      <span style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;white-space:nowrap">fables pool</span>
-      <span style="font-family:'JetBrains Mono',monospace;font-size:20px;color:#6E6B63;white-space:nowrap">not live</span>
-      <span style="font-size:13px;line-height:1.45;color:#8A867C">swap fees + weekly rewards · wiring</span>
+      <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;white-space:nowrap"><span style="width:12px;height:2px;background:{{ fablesMark }}"></span>fables pool</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:clamp(16px,1.3vw,22px);letter-spacing:-0.02em;color:{{ fablesColor }};white-space:nowrap">{{ tFables }}</span>
+      <span style="font-size:13px;line-height:1.45;color:#8A867C">the Court's share of swap fees paid to the pool · <span style="font-family:'JetBrains Mono',monospace">{{ tPoolFees }}</span> pool-wide · weekly rewards wiring</span>
     </div>
     <div style="padding:20px 18px;display:flex;flex-direction:column;gap:10px;border-right:1px solid rgba(237,233,223,0.12)">
       <span style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;white-space:nowrap">votes + bounty</span>
@@ -111,29 +111,29 @@ a:hover{color:#C9A646}
           </tr>
         </thead>
         <tbody id="rows">
-          <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+          <template data-for="rows" data-as="r">
             <tr style="border-bottom:1px solid rgba(237,233,223,0.1)">
               <td style="text-align:left;padding:11px 12px 11px 0;color:#B5B0A5;white-space:nowrap">{{ r.d }}</td>
               <td style="text-align:right;padding:11px 12px;color:{{ r.deskC }}">{{ r.desk }}</td>
               <td style="text-align:right;padding:11px 12px;color:{{ r.ponsC }}">{{ r.pons }}</td>
               <td style="text-align:right;padding:11px 12px;color:{{ r.ponsC }}">{{ r.eth }}</td>
-              <td style="text-align:right;padding:11px 12px;color:#6E6B63">-</td>
+              <td style="text-align:right;padding:11px 12px;color:{{ r.fablesC }}">{{ r.fables }}</td>
               <td style="text-align:right;padding:11px 12px;color:#6E6B63">-</td>
               <td style="text-align:right;padding:11px 12px;color:#C9A646">{{ r.total }}</td>
               <td style="text-align:right;padding:11px 0 11px 12px;color:{{ r.deskC }}">{{ r.vol }}</td>
             </tr>
-          </sc-for>
-          <sc-if value="{{ noRows }}" hint-placeholder-val="{{ false }}">
+          </template>
+          <template data-if="noRows">
             <tr style="border-bottom:1px solid rgba(237,233,223,0.1)">
               <td colspan="8" style="padding:22px 0;color:#8A867C;font-family:'Inter Tight',sans-serif;font-size:16px">No rows loaded. Every cell stays blank until the ledger reads from chain.</td>
             </tr>
-          </sc-if>
+          </template>
           <tr style="border-top:2px solid rgba(237,233,223,0.45)">
             <td style="text-align:left;padding:14px 12px 14px 0;color:#EDE9DF;white-space:nowrap">since 2026-09-13</td>
             <td style="text-align:right;padding:14px 12px;color:#EDE9DF">{{ sum.desk }}</td>
             <td style="text-align:right;padding:14px 12px;color:#EDE9DF">{{ sum.pons }}</td>
             <td style="text-align:right;padding:14px 12px;color:#EDE9DF">{{ sum.eth }}</td>
-            <td style="text-align:right;padding:14px 12px;color:#6E6B63">-</td>
+            <td style="text-align:right;padding:14px 12px;color:#EDE9DF">{{ sum.fables }}</td>
             <td style="text-align:right;padding:14px 12px;color:#6E6B63">-</td>
             <td style="text-align:right;padding:14px 12px;color:#C9A646;font-weight:500">{{ sum.total }}</td>
             <td style="text-align:right;padding:14px 0 14px 12px;color:#EDE9DF">{{ sum.vol }}</td>
@@ -153,6 +153,9 @@ a:hover{color:#C9A646}
         <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">pool liquidity</dt><dd id="p_liq" style="margin:0;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;color:{{ polColor }}">{{ pLiq }}</dd></div>
         <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">24h volume</dt><dd id="p_vol" style="margin:0;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;color:{{ polColor }}">{{ pVol }}</dd></div>
         <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">fdv</dt><dd id="p_fdv" style="margin:0;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;color:{{ polColor }}">{{ pFdv }}</dd></div>
+        <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">protocol-owned share</dt><dd style="margin:0;font-family:'JetBrains Mono',monospace;color:#C9A646">{{ polShare }}</dd></div>
+        <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">fees to LPs, 24h</dt><dd style="margin:0;font-family:'JetBrains Mono',monospace;color:{{ fbColor }}">{{ fbFees24 }}</dd></div>
+        <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">pool APR · Fables' figure</dt><dd style="margin:0;font-family:'JetBrains Mono',monospace;color:{{ fbColor }}">{{ fbApr }}</dd></div>
         <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0"><dt style="color:#8A867C">source</dt><dd id="p_src" style="margin:0;font-family:'JetBrains Mono',monospace;font-size:14px;color:#8A867C;text-align:right">{{ pSrc }}</dd></div>
       </dl>
     </div>
@@ -219,6 +222,8 @@ class Component extends DCLogic {
     const rowsRaw = (d && d.rows) || [];
     const deskOn = !!(d && d.desk !== false && rowsRaw.length);
     const ponsOn = !!(d && d.pons && rowsRaw.length);
+    const fbOn = !!(d && d.fables && rowsRaw.length);
+    const fbs = d && d.fables && d.fables.stats;
     const sum = (k) => rowsRaw.reduce((a, x) => a + (x[k] || 0), 0);
     const peak = rowsRaw.reduce((a, x) => Math.max(a, x.users || 0), 0);
     const GOLD = '#C9A646', DIM = '#6E6B63', MINT = '#39F194';
@@ -228,6 +233,7 @@ class Component extends DCLogic {
       desk: deskOn ? n2(r.deskFee || 0) : DASH, deskC: deskOn ? '#EDE9DF' : DIM,
       pons: ponsOn ? n2(r.ponsUsd || 0) : DASH, ponsC: ponsOn ? '#EDE9DF' : DIM,
       eth: ponsOn ? (r.ponsEth || 0).toFixed(4) : DASH,
+      fables: r.fablesUsd == null ? DASH : n2(r.fablesUsd), fablesC: r.fablesUsd == null ? DIM : '#EDE9DF',
       total: n2(r.total || 0),
       vol: deskOn ? Math.round(r.deskVol || 0).toLocaleString('en-US') : DASH
     }));
@@ -248,6 +254,13 @@ class Component extends DCLogic {
       tDesk: deskOn ? usd2(sum('deskFee')) : DASH,
       deskRange: rowsRaw.length ? fmtD(rowsRaw[0].d) + ' → ' + fmtD(rowsRaw[rowsRaw.length - 1].d) : DASH,
       tPons: ponsOn ? usd2(sum('ponsUsd')) : DASH,
+      fablesMark: fbOn ? MINT : 'transparent', fablesColor: fbOn ? GOLD : DIM,
+      tFables: fbOn ? usd2(sum('fablesUsd')) : 'unreachable',
+      tPoolFees: fbOn ? usd2(sum('poolFee')) : DASH,
+      polShare: d && d.fables ? Math.round(d.fables.share * 100) + '%' : DASH,
+      fbColor: fbs ? GOLD : DIM,
+      fbFees24: fbs ? usd2(fbs.feesUsd || 0) : DASH,
+      fbApr: fbs && fbs.aprPct != null ? Number(fbs.aprPct).toFixed(1) + '%' : DASH,
       ponsEth: d && d.pons && d.pons.credited != null ? Number(d.pons.credited).toFixed(4) : DASH,
       ponsClaim: d && d.pons && d.pons.claimable != null ? Number(d.pons.claimable).toFixed(4) : DASH,
       tTotal: live && rowsRaw.length ? usd2(sum('total')) : DASH,
@@ -261,6 +274,7 @@ class Component extends DCLogic {
         desk: deskOn ? n2(sum('deskFee')) : DASH,
         pons: ponsOn ? n2(sum('ponsUsd')) : DASH,
         eth: ponsOn ? sum('ponsEth').toFixed(4) : DASH,
+        fables: fbOn ? n2(sum('fablesUsd')) : DASH,
         total: rowsRaw.length ? n2(sum('total')) : DASH,
         vol: deskOn ? Math.round(sum('deskVol')).toLocaleString('en-US') : DASH
       },
