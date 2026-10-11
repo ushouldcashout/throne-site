@@ -47,31 +47,24 @@ a:hover{color:#C9A646}
   <section style="padding:clamp(40px,6vw,80px) 0 0">
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(28px,4vw,64px);align-items:end">
       <div style="display:flex;flex-direction:column;gap:12px;align-self:start">
-        <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">THE COURT'S CAPITAL AT WORK</span>
-        <span style="font-family:'Instrument Serif',serif;font-size:clamp(30px,2.8vw,40px);line-height:1.05;letter-spacing:-0.02em;max-width:14ch">Every book the Court's money sits in.</span>
+        <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">COURT SIM APY</span>
+        <span style="font-family:'Instrument Serif',serif;font-size:clamp(30px,2.8vw,40px);line-height:1.05;letter-spacing:-0.02em;max-width:16ch">What $1M in the vaults would earn today.</span>
       </div>
       <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
-        <span id="apy_cap" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:clamp(96px,11vw,160px);line-height:0.86;letter-spacing:-0.06em;color:#C9A646;white-space:nowrap">{{ topCap }}</span>
-        <span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C">annualized · on <span id="cap_total" style="font-family:'JetBrains Mono',monospace;letter-spacing:0;color:#EDE9DF;text-transform:none">{{ capTotal }}</span> of court capital · <span style="color:#39F194">live</span> + <span style="color:#C9A646">sim</span></span>
+        <span id="apy_cap" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:clamp(96px,11vw,160px);line-height:0.86;letter-spacing:-0.06em;color:#C9A646;white-space:nowrap">{{ sim1mAll }}</span>
+        <span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C">$1M deposited</span>
       </div>
       <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
-        <span id="apy_all" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:clamp(48px,4.6vw,64px);line-height:0.9;letter-spacing:-0.04em;color:#EDE9DF;white-space:nowrap">{{ topAll }}</span>
-        <span style="font-size:12px;line-height:1.6;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C;max-width:34ch">all-in · adds pons + desk income, which have no capital behind them</span>
+        <span id="apy_all" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:clamp(48px,4.6vw,64px);line-height:0.9;letter-spacing:-0.04em;color:#EDE9DF;white-space:nowrap">{{ realized }}</span>
+        <span style="font-size:12px;line-height:1.6;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C;max-width:34ch"><span style="color:#39F194">real</span> · collected since 13 sep · {{ blendDays }} days</span>
       </div>
     </div>
     <div style="margin-top:clamp(28px,3vw,40px);border-top:1px solid rgba(237,233,223,0.22);padding:14px 0;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:13px;color:#B5B0A5;display:flex;flex-wrap:wrap;gap:6px 14px">
-      <span style="white-space:nowrap">realized since 13 sep <span style="color:#C9A646">{{ realized }}</span></span><span>·</span>
-      <span style="white-space:nowrap">{{ blendDays }} utc days</span><span>·</span>
-      <span style="white-space:nowrap">morpho net {{ morphoNet }}</span><span>·</span>
-      <span style="white-space:nowrap">fables pool apr {{ poolApr }}</span>
-    </div>
-    <div style="border-top:1px solid rgba(237,233,223,0.12);padding:14px 0 0;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:13px;color:#B5B0A5;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline">
-      <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#C9A646;border-bottom:1px dotted #C9A646">SIM</span>
-      <span style="white-space:nowrap">the same books at <span style="color:#EDE9DF">$1,000,000</span></span><span>·</span>
-      <span style="white-space:nowrap"><span style="color:#C9A646">{{ sim1mCap }}</span> on capital</span><span>·</span>
-      <span style="white-space:nowrap"><span style="color:#C9A646">{{ sim1mAll }}</span> all-in</span><span>·</span>
-      <span style="white-space:nowrap">carry filled to its OI cap ({{ sim1mCarry }} notional), the rest in Senior at Morpho's rate</span><span>·</span>
-      <span style="white-space:nowrap;color:#8A867C">not open for deposits</span>
+      <span style="white-space:nowrap">where the $1M sits:</span>
+      <span style="white-space:nowrap"><span style="color:#EDE9DF">{{ sim1mCarry }}</span> short on the desk, collecting funding</span><span>·</span>
+      <span style="white-space:nowrap"><span style="color:#EDE9DF">{{ sim1mPol }}</span> in the Fables pool</span><span>·</span>
+      <span style="white-space:nowrap">the rest at Morpho ({{ morphoNet }})</span><span>·</span>
+      <span style="white-space:nowrap">plus pons + desk fees on top</span>
     </div>
   </section>
 
@@ -318,6 +311,7 @@ class Component extends DCLogic {
       sim1mCap: d && d.sim1m && ok(d.sim1m.apyOnCapital) ? pct1(d.sim1m.apyOnCapital) : D,
       sim1mAll: d && d.sim1m && ok(d.sim1m.apyAllIn) ? pct1(d.sim1m.apyAllIn) : D,
       sim1mCarry: d && d.sim1m ? usd0(d.sim1m.carryNotional) : D,
+      sim1mPol: d && d.sim1m ? usd0(d.sim1m.pol) : D,
       realized: usd0(b.realizedSinceLaunch),
       blendDays: ok(b.days) ? b.days : D,
       morphoNet: pct2(mo.netApy),
