@@ -81,8 +81,9 @@ a:hover{color:#C9A646}
           <span id="t_vol" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:24px;color:#C9A646"><span id="deskVolV">·</span></span>
         </div>
         <div style="display:flex;flex-direction:column;gap:8px">
-          <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#39F194"></span>active traders</span>
-          <span id="t_users" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:24px;color:#C9A646"><span id="usersV">·</span></span>
+          <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#C9A646"></span>court sim apy</span>
+          <a href="terminal/" style="text-decoration:none;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:24px;color:#C9A646"><span id="simApyV">·</span></a>
+          <a href="terminal/" style="text-decoration:none;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;font-size:13px;color:#8A867C"><span id="simApySub">on the court's capital at work · terminal →</span></a>
         </div>
         <div style="display:flex;flex-direction:column;gap:8px">
           <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#4A4740"></span>votes + bounty</span>
@@ -300,7 +301,7 @@ a:hover{color:#C9A646}
 
 
 
-<script src="court.js?v=4"></script>
+<script src="court.js?v=5"></script>
 <script>
 (function(){
   const $=id=>document.getElementById(id);
@@ -324,15 +325,21 @@ a:hover{color:#C9A646}
       $('ponsFees').textContent=d.pons?usd0(sum('ponsUsd')):'unreachable';
       $('ponsEthV').textContent=d.pons?sum('ponsEth').toFixed(3)+' eth':'';
       $('deskVolV').textContent=short(sum('deskVol'));
-      $('usersV').textContent=String(rows.reduce((m,x)=>Math.max(m,x.users||0),0));
       const lr=rows[rows.length-1], lastD=new Date(lr.d+'T00:00:00Z');
       $('asofV').textContent=lastD.getUTCDate()+' '+mon[lastD.getUTCMonth()]+' · utc day close';
       $('dayNum').textContent=rows.length;
       setLive('live','#39F194');
     }catch(e){
       setLive('sources unreachable','#8A867C');
-      ['sevenDay','deskFees','ponsFees','deskVolV','usersV'].forEach(i=>$(i).textContent='unreachable'); $('asofV').textContent='nothing is estimated in its place';
+      ['sevenDay','deskFees','ponsFees','deskVolV','simApyV'].forEach(i=>$(i).textContent='unreachable'); $('asofV').textContent='nothing is estimated in its place';
     }
+  })();
+  (async()=>{
+    try{
+      const t=await courtData.terminal(); const b=t&&t.blend; if(!b||b.apyOnCapital==null) throw new Error('no blend');
+      $('simApyV').textContent=(b.apyOnCapital*100).toFixed(1)+'%';
+      $('simApySub').textContent='on '+usd0(b.capital)+' at work · live + sim · terminal →';
+    }catch(e){ $('simApyV').textContent='unreachable'; }
   })();
 })();
 </script>
