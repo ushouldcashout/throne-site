@@ -61,17 +61,17 @@ tr.sum td{border-top:1px solid var(--line);color:var(--fg);font-weight:500;backg
 
 <nav>
   <a class="brand" href="../"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M3 18h18v2H3zM3 16l1.5-9 4.5 4 3-6 3 6 4.5-4L21 16z" fill="#39F194"/></svg><span>throne<b>.</b></span></a>
-  <div class="r"><a href="../">the court</a> · ledger</div>
+  <div class="r"><a href="../">the court</a> · ledger · <a href="bounty/">bounty</a> · <a href="../app/">app</a></div>
 </nav>
 
 <span class="tag">The Court · Ledger</span><span class="tag gold">private · real where marked</span>
 <h1>What the Court received.</h1>
-<p class="sub">Every row is one UTC day. Every number is realized income, read from chain or from the venue's public statistics. Nothing here is projected or annualized. A source that is not live yet says so.</p>
+<p class="sub">Since $THRONE launched on 13 September. Every row is one UTC day. Every number is realized income, read from chain or from the venue's public statistics. Nothing here is projected or annualized. A source that is not live yet says so.</p>
 
 <div class="tiles">
   <div class="tile hi"><span class="st live">live</span><div class="k">desk fees</div><div class="v" id="t_desk">–</div><div class="n">builder fee on perp taker volume · <span id="t_desk_range">–</span></div></div>
-  <div class="tile"><span class="st">wiring</span><div class="k">swap fees</div><div class="v off">not live</div><div class="n">throne / usdg pool on fables · read from the hook, not estimated</div></div>
-  <div class="tile"><span class="st">wiring</span><div class="k">fables rewards</div><div class="v off">not live</div><div class="n">weekly lp rewards + creator-fee pot · paid to the pool's liquidity</div></div>
+  <div class="tile hi"><span class="st live">live</span><div class="k">pons fees</div><div class="v" id="t_pons">–</div><div class="n">creator fee on THRONE/ETH swaps · <span id="t_pons_eth">–</span> ETH credited · <span id="t_pons_claim">–</span> claimable</div></div>
+  <div class="tile"><span class="st">wiring</span><div class="k">fables pool</div><div class="v off">not live</div><div class="n">THRONE/USDG swap fees + weekly rewards · read from the hook, not estimated</div></div>
   <div class="tile"><span class="st soon">not live</span><div class="k">votes + bounty</div><div class="v off">not live</div><div class="n">the court's share of sink's block · bounty cut 5%</div></div>
   <div class="tile hi"><span class="st live">live</span><div class="k">court income</div><div class="v" id="t_total">–</div><div class="n">sum of live sources only · <span id="t_days">–</span> UTC days</div></div>
   <div class="tile"><span class="st live">live</span><div class="k">desk volume</div><div class="v" id="t_vol">–</div><div class="n">taker + maker, all markets, same window</div></div>
@@ -84,11 +84,11 @@ tr.sum td{border-top:1px solid var(--line);color:var(--fg);font-weight:500;backg
     <div class="hd"><h2>Ledger · by UTC day</h2><span id="src">reading the venue…</span></div>
     <div style="overflow:auto">
     <table>
-      <thead><tr><th>day</th><th>desk fees</th><th>swap fees</th><th>fables</th><th>votes</th><th>bounty</th><th>total</th><th>desk vol</th></tr></thead>
+      <thead><tr><th>day</th><th>desk fees</th><th>pons fees</th><th>pons eth</th><th>fables</th><th>votes + bounty</th><th>total</th><th>desk vol</th></tr></thead>
       <tbody id="rows"><tr><td colspan="8" style="text-align:left;color:var(--faint)">loading…</td></tr></tbody>
     </table>
     </div>
-    <div class="ft">desk fees = the venue's published builder fee for broker <code>throne</code>, per UTC day, in USDC. Columns marked "–" are not live; they are never estimated. Total = live columns only.</div>
+    <div class="ft">desk fees = the venue's published builder fee for broker <code>throne</code>, per UTC day, in USDC. pons fees = ETH credited to THRONE's creator-fee recipient in the Pons fee escrow (read from chain, every Credited event), valued at that day's ETH close (<span id="px_src">–</span>). Columns marked "–" are not live; they are never estimated. Total = live columns only.</div>
   </div>
 
   <div>
@@ -119,49 +119,39 @@ tr.sum td{border-top:1px solid var(--line);color:var(--fg);font-weight:500;backg
 
 </div>
 
+<script src="../court.js"></script>
 <script>
 (async function(){
-  const START = '2026-09-25';
   const usd = n => '$' + n.toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2});
   const usd0 = n => '$' + n.toLocaleString(undefined,{maximumFractionDigits:0});
-  try {
-    const r = await fetch('https://api.orderly.org/md/volume/builder/daily_stats?broker_id=throne', {cache:'no-store'});
-    const raw = await r.json();
-    const rows = raw.map(x => ({ d: String(x.date).slice(0,10), fee: +x.builderFee||0, vol: (+x.takerVolume||0)+(+x.makerVolume||0), users: +x.activeUser||0 }))
-      .filter(x => x.d >= START).sort((a,b)=>a.d<b.d?-1:1);
-    let fee=0, vol=0, users=0;
-    const tb = document.getElementById('rows'); tb.innerHTML = '';
-    for (const x of rows.slice().reverse()) {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${x.d}</td><td>${usd(x.fee)}</td><td class="off">–</td><td class="off">–</td><td class="off">–</td><td class="off">–</td><td class="tot">${usd(x.fee)}</td><td>${usd0(x.vol)}</td>`;
-      tb.appendChild(tr);
-    }
-    for (const x of rows) { fee += x.fee; vol += x.vol; users = Math.max(users, x.users); }
-    const sum = document.createElement('tr'); sum.className='sum';
-    sum.innerHTML = `<td>since ${START}</td><td>${usd(fee)}</td><td class="off">–</td><td class="off">–</td><td class="off">–</td><td class="off">–</td><td class="tot">${usd(fee)}</td><td>${usd0(vol)}</td>`;
-    tb.appendChild(sum);
-    document.getElementById('t_desk').textContent = usd(fee);
-    document.getElementById('t_desk_range').textContent = START + ' → ' + (rows[rows.length-1]||{}).d;
-    document.getElementById('t_total').textContent = usd(fee);
-    document.getElementById('t_days').textContent = rows.length;
-    document.getElementById('t_vol').textContent = usd0(vol);
-    document.getElementById('t_users').textContent = users;
-    document.getElementById('src').textContent = 'venue statistics · updated ' + new Date().toISOString().slice(0,16).replace('T',' ') + ' UTC';
-  } catch (e) {
-    document.getElementById('src').textContent = 'venue unreachable';
-    document.getElementById('rows').innerHTML = '<tr><td colspan="8" style="text-align:left;color:var(--faint)">could not read the venue right now; nothing is estimated in its place.</td></tr>';
+  const eth = n => n.toFixed(4);
+  const L = await courtData.ledger();
+  const tb = document.getElementById('rows'); tb.innerHTML = '';
+  if (!L.rows.length) { tb.innerHTML = '<tr><td colspan="8" style="text-align:left;color:var(--faint)">could not read the sources right now; nothing is estimated in their place.</td></tr>'; }
+  let fee=0, vol=0, users=0, pe=0, pu=0;
+  for (const x of L.rows.slice().reverse()) {
+    const tr = document.createElement('tr');
+    const pc = x.ponsUsd==null ? '<td class="off">–</td><td class="off">–</td>' : `<td>${usd(x.ponsUsd)}</td><td class="off">${eth(x.ponsEth)}</td>`;
+    tr.innerHTML = `<td>${x.d}</td><td>${L.desk?usd(x.deskFee):'<span class="off">–</span>'}</td>${pc}<td class="off">–</td><td class="off">–</td><td class="tot">${usd(x.total)}</td><td>${usd0(x.deskVol)}</td>`;
+    tb.appendChild(tr);
   }
+  for (const x of L.rows) { fee += x.deskFee; vol += x.deskVol; users = Math.max(users, x.users); pe += x.ponsEth||0; pu += x.ponsUsd||0; }
+  const sum = document.createElement('tr'); sum.className='sum';
+  sum.innerHTML = `<td>since ${L.launch}</td><td>${usd(fee)}</td><td>${usd(pu)}</td><td class="off">${eth(pe)}</td><td class="off">–</td><td class="off">–</td><td class="tot">${usd(fee+pu)}</td><td>${usd0(vol)}</td>`;
+  tb.appendChild(sum);
+  const set=(id,v)=>document.getElementById(id).textContent=v;
+  set('t_desk', L.desk?usd(fee):'unreachable'); set('t_desk_range', L.launch + ' → ' + (L.rows[L.rows.length-1]||{}).d);
+  set('t_total', usd(fee+pu)); set('t_days', L.rows.length); set('t_vol', usd0(vol)); set('t_users', users);
+  if (L.pons) { set('t_pons', usd(pu)); set('t_pons_eth', eth(L.pons.credited)); set('t_pons_claim', L.pons.claimable==null?'–':eth(L.pons.claimable)); } else { set('t_pons','unreachable'); }
+  set('px_src', L.eth.src || 'no ETH price source reachable');
+  set('src', 'venue statistics + chain · ' + new Date().toISOString().slice(0,16).replace('T',' ') + ' UTC' + (L.pons?' · pons scanned to block '+L.pons.lastBlock:''));
   try {
     const t = await (await fetch('https://api.dexscreener.com/latest/dex/tokens/0x72dc556fff14115c077a540921e5F35499a4DCa7')).json();
     const p = (t.pairs||[]).filter(x => /USDG/i.test((x.quoteToken||{}).symbol||'')).sort((a,b)=>(b.liquidity?.usd||0)-(a.liquidity?.usd||0))[0] || (t.pairs||[])[0];
     if (p) {
-      document.getElementById('p_price').textContent = '$' + Number(p.priceUsd).toPrecision(4);
-      document.getElementById('p_liq').textContent = usd0(p.liquidity?.usd||0);
-      document.getElementById('p_vol').textContent = usd0(p.volume?.h24||0);
-      document.getElementById('p_fdv').textContent = usd0(p.fdv||0);
-      document.getElementById('p_src').textContent = 'dexscreener · ' + (p.dexId||'') ;
+      set('p_price', '$' + Number(p.priceUsd).toPrecision(4)); set('p_liq', usd0(p.liquidity?.usd||0)); set('p_vol', usd0(p.volume?.h24||0)); set('p_fdv', usd0(p.fdv||0)); set('p_src', 'dexscreener · ' + (p.dexId||''));
     }
-  } catch (e) { document.getElementById('p_src').textContent = 'dexscreener unreachable'; }
+  } catch (e) { set('p_src', 'dexscreener unreachable'); }
 })();
 </script>
 </body>
