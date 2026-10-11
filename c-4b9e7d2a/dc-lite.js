@@ -5,6 +5,7 @@
 // are patched in place, loops are re-rendered from their template.
 (function () {
   const RE = /\{\{\s*([^}]+?)\s*\}\}/g;
+  const HAS = /\{\{\s*[^}]+?\s*\}\}/; // non-global: safe for .test()
   const get = (o, p) => p.split('.').reduce((a, k) => (a == null ? undefined : a[k]), o);
   const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   const EV = { onclick: 'click', onchange: 'input', oninput: 'input' };
@@ -32,8 +33,7 @@
       if (el.tagName === 'TEMPLATE') continue;
       for (const a of [...el.attributes]) {
         if (a.name.startsWith('hint-')) { el.removeAttribute(a.name); continue; }
-        if (!RE.test(a.value)) { RE.lastIndex = 0; continue; }
-        RE.lastIndex = 0;
+        if (!HAS.test(a.value)) continue;
         const low = a.name.toLowerCase();
         if (EV[low]) { (el.__ev = el.__ev || {})[EV[low]] = a.value.replace(RE, '$1').trim(); el.removeAttribute(a.name); }
         else { (el.__tpl = el.__tpl || {})[low] = a.value; el.removeAttribute(a.name); }
@@ -42,8 +42,7 @@
     // text bindings
     const tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
     const texts = [];
-    while (tw.nextNode()) if (RE.test(tw.currentNode.nodeValue)) texts.push(tw.currentNode);
-    RE.lastIndex = 0;
+    while (tw.nextNode()) if (HAS.test(tw.currentNode.nodeValue)) texts.push(tw.currentNode);
     for (const tn of texts) {
       if (tn.parentNode.closest && tn.parentNode.closest('template')) continue;
       const frag = document.createDocumentFragment();
@@ -74,31 +73,28 @@
     }
   }
 
-  function render(root, vals) {
-    root.querySelectorAll('template[data-for]').forEach((t) => {
+  function inGen(el) { for (let n = el.parentNode; n; n = n.parentNode) if (n.__gen) return true; return false; }
+  function renderTemplates(root, vals, scope) {
+    const v = (p) => { const r = get(scope, p); return r === undefined ? get(vals, p) : r; };
+    const tpls = [...root.querySelectorAll('template[data-for],template[data-if]')].filter((t) => !inGen(t) || t.__fromScope === scope);
+    for (const t of tpls) {
       let n = t.nextSibling; while (n && n.__gen) { const d = n; n = n.nextSibling; d.remove(); }
-      const list = get(vals, t.dataset.for) || [];
-      const as = t.dataset.as;
       const frag = document.createDocumentFragment();
-      list.forEach((item) => {
+      const build = (itemScope) => {
         const tt = document.createElement('template'); tt.innerHTML = t.innerHTML;
-        const holder = tt.content;
-        compile(holder);
-        const scope = { [as]: item };
-        holder.querySelectorAll('*').forEach((el) => { el.__scoped = true; bindEl(el, vals, scope); });
+        const holder = tt.content; compile(holder);
+        holder.querySelectorAll('*').forEach((el) => { el.__scoped = true; bindEl(el, vals, itemScope); });
+        holder.querySelectorAll('template').forEach((x) => { x.__fromScope = itemScope; });
+        renderTemplates(holder, vals, itemScope);
         [...holder.childNodes].forEach((c) => { c.__gen = true; frag.appendChild(c); });
-      });
+      };
+      if (t.dataset.for !== undefined) { const list = v(t.dataset.for) || []; list.forEach((item) => build(Object.assign({}, scope, { [t.dataset.as]: item }))); }
+      else if (v(t.dataset.if)) build(scope);
       t.after(frag);
-    });
-    root.querySelectorAll('template[data-if]').forEach((t) => {
-      let n = t.nextSibling; while (n && n.__gen) { const d = n; n = n.nextSibling; d.remove(); }
-      if (!get(vals, t.dataset.if)) return;
-      const tt = document.createElement('template'); tt.innerHTML = t.innerHTML; const holder = tt.content; compile(holder);
-      holder.querySelectorAll('*').forEach((el) => bindEl(el, vals, {}));
-      const frag = document.createDocumentFragment();
-      [...holder.childNodes].forEach((c) => { c.__gen = true; frag.appendChild(c); });
-      t.after(frag);
-    });
+    }
+  }
+  function render(root, vals) {
+    renderTemplates(root, vals, {});
     root.querySelectorAll('*').forEach((el) => { if (el.tagName !== 'TEMPLATE' && !el.__scoped && !el.closest('template')) bindEl(el, vals, {}); });
   }
 
