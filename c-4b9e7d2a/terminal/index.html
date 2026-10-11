@@ -61,7 +61,6 @@ a:hover{color:#C9A646}
     </div>
     <div style="margin-top:clamp(28px,3vw,40px);border-top:1px solid rgba(237,233,223,0.22);padding:14px 0;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:13px;color:#B5B0A5;display:flex;flex-wrap:wrap;gap:6px 14px">
       <span style="white-space:nowrap">where the $1M sits:</span>
-      <span style="white-space:nowrap"><span style="color:#EDE9DF">{{ sim1mCarry }}</span> short on the desk, collecting funding</span><span>·</span>
       <span style="white-space:nowrap"><span style="color:#EDE9DF">{{ sim1mPol }}</span> in the Fables pool</span><span>·</span>
       <span style="white-space:nowrap">the rest at Morpho ({{ morphoNet }})</span><span>·</span>
       <span style="white-space:nowrap">plus pons + desk fees on top</span>
@@ -119,40 +118,7 @@ a:hover{color:#C9A646}
     </div>
   </section>
 
-  <section style="border-top:1px solid rgba(237,233,223,0.22);padding:28px 0 clamp(56px,7vw,96px)">
-    <div style="display:flex;justify-content:space-between;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;margin-bottom:clamp(28px,4vw,48px)"><span>the carry tape · last 24 funding periods</span><span style="font-family:'JetBrains Mono',monospace;letter-spacing:0.04em;color:#C9A646;border-bottom:1px dotted #C9A646">SIM</span></div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,520px),1fr));gap:clamp(40px,5vw,72px)">
-      <template data-for="tapes" data-as="tp">
-        <div style="display:flex;flex-direction:column;gap:12px;min-width:0">
-          <div style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;font-size:12.5px;line-height:1.6;color:#B5B0A5;border-bottom:1px solid rgba(237,233,223,0.3);padding-bottom:10px;text-wrap:pretty"><span style="font-family:'Instrument Serif',serif;font-size:26px;color:#EDE9DF;margin-right:8px">{{ tp.label }}</span>{{ tp.head }}</div>
-          <div style="display:flex;flex-direction:column;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:13.5px;line-height:1.75">
-            <template data-for="tp.lines" data-as="ln">
-              <div style="display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,0.8fr) minmax(0,1.1fr);gap:12px;color:{{ ln.c }};white-space:nowrap">
-                <span>{{ ln.t }}</span><span style="text-align:right">{{ ln.r }}</span><span style="text-align:right">{{ ln.p }}</span><span style="text-align:right">cum {{ ln.cum }}</span>
-              </div>
-            </template>
-            <template data-if="tp.empty">
-              <div style="color:#6E6B63">no periods loaded</div>
-            </template>
-          </div>
-          <svg viewBox="0 0 300 30" preserveAspectRatio="none" style="width:100%;height:30px;margin-top:6px"><polyline points="{{ tp.spark }}" fill="none" stroke="#C9A646" stroke-width="1" vector-effect="non-scaling-stroke"></polyline></svg>
-        </div>
-      </template>
-    </div>
-  </section>
 
-  <section style="border-top:1px solid rgba(237,233,223,0.22);padding:28px 0 clamp(56px,7vw,96px)">
-    <div style="display:flex;justify-content:space-between;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;margin-bottom:clamp(36px,5vw,64px)"><span>the rules the keeper follows</span><span style="font-family:'JetBrains Mono',monospace;letter-spacing:0.04em">6 rules</span></div>
-    <ol style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:clamp(18px,2.2vw,30px)">
-      <li style="display:flex;align-items:baseline;gap:clamp(16px,2vw,28px);padding-left:0"><span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#8A867C">01</span><span style="font-family:'Instrument Serif',serif;font-size:clamp(28px,3.2vw,48px);line-height:1.05;letter-spacing:-0.025em;text-wrap:pretty">Size to 10% of market open interest, never more.</span></li>
-      <li style="display:flex;align-items:baseline;gap:clamp(16px,2vw,28px);padding-left:clamp(16px,2.4vw,32px)"><span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#8A867C">02</span><span style="font-family:'Instrument Serif',serif;font-size:clamp(28px,3.2vw,48px);line-height:1.05;letter-spacing:-0.025em;text-wrap:pretty">1.5x on the short, a buffer the size of the margin parked in Senior.</span></li>
-      <li style="display:flex;align-items:baseline;gap:clamp(16px,2vw,28px);padding-left:clamp(32px,4.8vw,64px)"><span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#8A867C">03</span><span style="font-family:'Instrument Serif',serif;font-size:clamp(28px,3.2vw,48px);line-height:1.05;letter-spacing:-0.025em;text-wrap:pretty">Top up margin above 1.9x, release below 1.2x.</span></li>
-      <li style="display:flex;align-items:baseline;gap:clamp(16px,2vw,28px);padding-left:clamp(48px,7.2vw,96px)"><span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#8A867C">04</span><span style="font-family:'Instrument Serif',serif;font-size:clamp(28px,3.2vw,48px);line-height:1.05;letter-spacing:-0.025em;text-wrap:pretty">Unwind a market when the 7-day mean funding is negative.</span></li>
-      <li style="display:flex;align-items:baseline;gap:clamp(16px,2vw,28px);padding-left:clamp(64px,9.6vw,128px)"><span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#8A867C">05</span><span style="font-family:'Instrument Serif',serif;font-size:clamp(28px,3.2vw,48px);line-height:1.05;letter-spacing:-0.025em;text-wrap:pretty">Flatten everything if the hedged book loses 2% in a UTC day.</span></li>
-      <li style="display:flex;align-items:baseline;gap:clamp(16px,2vw,28px);padding-left:clamp(80px,12vw,160px)"><span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#8A867C">06</span><span style="font-family:'Instrument Serif',serif;font-size:clamp(28px,3.2vw,48px);line-height:1.05;letter-spacing:-0.025em;font-style:italic;color:#C9A646;text-wrap:pretty">Every settled period lands on the ledger as realized, nothing marked to market.</span></li>
-    </ol>
-    <p style="margin:clamp(32px,4vw,52px) 0 0;max-width:80ch;font-size:15px;font-style:italic;color:#8A867C;text-wrap:pretty">The carry book is a simulation on real funding rates. It becomes a live book, with treasury capital only, after four weeks of shadow and a go from the Court.</p>
-  </section>
 
   <section style="border-top:1px solid rgba(237,233,223,0.22);padding:28px 0 clamp(72px,10vw,140px)">
     <div style="display:flex;justify-content:space-between;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;margin-bottom:clamp(36px,5vw,64px)"><span>Senior, the depositor's view</span><span style="font-family:'JetBrains Mono',monospace;letter-spacing:0.04em;color:#C9A646;border-bottom:1px dotted #C9A646">SIM</span></div>
@@ -167,7 +133,7 @@ a:hover{color:#C9A646}
   </section>
 
   <footer style="border-top:1px solid rgba(237,233,223,0.4);padding:26px 0 48px;font-size:13px;line-height:1.7;color:#8A867C;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap">
-    <span style="max-width:110ch">THRONE · Robinhood Chain · every LIVE number on this page is realized and read from chain or from the venue's public statistics</span>
+    <span style="max-width:110ch">THRONE · Robinhood Chain · every LIVE number on this page is realized and read from chain or from the venue's public statistics · SIM is today's rates on a bigger book</span>
     <span style="font-family:'JetBrains Mono',monospace">terminal · end</span>
   </footer>
 
@@ -176,7 +142,7 @@ a:hover{color:#C9A646}
 
 
 <script src="../dc-lite.js?v=5"></script>
-<script src="../court.js?v=6"></script>
+<script src="../court.js?v=7"></script>
 <script>
 class Component extends DCLogic {
   state = { d: null, status: 'loading', k: 0, blink: false, now: Date.now() };
@@ -215,39 +181,6 @@ class Component extends DCLogic {
     this.raf = requestAnimationFrame(step);
   }
 
-  // Design-preview snapshot (11 oct values from the brief). Remove when court.js is wired.
-  preview() {
-    const series = (notional, total, n, negAt, seed) => {
-      let s = seed; const rnd = () => { s = (s * 16807) % 2147483647; return s / 2147483647; };
-      const raw = Array.from({ length: n }, (_, i) => i === negAt ? -(0.3 + rnd() * 0.4) : 0.6 + rnd() * 0.9);
-      const sum = raw.reduce((a, b) => a + b, 0);
-      const t0 = Date.UTC(2026, 9, 1);
-      let cum = 0; const out = [];
-      raw.forEach((r, i) => {
-        let pnl = Math.round(r / sum * total * 100) / 100;
-        if (i === n - 1) pnl = Math.round((total - cum) * 100) / 100;
-        cum = Math.round((cum + pnl) * 100) / 100;
-        out.push({ t: t0 + i * 8 * 3600e3, rate: pnl / notional, pnl, cum });
-      });
-      return out;
-    };
-    const eth = series(50000, 132.74, 33, 19, 11), nvda = series(4000, 13.20, 33, -1, 29);
-    return {
-      launch: '2026-09-13', days: 29,
-      blend: { capital: 235004, annIncomeCapital: 41220, annIncomeAll: 188934, apyOnCapital: 0.1754, apyAllIn: 0.8040, realizedSinceLaunch: 12808, days: 29 },
-      pol: { live: true, capital: 9004, fees: 1072, days: 12, annOnCapital: 3.62, poolApr: 3.25, share: 0.9 },
-      pons: { live: true, usd: 10731, eth: null, usd30: null, runRate: 135060 },
-      desk: { live: true, usd: 1005, usd30: null, runRate: 12654, vol: null },
-      senior: { sim: true, deposit: 100000, morpho: { name: 'Steakhouse USDG', netApy: 0.0378, apy: null, tvlUsd: null, idleUsd: null, src: null }, annOnCapital: 0.0378, perYear: 3780 },
-      carry: { sim: true, since: '2026-10-01', params: { leverage: 1.5, bufferOfMargin: 1, openCostBps: null, oiCap: 0.1 },
-        totals: { notional: 54000, capital: 126000, funding: 145.94, net: null, annOnCapital: null },
-        markets: [
-          { label: 'ETH', symbol: 'ETH', notional: 50000, capital: 116667, margin: 33333, buffer: 33333, mark: null, oiUsd: null, capacity: null, periods: 33, days: 11, funding: 132.74, openCost: null, net: null, negPeriods: 1, negStreak: 0, worstPeriod: null, lastRate: eth[32].rate, estNextRate: null, annOnNotional: 0.088, annOnCapital: 0.038, series: eth },
-          { label: 'NVDA', symbol: 'NVDA', notional: 4000, capital: 9333, margin: 2667, buffer: 2667, mark: null, oiUsd: 44000, capacity: 4400, periods: 33, days: 11, funding: 13.20, openCost: null, net: null, negPeriods: 0, negStreak: 0, worstPeriod: null, lastRate: nvda[32].rate, estNextRate: null, annOnNotional: 0.109, annOnCapital: 0.047, series: nvda }
-        ] }
-    };
-  }
-
   renderVals() {
     const { d, status, k, blink, now } = this.state;
     const D = '-';
@@ -265,38 +198,20 @@ class Component extends DCLogic {
     const launch = Date.UTC(2026, 8, 13);
 
     const b = (d && d.blend) || {}, pol = (d && d.pol) || {}, pons = (d && d.pons) || {}, desk = (d && d.desk) || {};
-    const sen = (d && d.senior) || {}, mo = sen.morpho || {}, carry = (d && d.carry) || {};
-    const mk = (sym) => ((carry.markets || []).find(m => m.symbol === sym || m.label === sym)) || {};
-    const eth = mk('ETH'), nvda = mk('NVDA');
-    const since = Date.parse((carry.since || '2026-10-01') + 'T00:00:00Z');
+    const sen = (d && d.senior) || {}, mo = sen.morpho || {};
+    const since = Date.UTC(2026, 9, 1);
     const dSince = Math.max(0, Math.floor((now - since) / 864e5));
     const senEarned = d && ok(sen.perYear) ? sen.perYear / 365 * dSince : null;
 
     const GOLD = '#C9A646', BONE = '#EDE9DF', DIM = '#6E6B63';
     const books = d ? [
       { book: 'POL · THRONE/USDG on Fables', live: true, sim: false, cap: usd0(pol.capital), capC: BONE, earned: usd2(pol.fees), win: 'since 30 sep · ' + (ok(pol.days) ? pol.days : D) + ' d', ann: pctA(pol.annOnCapital), annC: GOLD, note: '90% of the pool is protocol-owned; fees to LPs × 90%' },
-      { book: 'Carry · ETH', live: false, sim: true, cap: usd0(eth.capital), capC: BONE, earned: usd2(eth.funding), win: 'since 1 oct · ' + (ok(eth.periods) ? eth.periods : D) + ' periods', ann: pctA(eth.annOnCapital), annC: GOLD, note: 'short perp on the desk vs spot; funding collected every 8h; 1.5x, buffer = margin' },
-      { book: 'Carry · NVDA', live: false, sim: true, cap: usd0(nvda.capital), capC: BONE, earned: usd2(nvda.funding), win: 'since 1 oct · ' + (ok(nvda.periods) ? nvda.periods : D) + ' periods', ann: pctA(nvda.annOnCapital), annC: GOLD, note: 'stock perp; sized to 10% of market OI (' + short(nvda.capacity) + ')' },
       { book: 'Senior · USDG on Morpho', live: false, sim: true, cap: usd0(sen.deposit), capC: BONE, earned: usd2(senEarned), win: "at Morpho's live net rate", ann: pctA(sen.annOnCapital), annC: GOLD, note: 'Steakhouse USDG vault · ' + short(mo.tvlUsd) + ' TVL · no first claim counted' },
       { book: 'Pons · creator fee', live: true, sim: false, cap: D, capC: DIM, earned: usd2(pons.usd), win: 'since 13 sep', ann: D, annC: DIM, note: 'run rate ' + usd0(pons.runRate) + '/yr · counted in the all-in figure only' },
       { book: 'Desk · builder fee', live: true, sim: false, cap: D, capC: DIM, earned: usd2(desk.usd), win: 'since 13 sep', ann: D, annC: DIM, note: 'run rate ' + usd0(desk.runRate) + '/yr · counted in the all-in figure only' }
     ] : [];
-    const earnedVals = d ? [pol.fees, eth.funding, nvda.funding, senEarned, pons.usd, desk.usd].filter(ok) : [];
+    const earnedVals = d ? [pol.fees, senEarned, pons.usd, desk.usd].filter(ok) : [];
     const earnedSum = earnedVals.length ? usd2(earnedVals.reduce((a, v) => a + v, 0)) : D;
-
-    const tape = (m, label) => {
-      const s = (m.series || []).slice(-24).reverse();
-      const all = m.series || [];
-      const mx = Math.max(0.0001, ...all.map(x => x.cum)), mn = Math.min(0, ...all.map(x => x.cum));
-      const spark = all.length > 1 ? all.map((x, i) => (i / (all.length - 1) * 300).toFixed(1) + ',' + (28 - (x.cum - mn) / (mx - mn) * 26).toFixed(1)).join(' ') : '0,28 300,28';
-      return {
-        label,
-        head: '· ' + usd0(m.notional) + ' short on the desk · next est. ' + (ok(m.estNextRate) ? sgn(m.estNextRate, v => (v * 100).toFixed(5) + '%') : D) + ' · mark ' + (ok(m.mark) ? usd2(m.mark) : D) + ' · market OI ' + short(m.oiUsd) + ' · cap ' + short(m.capacity) + (status === 'preview' ? ' · preview series' : ''),
-        lines: s.map(x => { const t = new Date(x.t); return { t: t.getUTCDate() + ' ' + mon[t.getUTCMonth()] + ' ' + p2(t.getUTCHours()) + ':' + p2(t.getUTCMinutes()), r: sgn(x.rate, v => (v * 100).toFixed(5) + '%'), p: sgn(x.pnl, v => '$' + v.toFixed(2)), cum: usd2(x.cum), c: x.rate < 0 ? '#B4553F' : '#B5B0A5' }; }),
-        empty: s.length === 0,
-        spark
-      };
-    };
 
     const label = { live: 'live', preview: 'snapshot 11 oct · design preview', down: 'sources unreachable', loading: 'loading' }[status];
     const lc = { live: '#39F194', preview: '#8A867C', down: '#B4553F', loading: '#8A867C' }[status];
@@ -310,7 +225,6 @@ class Component extends DCLogic {
       capTotal: usd0(b.capital),
       sim1mCap: d && d.sim1m && ok(d.sim1m.apyOnCapital) ? pct1(d.sim1m.apyOnCapital) : D,
       sim1mAll: d && d.sim1m && ok(d.sim1m.apyAllIn) ? pct1(d.sim1m.apyAllIn) : D,
-      sim1mCarry: d && d.sim1m ? usd0(d.sim1m.carryNotional) : D,
       sim1mPol: d && d.sim1m ? usd0(d.sim1m.pol) : D,
       realized: usd0(b.realizedSinceLaunch),
       blendDays: ok(b.days) ? b.days : D,
@@ -318,11 +232,10 @@ class Component extends DCLogic {
       poolApr: pctA(pol.poolApr),
       morphoTvl: short(mo.tvlUsd), morphoIdle: short(mo.idleUsd),
       morphoSrc: mo.src || (status === 'live' ? 'api.morpho.org, live' : D),
-      srcLine: status === 'live' ? 'refreshes every 5 min · venue statistics + chain + api.morpho.org' : status === 'preview' ? 'design preview · values from the 11 oct snapshot' : 'no data',
+      srcLine: status === 'live' ? 'refreshes every 5 min · chain + api.morpho.org' : status === 'preview' ? 'design preview · values from the 11 oct snapshot' : 'no data',
       books,
       earnedSum,
-      sumAnn: pct1(b.apyOnCapital),
-      tapes: d ? [tape(eth, 'ETH'), tape(nvda, 'NVDA')] : [tape({}, 'ETH'), tape({}, 'NVDA')]
+      sumAnn: pct1(b.apyOnCapital)
     };
   }
 }
