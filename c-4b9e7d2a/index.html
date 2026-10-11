@@ -3,247 +3,326 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>throne. · The Yield Court of Robinhood Chain</title>
-<meta name="description" content="A yield vault for Robinhood Chain with two sides. USDG depositors sit senior and get paid first. The Court does the rest and shows every dollar on a public ledger.">
+<title>throne. · the Yield Court of Robinhood Chain</title>
 <meta name="robots" content="noindex">
-<link rel="icon" href="https://throne.network/throne-favicon-64.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#050605;--panel:#0b0d0b;--panel2:#0f1210;--line:#1c201d;--fg:#F2F4F0;--dim:#9BA39E;--faint:#5E6663;--mint:#39F194;--green:#229959;--gold:#D4AF37;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace;--sans:"Plus Jakarta Sans",Inter,system-ui,sans-serif;--body:Inter,system-ui,sans-serif}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
-a{color:inherit}
-.wrap{max-width:1140px;margin:0 auto;padding:0 24px}
-nav{position:sticky;top:0;z-index:5;background:rgba(5,6,5,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--sans);font-weight:800;font-size:22px;letter-spacing:-.02em}
-.brand b{color:var(--mint)}
-.crown{width:26px;height:26px}
-nav .links{display:flex;gap:24px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
-nav .links a{color:var(--dim);text-decoration:none}
-nav .links a:hover{color:var(--fg)}
-nav .links a.muted{color:var(--faint)}
-.btn{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:12px 18px;border:1px solid var(--line);color:var(--fg);display:inline-block;border-radius:4px;transition:.15s}
-.btn:hover{border-color:var(--mint)}
-.btn.primary{background:var(--mint);color:#031;border-color:var(--mint);font-weight:500}
-.btn.primary:hover{background:#5ff6a8}
-.tag{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mint);border:1px solid rgba(57,241,148,.35);padding:5px 9px;border-radius:3px}
-.tag.gold{color:var(--gold);border-color:rgba(212,175,55,.4)}
-.tag.dim{color:var(--faint);border-color:var(--line)}
-.hero{padding:96px 0 72px;display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center;border-bottom:1px solid var(--line)}
-h1{font-family:var(--sans);font-weight:800;font-size:clamp(40px,5.8vw,68px);line-height:1;letter-spacing:-.035em;margin:22px 0 20px}
-h1 em{font-style:normal;color:var(--mint)}
-.lead{font-size:19px;color:var(--dim);max-width:560px}
-.cta{margin-top:32px;display:flex;gap:12px;flex-wrap:wrap}
-.ledgercard{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden}
-.ledgercard .hd{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
-.ledgercard .hd b{color:var(--mint);font-weight:500}
-.tiles{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line)}
-.tile{background:var(--panel);padding:18px}
-.tile .k{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
-.tile .v{font-family:var(--mono);font-size:26px;margin:8px 0 4px;font-weight:500}
-.tile .v.live{color:var(--mint)}
-.tile .n{font-size:12px;color:var(--faint)}
-.ledgercard .ft{padding:12px 18px;font-size:12px;color:var(--faint);border-top:1px solid var(--line);display:flex;justify-content:space-between}
-.ledgercard .ft a{color:var(--mint);text-decoration:none}
-section{padding:88px 0;border-bottom:1px solid var(--line)}
-.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mint);margin-bottom:14px}
-h2{font-family:var(--sans);font-weight:800;font-size:clamp(30px,3.8vw,44px);letter-spacing:-.03em;line-height:1.08;max-width:780px}
-.sub{margin-top:14px;color:var(--dim);font-size:17px;max-width:640px}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:28px 24px 24px}
-.card.gold{border-color:rgba(212,175,55,.45)}
-.card.mint{border-color:rgba(57,241,148,.45)}
-.card h3{font-family:var(--sans);font-weight:700;font-size:20px;margin-bottom:10px;letter-spacing:-.01em}
-.card.gold h3{color:var(--gold)}
-.card.mint h3{color:var(--mint)}
-.card p{color:var(--dim);font-size:15px}
-.card .foot{margin-top:16px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
-.flow{margin-top:44px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.step{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:22px 20px}
-.step .n{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.1em}
-.step h4{font-family:var(--sans);font-weight:700;font-size:17px;margin:8px 0 6px}
-.step p{font-size:14px;color:var(--dim)}
-.step.first{border-color:rgba(242,244,240,.35)}
-.step.second{border-color:rgba(212,175,55,.45)}
-.step.second h4{color:var(--gold)}
-.step.rest{border-color:rgba(57,241,148,.45)}
-.step.rest h4{color:var(--mint)}
-.sources{margin-top:44px;border:1px solid var(--line);border-radius:8px;overflow:hidden}
-.src{display:grid;grid-template-columns:1.2fr 2fr auto;gap:18px;align-items:center;padding:18px 22px;border-bottom:1px solid var(--line);background:var(--panel)}
-.src:last-child{border-bottom:0}
-.src b{font-family:var(--sans);font-weight:700;font-size:16px}
-.src span{color:var(--dim);font-size:14px}
-.dist{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:44px}
-.dist .card p b{color:var(--fg);font-weight:500}
-.quote{margin-top:36px;padding-left:16px;border-left:2px solid var(--gold);color:var(--dim);max-width:760px}
-details{border-top:1px solid var(--line)}
-details:last-of-type{border-bottom:1px solid var(--line)}
-summary{cursor:pointer;list-style:none;padding:20px 0;font-family:var(--sans);font-weight:600;font-size:17px;display:flex;justify-content:space-between}
-summary::-webkit-details-marker{display:none}
-summary::after{content:"+";color:var(--mint)}
-details[open] summary::after{content:"\2013"}
-details p{padding-bottom:22px;color:var(--dim);max-width:760px}
-.faq{margin-top:36px}
-footer{padding:36px 0 56px;font-family:var(--mono);font-size:12px;color:var(--faint);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
-footer a{color:var(--faint);text-decoration:none}
-footer a:hover{color:var(--fg)}
-@media(max-width:900px){.hero{grid-template-columns:1fr;padding:56px 0 48px}.grid3,.flow,.dist{grid-template-columns:1fr}.src{grid-template-columns:1fr}nav .links{display:none}section{padding:64px 0}}
+html,body{margin:0;padding:0;background:#070806}
+body{background-color:#070806;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.93 0 0 0 0 0.91 0 0 0 0 0.87 0 0 0 .07 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");-webkit-font-smoothing:antialiased}
+a{color:#EDE9DF;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:6px}
+a:hover{color:#C9A646}
+::selection{background:#C9A646;color:#070806}
+.hv:hover{color:#EDE9DF !important}
 </style>
 </head>
 <body>
+<div style="min-height:100vh;color:#EDE9DF;font-family:'Inter Tight',sans-serif;font-size:18px;line-height:1.55">
+<div style="max-width:1440px;margin:0 auto;padding:0 clamp(20px,5vw,72px)">
 
-<nav>
-  <div class="wrap">
-    <a class="brand" href="#"><svg class="crown" viewBox="0 0 24 24" fill="none"><path d="M3 18h18v2H3zM3 16l1.5-9 4.5 4 3-6 3 6 4.5-4L21 16z" fill="#39F194"/></svg><span>throne<b>.</b></span></a>
-    <div class="links">
-      <a href="#court">the court</a>
-      <a href="#pays">how it pays</a>
-      <a href="#sources">income</a>
-      <a href="court/">ledger</a>
-      <a href="court/bounty/">bounty</a>
-      <a href="app/">app</a>
-      <a class="muted" href="https://trade.throne.network">desk</a>
-      <a class="muted" href="https://throne.network/board">king drop</a>
+  <header style="padding-top:22px;display:flex;flex-direction:column;gap:12px;border-bottom:1px solid rgba(237,233,223,0.22);padding-bottom:14px">
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:14px;letter-spacing:0.02em;color:#B5B0A5">
+      <span style="font-family:'Instrument Serif',serif;font-size:22px;color:#EDE9DF;letter-spacing:-0.01em">throne.</span>
+      <span>·</span><span style="white-space:nowrap">the Yield Court of Robinhood Chain</span>
+      <span>·</span><span style="white-space:nowrap">UTC day <span style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;color:#EDE9DF"><span id="dayNum">·</span></span> since launch</span>
+      <span>·</span>
+      <span id="liveTag" style="white-space:nowrap;display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#8A867C"></span><span id="liveLabel">·</span></span>
+      <span style="margin-left:auto;display:flex;align-items:center;gap:18px;white-space:nowrap">
+        <span id="soundBtn" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#8A867C;cursor:pointer" class="hv"><span id="soundLabel">·</span></span>
+        <svg width="18" height="18" viewBox="-28 -34 56 56" aria-label="throne crown"><path d="M-24,10 L-24,-14 L-13,-6 L0,-26 L13,-6 L24,-14 L24,10 Z" fill="#C9A646"></path><rect x="-24" y="13" width="48" height="7" fill="#C9A646"></rect></svg>
+      </span>
     </div>
-    <a class="btn primary" href="court/">See the ledger</a>
-  </div>
-</nav>
+    <nav style="display:flex;gap:clamp(16px,2.6vw,36px);flex-wrap:wrap;font-size:12px;letter-spacing:0.16em;text-transform:uppercase">
+      <a href="#court" style="text-decoration:none;color:#B5B0A5" class="hv">the Court</a>
+      <a href="court/" style="text-decoration:none;color:#B5B0A5" class="hv">ledger</a>
+      <a href="court/bounty/" style="text-decoration:none;color:#B5B0A5" class="hv">Bounty</a>
+      <a href="app/" style="text-decoration:none;color:#B5B0A5" class="hv">app</a>
+      <a href="https://trade.throne.network" style="text-decoration:none;color:#B5B0A5" class="hv">desk</a>
+      <a href="https://throne.network/board" style="text-decoration:none;color:#B5B0A5" class="hv">King Drop</a>
+    </nav>
+  </header>
 
-<div class="wrap">
-
-<header class="hero">
-  <div>
-    <span class="tag">The Yield Court</span> <span class="tag gold">Robinhood Chain</span>
-    <h1>Own the yield layer of Robinhood Chain. <em>Pay depositors first.</em></h1>
-    <p class="lead">Robinhood Chain is where stocks trade on chain, and every trade throws off fees, votes and emissions. The Court catches all of it. Park USDG and sit senior: paid first, every week. Lock $THRONE and run the house: the votes, the Bounty market, the desk. Every dollar lands on a ledger anyone can read.</p>
-    <div class="cta">
-      <a class="btn primary" href="court/">Show me the receipts</a>
-      <a class="btn" href="#mission">The mission</a>
+  <section style="min-height:calc(100vh - 110px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,540px),1fr));gap:clamp(48px,6vw,96px);align-items:center;padding:clamp(48px,7vh,96px) 0">
+    <div style="display:flex;flex-direction:column;gap:36px;min-width:0">
+      <h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;letter-spacing:-0.04em;line-height:0.9;display:flex;flex-direction:column;gap:6px">
+        <span style="font-size:clamp(60px,8.4vw,128px)">The chain prints.</span>
+        <span style="font-size:clamp(44px,5.6vw,86px);color:#B5B0A5">The Court collects.</span>
+        <span style="font-size:clamp(54px,7vw,106px);font-style:italic;color:#C9A646">Depositors get paid first.</span>
+      </h1>
+      <p style="margin:0;max-width:44ch;font-size:clamp(18px,1.4vw,21px);line-height:1.55;color:#B5B0A5;text-wrap:pretty">Fees, votes and emissions from where stocks trade on chain, caught in one house, paid out weekly on a ledger anyone can read.</p>
+      <div style="display:flex;gap:40px;flex-wrap:wrap;font-size:19px">
+        <a href="court/" style="white-space:nowrap">Read the ledger →</a>
+        <a href="#key" style="white-space:nowrap">Take the key →</a>
+      </div>
     </div>
-  </div>
-
-  <div class="ledgercard" id="heroLedger">
-    <div class="hd"><span>court income · since launch, 13 sep</span><b id="liveTag">reading…</b></div>
-    <div class="tiles">
-      <div class="tile"><div class="k">court income</div><div class="v live" id="t_total">–</div><div class="n">desk + pons, realized · <span id="t_7d">–</span> last 7 days</div></div>
-      <div class="tile"><div class="k">desk fees</div><div class="v" id="t_desk">–</div><div class="n">builder fee on perp volume · live</div></div>
-      <div class="tile"><div class="k">pons fees</div><div class="v" id="t_pons">–</div><div class="n"><span id="t_pons_eth">–</span> ETH, THRONE/ETH swaps · live</div></div>
-      <div class="tile"><div class="k">desk volume</div><div class="v" id="t_vol">–</div><div class="n">all markets since launch · live</div></div>
+    <div style="display:flex;flex-direction:column;gap:18px;min-width:0">
+      <div style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;color:#C9A646;line-height:0.86;letter-spacing:-0.06em;display:flex;align-items:flex-start;white-space:nowrap">
+        <span style="font-size:clamp(44px,4.6vw,72px);margin-top:0.18em;margin-right:0.06em">$</span><span id="t_total" style="font-size:clamp(96px,12.6vw,212px)"><span id="heroWhole">·</span></span><span style="font-size:clamp(32px,3.4vw,56px);margin-top:0.2em"><span id="heroCents">·</span></span>
+      </div>
+      <div style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;display:flex;gap:10px;flex-wrap:wrap">
+        <span>received since <span id="launchLabel">·</span> · desk + pons · realized</span>
+        <span>·</span>
+        <span>last 7 days <span id="t_7d" style="font-family:'JetBrains Mono',monospace;letter-spacing:0;color:#C9A646;text-transform:none"><span id="sevenDay">·</span></span></span>
+      </div>
+      <div style="height:1px;background:rgba(237,233,223,0.22);margin-top:14px"></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:24px 32px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#39F194"></span>desk fees</span>
+          <span id="t_desk" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:24px;color:#C9A646"><span id="deskFees">·</span></span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#39F194"></span>pons fees</span>
+          <span id="t_pons" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:24px;color:#C9A646"><span id="ponsFees">·</span></span>
+          <span id="t_pons_eth" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;font-size:13px;color:#8A867C"><span id="ponsEthV">·</span></span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#39F194"></span>desk volume</span>
+          <span id="t_vol" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:24px;color:#C9A646"><span id="deskVolV">·</span></span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#39F194"></span>active traders</span>
+          <span id="t_users" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:24px;color:#C9A646"><span id="usersV">·</span></span>
+        </div>
+      </div>
+      <div style="font-size:12px;color:#8A867C;font-family:'JetBrains Mono',monospace">as of <span id="asof"><span id="asofV">·</span></span></div>
     </div>
-    <div class="ft"><span id="asof">–</span><a href="court/">full ledger →</a></div>
-  </div>
-</header>
+  </section>
 
-<section id="mission">
-  <div class="eyebrow">The mission</div>
-  <h2>Every chain gets one yield court. We are taking this one.</h2>
-  <p class="sub">On every DEX that pays voters, the money ends up in three places that sit on top of it: the vault that puts deposits to work, the block that owns the votes, and the market where those votes are bought. Robinhood Chain is about to run that play with Fables. We are building all three at once, and we are early enough that nobody is sitting in the chair.</p>
-  <div class="grid3">
-    <div class="card mint"><h3>01 · Take the votes</h3><p>Our partner Sink locks FABLES and votes the pool as one block. The Court is the anchor holder of vlSINK. $THRONE lockers point it. Whoever controls the votes controls where the chain's liquidity goes, and gets paid by everyone who wants it.</p><div class="foot">with Fables' token</div></div>
-    <div class="card gold"><h3>02 · Run the market</h3><p>Bounty is where projects pay for votes. They post, voters get paid, the Court keeps 5%. Scales with other people's votes, not ours.</p><div class="foot"><a href="court/bounty/" style="color:var(--gold);text-decoration:none">see the Bounty board →</a></div></div>
-    <div class="card"><h3>03 · Pay depositors first</h3><p>USDG into Senior sits in Morpho and takes first claim on everything the Court earns. The Court takes the first loss. That is the whole product: a boring deposit with a loud ledger behind it.</p><div class="foot"><a href="app/" style="color:var(--mint);text-decoration:none">see the app →</a></div></div>
-  </div>
-  <p class="quote">The desk fills the room. The King Drop hands out the key. The Court is the house.</p>
-</section>
-
-<section id="court">
-  <div class="eyebrow">What it is</div>
-  <h2>Two sides. Senior gets paid first.</h2>
-  <p class="sub">The same shape as private credit, with the collateral on chain: a senior claim on a pool of cash flows that swing week to week, and a junior that takes the swing and the first hit.</p>
-  <div class="grid3">
-    <div class="card">
-      <h3>Senior · USDG</h3>
-      <p>A thin vault of ours over Morpho's Steakhouse USDG vault on Robinhood Chain. USDG in, all of it to Morpho; our contract adds the weekly epochs and the first-loss hook, nothing else. Depositors get Morpho's rate plus first claim on Court income, paid weekly in USDG. Redeem at Morpho's liquidity. Senior never lends to the Court.</p>
-      <div class="foot">opens November · after audit</div>
+  <section id="court" style="border-top:1px solid rgba(237,233,223,0.22);padding:28px 0 clamp(72px,10vw,140px)">
+    <div style="display:flex;justify-content:space-between;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;margin-bottom:clamp(40px,6vw,80px)"><span>the record</span><span style="font-family:'JetBrains Mono',monospace;letter-spacing:0.04em">fol. 02</span></div>
+    <div style="display:flex;flex-direction:column;gap:clamp(32px,4vw,56px)">
+      <div style="display:grid;grid-template-columns:clamp(56px,9vw,140px) minmax(0,1fr);align-items:baseline">
+        <span style="font-family:'Instrument Serif',serif;font-size:clamp(32px,3.4vw,52px);color:#8A867C">I.</span>
+        <p style="margin:0;max-width:34ch;font-family:'Instrument Serif',serif;font-size:clamp(28px,3vw,46px);line-height:1.18;letter-spacing:-0.015em;text-wrap:pretty">Every chain that pays voters grows three things on top of its DEX: a vault that puts deposits to work, a block that owns the votes, and a market where those votes are bought. Whoever holds all three holds the yield of the chain.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:clamp(56px,9vw,140px) minmax(0,1fr);align-items:baseline">
+        <span style="font-family:'Instrument Serif',serif;font-size:clamp(32px,3.4vw,52px);color:#8A867C">II.</span>
+        <p style="margin:0;max-width:34ch;font-family:'Instrument Serif',serif;font-size:clamp(28px,3vw,46px);line-height:1.18;letter-spacing:-0.015em;text-wrap:pretty">Robinhood Chain is about to run that play with Fables. <em style="color:#B5B0A5">Nobody is sitting in the chair.</em></p>
+      </div>
+      <div style="display:grid;grid-template-columns:clamp(56px,9vw,140px) minmax(0,1fr);align-items:baseline">
+        <span style="font-family:'Instrument Serif',serif;font-size:clamp(32px,3.4vw,52px);color:#8A867C">III.</span>
+        <p style="margin:0;max-width:34ch;font-family:'Instrument Serif',serif;font-size:clamp(28px,3vw,46px);line-height:1.18;letter-spacing:-0.015em;font-style:italic;color:#C9A646">We are building all three at once.</p>
+      </div>
     </div>
-    <div class="card gold">
-      <h3>The Court · junior</h3>
-      <p>Holds the Court's position in the votes on Fables (the chain's equities DEX) through our partner Sink, runs Bounty where those votes are bought, launches tokens, and collects the desk's fees. Pays Senior first, keeps the rest, takes the first loss. Everything it earns is on the ledger, by source, by UTC day.</p>
-      <div class="foot">treasury capital first · $THRONE lockers later</div>
+    <div style="margin-top:clamp(56px,7vw,104px);border-top:1px solid rgba(237,233,223,0.22)">
+      <div style="display:grid;grid-template-columns:clamp(56px,9vw,140px) minmax(0,1fr);border-bottom:1px solid rgba(237,233,223,0.12);padding:26px 0">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#8A867C;padding-top:10px">01</span>
+        <div style="display:flex;flex-wrap:wrap;gap:12px 40px;align-items:baseline">
+          <span style="font-family:'Instrument Serif',serif;font-size:clamp(30px,3vw,44px);letter-spacing:-0.02em;min-width:9ch">Take the votes</span>
+          <span style="flex:1 1 380px;max-width:58ch;color:#B5B0A5;text-wrap:pretty">Our partner Sink locks FABLES and votes as one block; the Court is its anchor holder; $THRONE lockers point it.</span>
+          <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;white-space:nowrap">with Fables' token</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:clamp(56px,9vw,140px) minmax(0,1fr);border-bottom:1px solid rgba(237,233,223,0.12);padding:26px 0">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#8A867C;padding-top:10px">02</span>
+        <div style="display:flex;flex-wrap:wrap;gap:12px 40px;align-items:baseline">
+          <span style="font-family:'Instrument Serif',serif;font-size:clamp(30px,3vw,44px);letter-spacing:-0.02em;min-width:9ch">Run the market</span>
+          <span style="flex:1 1 380px;max-width:58ch;color:#B5B0A5;text-wrap:pretty">Bounty is where projects pay for votes. Voters get paid; the Court keeps 5%.</span>
+          <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;white-space:nowrap">after TGE</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:clamp(56px,9vw,140px) minmax(0,1fr);border-bottom:1px solid rgba(237,233,223,0.22);padding:26px 0">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#8A867C;padding-top:10px">03</span>
+        <div style="display:flex;flex-wrap:wrap;gap:12px 40px;align-items:baseline">
+          <span style="font-family:'Instrument Serif',serif;font-size:clamp(30px,3vw,44px);letter-spacing:-0.02em;min-width:9ch">Pay depositors first</span>
+          <span style="flex:1 1 380px;max-width:58ch;color:#B5B0A5;text-wrap:pretty">USDG into Senior sits in Morpho with first claim on everything the Court earns. The Court takes the first loss.</span>
+          <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;white-space:nowrap">November</span>
+        </div>
+      </div>
     </div>
-    <div class="card mint">
-      <h3>$THRONE · the key</h3>
-      <p>Lock $THRONE for 16 weeks (vlTHRONE) to direct where the Court's votes point and earn a published share of what they capture. Stake it alongside USDG to take a seat in the Court. Holding it already counts: 100k and 500k balances score 1.25x and 1.5x in the King Drop.</p>
-      <div class="foot">vlTHRONE · 16-week lock · with Sink's launch</div>
+  </section>
+
+  <section style="border-top:1px solid rgba(237,233,223,0.22);padding:28px 0 clamp(72px,10vw,140px)">
+    <div style="display:flex;justify-content:space-between;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;margin-bottom:clamp(40px,6vw,80px)"><span>two sides</span><span style="font-family:'JetBrains Mono',monospace;letter-spacing:0.04em">fol. 03</span></div>
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) 64px minmax(0,1fr)">
+      <div style="padding-right:clamp(16px,4vw,64px);display:flex;flex-direction:column;gap:24px">
+        <span style="font-family:'Instrument Serif',serif;font-size:clamp(44px,6vw,96px);line-height:0.9;letter-spacing:-0.04em">SENIOR</span>
+        <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">paid first</span>
+        <p style="margin:0;max-width:40ch;color:#B5B0A5;text-wrap:pretty">USDG deposited into Senior sits in Morpho and earns its lending rate. On top of that, Senior has first claim on everything the Court earns, paid weekly in USDG. Senior never holds a position that can lose principal.</p>
+      </div>
+      <div style="position:relative;display:flex;justify-content:center">
+        <div style="position:absolute;top:0;bottom:0;left:50%;width:1px;background:rgba(237,233,223,0.4)"></div>
+        <div style="position:relative;align-self:center;background:#070806;padding:14px 0;display:flex;flex-direction:column;align-items:center;gap:12px">
+          <span style="font-family:'Instrument Serif',serif;font-size:28px;line-height:1;color:#C9A646">←</span>
+          <span style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:#C9A646">first claim</span>
+        </div>
+      </div>
+      <div style="padding-left:clamp(16px,4vw,64px);display:flex;flex-direction:column;gap:24px">
+        <span style="font-family:'Instrument Serif',serif;font-size:clamp(44px,6vw,96px);line-height:0.9;letter-spacing:-0.04em;color:#C9A646">THE COURT</span>
+        <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">first loss</span>
+        <p style="margin:0;max-width:40ch;color:#B5B0A5;text-wrap:pretty">The junior side. Deposit USDG with $THRONE staked alongside, stand first in line for any loss, and keep everything the Court earns above Senior's claim. Capped and pausable, audited before caps lift.</p>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section id="pays">
-  <div class="eyebrow">How it pays</div>
-  <h2>Income arrives weekly. Then the waterfall.</h2>
-  <p class="sub">Every source lands in the Court. Senior takes its claim first, lockers take their share, the Court keeps what is left as first-loss capital. No number on this page is a projection.</p>
-  <div class="flow">
-    <div class="step"><div class="n">00</div><h4>Morpho's rate</h4><p>Senior's USDG sits in Morpho the whole time and earns whatever Morpho pays. That part is not ours and we do not quote it.</p></div>
-    <div class="step first"><div class="n">01 · first</div><h4>Senior's claim</h4><p>First claim on Court income up to a target spread over Morpho, paid weekly in USDG.</p></div>
-    <div class="step second"><div class="n">02 · second</div><h4>vlTHRONE lockers</h4><p>A published share of what the Court's votes capture goes to the $THRONE lockers who directed them.</p></div>
-    <div class="step rest"><div class="n">03 · the rest</div><h4>The Court keeps it</h4><p>Excess income stays in the Court as the first-loss capital behind Senior. On the ledger, by source, by week.</p></div>
-  </div>
-</section>
+  <section style="border-top:1px solid rgba(237,233,223,0.22);padding:28px 0 clamp(72px,10vw,140px)">
+    <div style="display:flex;justify-content:space-between;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;margin-bottom:clamp(40px,6vw,80px)"><span>the waterfall</span><span style="font-family:'JetBrains Mono',monospace;letter-spacing:0.04em">fol. 04</span></div>
+    <ol style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:clamp(20px,2.4vw,34px)">
+      <li style="display:flex;align-items:baseline;gap:clamp(16px,2vw,28px);flex-wrap:wrap;padding-left:0">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#8A867C">00</span>
+        <span style="font-family:'Instrument Serif',serif;font-size:clamp(36px,5vw,80px);line-height:0.95;letter-spacing:-0.035em">Morpho's rate</span>
+        <span style="font-size:16px;color:#8A867C;white-space:nowrap">Senior's base, from lending</span>
+      </li>
+      <li style="display:flex;align-items:baseline;gap:clamp(16px,2vw,28px);flex-wrap:wrap;padding-left:clamp(20px,3vw,40px)">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#8A867C">01</span>
+        <span style="font-family:'Instrument Serif',serif;font-size:clamp(36px,5vw,80px);line-height:0.95;letter-spacing:-0.035em">Senior's claim</span>
+        <span style="font-size:16px;color:#8A867C;white-space:nowrap">first call on Court income</span>
+      </li>
+      <li style="display:flex;align-items:baseline;gap:clamp(16px,2vw,28px);flex-wrap:wrap;padding-left:clamp(40px,6vw,80px)">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#8A867C">02</span>
+        <span style="font-family:'Instrument Serif',serif;font-size:clamp(36px,5vw,80px);line-height:0.95;letter-spacing:-0.035em">vlTHRONE lockers</span>
+        <span style="font-size:16px;color:#8A867C;white-space:nowrap">their published share of vote income</span>
+      </li>
+      <li style="display:flex;align-items:baseline;gap:clamp(16px,2vw,28px);flex-wrap:wrap;padding-left:clamp(60px,9vw,120px)">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#8A867C">03</span>
+        <span style="font-family:'Instrument Serif',serif;font-size:clamp(36px,5vw,80px);line-height:0.95;letter-spacing:-0.035em;font-style:italic;color:#C9A646">the Court keeps the rest</span>
+      </li>
+    </ol>
+  </section>
 
-<section id="sources">
-  <div class="eyebrow">Where the income comes from</div>
-  <h2>Five sources. Two live today, each one marked.</h2>
-  <p class="sub">The ledger only shows realized income. A source that is not live yet says so; it never shows an estimate.</p>
-  <div class="sources">
-    <div class="src"><b>Desk fees</b><span>Builder fee on every perp trade tagged to Throne on the shared venue. Read daily from the venue's public statistics.</span><span class="tag">live</span></div>
-    <div class="src"><b>Pons fees</b><span>Creator fee on every THRONE/ETH swap on pons, credited in ETH to the Court's recipient. Read from the fee escrow on chain, event by event.</span><span class="tag">live</span></div>
-    <div class="src"><b>Fables pool</b><span>Protocol-owned THRONE/USDG liquidity on Fables: swap fees plus weekly rewards and the creator-fee pot.</span><span class="tag dim">wiring</span></div>
-    <div class="src"><b>Votes</b><span>The Court's share of the fees and incentives collected by Sink's block, where the Court is the anchor vlSINK holder.</span><span class="tag gold">with Fables' token</span></div>
-    <div class="src"><b>Bounty</b><span>Projects post incentives for votes on their pool; voters get paid; the Court keeps 5%.</span><span class="tag gold">after Fables TGE</span></div>
-  </div>
-</section>
+  <section style="border-top:1px solid rgba(237,233,223,0.22);padding:28px 0 clamp(72px,10vw,140px)">
+    <div style="display:flex;justify-content:space-between;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;margin-bottom:clamp(40px,6vw,80px)"><span>where it comes from</span><span style="font-family:'JetBrains Mono',monospace;letter-spacing:0.04em">fol. 05</span></div>
+    <div style="border-top:1px solid rgba(237,233,223,0.4);border-bottom:1px solid rgba(237,233,223,0.4)">
+      <div style="display:grid;grid-template-columns:minmax(0,0.9fr) minmax(0,2fr) minmax(0,0.8fr);gap:24px;padding:14px 0;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">
+        <span>source</span><span>what it is</span><span style="text-align:right">status</span>
+      </div>
+      
+        <div style="display:grid;grid-template-columns:minmax(0,0.9fr) minmax(0,2fr) minmax(0,0.8fr);gap:24px;padding:20px 0;align-items:baseline">
+          <span style="font-family:'Instrument Serif',serif;font-size:clamp(24px,2.2vw,32px);letter-spacing:-0.015em">pons fees</span>
+          <span style="color:#B5B0A5;text-wrap:pretty">Swap fees on $THRONE's pons pool, paid in ETH. They feed Senior and buybacks.</span>
+          <span style="display:flex;justify-content:flex-end;align-items:center;gap:8px;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#EDE9DF;text-align:right"><span style="width:12px;height:2px;background:#39F194"></span>live</span>
+        </div>
+      
+        <div style="display:grid;grid-template-columns:minmax(0,0.9fr) minmax(0,2fr) minmax(0,0.8fr);gap:24px;padding:20px 0;align-items:baseline">
+          <span style="font-family:'Instrument Serif',serif;font-size:clamp(24px,2.2vw,32px);letter-spacing:-0.015em">desk fees</span>
+          <span style="color:#B5B0A5;text-wrap:pretty">The Court's builder fee on every trade on the desk, stocks and crypto, 24/7.</span>
+          <span style="display:flex;justify-content:flex-end;align-items:center;gap:8px;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#EDE9DF;text-align:right"><span style="width:12px;height:2px;background:#39F194"></span>live</span>
+        </div>
+      
+        <div style="display:grid;grid-template-columns:minmax(0,0.9fr) minmax(0,2fr) minmax(0,0.8fr);gap:24px;padding:20px 0;align-items:baseline">
+          <span style="font-family:'Instrument Serif',serif;font-size:clamp(24px,2.2vw,32px);letter-spacing:-0.015em">votes</span>
+          <span style="color:#B5B0A5;text-wrap:pretty">Fees and incentives earned by the Court's vlSINK votes on Fables emissions.</span>
+          <span style="display:flex;justify-content:flex-end;align-items:center;gap:8px;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;text-align:right"><span style="width:0px;height:2px;background:#39F194"></span>with Fables' token</span>
+        </div>
+      
+        <div style="display:grid;grid-template-columns:minmax(0,0.9fr) minmax(0,2fr) minmax(0,0.8fr);gap:24px;padding:20px 0;align-items:baseline">
+          <span style="font-family:'Instrument Serif',serif;font-size:clamp(24px,2.2vw,32px);letter-spacing:-0.015em">Bounty</span>
+          <span style="color:#B5B0A5;text-wrap:pretty">The Court keeps 5% of what projects pay voters on the Bounty market.</span>
+          <span style="display:flex;justify-content:flex-end;align-items:center;gap:8px;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;text-align:right"><span style="width:0px;height:2px;background:#39F194"></span>with Fables' token</span>
+        </div>
+      
+        <div style="display:grid;grid-template-columns:minmax(0,0.9fr) minmax(0,2fr) minmax(0,0.8fr);gap:24px;padding:20px 0;align-items:baseline">
+          <span style="font-family:'Instrument Serif',serif;font-size:clamp(24px,2.2vw,32px);letter-spacing:-0.015em">pool fees</span>
+          <span style="color:#B5B0A5;text-wrap:pretty">Swap fees earned by the Court's own THRONE/USDG liquidity on Fables.</span>
+          <span style="display:flex;justify-content:flex-end;align-items:center;gap:8px;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;text-align:right"><span style="width:0px;height:2px;background:#39F194"></span>wiring</span>
+        </div>
+      
+    </div>
+  </section>
 
-<section id="distribution">
-  <div class="eyebrow">Distribution</div>
-  <h2>The desk is how people arrive.</h2>
-  <p class="sub">A vault with no users is a contract. The desk and the King Drop are the front door: traders show up every week, $THRONE reaches their wallets, and every trade earns the Court a fee. The Court is the house.</p>
-  <div class="dist">
-    <div class="card"><h3>The desk</h3><p>Stocks and crypto perps on Robinhood Chain through a shared venue. Deep books from day one without writing an exchange. <b>Every trade tagged to Throne is the first row on the ledger.</b></p><div class="foot"><a href="https://trade.throne.network" style="color:var(--mint);text-decoration:none">trade.throne.network →</a></div></div>
-    <div class="card"><h3>The King Drop</h3><p>A weekly team competition on the desk. Two sides, a board, 923,000 $THRONE a week, a public hash of every result. <b>This is how $THRONE got into thousands of wallets before the Court opened.</b></p><div class="foot"><a href="https://throne.network/board" style="color:var(--mint);text-decoration:none">the board →</a></div></div>
-  </div>
-  <p class="quote">Fill the room, hand out the key, then open the house.</p>
-</section>
+  <section id="key" style="border-top:1px solid rgba(237,233,223,0.22);padding:28px 0 clamp(72px,10vw,140px)">
+    <div style="display:flex;justify-content:space-between;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;margin-bottom:clamp(40px,6vw,80px)"><span>the key · $THRONE</span><span style="font-family:'JetBrains Mono',monospace;letter-spacing:0.04em">fol. 06</span></div>
+    <div style="display:flex;flex-direction:column">
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px clamp(24px,4vw,64px);padding:18px 0;border-bottom:1px solid rgba(237,233,223,0.12)">
+        <span style="font-family:'Instrument Serif',serif;font-size:clamp(72px,9vw,128px);line-height:0.9;letter-spacing:-0.04em;min-width:4.2ch">HOLD</span>
+        <span style="flex:1 1 360px;max-width:52ch;font-size:clamp(18px,1.4vw,21px);color:#B5B0A5;text-wrap:pretty">Trade it on pons. Its swap fees feed Senior and buy back $THRONE.</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px clamp(24px,4vw,64px);padding:18px 0;border-bottom:1px solid rgba(237,233,223,0.12)">
+        <span style="font-family:'Instrument Serif',serif;font-size:clamp(72px,9vw,128px);line-height:0.9;letter-spacing:-0.04em;min-width:4.2ch">LOCK</span>
+        <span style="flex:1 1 360px;max-width:52ch;font-size:clamp(18px,1.4vw,21px);color:#B5B0A5;text-wrap:pretty">Lock for <span style="font-family:'JetBrains Mono',monospace;color:#C9A646">16 weeks</span> as vlTHRONE. Point the Court's votes each epoch and take the published locker share.</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px clamp(24px,4vw,64px);padding:18px 0">
+        <span style="font-family:'Instrument Serif',serif;font-size:clamp(72px,9vw,128px);line-height:0.9;letter-spacing:-0.04em;min-width:4.2ch">STAKE</span>
+        <span style="flex:1 1 360px;max-width:52ch;font-size:clamp(18px,1.4vw,21px);color:#B5B0A5;text-wrap:pretty">Stake $THRONE worth <span style="font-family:'JetBrains Mono',monospace;color:#C9A646">20%</span> of your USDG to sit on the Court's junior side.</span>
+      </div>
+    </div>
+  </section>
 
-<section id="faq">
-  <div class="eyebrow">Questions</div>
-  <h2>Things people ask first.</h2>
-  <div class="faq">
-    <details><summary>What is the rate?</summary><p>We do not quote one. Senior earns Morpho's rate, which Morpho publishes, plus whatever the Court pays it each week, which the ledger publishes. Add them yourself; we will not do it for you on a marketing page.</p></details>
-    <details><summary>Can Senior lose money?</summary><p>Senior holds nothing that can lose principal except Morpho itself. The Court's income can be zero in a week; Senior's claim is then simply unpaid that week. Senior never lends to the Court.</p></details>
-    <details><summary>Who takes the first loss?</summary><p>The Court. Its own capital sits behind Senior and absorbs Morpho bad debt first, up to what it holds.</p></details>
-    <details><summary>Where do the votes come from?</summary><p>From our partner Sink, the vote aggregator for Fables on Robinhood Chain. The Court is Sink's anchor holder; $THRONE lockers decide where the Court's weight points.</p></details>
-    <details><summary>Why is the desk not the main thing?</summary><p>Because a perp desk on a shared venue is a distribution channel, not a business. It brings traders and fees. The Court is where the fees, votes and launches turn into something a USDG depositor can hold.</p></details>
-  </div>
-</section>
+  <section style="border-top:1px solid rgba(237,233,223,0.22);padding:28px 0 clamp(72px,10vw,140px)">
+    <div style="display:flex;justify-content:space-between;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;margin-bottom:clamp(40px,6vw,80px)"><span>the front door</span><span style="font-family:'JetBrains Mono',monospace;letter-spacing:0.04em">fol. 07</span></div>
+    <p style="margin:0;font-family:'Instrument Serif',serif;font-size:clamp(40px,5.4vw,88px);line-height:1;letter-spacing:-0.035em;text-wrap:balance">The desk fills the room. The King Drop hands out the key. <em style="color:#C9A646">The Court is the house.</em></p>
+    <div style="display:flex;gap:40px;flex-wrap:wrap;margin-top:44px;font-size:19px">
+      <a href="https://trade.throne.network" style="white-space:nowrap">trade.throne.network →</a>
+      <a href="https://throne.network/board" style="display:flex;align-items:center;gap:10px;white-space:nowrap"><span style="width:12px;height:2px;background:#39F194"></span>the King Drop board →</a>
+    </div>
+  </section>
 
-<footer>
-  <span>throne. · Robinhood Chain · private v2</span>
-  <span><a href="court/">ledger</a> · <a href="https://docs.throne.network">docs</a> · <a href="https://x.com/thronedefi">x</a></span>
-</footer>
+  <section style="border-top:1px solid rgba(237,233,223,0.22);padding:28px 0 clamp(72px,10vw,140px)">
+    <div style="display:flex;justify-content:space-between;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;margin-bottom:clamp(40px,6vw,80px)"><span>questions</span><span style="font-family:'JetBrains Mono',monospace;letter-spacing:0.04em">fol. 08</span></div>
+    <dl style="margin:0;display:flex;flex-direction:column">
+      
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:12px clamp(32px,5vw,80px);padding:28px 0;border-top:1px solid rgba(237,233,223,0.12)">
+          <dt style="font-family:'Instrument Serif',serif;font-size:clamp(28px,2.6vw,38px);line-height:1.1;letter-spacing:-0.02em">What is the Court?</dt>
+          <dd style="margin:0;max-width:48ch;color:#B5B0A5;text-wrap:pretty;padding-top:6px">A vault with two sides on Robinhood Chain. It collects fees, votes and emissions in one place and pays USDG depositors first, every week.</dd>
+        </div>
+      
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:12px clamp(32px,5vw,80px);padding:28px 0;border-top:1px solid rgba(237,233,223,0.12)">
+          <dt style="font-family:'Instrument Serif',serif;font-size:clamp(28px,2.6vw,38px);line-height:1.1;letter-spacing:-0.02em">Where does the money come from?</dt>
+          <dd style="margin:0;max-width:48ch;color:#B5B0A5;text-wrap:pretty;padding-top:6px">Desk fees and pons swap fees today. Fables votes and the Bounty market once Fables' token is live. Every source is a row on the ledger.</dd>
+        </div>
+      
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:12px clamp(32px,5vw,80px);padding:28px 0;border-top:1px solid rgba(237,233,223,0.12)">
+          <dt style="font-family:'Instrument Serif',serif;font-size:clamp(28px,2.6vw,38px);line-height:1.1;letter-spacing:-0.02em">Who takes the loss?</dt>
+          <dd style="margin:0;max-width:48ch;color:#B5B0A5;text-wrap:pretty;padding-top:6px">The Court's junior side, first. Senior has first claim on income and holds nothing that can lose principal except Morpho itself.</dd>
+        </div>
+      
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:12px clamp(32px,5vw,80px);padding:28px 0;border-top:1px solid rgba(237,233,223,0.12)">
+          <dt style="font-family:'Instrument Serif',serif;font-size:clamp(28px,2.6vw,38px);line-height:1.1;letter-spacing:-0.02em">Why do I need $THRONE?</dt>
+          <dd style="margin:0;max-width:48ch;color:#B5B0A5;text-wrap:pretty;padding-top:6px">It is the key. Lock it for 16 weeks to point the votes, stake it alongside USDG to sit on the junior side.</dd>
+        </div>
+      
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:12px clamp(32px,5vw,80px);padding:28px 0;border-top:1px solid rgba(237,233,223,0.12)">
+          <dt style="font-family:'Instrument Serif',serif;font-size:clamp(28px,2.6vw,38px);line-height:1.1;letter-spacing:-0.02em">When can I deposit?</dt>
+          <dd style="margin:0;max-width:48ch;color:#B5B0A5;text-wrap:pretty;padding-top:6px">Senior opens in November as a capped vault. Caps lift after audit.</dd>
+        </div>
+      
+    </dl>
+  </section>
+
+  <footer style="border-top:1px solid rgba(237,233,223,0.4);padding:26px 0 48px;font-size:13px;line-height:1.7;color:#8A867C;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap">
+    <span style="max-width:110ch">throne. · Robinhood Chain · set in Instrument Serif, Inter Tight and JetBrains Mono · every number on this page is realized and read from chain or from the venue's public statistics · nothing is projected</span>
+    <span style="font-family:'JetBrains Mono',monospace">fol. 09 · end</span>
+  </footer>
 
 </div>
+</div>
+
+
 
 <script src="court.js"></script>
 <script>
-(async function(){
-  const fmt = n => '$' + n.toLocaleString(undefined,{maximumFractionDigits:0});
-  const set=(id,v)=>document.getElementById(id).textContent=v;
-  try {
-    const L = await courtData.ledger();
-    if (!L.rows.length) throw new Error('no rows');
-    let fee=0, vol=0, pu=0, pe=0, tot7=0;
-    for (const x of L.rows) { fee+=x.deskFee; vol+=x.deskVol; pu+=x.ponsUsd||0; pe+=x.ponsEth||0; }
-    for (const x of L.rows.slice(-7)) tot7 += x.total;
-    set('t_total', fmt(fee+pu)); set('t_7d', fmt(tot7)); set('t_desk', L.desk?fmt(fee):'unreachable'); set('t_pons', L.pons?fmt(pu):'unreachable'); set('t_pons_eth', L.pons?pe.toFixed(2):'–'); set('t_vol', fmt(vol));
-    set('liveTag', 'live · venue statistics + chain');
-    set('asof', L.launch + ' → ' + L.rows[L.rows.length-1].d + ' · UTC days');
-  } catch (e) {
-    set('liveTag', 'sources unreachable'); set('asof', 'could not read the sources right now; nothing is estimated');
-  }
+(function(){
+  const $=id=>document.getElementById(id);
+  const usd0=v=>'$'+Math.round(v).toLocaleString('en-US');
+  const short=v=>v>=1e6?'$'+(v/1e6).toFixed(1)+'M':usd0(v);
+  const mon=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+  let sound=false, ac=null, raf=0, target=0;
+  function tick(){ if(!sound) return; try{ ac=ac||new (window.AudioContext||window.webkitAudioContext)(); const o=ac.createOscillator(), g=ac.createGain(); o.type='square'; o.frequency.value=1900; g.gain.setValueAtTime(0.06,ac.currentTime); g.gain.exponentialRampToValueAtTime(0.0001,ac.currentTime+0.03); o.connect(g); g.connect(ac.destination); o.start(); o.stop(ac.currentTime+0.035);}catch(e){} }
+  function countUp(){ cancelAnimationFrame(raf); const t0=performance.now(); let last=-1; const step=t=>{ const p=Math.min(1,(t-t0)/1200), e=1-Math.pow(1-p,3), k=Math.floor(p*12); if(k!==last){last=k;tick();} const v=target*e; $('heroWhole').textContent=Math.floor(v).toLocaleString('en-US'); $('heroCents').textContent='.'+String(Math.floor((v%1)*100)).padStart(2,'0'); if(p<1) raf=requestAnimationFrame(step); }; raf=requestAnimationFrame(step); }
+  $('soundBtn').addEventListener('click',()=>{ sound=!sound; $('soundLabel').textContent=sound?'sound on':'sound off'; if(sound) countUp(); });
+  function setLive(label,color){ $('liveLabel').textContent=label; const t=$('liveTag'); t.style.color=color; t.firstElementChild.style.background=color; }
+  const ld=new Date('2026-09-13T00:00:00Z'); $('launchLabel').textContent=ld.getUTCDate()+' '+mon[ld.getUTCMonth()];
+  $('dayNum').textContent=Math.max(1,Math.floor((Date.now()-Date.UTC(2026,8,13))/864e5)+1);
+  (async()=>{
+    try{
+      const d=await courtData.ledger(); const rows=d.rows||[]; if(!rows.length) throw new Error('no rows');
+      const sum=k=>rows.reduce((a,x)=>a+(x[k]||0),0);
+      target=sum('total'); countUp();
+      $('sevenDay').textContent=usd0(rows.slice(-7).reduce((a,x)=>a+(x.total||0),0));
+      $('deskFees').textContent=d.desk?usd0(sum('deskFee')):'unreachable';
+      $('ponsFees').textContent=d.pons?usd0(sum('ponsUsd')):'unreachable';
+      $('ponsEthV').textContent=d.pons?sum('ponsEth').toFixed(3)+' eth':'';
+      $('deskVolV').textContent=short(sum('deskVol'));
+      $('usersV').textContent=String(rows.reduce((m,x)=>Math.max(m,x.users||0),0));
+      const lr=rows[rows.length-1], lastD=new Date(lr.d+'T00:00:00Z');
+      $('asofV').textContent=lastD.getUTCDate()+' '+mon[lastD.getUTCMonth()]+' · utc day close';
+      $('dayNum').textContent=rows.length;
+      setLive('live','#39F194');
+    }catch(e){
+      setLive('sources unreachable','#8A867C');
+      ['sevenDay','deskFees','ponsFees','deskVolV','usersV'].forEach(i=>$(i).textContent='unreachable'); $('asofV').textContent='nothing is estimated in its place';
+    }
+  })();
 })();
 </script>
 </body>
