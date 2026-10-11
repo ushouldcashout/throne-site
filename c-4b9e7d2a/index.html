@@ -80,20 +80,22 @@ a:hover{color:#C9A646}
           <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#39F194"></span>desk volume</span>
           <span id="t_vol" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:24px;color:#C9A646"><span id="deskVolV">·</span></span>
         </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:24px 32px;margin-top:24px">
         <div style="display:flex;flex-direction:column;gap:8px">
-          <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#C9A646"></span>court sim apy</span>
+          <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#C9A646"></span>carry trade sim apy</span>
           <a href="terminal/" style="text-decoration:none;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:24px;color:#C9A646"><span id="simApyV">·</span></a>
-          <span style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;font-size:13px;color:#8A867C"><span id="simApySub">$1M deposited into the vaults · 80/20 split · simulation</span></span>
+          <span style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;font-size:13px;color:#8A867C"><span id="simApySub">$1M deposited into the vaults</span></span>
           <a href="terminal/" style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#39F194;text-decoration:underline;text-underline-offset:3px">terminal →</a>
         </div>
         <div style="display:flex;flex-direction:column;gap:8px">
-          <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#4A4740"></span>votes + bounty</span>
-          <span style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C;padding-top:6px">coming soon</span>
+          <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#39F194"></span>votes + bounty</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:#39F194;padding-top:6px">coming soon</span>
           <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#8A867C">with Fables' token</span>
         </div>
         <div style="display:flex;flex-direction:column;gap:8px">
-          <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#4A4740"></span>vlTHRONE income</span>
-          <span style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C;padding-top:6px">coming soon</span>
+          <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#39F194"></span>vlTHRONE income</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:#39F194;padding-top:6px">coming soon</span>
           <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#8A867C">50% of vote income to lockers</span>
         </div>
       </div>
@@ -339,7 +341,7 @@ a:hover{color:#C9A646}
     try{
       const t=await courtData.terminal(); const m=t&&t.sim1m; if(!m||!isFinite(m.apyAllIn)) throw new Error('no sim');
       $('simApyV').textContent=(m.apyAllIn*100).toFixed(1)+'%';
-      $('simApySub').textContent='$1M deposited into the vaults · 80/20 split · simulation · not open for deposits';
+      $('simApySub').textContent='$1M deposited into the vaults';
     }catch(e){ $('simApyV').textContent='unreachable'; }
   })();
 })();
