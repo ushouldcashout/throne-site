@@ -146,6 +146,11 @@
   .youcard .yr { text-align:right; }
   .youcard .ypts { font-size:26px; font-weight:800; color:var(--green); font-variant-numeric:tabular-nums; text-shadow:0 0 20px rgba(0,255,156,0.35); }
   .youcard .yest { font-size:11px; color:var(--dim); margin-top:3px; } .youcard .yest b { color:var(--mint); font-weight:600; }
+  .youcard .yacts { flex-basis:100%; display:flex; gap:10px; flex-wrap:wrap; align-items:center; padding-top:14px; border-top:1px solid rgba(255,255,255,0.08); }
+  .youcard .yacts button { height:40px; padding:0 18px; border-radius:10px; font-weight:700; font-size:13px; cursor:pointer; border:1px solid var(--green); background:var(--green); color:#050605; }
+  .youcard .yacts button.line { background:none; color:var(--fg); border-color:rgba(255,255,255,0.18); }
+  .youcard .yacts button.done { background:none; color:var(--mint); border-color:rgba(57,241,148,0.45); cursor:default; }
+  .youcard .yacts .s { font-size:11px; color:var(--dim); }
   .sim { margin-top:14px; border-radius:18px; padding:20px 22px; border:1px solid var(--line); background:linear-gradient(180deg, rgba(242,244,240,0.035), rgba(242,244,240,0.008)); box-shadow:inset 0 1px 0 rgba(255,255,255,0.06); }
   .sim .sh { display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; }
   .sim .sh h3 { font-size:12px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); font-weight:600; }
@@ -333,9 +338,10 @@
   <div class="youcard" id="you">
     <div class="yl">
       <img id="yImg" src="/arena/pieces/white-09-pawn.svg" alt="">
-      <div><div class="yk">YOUR SEAT</div><div class="yaddr"><span id="yAddr">—</span><span class="nm" id="yName">set your name</span></div><div class="ymeta" id="yMeta">—</div></div>
+      <div><div class="yk">YOUR SEAT</div><div class="yaddr"><span id="yAddr">—</span></div><div class="ymeta" id="yMeta">—</div></div>
     </div>
-    <div class="yr"><div class="ypts" id="yPts">—</div><div class="yest" id="yEst">—</div><div class="yest" id="yQual">—</div><div class="yest" id="yCheck">—</div></div>
+    <div class="yr"><div class="ypts" id="yPts">—</div><div class="yest" id="yEst">—</div><div class="yest" id="yQual">—</div></div>
+    <div class="yacts" id="yActs"></div>
   </div>
 
   <div class="sim" id="sim">
@@ -349,7 +355,7 @@
       <div class="o"><div class="k">Taken from</div><div class="v" id="simFrom">—</div><div class="s" id="simFromS">—</div></div>
       <div class="o"><div class="k">Est. drop</div><div class="v mint" id="simEst">—</div><div class="s" id="simEstS">if week 1 closed like this</div></div>
     </div>
-    <a class="go" href="https://trade.throne.network" target="_blank" rel="noreferrer">Trade the desk →</a>
+    <a class="go" href="https://trade.throne.network">Trade the desk →</a>
   </div>
 
   <div class="sect"><h2>The pieces · 16 seats a side</h2><div class="hint">Est. drop = your cut if <b>week 1 closed with today's standings</b> · pre-season points carry into the season</div></div>
@@ -632,7 +638,7 @@
     var w=hit, overall=LIST.indexOf(w)+1; you.classList.add('show');
     $('yImg').src=w.piece?pieceSrc(w.side,w.rank):pieceSrc(w.side,16); $('yImg').style.opacity=w.piece?1:0.45;
     $('yAddr').innerHTML=dispHtml(w.addr)+' <span style="color:var(--dim);font-weight:400">· '+cap(w.side)+'</span>';
-    var nr=nameRec(w.addr); $('yName').textContent=nr?(nr.handle&&!nr.verified?'verify @'+nr.handle:'edit name'):'set your name';
+    var nr=nameRec(w.addr);
     var m=[]; m.push(w.piece?cap(w.piece)+' #'+w.rank:'No piece yet'); m.push('Overall #'+overall); m.push(usd(w.vol)+' traded'); if(w.mult>1) m.push(w.mult+'x multiplier');
     if(!w.piece&&w.gap&&w.gap.usd) m.push(usd(w.gap.usd)+' more to take seat 16'); else if(w.gap&&w.gap.usd) m.push(usd(w.gap.usd)+' more to take the '+w.gap.piece+' from '+disp(w.gap.addr));
     if(w.attacked) m.push('Under attack by '+disp(w.attacked.addr));
@@ -642,7 +648,18 @@
     $('yEst').innerHTML=e==null?'—':'Est. <b>'+fmt(e)+' $THRONE</b>'+(PRICE?' ≈ '+usd(e*PRICE):'')+' if week 1 closed now';
     $('yQual').innerHTML=qual?'<span style="color:var(--mint)">Qualified</span> · '+usd(w.weekVol)+' traded this week':'<span style="color:var(--gold)">'+usd(floor-(w.weekVol||0))+' more</span> to reach the '+usd(floor)+' floor and be paid';
     var cp=(board.rules&&board.rules.checkinPts)||100;
-    $('yCheck').innerHTML=(w.checkinToday?'<span style="color:var(--mint)">Checked in today</span>':(wallet&&wallet===w.addr?'<span class="nm" id="checkinBtn" style="color:var(--green)">Check in · +'+cp+' pts</span>':'<span style="color:var(--faint)">Daily check-in +'+cp+' pts</span>'))+' <span style="color:var(--faint)">· '+(w.checkins||0)+'/7 this week'+(w.checkins&&!w.checkinLive?' · pending until qualified':'')+'</span>';
+    var mineCard = wallet && wallet===w.addr;
+    var acts = '';
+    if(mineCard){
+      acts += nr ? '<button class="line" id="nameBtn">'+(nr.handle&&!nr.verified?'Verify @'+esc(nr.handle):'Change name')+'</button><span class="s">on the board as <b style="color:var(--fg)">'+esc(nr.name)+'</b>'+(nr.handle?' @'+esc(nr.handle)+(nr.verified?' ✓':''):'')+'</span>'
+                 : '<button id="nameBtn">Set your name</button><span class="s">shows on the board and share cards</span>';
+      acts += '<span style="margin-left:auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap">'+(w.checkinToday?'<button class="done" disabled>✓ Checked in today</button>':'<button id="checkinBtn">Check in · +'+cp+' pts</button>')+'<span class="s">'+(w.checkins||0)+'/7 this week'+(w.checkins&&!w.checkinLive?' · paid once you clear the floor':'')+'</span></span>';
+    } else {
+      acts += '<span class="s">'+(nr?'On the board as <b style="color:var(--fg)">'+esc(nr.name)+'</b>':'No name yet')+' · daily check-in +'+cp+' pts · '+(w.checkins||0)+'/7 this week · <span class="nm" id="useWalletLnk">use my wallet</span> to check in or set a name</span>';
+    }
+    $('yActs').innerHTML = acts;
+    if($('nameBtn')) $('nameBtn').addEventListener('click', openNameModal);
+    if($('useWalletLnk')) $('useWalletLnk').addEventListener('click', function(){ $('connect').click(); });
     var cb=$('checkinBtn'); if(cb) cb.addEventListener('click', doCheckin);
     renderSim();
     // moment: rank improved since last visit
@@ -728,7 +745,6 @@
     nmShow(1);
   }
   function nmPrepVerify(handle){ $('nmH').textContent='@'+handle; $('nmCode').textContent=nmCode||'—'; var text='Claiming my seat on the King Drop board. '+(nmCode||'')+'\n\n923,000 $THRONE on the line. Trade the desk, score for your side.\nthrone.network/points'; $('nmTweet').href='https://x.com/intent/post?text='+encodeURIComponent(text); $('nmUrl').value=''; nmShow(2); }
-  $('yName').addEventListener('click', openNameModal);
   $('nmSave').addEventListener('click', async function(){
     var name=$('nmName').value.trim().replace(/\s+/g,' '), handle=$('nmHandle').value.trim().replace(/^@/,''); $('nmErr').textContent='';
     if(name.length<3){ $('nmErr').textContent='Name needs at least 3 characters.'; return; }
