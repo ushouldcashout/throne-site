@@ -65,6 +65,13 @@ a:hover{color:#C9A646}
       <span style="white-space:nowrap">the rest at Morpho ({{ morphoNet }})</span><span>·</span>
       <span style="white-space:nowrap">plus pons + desk fees on top</span>
     </div>
+    <div style="border-top:1px solid rgba(237,233,223,0.12);padding:14px 0 0;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:13px;color:#B5B0A5;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline">
+      <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#C9A646;border-bottom:1px dotted #C9A646">SIM</span>
+      <span style="white-space:nowrap">split 80/20:</span>
+      <span style="white-space:nowrap">senior <span style="color:#C9A646">{{ trSenior }}</span> (Morpho + first claim, after the 15% fee)</span><span>·</span>
+      <span style="white-space:nowrap">junior <span style="color:#C9A646">{{ trJunior }}</span> (Morpho + what is left after the first claim)</span><span>·</span>
+      <span style="white-space:nowrap">first claim {{ trClaim }} a year, capped at 2.5 points on senior</span>
+    </div>
   </section>
 
   <section style="border-top:1px solid rgba(237,233,223,0.4);padding:24px 0 clamp(56px,7vw,96px)">
@@ -142,7 +149,7 @@ a:hover{color:#C9A646}
 
 
 <script src="../dc-lite.js?v=5"></script>
-<script src="../court.js?v=7"></script>
+<script src="../court.js?v=8"></script>
 <script>
 class Component extends DCLogic {
   state = { d: null, status: 'loading', k: 0, blink: false, now: Date.now() };
@@ -226,6 +233,9 @@ class Component extends DCLogic {
       sim1mCap: d && d.sim1m && ok(d.sim1m.apyOnCapital) ? pct1(d.sim1m.apyOnCapital) : D,
       sim1mAll: d && d.sim1m && ok(d.sim1m.apyAllIn) ? pct1(d.sim1m.apyAllIn) : D,
       sim1mPol: d && d.sim1m ? usd0(d.sim1m.pol) : D,
+      trSenior: d && d.tranches1m ? pct1(d.tranches1m.seniorApy) : D,
+      trJunior: d && d.tranches1m ? pct1(d.tranches1m.juniorApy) : D,
+      trClaim: d && d.tranches1m ? usd0(d.tranches1m.firstClaim) : D,
       realized: usd0(b.realizedSinceLaunch),
       blendDays: ok(b.days) ? b.days : D,
       morphoNet: pct2(mo.netApy),
