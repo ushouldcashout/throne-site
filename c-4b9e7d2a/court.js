@@ -108,7 +108,24 @@ window.courtData = (function () {
       return { sim: true, capital: total, pol: polC, senior: seniorC, annIncomeCapital: income, annIncomeAll: all, apyOnCapital: income / total, apyAllIn: all / total };
     };
     const sim1m = simAt(1000000);
-    return { launch: led.launch, rows, pol, pons, desk, senior, sim1m, blend: { capital, annIncomeCapital, annIncomeAll, apyOnCapital: capital ? annIncomeCapital / capital : null, apyAllIn: capital ? annIncomeAll / capital : null, realizedSinceLaunch: sum('total'), days: rows.length } };
+    // SIMULATION of the two tranches at a stated total, 80/20, from court.config.json's published rules:
+    // Senior earns Morpho's live net rate on its capital, less the 15% performance fee on that interest,
+    // plus a first claim on Court income: 40% of income is routed to Senior, capped at a 2.5-point target.
+    // Junior earns Morpho on its own capital plus everything the Court earns after the first claim,
+    // plus the performance fee. Vote income is not live, so no locker share is deducted yet.
+    const TR = { seniorShare: 0.8, targetSpread: 0.025, routed: 0.4, perfFee: 0.15 };
+    const tranches = (total) => {
+      if (!M) return null;
+      const income = pons.runRate + desk.runRate + (pol.annOnCapital ? pol.annOnCapital * (polCapital || 0) : 0);
+      const sCap = total * TR.seniorShare, jCap = total - sCap;
+      const sInterest = sCap * M.netApy, perf = sInterest * TR.perfFee;
+      const firstClaim = Math.min(TR.targetSpread * sCap, TR.routed * income);
+      const senior = (sInterest - perf + firstClaim) / sCap;
+      const junior = (jCap * M.netApy + (income - firstClaim) + perf) / jCap;
+      return { sim: true, total, seniorCapital: sCap, juniorCapital: jCap, income, firstClaim, perf, seniorApy: senior, juniorApy: junior, base: M.netApy };
+    };
+    const tranches1m = tranches(1000000);
+    return { launch: led.launch, rows, pol, pons, desk, senior, sim1m, tranches1m, blend: { capital, annIncomeCapital, annIncomeAll, apyOnCapital: capital ? annIncomeCapital / capital : null, apyAllIn: capital ? annIncomeAll / capital : null, realizedSinceLaunch: sum('total'), days: rows.length } };
   }
   return { desk, pons, fables, ethUsd, ledger, morpho, terminal, LAUNCH, POL_SHARE };
 })();

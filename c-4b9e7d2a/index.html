@@ -83,9 +83,15 @@ a:hover{color:#C9A646}
       </div>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:24px 28px;margin-top:24px">
         <div style="display:flex;flex-direction:column;gap:8px">
-          <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#C9A646"></span>court sim apy</span>
-          <a href="terminal/" style="text-decoration:none;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:24px;color:#C9A646"><span id="simApyV">·</span></a>
-          <span style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;font-size:13px;color:#8A867C"><span id="simApySub">$1M deposited into the vaults</span></span>
+          <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#C9A646"></span>senior sim apy</span>
+          <a href="terminal/" style="text-decoration:none;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:24px;color:#C9A646"><span id="seniorApyV">·</span></a>
+          <span style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;font-size:13px;color:#8A867C">$1M deposited · 80/20 · not open yet</span>
+          <a href="terminal/" style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#39F194;text-decoration:underline;text-underline-offset:3px">terminal →</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#C9A646"></span>junior sim apy</span>
+          <a href="terminal/" style="text-decoration:none;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:24px;color:#C9A646"><span id="juniorApyV">·</span></a>
+          <span style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;font-size:13px;color:#8A867C">on the 20% first-loss side · not open yet</span>
           <a href="terminal/" style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#39F194;text-decoration:underline;text-underline-offset:3px">terminal →</a>
         </div>
         <div style="display:flex;flex-direction:column;gap:8px">
@@ -304,7 +310,7 @@ a:hover{color:#C9A646}
 
 
 
-<script src="court.js?v=7"></script>
+<script src="court.js?v=8"></script>
 <script>
 (function(){
   const $=id=>document.getElementById(id);
@@ -334,15 +340,15 @@ a:hover{color:#C9A646}
       setLive('live','#39F194');
     }catch(e){
       setLive('sources unreachable','#8A867C');
-      ['sevenDay','deskFees','ponsFees','deskVolV','simApyV'].forEach(i=>$(i).textContent='unreachable'); $('asofV').textContent='nothing is estimated in its place';
+      ['sevenDay','deskFees','ponsFees','deskVolV'].forEach(i=>$(i).textContent='unreachable'); $('asofV').textContent='nothing is estimated in its place';
     }
   })();
   (async()=>{
     try{
-      const t=await courtData.terminal(); const m=t&&t.sim1m; if(!m||!isFinite(m.apyAllIn)) throw new Error('no sim');
-      $('simApyV').textContent=(m.apyAllIn*100).toFixed(1)+'%';
-      $('simApySub').textContent='$1M deposited into the vaults';
-    }catch(e){ $('simApyV').textContent='unreachable'; }
+      const t=await courtData.terminal(); const tr=t&&t.tranches1m; if(!tr||!isFinite(tr.seniorApy)||!isFinite(tr.juniorApy)) throw new Error('no sim');
+      $('seniorApyV').textContent=(tr.seniorApy*100).toFixed(1)+'%';
+      $('juniorApyV').textContent=(tr.juniorApy*100).toFixed(1)+'%';
+    }catch(e){ $('seniorApyV').textContent='unreachable'; $('juniorApyV').textContent='unreachable'; }
   })();
 })();
 </script>
