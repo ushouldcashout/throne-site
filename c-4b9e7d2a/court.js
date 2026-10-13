@@ -67,7 +67,7 @@ window.courtData = (function () {
 
   // ---- terminal: the Court's capital at work (live books + a clearly labelled simulation) ----
   const MORPHO_VAULT = '0xBeEff033F34C046626B8D0A041844C5d1A5409dd'; // Steakhouse USDG (Morpho Vaults V2)
-  const SENIOR_SIM_DEPOSIT = 100000; // simulated treasury USDG parked in Senior (Morpho), for the terminal only
+  const SENIOR_SIM_DEPOSIT = 800000; // simulated treasury USDG parked in Senior (Morpho), for the terminal only
 
   async function morpho() {
     const q = '{ vaultV2ByAddress(address:"' + MORPHO_VAULT + '", chainId:4663){ name symbol netApy apy totalAssetsUsd idleAssetsUsd } }';
