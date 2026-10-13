@@ -47,30 +47,25 @@ a:hover{color:#C9A646}
   <section style="padding:clamp(40px,6vw,80px) 0 0">
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(28px,4vw,64px);align-items:end">
       <div style="display:flex;flex-direction:column;gap:12px;align-self:start">
-        <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">COURT SIM APY</span>
-        <span style="font-family:'Instrument Serif',serif;font-size:clamp(30px,2.8vw,40px);line-height:1.05;letter-spacing:-0.02em;max-width:16ch">What $1M in the vaults would earn today.</span>
+        <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">SIM · $1M, SPLIT 80/20</span>
+        <span style="font-family:'Instrument Serif',serif;font-size:clamp(30px,2.8vw,40px);line-height:1.05;letter-spacing:-0.02em;max-width:16ch">What $1M in the vaults would earn today, by side.</span>
       </div>
       <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
-        <span id="apy_cap" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:clamp(96px,11vw,160px);line-height:0.86;letter-spacing:-0.06em;color:#C9A646;white-space:nowrap">{{ sim1mAll }}</span>
-        <span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C">$1M deposited</span>
+        <span id="apy_cap" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:clamp(96px,11vw,160px);line-height:0.86;letter-spacing:-0.06em;color:#C9A646;white-space:nowrap">{{ trSenior }}</span>
+        <span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C">senior · $800,000 · Morpho + first claim, after the 15% fee</span>
       </div>
       <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
-        <span id="apy_all" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:clamp(48px,4.6vw,64px);line-height:0.9;letter-spacing:-0.04em;color:#EDE9DF;white-space:nowrap">{{ realized }}</span>
-        <span style="font-size:12px;line-height:1.6;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C;max-width:34ch"><span style="color:#39F194">real</span> · collected since 13 sep · {{ blendDays }} days</span>
+        <span id="apy_all" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:clamp(48px,4.6vw,64px);line-height:0.9;letter-spacing:-0.04em;color:#C9A646;white-space:nowrap">{{ trJunior }}</span>
+        <span style="font-size:12px;line-height:1.6;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C;max-width:34ch">junior · $200,000 · first loss · Morpho + what is left after the first claim</span>
       </div>
     </div>
     <div style="margin-top:clamp(28px,3vw,40px);border-top:1px solid rgba(237,233,223,0.22);padding:14px 0;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:13px;color:#B5B0A5;display:flex;flex-wrap:wrap;gap:6px 14px">
+      <span style="white-space:nowrap">together <span style="color:#C9A646">{{ sim1mAll }}</span> on $1M</span><span>·</span>
+      <span style="white-space:nowrap"><span style="color:#39F194">real</span> collected since 13 sep <span style="color:#C9A646">{{ realized }}</span> · {{ blendDays }} days</span><span>·</span>
       <span style="white-space:nowrap">where the $1M sits:</span>
       <span style="white-space:nowrap"><span style="color:#EDE9DF">{{ sim1mPol }}</span> in the Fables pool</span><span>·</span>
       <span style="white-space:nowrap">the rest at Morpho ({{ morphoNet }})</span><span>·</span>
       <span style="white-space:nowrap">plus pons + desk fees on top</span>
-    </div>
-    <div style="border-top:1px solid rgba(237,233,223,0.12);padding:14px 0 0;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:13px;color:#B5B0A5;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline">
-      <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#C9A646;border-bottom:1px dotted #C9A646">SIM</span>
-      <span style="white-space:nowrap">split 80/20:</span>
-      <span style="white-space:nowrap">senior <span style="color:#C9A646">{{ trSenior }}</span> (Morpho + first claim, after the 15% fee)</span><span>·</span>
-      <span style="white-space:nowrap">junior <span style="color:#C9A646">{{ trJunior }}</span> (Morpho + what is left after the first claim)</span><span>·</span>
-      <span style="white-space:nowrap">first claim {{ trClaim }} a year, capped at 2.5 points on senior</span>
     </div>
   </section>
 
@@ -118,7 +113,7 @@ a:hover{color:#C9A646}
             <td style="padding:18px 14px;text-align:right;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;white-space:nowrap;color:#C9A646">{{ earnedSum }}</td>
             <td style="padding:18px 14px;font-family:'JetBrains Mono',monospace;font-size:13px;color:#B5B0A5;white-space:nowrap">since 13 sep</td>
             <td style="padding:18px 14px;text-align:right;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:20px;white-space:nowrap;color:#C9A646">{{ sumAnn }}</td>
-            <td style="padding:18px 0 18px 14px;font-size:14px;line-height:1.5;color:#8A867C;text-wrap:pretty">capital books only; pons and desk join in the all-in figure</td>
+            <td style="padding:18px 0 18px 14px;font-size:14px;line-height:1.5;color:#8A867C;text-wrap:pretty">capital books only; pons and desk fees are income, not capital</td>
           </tr>
         </tbody>
       </table>
@@ -129,7 +124,7 @@ a:hover{color:#C9A646}
 
   <section style="border-top:1px solid rgba(237,233,223,0.22);padding:28px 0 clamp(72px,10vw,140px)">
     <div style="display:flex;justify-content:space-between;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;margin-bottom:clamp(36px,5vw,64px)"><span>Senior, the depositor's view</span><span style="font-family:'JetBrains Mono',monospace;letter-spacing:0.04em;color:#C9A646;border-bottom:1px dotted #C9A646">SIM</span></div>
-    <p style="margin:0;max-width:30ch;font-family:'Instrument Serif',serif;font-size:clamp(36px,4.4vw,68px);line-height:1.05;letter-spacing:-0.03em;text-wrap:pretty">If the treasury parks $100,000 in Senior today, Morpho pays <span style="font-family:'JetBrains Mono',monospace;font-size:0.78em;letter-spacing:-0.04em;color:#C9A646">{{ morphoNet }}</span>; the Court's income pays the first claim on top. <em style="color:#B5B0A5">The ledger shows what that claim was, every week.</em></p>
+    <p style="margin:0;max-width:30ch;font-family:'Instrument Serif',serif;font-size:clamp(36px,4.4vw,68px);line-height:1.05;letter-spacing:-0.03em;text-wrap:pretty">If $800,000 sits in Senior today, Morpho pays <span style="font-family:'JetBrains Mono',monospace;font-size:0.78em;letter-spacing:-0.04em;color:#C9A646">{{ morphoNet }}</span>; the Court's income pays the first claim on top. <em style="color:#B5B0A5">The ledger shows what that claim was, every week.</em></p>
     <div style="margin-top:28px;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:13px;color:#B5B0A5;display:flex;flex-wrap:wrap;gap:6px 14px">
       <span style="white-space:nowrap">morpho steakhouse usdg</span><span>·</span>
       <span style="white-space:nowrap">tvl {{ morphoTvl }}</span><span>·</span>
@@ -140,7 +135,7 @@ a:hover{color:#C9A646}
   </section>
 
   <footer style="border-top:1px solid rgba(237,233,223,0.4);padding:26px 0 48px;font-size:13px;line-height:1.7;color:#8A867C;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap">
-    <span style="max-width:110ch">THRONE · Robinhood Chain · every LIVE number on this page is realized and read from chain or from the venue's public statistics · SIM is today's rates on a bigger book</span>
+    <span style="max-width:110ch">THRONE · Robinhood Chain · LIVE figures are read from chain and the venue's public statistics · SIM figures apply today's rates to $1M</span>
     <span style="font-family:'JetBrains Mono',monospace">terminal · end</span>
   </footer>
 
@@ -149,7 +144,7 @@ a:hover{color:#C9A646}
 
 
 <script src="../dc-lite.js?v=5"></script>
-<script src="../court.js?v=8"></script>
+<script src="../court.js?v=9"></script>
 <script>
 class Component extends DCLogic {
   state = { d: null, status: 'loading', k: 0, blink: false, now: Date.now() };
@@ -214,8 +209,8 @@ class Component extends DCLogic {
     const books = d ? [
       { book: 'POL · THRONE/USDG on Fables', live: true, sim: false, cap: usd0(pol.capital), capC: BONE, earned: usd2(pol.fees), win: 'since 30 sep · ' + (ok(pol.days) ? pol.days : D) + ' d', ann: pctA(pol.annOnCapital), annC: GOLD, note: '90% of the pool is protocol-owned; fees to LPs × 90%' },
       { book: 'Senior · USDG on Morpho', live: false, sim: true, cap: usd0(sen.deposit), capC: BONE, earned: usd2(senEarned), win: "at Morpho's live net rate", ann: pctA(sen.annOnCapital), annC: GOLD, note: 'Steakhouse USDG vault · ' + short(mo.tvlUsd) + ' TVL · no first claim counted' },
-      { book: 'Pons · creator fee', live: true, sim: false, cap: D, capC: DIM, earned: usd2(pons.usd), win: 'since 13 sep', ann: D, annC: DIM, note: 'run rate ' + usd0(pons.runRate) + '/yr · counted in the all-in figure only' },
-      { book: 'Desk · builder fee', live: true, sim: false, cap: D, capC: DIM, earned: usd2(desk.usd), win: 'since 13 sep', ann: D, annC: DIM, note: 'run rate ' + usd0(desk.runRate) + '/yr · counted in the all-in figure only' }
+      { book: 'Pons · creator fee', live: true, sim: false, cap: D, capC: DIM, earned: usd2(pons.usd), win: 'since 13 sep', ann: D, annC: DIM, note: 'run rate ' + usd0(pons.runRate) + '/yr · income, no capital behind it' },
+      { book: 'Desk · builder fee', live: true, sim: false, cap: D, capC: DIM, earned: usd2(desk.usd), win: 'since 13 sep', ann: D, annC: DIM, note: 'run rate ' + usd0(desk.runRate) + '/yr · income, no capital behind it' }
     ] : [];
     const earnedVals = d ? [pol.fees, senEarned, pons.usd, desk.usd].filter(ok) : [];
     const earnedSum = earnedVals.length ? usd2(earnedVals.reduce((a, v) => a + v, 0)) : D;
