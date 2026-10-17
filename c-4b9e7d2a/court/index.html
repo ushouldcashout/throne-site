@@ -305,6 +305,7 @@ class Component extends DCLogic {
       },
       pxSrc: (d && d.eth && d.eth.src) || DASH,
       poolSym: sym,
+      onPool: this.onPool,
       poolTitle: isT ? 'Protocol-owned liquidity' : 'Partner pool · on Fables',
       poolHref: 'https://www.fables.fi/markets/' + (this.POOLS[sym] || 'throne'),
       polColor: px != null ? GOLD : DIM,
