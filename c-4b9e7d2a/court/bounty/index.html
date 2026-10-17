@@ -16,6 +16,7 @@ a:hover{color:#C9A646}
 input::placeholder{color:#6E6B63}
 .hv:hover{color:#EDE9DF !important}
 </style>
+<style>select option{background:#0f1413;color:#EDE9DF}</style>
 </head>
 <body>
 
@@ -111,9 +112,27 @@ input::placeholder{color:#6E6B63}
 
     <div style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:6px">
       <span style="font-family:'Instrument Serif',serif;font-size:clamp(32px,3.2vw,46px);letter-spacing:-0.02em;margin-bottom:12px">Post a Bounty</span>
-      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:14px 0;border-bottom:1px solid rgba(237,233,223,0.3)"><span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C">pool</span><span style="color:#B5B0A5;white-space:nowrap">pick a Fables pool ▾</span></div>
-      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:14px 0;border-bottom:1px solid rgba(237,233,223,0.3)"><span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C">epoch</span><span style="color:#B5B0A5;white-space:nowrap">next ▾</span></div>
-      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:14px 0;border-bottom:1px solid rgba(237,233,223,0.3)"><span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C">token</span><span style="color:#B5B0A5;white-space:nowrap">USDG ▾</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:14px 0;border-bottom:1px solid rgba(237,233,223,0.3)"><span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C">pool</span><select onChange="{{ onPool }}" value="{{ pool }}" style="appearance:none;-webkit-appearance:none;background:transparent;color:#EDE9DF;border:0;border-bottom:1px solid rgba(201,166,70,0.6);padding:2px 22px 2px 0;font:inherit;font-family:'JetBrains Mono',monospace;font-size:15px;cursor:pointer;text-align:right;background-image:url(&quot;data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M0 0l5 6 5-6z' fill='%23C9A646'/></svg>&quot;);background-repeat:no-repeat;background-position:right 4px center">
+          <option value="MCD">MCD / USDG</option>
+          <option value="SFI">SFI / USDG</option>
+          <option value="GLDSTN">GLDSTN / USDG</option>
+          <option value="SHROOM">SHROOM / USDG</option>
+          <option value="XBOW">XBOW / USDG</option>
+          <option value="EARN">EARN / USDG</option>
+          <option value="BUN">BUN / USDG</option>
+          <option value="KSKD">KSKD / USDG</option>
+          <option value="THRONE">THRONE / USDG</option>
+        </select></div>
+      <a href="{{ poolHref }}" target="_blank" rel="noopener" style="align-self:flex-end;font-size:12px;color:#C9A646;margin-top:-4px">view pool on Fables ↗</a>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:14px 0;border-bottom:1px solid rgba(237,233,223,0.3)"><span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C">epoch</span><select onChange="{{ onEpoch }}" value="{{ epoch }}" style="appearance:none;-webkit-appearance:none;background:transparent;color:#EDE9DF;border:0;border-bottom:1px solid rgba(201,166,70,0.6);padding:2px 22px 2px 0;font:inherit;font-family:'JetBrains Mono',monospace;font-size:15px;cursor:pointer;text-align:right;background-image:url(&quot;data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M0 0l5 6 5-6z' fill='%23C9A646'/></svg>&quot;);background-repeat:no-repeat;background-position:right 4px center">
+          <option value="next">next</option>
+          <option value="next2">next + 1</option>
+          <option value="next3">next + 2</option>
+        </select></div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:14px 0;border-bottom:1px solid rgba(237,233,223,0.3)"><span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C">token</span><select onChange="{{ onToken }}" value="{{ token }}" style="appearance:none;-webkit-appearance:none;background:transparent;color:#EDE9DF;border:0;border-bottom:1px solid rgba(201,166,70,0.6);padding:2px 22px 2px 0;font:inherit;font-family:'JetBrains Mono',monospace;font-size:15px;cursor:pointer;text-align:right;background-image:url(&quot;data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M0 0l5 6 5-6z' fill='%23C9A646'/></svg>&quot;);background-repeat:no-repeat;background-position:right 4px center">
+          <option value="USDG">USDG</option>
+          <option value="POOL">{{ pool }}</option>
+        </select></div>
       <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:10px 0;border-bottom:1px solid rgba(237,233,223,0.3)">
         <span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C">amount</span>
         <span style="display:flex;align-items:baseline;gap:14px;min-width:0">
@@ -122,8 +141,8 @@ input::placeholder{color:#6E6B63}
         </span>
       </div>
       <dl style="margin:18px 0 0;display:flex;flex-direction:column">
-        <div style="display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">goes to voters</dt><dd style="margin:0;font-family:'JetBrains Mono',monospace;white-space:nowrap">95%<span style="color:#8A867C"> · {{ toVoters }}</span></dd></div>
-        <div style="display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">the Court keeps</dt><dd style="margin:0;font-family:'JetBrains Mono',monospace;color:#C9A646;white-space:nowrap">5%<span style="color:#8A867C"> · {{ toCourt }}</span></dd></div>
+        <div style="display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">goes to voters</dt><dd style="margin:0;font-family:'JetBrains Mono',monospace;white-space:nowrap">95%<span style="color:#8A867C"> · {{ toVoters }} {{ unit }}</span></dd></div>
+        <div style="display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">the Court keeps</dt><dd style="margin:0;font-family:'JetBrains Mono',monospace;color:#C9A646;white-space:nowrap">5%<span style="color:#8A867C"> · {{ toCourt }} {{ unit }}</span></dd></div>
         <div style="display:flex;justify-content:space-between;gap:16px;padding:10px 0"><dt style="color:#8A867C">paid</dt><dd style="margin:0;white-space:nowrap">Thursday, Merkle claim</dd></div>
       </dl>
       <span style="margin-top:20px;font-size:20px;color:#C9A646;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:6px;cursor:not-allowed;align-self:flex-start;white-space:nowrap">Post · not live</span>
@@ -175,7 +194,8 @@ input::placeholder{color:#6E6B63}
 
 <script>
 class Component extends DCLogic {
-  state = { amt: '' };
+  state = { amt: '', pool: 'MCD', epoch: 'next', token: 'USDG' };
+  POOLS = { MCD: 'mcd', SFI: 'sfi', GLDSTN: 'gldstn', SHROOM: 'shroom', XBOW: 'xbow', EARN: 'earn', BUN: 'bun', KSKD: 'kskd', THRONE: 'throne' };
   renderVals() {
     const launch = Date.UTC(2026, 8, 13);
     const v = parseFloat(String(this.state.amt).replace(/,/g, '')) || 0;
@@ -183,13 +203,19 @@ class Component extends DCLogic {
     return {
       dayNum: Math.floor((Date.now() - launch) / 864e5) + 1,
       amt: this.state.amt,
+      pool: this.state.pool, epoch: this.state.epoch, token: this.state.token,
+      unit: this.state.token === 'USDG' ? 'USDG' : this.state.pool,
+      poolHref: 'https://www.fables.fi/markets/' + (this.POOLS[this.state.pool] || 'throne'),
+      onPool: (e) => this.setState({ pool: e.target.value }),
+      onEpoch: (e) => this.setState({ epoch: e.target.value }),
+      onToken: (e) => this.setState({ token: e.target.value }),
       onAmt: (e) => this.setState({ amt: e.target.value.replace(/[^0-9.,]/g, '') }),
       toVoters: v ? f(v * 0.95) : '-',
       toCourt: v ? f(v * 0.05) : '-',
       examples: [
-        { pool: 'NVDA / USDG', amt: '2,500 USDG' },
-        { pool: 'THRONE / USDG', amt: '1,000 USDG' },
-        { pool: 'PONS / USDG', amt: '50,000 PONS' }
+        { pool: 'GLDSTN / USDG', amt: '2,500 USDG' },
+        { pool: 'MCD / USDG', amt: '1,000 USDG' },
+        { pool: 'SHROOM / USDG', amt: '250,000 SHROOM' }
       ]
     };
   }
