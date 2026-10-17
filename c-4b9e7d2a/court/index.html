@@ -15,6 +15,7 @@ a:hover{color:#C9A646}
 ::selection{background:#C9A646;color:#070806}
 .hv:hover{color:#EDE9DF !important}
 </style>
+<style>select option{background:#0f1413;color:#EDE9DF}</style>
 </head>
 <body>
 
@@ -46,7 +47,7 @@ a:hover{color:#C9A646}
   <section style="padding:clamp(48px,7vw,96px) 0 clamp(40px,5vw,64px);display:flex;flex-direction:column;gap:28px">
     <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">THE COURT · LEDGER · PRIVATE PREVIEW</span>
     <h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(56px,7.4vw,96px);line-height:0.92;letter-spacing:-0.04em">What the Court received.</h1>
-    <p style="margin:0;max-width:60ch;color:#B5B0A5;font-size:clamp(18px,1.4vw,20px);text-wrap:pretty">Since $THRONE launched on 13 September. One row per UTC day. Read from chain and from the venue's public statistics. Nothing here is projected.</p>
+    <p style="margin:0;max-width:60ch;color:#B5B0A5;font-size:clamp(18px,1.4vw,20px);text-wrap:pretty">Since $THRONE launched on 13 September.</p>
   </section>
 
   <section style="border-top:1px solid rgba(237,233,223,0.4);border-bottom:1px solid rgba(237,233,223,0.4);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))">
@@ -142,9 +143,21 @@ a:hover{color:#C9A646}
 
   <section style="padding:clamp(56px,7vw,96px) 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(40px,6vw,96px)">
     <div style="display:flex;flex-direction:column;gap:18px;border-top:1px solid rgba(237,233,223,0.22);padding-top:20px">
-      <span style="font-family:'Instrument Serif',serif;font-size:clamp(28px,2.6vw,36px);letter-spacing:-0.02em">Protocol-owned liquidity</span>
+      <span style="font-family:'Instrument Serif',serif;font-size:clamp(28px,2.6vw,36px);letter-spacing:-0.02em">{{ poolTitle }}</span>
       <dl style="margin:0;display:flex;flex-direction:column">
-        <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">pool</dt><dd style="margin:0"><a href="https://www.fables.fi/markets/throne" style="white-space:nowrap">THRONE / USDG ↗</a></dd></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">pool</dt><dd style="margin:0;display:flex;align-items:center;gap:10px">
+          <select onChange="{{ onPool }}" value="{{ poolSym }}" style="appearance:none;-webkit-appearance:none;background:transparent;color:#EDE9DF;border:1px solid rgba(237,233,223,0.3);border-radius:4px;padding:5px 28px 5px 10px;font:inherit;font-family:'JetBrains Mono',monospace;font-size:14px;cursor:pointer;background-image:url(&quot;data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M0 0l5 6 5-6z' fill='%23C9A646'/></svg>&quot;);background-repeat:no-repeat;background-position:right 10px center">
+            <option value="THRONE">THRONE / USDG</option>
+            <option value="MCD">MCD / USDG</option>
+            <option value="SFI">SFI / USDG</option>
+            <option value="GLDSTN">GLDSTN / USDG</option>
+            <option value="SHROOM">SHROOM / USDG</option>
+            <option value="XBOW">XBOW / USDG</option>
+            <option value="EARN">EARN / USDG</option>
+            <option value="BUN">BUN / USDG</option>
+            <option value="KSKD">KSKD / USDG</option>
+          </select>
+          <a href="{{ poolHref }}" target="_blank" rel="noopener" style="white-space:nowrap;color:#C9A646">↗</a></dd></div>
         <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">price</dt><dd id="p_price" style="margin:0;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;color:{{ polColor }}">{{ pPrice }}</dd></div>
         <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">pool liquidity</dt><dd id="p_liq" style="margin:0;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;color:{{ polColor }}">{{ pLiq }}</dd></div>
         <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">24h volume</dt><dd id="p_vol" style="margin:0;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;color:{{ polColor }}">{{ pVol }}</dd></div>
@@ -166,7 +179,6 @@ a:hover{color:#C9A646}
     </div>
   </section>
 
-  <p style="margin:0 0 clamp(56px,7vw,96px);max-width:62ch;font-family:'Instrument Serif',serif;font-size:clamp(24px,2.2vw,32px);line-height:1.25;letter-spacing:-0.01em;color:#B5B0A5;text-wrap:pretty">This page is private while the Court is being built. When Senior opens it becomes the public ledger: same table, same sources, with the waterfall rows filled in each week.</p>
 
   <footer style="border-top:1px solid rgba(237,233,223,0.4);padding:26px 0 48px;font-size:13px;line-height:1.7;color:#8A867C;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap">
     <span style="max-width:110ch">THRONE · Robinhood Chain · figures are read from chain and the venue's public statistics</span>
@@ -181,7 +193,20 @@ a:hover{color:#C9A646}
 <script src="../court.js?v=4"></script>
 <script>
 class Component extends DCLogic {
-  state = { d: null, pol: null, polErr: false, loadedAt: null };
+  state = { d: null, pol: null, polErr: false, loadedAt: null, poolSym: 'THRONE', pp: null, ppErr: false };
+  POOLS = { THRONE: 'throne', MCD: 'mcd', SFI: 'sfi', GLDSTN: 'gldstn', SHROOM: 'shroom', XBOW: 'xbow', EARN: 'earn', BUN: 'bun', KSKD: 'kskd' };
+  onPool = (e) => { const sym = e.target.value; this.setState({ poolSym: sym, pp: null, ppErr: false }); if (sym !== 'THRONE') this.loadPartner(sym); };
+  loadPartner(sym) {
+    fetch('https://api.dexscreener.com/latest/dex/search?q=' + sym + '%20USDG')
+      .then(r => r.json())
+      .then(j => {
+        if (this.state.poolSym !== sym) return;
+        const ps = (j.pairs || []).filter(p => p.chainId === 'robinhood' && ((p.baseToken || {}).symbol || '').toUpperCase() === sym && /USDG/i.test((p.quoteToken || {}).symbol || ''))
+          .sort((a, b) => ((b.liquidity || {}).usd || 0) - ((a.liquidity || {}).usd || 0));
+        this.setState({ pp: ps[0] || null, ppErr: !ps[0] });
+      })
+      .catch(() => { if (this.state.poolSym === sym) this.setState({ ppErr: true }); });
+  }
 
   componentDidMount() {
     let n = 0;
@@ -195,7 +220,7 @@ class Component extends DCLogic {
     fetch('https://api.dexscreener.com/latest/dex/tokens/0x72dc556fff14115c077a540921e5F35499a4DCa7')
       .then(r => r.json())
       .then(j => {
-        const ps = (j.pairs || []).filter(p => /USDG/i.test((p.quoteToken || {}).symbol || '') || /USDG/i.test((p.baseToken || {}).symbol || ''))
+        const ps = (j.pairs || []).filter(p => p.chainId === 'robinhood')
           .sort((a, b) => ((b.liquidity || {}).usd || 0) - ((a.liquidity || {}).usd || 0));
         this.setState({ pol: ps[0] || null, polErr: !ps[0] });
       })
@@ -238,8 +263,12 @@ class Component extends DCLogic {
     const hhmm = at ? String(at.getUTCHours()).padStart(2, '0') + ':' + String(at.getUTCMinutes()).padStart(2, '0') : '';
     const blk = d && d.pons && d.pons.lastBlock != null ? Number(d.pons.lastBlock).toLocaleString('en-US') : DASH;
 
-    const price = pol && pol.priceUsd ? '$' + Number(pol.priceUsd).toPrecision(3) : DASH;
     const live = !!d;
+    const sym = this.state.poolSym, isT = sym === 'THRONE', pp = this.state.pp;
+    const px = isT ? (pol && pol.priceUsd ? Number(pol.priceUsd) : null) : (pp && pp.priceUsd ? Number(pp.priceUsd) : null);
+    const liq = isT ? (fbs && fbs.tvlUsd != null ? fbs.tvlUsd : null) : (pp && pp.liquidity ? pp.liquidity.usd : null);
+    const vol = isT ? (fbs && fbs.volumeUsd != null ? fbs.volumeUsd : null) : (pp && pp.volume ? pp.volume.h24 : null);
+    const fdv = isT ? (pol && pol.fdv ? pol.fdv : null) : (pp && pp.fdv ? pp.fdv : null);
 
     return {
       dayNum,
@@ -253,10 +282,10 @@ class Component extends DCLogic {
       fablesMark: fbOn ? MINT : 'transparent', fablesColor: fbOn ? GOLD : DIM,
       tFables: fbOn ? usd2(sum('fablesUsd')) : 'unreachable',
       tPoolFees: fbOn ? usd2(sum('poolFee')) : DASH,
-      polShare: d && d.fables ? Math.round(d.fables.share * 100) + '%' : DASH,
-      fbColor: fbs ? GOLD : DIM,
-      fbFees24: fbs ? usd2(fbs.feesUsd || 0) : DASH,
-      fbApr: fbs && fbs.aprPct != null ? Number(fbs.aprPct).toFixed(1) + '%' : DASH,
+      polShare: isT && d && d.fables ? Math.round(d.fables.share * 100) + '%' : DASH,
+      fbColor: isT && fbs ? GOLD : DIM,
+      fbFees24: isT && fbs ? usd2(fbs.feesUsd || 0) : DASH,
+      fbApr: isT && fbs && fbs.aprPct != null ? Number(fbs.aprPct).toFixed(2) + '%' : DASH,
       ponsEth: d && d.pons && d.pons.credited != null ? Number(d.pons.credited).toFixed(4) : DASH,
       ponsClaim: d && d.pons && d.pons.claimable != null ? Number(d.pons.claimable).toFixed(4) : DASH,
       tTotal: live && rowsRaw.length ? usd2(sum('total')) : DASH,
@@ -275,12 +304,15 @@ class Component extends DCLogic {
         vol: deskOn ? Math.round(sum('deskVol')).toLocaleString('en-US') : DASH
       },
       pxSrc: (d && d.eth && d.eth.src) || DASH,
-      polColor: pol ? GOLD : DIM,
-      pPrice: price,
-      pLiq: pol && pol.liquidity ? short(pol.liquidity.usd || 0) : DASH,
-      pVol: pol && pol.volume ? short(pol.volume.h24 || 0) : DASH,
-      pFdv: pol && pol.fdv ? short(pol.fdv) : DASH,
-      pSrc: pol ? 'dexscreener · ' + String(pol.pairAddress || '').slice(0, 6) + '…' + String(pol.pairAddress || '').slice(-4) : (this.state.polErr ? 'dexscreener · no pair found' : 'dexscreener · loading')
+      poolSym: sym,
+      poolTitle: isT ? 'Protocol-owned liquidity' : 'Partner pool · on Fables',
+      poolHref: 'https://www.fables.fi/markets/' + (this.POOLS[sym] || 'throne'),
+      polColor: px != null ? GOLD : DIM,
+      pPrice: px != null ? '$' + Number(px).toPrecision(3) : DASH,
+      pLiq: liq != null ? short(liq) : DASH,
+      pVol: vol != null ? short(vol) : DASH,
+      pFdv: fdv != null ? short(fdv) : DASH,
+      pSrc: isT ? ((fbs || pol) ? 'fables relay' + (pol ? ' + dexscreener' : '') : (this.state.polErr ? 'fables relay · unreachable' : 'loading')) : (pp ? 'dexscreener · deepest USDG pair' : (this.state.ppErr ? 'dexscreener · no pair found' : 'dexscreener · loading'))
     };
   }
 }
