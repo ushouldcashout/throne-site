@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>THRONE · the Court · stats</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:#070806}
+body{background-color:#070806;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.93 0 0 0 0 0.91 0 0 0 0 0.87 0 0 0 .07 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");-webkit-font-smoothing:antialiased}
+a{color:#EDE9DF;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:6px}
+a:hover{color:#C9A646}
+::selection{background:#C9A646;color:#070806}
+.hv:hover{color:#EDE9DF !important}
+</style>
+<style>select option{background:#0f1413;color:#EDE9DF}</style>
+</head>
+<body>
+
+<div style="min-height:100vh;color:#EDE9DF;font-family:'Inter Tight',sans-serif;font-size:18px;line-height:1.55">
+<div style="max-width:1440px;margin:0 auto;padding:0 clamp(20px,5vw,72px)">
+
+  <header style="padding-top:22px;display:flex;flex-direction:column;gap:12px;border-bottom:1px solid rgba(237,233,223,0.22);padding-bottom:14px">
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:14px;letter-spacing:0.02em;color:#B5B0A5">
+      <a href="../" style="font-family:'Instrument Serif',serif;font-size:22px;color:#EDE9DF;letter-spacing:-0.01em;text-decoration:none">THRONE</a>
+      <span>·</span><span style="white-space:nowrap">the Yield Court of Robinhood Chain</span>
+      <span>·</span><span style="white-space:nowrap">UTC day <span style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;color:#EDE9DF">{{ dayNum }}</span> since launch</span>
+      <span>·</span>
+      <span id="liveTag" style="white-space:nowrap;display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:{{ liveColor }}"><span style="width:12px;height:2px;background:{{ liveColor }}"></span>{{ liveLabel }}</span>
+      <span style="margin-left:auto;display:flex;align-items:center;white-space:nowrap">
+        <svg width="18" height="18" viewBox="-28 -34 56 56" aria-label="throne crown"><path d="M-24,10 L-24,-14 L-13,-6 L0,-26 L13,-6 L24,-14 L24,10 Z" fill="#C9A646"></path><rect x="-24" y="13" width="48" height="7" fill="#C9A646"></rect></svg>
+      </span>
+    </div>
+    <nav style="display:flex;gap:clamp(16px,2.6vw,36px);flex-wrap:wrap;font-size:12px;letter-spacing:0.16em;text-transform:uppercase">
+      <a href="../#court" style="text-decoration:none;color:#B5B0A5" class="hv">the Court</a>
+      <a href="../court/" style="color:#C9A646;text-decoration-color:#C9A646">stats</a>
+      <a href="../terminal/" style="color:#C9A646;text-decoration-color:#C9A646">terminal</a>
+      <a href="../court/bounty/" style="text-decoration:none;color:#B5B0A5" class="hv">Bounty</a>
+      <a href="../app/" style="text-decoration:none;color:#B5B0A5" class="hv">app</a>
+      <a href="https://trade.throne.network" style="text-decoration:none;color:#B5B0A5" class="hv">desk</a>
+      <a href="https://throne.network/board" style="text-decoration:none;color:#B5B0A5" class="hv">King Drop</a>
+    </nav>
+  </header>
+
+  <section style="padding:clamp(48px,7vw,96px) 0 clamp(40px,5vw,64px);display:flex;flex-direction:column;gap:28px">
+    <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C">THE COURT · STATS</span>
+    <h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(56px,7.4vw,96px);line-height:0.92;letter-spacing:-0.04em">What the Court received.</h1>
+    <p style="margin:0;max-width:60ch;color:#B5B0A5;font-size:clamp(18px,1.4vw,20px);text-wrap:pretty">Since $THRONE launched on 13 September.</p>
+  </section>
+
+  <section style="border-top:1px solid rgba(237,233,223,0.4);border-bottom:1px solid rgba(237,233,223,0.4);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))">
+    <div style="padding:20px 18px 20px 0;display:flex;flex-direction:column;gap:10px;border-right:1px solid rgba(237,233,223,0.12)">
+      <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;white-space:nowrap"><span style="width:12px;height:2px;background:{{ deskMark }}"></span>desk fees</span>
+      <span id="t_desk" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:clamp(16px,1.3vw,22px);letter-spacing:-0.02em;color:{{ deskColor }};white-space:nowrap">{{ tDesk }}</span>
+      <span style="font-size:13px;line-height:1.45;color:#8A867C">builder fee on perp volume · <span id="t_desk_range" style="font-family:'JetBrains Mono',monospace">{{ deskRange }}</span></span>
+    </div>
+    <div style="padding:20px 18px;display:flex;flex-direction:column;gap:10px;border-right:1px solid rgba(237,233,223,0.12)">
+      <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;white-space:nowrap"><span style="width:12px;height:2px;background:{{ ponsMark }}"></span>pons fees</span>
+      <span id="t_pons" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:clamp(16px,1.3vw,22px);letter-spacing:-0.02em;color:{{ ponsColor }};white-space:nowrap">{{ tPons }}</span>
+      <span style="font-size:13px;line-height:1.45;color:#8A867C"><span id="t_pons_eth" style="font-family:'JetBrains Mono',monospace">{{ ponsEth }}</span> eth credited · <span id="t_pons_claim" style="font-family:'JetBrains Mono',monospace">{{ ponsClaim }}</span> claimable</span>
+    </div>
+    <div style="padding:20px 18px;display:flex;flex-direction:column;gap:10px;border-right:1px solid rgba(237,233,223,0.12)">
+      <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;white-space:nowrap"><span style="width:12px;height:2px;background:{{ fablesMark }}"></span>fables pool</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:clamp(16px,1.3vw,22px);letter-spacing:-0.02em;color:{{ fablesColor }};white-space:nowrap">{{ tFables }}</span>
+      <span style="font-size:13px;line-height:1.45;color:#8A867C">the Court's share of swap fees paid to the pool · <span style="font-family:'JetBrains Mono',monospace">{{ tPoolFees }}</span> pool-wide</span>
+    </div>
+    <div style="padding:20px 18px;display:flex;flex-direction:column;gap:10px;border-right:1px solid rgba(237,233,223,0.12)">
+      <span style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;white-space:nowrap">votes + bounty</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:20px;color:#6E6B63;white-space:nowrap">not live</span>
+      <span style="font-size:13px;line-height:1.45;color:#8A867C">the Court's share of Sink's block · 5% bounty cut</span>
+    </div>
+    <div style="padding:20px 18px;display:flex;flex-direction:column;gap:10px;border-right:1px solid rgba(237,233,223,0.12)">
+      <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#C9A646;white-space:nowrap"><span style="width:12px;height:2px;background:{{ totalMark }}"></span>court income</span>
+      <span id="t_total" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:clamp(18px,1.5vw,26px);line-height:1;letter-spacing:-0.03em;color:{{ totalColor }};white-space:nowrap">{{ tTotal }}</span>
+      <span style="font-size:13px;line-height:1.45;color:#8A867C">live sources only · <span id="t_days" style="font-family:'JetBrains Mono',monospace">{{ tDays }}</span> utc days</span>
+    </div>
+    <div style="padding:20px 18px;display:flex;flex-direction:column;gap:10px;border-right:1px solid rgba(237,233,223,0.12)">
+      <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;white-space:nowrap"><span style="width:12px;height:2px;background:{{ deskMark }}"></span>desk volume</span>
+      <span id="t_vol" style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:clamp(16px,1.3vw,22px);letter-spacing:-0.02em;color:{{ deskColor }};white-space:nowrap">{{ tVol }}</span>
+      <span style="font-size:13px;line-height:1.45;color:#8A867C">all markets, same window</span>
+    </div>
+    <div style="padding:20px 0 20px 18px;display:flex;flex-direction:column;gap:10px">
+      <span style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;white-space:nowrap">vlTHRONE locked</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:20px;color:#6E6B63;white-space:nowrap">not live</span>
+      <span style="font-size:13px;line-height:1.45;color:#8A867C">with the Court's first vote</span>
+    </div>
+  </section>
+
+  <section style="padding:clamp(48px,6vw,80px) 0 0">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin-bottom:16px">
+      <span style="font-family:'Instrument Serif',serif;font-size:clamp(30px,3vw,42px);letter-spacing:-0.02em">By UTC day</span>
+      <span id="src" style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#8A867C">{{ srcLine }}</span>
+    </div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;min-width:980px;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1,'tnum' 1;font-size:14px">
+        <thead>
+          <tr style="border-top:1px solid rgba(237,233,223,0.4);border-bottom:1px solid rgba(237,233,223,0.4)">
+            <th style="text-align:left;padding:14px 12px 14px 0;font-weight:400;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C">day</th>
+            <th style="text-align:right;padding:14px 12px;font-weight:400;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C">desk fees</th>
+            <th style="text-align:right;padding:14px 12px;font-weight:400;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C">pons fees</th>
+            <th style="text-align:right;padding:14px 12px;font-weight:400;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C">pons eth</th>
+            <th style="text-align:right;padding:14px 12px;font-weight:400;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C">fables</th>
+            <th style="text-align:right;padding:14px 12px;font-weight:400;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C">votes + bounty</th>
+            <th style="text-align:right;padding:14px 12px;font-weight:400;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#C9A646">total</th>
+            <th style="text-align:right;padding:14px 0 14px 12px;font-weight:400;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8A867C">desk vol</th>
+          </tr>
+        </thead>
+        <tbody id="rows">
+          <template data-for="rows" data-as="r">
+            <tr style="border-bottom:1px solid rgba(237,233,223,0.1)">
+              <td style="text-align:left;padding:11px 12px 11px 0;color:#B5B0A5;white-space:nowrap">{{ r.d }}</td>
+              <td style="text-align:right;padding:11px 12px;color:{{ r.deskC }}">{{ r.desk }}</td>
+              <td style="text-align:right;padding:11px 12px;color:{{ r.ponsC }}">{{ r.pons }}</td>
+              <td style="text-align:right;padding:11px 12px;color:{{ r.ponsC }}">{{ r.eth }}</td>
+              <td style="text-align:right;padding:11px 12px;color:{{ r.fablesC }}">{{ r.fables }}</td>
+              <td style="text-align:right;padding:11px 12px;color:#6E6B63">-</td>
+              <td style="text-align:right;padding:11px 12px;color:#C9A646">{{ r.total }}</td>
+              <td style="text-align:right;padding:11px 0 11px 12px;color:{{ r.deskC }}">{{ r.vol }}</td>
+            </tr>
+          </template>
+          <template data-if="noRows">
+            <tr style="border-bottom:1px solid rgba(237,233,223,0.1)">
+              <td colspan="8" style="padding:22px 0;color:#8A867C;font-family:'Inter Tight',sans-serif;font-size:16px">No rows loaded. Every cell stays blank until the figures are read from chain.</td>
+            </tr>
+          </template>
+          <tr style="border-top:2px solid rgba(237,233,223,0.45)">
+            <td style="text-align:left;padding:14px 12px 14px 0;color:#EDE9DF;white-space:nowrap">since 2026-09-13</td>
+            <td style="text-align:right;padding:14px 12px;color:#EDE9DF">{{ sum.desk }}</td>
+            <td style="text-align:right;padding:14px 12px;color:#EDE9DF">{{ sum.pons }}</td>
+            <td style="text-align:right;padding:14px 12px;color:#EDE9DF">{{ sum.eth }}</td>
+            <td style="text-align:right;padding:14px 12px;color:#EDE9DF">{{ sum.fables }}</td>
+            <td style="text-align:right;padding:14px 12px;color:#6E6B63">-</td>
+            <td style="text-align:right;padding:14px 12px;color:#C9A646;font-weight:500">{{ sum.total }}</td>
+            <td style="text-align:right;padding:14px 0 14px 12px;color:#EDE9DF">{{ sum.vol }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin:14px 0 0;font-size:13px;color:#8A867C">All figures in USD unless marked. Pons fees valued at that day's ETH close (<span id="px_src" style="font-family:'JetBrains Mono',monospace">{{ pxSrc }}</span>).</p>
+  </section>
+
+  <section style="padding:clamp(56px,7vw,96px) 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(40px,6vw,96px)">
+    <div style="display:flex;flex-direction:column;gap:18px;border-top:1px solid rgba(237,233,223,0.22);padding-top:20px">
+      <span style="font-family:'Instrument Serif',serif;font-size:clamp(28px,2.6vw,36px);letter-spacing:-0.02em">{{ poolTitle }}</span>
+      <dl style="margin:0;display:flex;flex-direction:column">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">pool</dt><dd style="margin:0;display:flex;align-items:center;gap:10px">
+          <select onChange="{{ onPool }}" value="{{ poolSym }}" style="appearance:none;-webkit-appearance:none;background:transparent;color:#EDE9DF;border:1px solid rgba(237,233,223,0.3);border-radius:4px;padding:5px 28px 5px 10px;font:inherit;font-family:'JetBrains Mono',monospace;font-size:14px;cursor:pointer;background-image:url(&quot;data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M0 0l5 6 5-6z' fill='%23C9A646'/></svg>&quot;);background-repeat:no-repeat;background-position:right 10px center">
+            <option value="THRONE">THRONE / USDG</option>
+            <option value="MCD">MCD / USDG</option>
+            <option value="SFI">SFI / USDG</option>
+            <option value="GLDSTN">GLDSTN / USDG</option>
+            <option value="SHROOM">SHROOM / USDG</option>
+            <option value="XBOW">XBOW / USDG</option>
+            <option value="EARN">EARN / USDG</option>
+            <option value="BUN">BUN / USDG</option>
+            <option value="KSKD">KSKD / USDG</option>
+          </select>
+          <a href="{{ poolHref }}" target="_blank" rel="noopener" style="white-space:nowrap;color:#C9A646">↗</a></dd></div>
+        <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">price</dt><dd id="p_price" style="margin:0;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;color:{{ polColor }}">{{ pPrice }}</dd></div>
+        <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">pool liquidity</dt><dd id="p_liq" style="margin:0;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;color:{{ polColor }}">{{ pLiq }}</dd></div>
+        <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">24h volume</dt><dd id="p_vol" style="margin:0;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;color:{{ polColor }}">{{ pVol }}</dd></div>
+        <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">fdv</dt><dd id="p_fdv" style="margin:0;font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;color:{{ polColor }}">{{ pFdv }}</dd></div>
+        <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">protocol-owned share</dt><dd style="margin:0;font-family:'JetBrains Mono',monospace;color:#C9A646">{{ polShare }}</dd></div>
+        <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">fees to LPs, 24h</dt><dd style="margin:0;font-family:'JetBrains Mono',monospace;color:{{ fbColor }}">{{ fbFees24 }}</dd></div>
+        <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0;border-bottom:1px solid rgba(237,233,223,0.1)"><dt style="color:#8A867C">pool APR · Fables' figure</dt><dd style="margin:0;font-family:'JetBrains Mono',monospace;color:{{ fbColor }}">{{ fbApr }}</dd></div>
+        <div style="display:flex;justify-content:space-between;gap:20px;padding:11px 0"><dt style="color:#8A867C">source</dt><dd id="p_src" style="margin:0;font-family:'JetBrains Mono',monospace;font-size:14px;color:#8A867C;text-align:right">{{ pSrc }}</dd></div>
+      </dl>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:18px;border-top:1px solid rgba(237,233,223,0.22);padding-top:20px">
+      <span style="font-family:'Instrument Serif',serif;font-size:clamp(28px,2.6vw,36px);letter-spacing:-0.02em">The waterfall, weekly</span>
+      <ol style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:16px">
+        <li style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap"><span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#8A867C">1</span><span style="font-family:'Instrument Serif',serif;font-size:30px;line-height:1;letter-spacing:-0.02em">senior</span><span style="font-size:15px;color:#8A867C;white-space:nowrap">first claim</span></li>
+        <li style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;padding-left:28px"><span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#8A867C">2</span><span style="font-family:'Instrument Serif',serif;font-size:30px;line-height:1;letter-spacing:-0.02em">vlTHRONE lockers</span><span style="font-size:15px;color:#8A867C">published share of vote income</span></li>
+        <li style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;padding-left:56px"><span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#8A867C">3</span><span style="font-family:'Instrument Serif',serif;font-size:30px;line-height:1;letter-spacing:-0.02em;font-style:italic;color:#C9A646">the Court</span><span style="font-size:15px;color:#8A867C">keeps the rest, first loss</span></li>
+      </ol>
+      <div style="display:flex;justify-content:space-between;gap:20px;padding-top:14px;border-top:1px solid rgba(237,233,223,0.1)"><span style="color:#8A867C">status</span><span style="color:#C9A646;white-space:nowrap">senior opens November</span></div>
+    </div>
+  </section>
+
+
+  <footer style="border-top:1px solid rgba(237,233,223,0.4);padding:26px 0 48px;font-size:13px;line-height:1.7;color:#8A867C;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap">
+    <span style="max-width:110ch">THRONE · Robinhood Chain · figures are read from chain and the venue's public statistics</span>
+    <span style="font-family:'JetBrains Mono',monospace">stats · end</span>
+  </footer>
+
+</div>
+</div>
+
+
+<script src="../dc-lite.js?v=5"></script>
+<script src="../court.js?v=4"></script>
+<script>
+class Component extends DCLogic {
+  state = { d: null, pol: null, polErr: false, loadedAt: null, poolSym: 'THRONE', pp: null, ppErr: false };
+  POOLS = { THRONE: 'throne', MCD: 'mcd', SFI: 'sfi', GLDSTN: 'gldstn', SHROOM: 'shroom', XBOW: 'xbow', EARN: 'earn', BUN: 'bun', KSKD: 'kskd' };
+  onPool = (e) => { const sym = e.target.value; this.setState({ poolSym: sym, pp: null, ppErr: false }); if (sym !== 'THRONE') this.loadPartner(sym); };
+  loadPartner(sym) {
+    fetch('https://api.dexscreener.com/latest/dex/search?q=' + sym + '%20USDG')
+      .then(r => r.json())
+      .then(j => {
+        if (this.state.poolSym !== sym) return;
+        const ps = (j.pairs || []).filter(p => p.chainId === 'robinhood' && ((p.baseToken || {}).symbol || '').toUpperCase() === sym && /USDG/i.test((p.quoteToken || {}).symbol || ''))
+          .sort((a, b) => ((b.liquidity || {}).usd || 0) - ((a.liquidity || {}).usd || 0));
+        this.setState({ pp: ps[0] || null, ppErr: !ps[0] });
+      })
+      .catch(() => { if (this.state.poolSym === sym) this.setState({ ppErr: true }); });
+  }
+
+  componentDidMount() {
+    let n = 0;
+    const go = () => {
+      const cd = window.courtData;
+      if (cd && typeof cd.ledger === 'function') {
+        Promise.resolve(cd.ledger()).then(d => this.setState({ d, loadedAt: new Date() })).catch(() => {});
+      } else if (n++ < 20) this.t = setTimeout(go, 100);
+    };
+    go();
+    fetch('https://api.dexscreener.com/latest/dex/tokens/0x72dc556fff14115c077a540921e5F35499a4DCa7')
+      .then(r => r.json())
+      .then(j => {
+        const ps = (j.pairs || []).filter(p => p.chainId === 'robinhood')
+          .sort((a, b) => ((b.liquidity || {}).usd || 0) - ((a.liquidity || {}).usd || 0));
+        this.setState({ pol: ps[0] || null, polErr: !ps[0] });
+      })
+      .catch(() => this.setState({ polErr: true }));
+  }
+  componentWillUnmount() { clearTimeout(this.t); }
+
+  renderVals() {
+    const { d, pol } = this.state;
+    const DASH = '-';
+    const mon = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+    const fmtD = (s) => { const x = new Date(s + 'T00:00:00Z'); return x.getUTCDate() + ' ' + mon[x.getUTCMonth()]; };
+    const n2 = (v) => v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const usd2 = (v) => '$' + n2(v);
+    const usd0 = (v) => '$' + Math.round(v).toLocaleString('en-US');
+    const short = (v) => v >= 1e6 ? '$' + (v / 1e6).toFixed(2) + 'M' : v >= 1e3 ? '$' + (v / 1e3).toFixed(1) + 'k' : usd0(v);
+    const launch = Date.UTC(2026, 8, 13);
+    const dayNum = Math.floor((Date.now() - launch) / 864e5) + 1;
+
+    const rowsRaw = (d && d.rows) || [];
+    const deskOn = !!(d && d.desk !== false && rowsRaw.length);
+    const ponsOn = !!(d && d.pons && rowsRaw.length);
+    const fbOn = !!(d && d.fables && rowsRaw.length);
+    const fbs = d && d.fables && d.fables.stats;
+    const sum = (k) => rowsRaw.reduce((a, x) => a + (x[k] || 0), 0);
+    const peak = rowsRaw.reduce((a, x) => Math.max(a, x.users || 0), 0);
+    const GOLD = '#C9A646', DIM = '#6E6B63', MINT = '#39F194';
+
+    const rows = rowsRaw.slice().reverse().map(r => ({
+      d: r.d,
+      desk: deskOn ? n2(r.deskFee || 0) : DASH, deskC: deskOn ? '#EDE9DF' : DIM,
+      pons: ponsOn ? n2(r.ponsUsd || 0) : DASH, ponsC: ponsOn ? '#EDE9DF' : DIM,
+      eth: ponsOn ? (r.ponsEth || 0).toFixed(4) : DASH,
+      fables: r.fablesUsd == null ? DASH : n2(r.fablesUsd), fablesC: r.fablesUsd == null ? DIM : '#EDE9DF',
+      total: n2(r.total || 0),
+      vol: deskOn ? Math.round(r.deskVol || 0).toLocaleString('en-US') : DASH
+    }));
+
+    const at = this.state.loadedAt;
+    const hhmm = at ? String(at.getUTCHours()).padStart(2, '0') + ':' + String(at.getUTCMinutes()).padStart(2, '0') : '';
+    const blk = d && d.pons && d.pons.lastBlock != null ? Number(d.pons.lastBlock).toLocaleString('en-US') : DASH;
+
+    const live = !!d;
+    const sym = this.state.poolSym, isT = sym === 'THRONE', pp = this.state.pp;
+    const px = isT ? (pol && pol.priceUsd ? Number(pol.priceUsd) : null) : (pp && pp.priceUsd ? Number(pp.priceUsd) : null);
+    const liq = isT ? (fbs && fbs.tvlUsd != null ? fbs.tvlUsd : null) : (pp && pp.liquidity ? pp.liquidity.usd : null);
+    const vol = isT ? (fbs && fbs.volumeUsd != null ? fbs.volumeUsd : null) : (pp && pp.volume ? pp.volume.h24 : null);
+    const fdv = isT ? (pol && pol.fdv ? pol.fdv : null) : (pp && pp.fdv ? pp.fdv : null);
+
+    return {
+      dayNum,
+      liveLabel: live ? 'live' : 'awaiting data',
+      liveColor: live ? MINT : '#8A867C',
+      deskMark: deskOn ? MINT : 'transparent', ponsMark: ponsOn ? MINT : 'transparent', totalMark: live ? MINT : 'transparent',
+      deskColor: deskOn ? GOLD : DIM, ponsColor: ponsOn ? GOLD : DIM, totalColor: live ? GOLD : DIM,
+      tDesk: deskOn ? usd2(sum('deskFee')) : DASH,
+      deskRange: rowsRaw.length ? fmtD(rowsRaw[0].d) + ' → ' + fmtD(rowsRaw[rowsRaw.length - 1].d) : DASH,
+      tPons: ponsOn ? usd2(sum('ponsUsd')) : DASH,
+      fablesMark: fbOn ? MINT : 'transparent', fablesColor: fbOn ? GOLD : DIM,
+      tFables: fbOn ? usd2(sum('fablesUsd')) : 'unreachable',
+      tPoolFees: fbOn ? usd2(sum('poolFee')) : DASH,
+      polShare: isT && d && d.fables ? Math.round(d.fables.share * 100) + '%' : DASH,
+      fbColor: isT && fbs ? GOLD : DIM,
+      fbFees24: isT && fbs ? usd2(fbs.feesUsd || 0) : DASH,
+      fbApr: isT && fbs && fbs.aprPct != null ? Number(fbs.aprPct).toFixed(2) + '%' : DASH,
+      ponsEth: d && d.pons && d.pons.credited != null ? Number(d.pons.credited).toFixed(4) : DASH,
+      ponsClaim: d && d.pons && d.pons.claimable != null ? Number(d.pons.claimable).toFixed(4) : DASH,
+      tTotal: live && rowsRaw.length ? usd2(sum('total')) : DASH,
+      tDays: rowsRaw.length || DASH,
+      tVol: deskOn ? short(sum('deskVol')) : DASH,
+      tUsers: deskOn ? peak.toLocaleString('en-US') : DASH,
+      srcLine: live ? 'venue statistics + chain · updated ' + hhmm + ' UTC · pons scanned to block ' + blk : 'venue statistics + chain · waiting for the data to load',
+      rows,
+      noRows: rows.length === 0,
+      sum: {
+        desk: deskOn ? n2(sum('deskFee')) : DASH,
+        pons: ponsOn ? n2(sum('ponsUsd')) : DASH,
+        eth: ponsOn ? sum('ponsEth').toFixed(4) : DASH,
+        fables: fbOn ? n2(sum('fablesUsd')) : DASH,
+        total: rowsRaw.length ? n2(sum('total')) : DASH,
+        vol: deskOn ? Math.round(sum('deskVol')).toLocaleString('en-US') : DASH
+      },
+      pxSrc: (d && d.eth && d.eth.src) || DASH,
+      poolSym: sym,
+      onPool: this.onPool,
+      poolTitle: isT ? 'Protocol-owned liquidity' : 'Partner pool · on Fables',
+      poolHref: 'https://www.fables.fi/markets/' + (this.POOLS[sym] || 'throne'),
+      polColor: px != null ? GOLD : DIM,
+      pPrice: px != null ? '$' + Number(px).toPrecision(3) : DASH,
+      pLiq: liq != null ? short(liq) : DASH,
+      pVol: vol != null ? short(vol) : DASH,
+      pFdv: fdv != null ? short(fdv) : DASH,
+      pSrc: isT ? ((fbs || pol) ? 'fables relay' + (pol ? ' + dexscreener' : '') : (this.state.polErr ? 'fables relay · unreachable' : 'loading')) : (pp ? 'dexscreener · deepest USDG pair' : (this.state.ppErr ? 'dexscreener · no pair found' : 'dexscreener · loading'))
+    };
+  }
+}
+window.Component = Component;
+</script>
+</body>
+</html>
