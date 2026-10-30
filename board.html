@@ -39,6 +39,12 @@ h1 .i{position:relative;display:inline-block}
 h1 .i img{position:absolute;left:50%;top:-.06em;width:.3em;height:.3em;transform:translateX(-50%)}
 .sub{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:13px;color:var(--dim);flex-wrap:wrap}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--mint);flex-shrink:0}
+.quick{margin-top:28px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:12px 16px;border:1px solid rgba(57,241,148,.35);border-radius:3px;background:var(--panel2)}
+.quick .ql{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mint);margin-right:6px}
+.quick .qb{height:36px;padding:0 14px;border-radius:3px;border:1px solid rgba(255,255,255,.18);background:transparent;color:var(--fg);font:600 13px var(--sans);cursor:pointer}
+.quick .qb:hover{border-color:var(--mint);color:var(--mint)}
+.quick .qs{font-size:11.5px;color:var(--faint);margin-left:auto}
+@media (max-width:720px){.quick .qs{margin-left:0;width:100%}}
 .hero{margin-top:32px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border:1px solid var(--line);border-radius:3px;overflow:hidden}
 @media (max-width:720px){.hero{grid-template-columns:1fr}}
 .side{padding:40px clamp(20px,3vw,44px) 36px;display:flex;flex-direction:column;gap:28px;min-width:0}
@@ -113,6 +119,7 @@ h1 .i img{position:absolute;left:50%;top:-.06em;width:.3em;height:.3em;transform
 .line{padding:14px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:13px}
 .line:last-child{border-bottom:0}
 .line .d{color:var(--dim)}
+.lnk.on{color:var(--mint);text-decoration-color:var(--mint)}
 .lnk{color:var(--fg);cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(242,244,240,.3);font-family:var(--sans)}
 .lnk:hover{color:var(--mint)}
 .chart{padding:20px 20px 14px}
@@ -200,14 +207,14 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
 .soon{font-family:var(--mono);font-size:11px;color:var(--faint);border:1px solid var(--line2);border-radius:2px;padding:1px 6px;margin-left:6px}
 /* leaderboard */
 .lb{display:flex;flex-direction:column}
-.lb .r{display:grid;grid-template-columns:36px 28px minmax(0,1fr) 90px 100px 110px 56px;gap:10px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:12.5px}
+.lb .r{display:grid;grid-template-columns:36px 28px minmax(0,1fr) 90px 90px 100px 110px 56px;gap:10px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:12.5px}
 .lb .r:last-child{border-bottom:0}
 .lb .r.h{color:var(--dim);font-size:11px;text-transform:lowercase}
 .lb .r .n{text-align:right}
 .lb .r.me{background:rgba(57,241,148,.10);border-left:3px solid var(--mint);color:var(--mint);font-weight:600;font-size:14px}
 .lb .r img{width:18px;height:18px;display:block}
 .lb .r .ell{color:var(--faint);grid-column:1/-1;text-align:center;padding:4px 0}
-@media (max-width:720px){.lb .r{grid-template-columns:30px 22px minmax(0,1fr) 80px 56px}.lb .r .hide-m{display:none}}
+@media (max-width:720px){.lb .r{grid-template-columns:30px 22px minmax(0,1fr) 70px 70px 56px}.lb .r .hide-m{display:none}}
 /* seat on top */
 #seatWrap{margin-top:18px}
 #seat .card.strip{flex-direction:row;align-items:center;gap:20px;padding:18px 24px}
@@ -384,6 +391,13 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
   </div>
 
   <!-- live hero -->
+  <div class="quick" id="quickBar">
+    <span class="ql">your seat</span>
+    <button class="qb" id="qName">Set your name</button>
+    <button class="qb" id="qSwitch">Switch side</button>
+    <button class="qb" id="qCheckin">Daily check-in</button>
+    <span class="qs mono" id="qNote">one free signature each, no transaction</span>
+  </div>
   <div class="hero" id="liveHero">
     <div class="side w">
       <div class="top">
@@ -439,7 +453,7 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     </div>
 
     <div class="sec full">
-      <div class="sech"><b>Leaderboard</b><span>top 20 by season points · <span class="lnk" id="piecesToggle">show pieces by side</span></span></div>
+      <div class="sech"><b>Leaderboard</b><span>top 20 by <span class="lnk on" id="sortSeason">season</span> · <span class="lnk" id="sortWeek">this week</span> · <span class="lnk" id="piecesToggle">show pieces by side</span></span></div>
       <div class="card lb" id="lb"></div>
       <div class="pieces hidden" id="piecesWrap" style="margin-top:14px">
         <div class="card"><div class="ph"><span>white</span><span>pts</span></div><div id="wPieces"></div></div>
@@ -766,11 +780,11 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
     var el=$('lb'); if(!el||!board) return;
     var rows=[]; ['white','black'].forEach(function(sd){ (board.pieces[sd]||[]).forEach(function(p){ rows.push(Object.assign({side:sd},p)); }); });
     Object.keys(board.wallets||{}).forEach(function(a){ var w=board.wallets[a]; if(w.season>0 && !rows.some(function(r){return r.addr===a;})) rows.push({addr:a,side:w.side,piece:w.piece,rank:w.rank,season:w.season,week:w.week,vol:w.vol,mult:w.mult}); });
-    rows.sort(function(a,b){ return b.season-a.season; });
+    rows.sort(function(a,b){ return lbSort==='week' ? ((b.week||0)-(a.week||0)) : (b.season-a.season); });
     if(!rows.length){ el.innerHTML='<div class="empty">no points yet this season.</div>'; return; }
-    var h='<div class="r h"><span>#</span><span></span><span>wallet</span><span class="n">pts</span><span class="n hide-m">$ traded</span><span class="hide-m">piece</span><span class="n">mult</span></div>';
+    var h='<div class="r h"><span>#</span><span></span><span>wallet</span><span class="n">season</span><span class="n">week</span><span class="n hide-m">$ traded</span><span class="hide-m">piece</span><span class="n">mult</span></div>';
     var top=rows.slice(0,20), meIdx=rows.findIndex(function(r){return wallet && r.addr===wallet;});
-    var line=function(r,i){ var me=wallet&&r.addr===wallet; return '<div class="r'+(me?' me':'')+'"><span>'+(i+1)+'</span><img src="/arena/emblem-'+r.side+'-128.svg" alt=""><span style="overflow:hidden;text-overflow:ellipsis">'+(me?'you · ':'')+disp(r.addr)+'</span><span class="n">'+fmt(r.season)+'</span><span class="n hide-m">$'+fmt(r.vol||0)+'</span><span class="hide-m">'+(r.piece?r.piece+' #'+r.rank:'—')+'</span><span class="n" style="color:'+(r.mult>1?'var(--gold)':'inherit')+'">'+(r.mult||1)+'x</span></div>'; };
+    var line=function(r,i){ var me=wallet&&r.addr===wallet; return '<div class="r'+(me?' me':'')+'"><span>'+(i+1)+'</span><img src="/arena/emblem-'+r.side+'-128.svg" alt=""><span style="overflow:hidden;text-overflow:ellipsis">'+(me?'you · ':'')+disp(r.addr)+'</span><span class="n">'+fmt(r.season)+'</span><span class="n">'+fmt(r.week||0)+'</span><span class="n hide-m">$'+fmt(r.vol||0)+'</span><span class="hide-m">'+(r.piece?r.piece+' #'+r.rank:'—')+'</span><span class="n" style="color:'+(r.mult>1?'var(--gold)':'inherit')+'">'+(r.mult||1)+'x</span></div>'; };
     top.forEach(function(r,i){ h+=line(r,i); });
     if(meIdx>=20){ h+='<div class="r"><span class="ell">···</span></div>'+line(rows[meIdx],meIdx); }
     el.innerHTML=h;
@@ -1016,6 +1030,18 @@ footer .l{display:flex;gap:28px}footer .l a{color:var(--dim)}
   $('pickBtn').addEventListener('click', function(){ openModal('pick'); });
   $('keepBtn').addEventListener('click', function(){ if(mine) choose(mine.side); });
   $('switchBtn').addEventListener('click', function(){ openModal('switch'); });
+  // ---- leaderboard sort (season vs this week)
+  var lbSort='season';
+  $('sortSeason').addEventListener('click', function(){ lbSort='season'; $('sortSeason').classList.add('on'); $('sortWeek').classList.remove('on'); renderLeaderboard(); });
+  $('sortWeek').addEventListener('click', function(){ lbSort='week'; $('sortWeek').classList.add('on'); $('sortSeason').classList.remove('on'); renderLeaderboard(); });
+  // ---- quick actions (visible before connecting; each one connects first if needed)
+  async function ensureWallet(){ if(!wallet){ await connect(); } if(wallet && !mine) await loadMine(); return !!wallet; }
+  $('qName').addEventListener('click', async function(){ if(!(await ensureWallet())) return; openNameModal(1); });
+  $('qSwitch').addEventListener('click', async function(){ if(!(await ensureWallet())) return;
+    var lk=(board&&board.sideLock)||{}; if(mine && mine.switched){ toast('You already switched this season.'); return; }
+    if(lk.locked){ toast('Sides are locked. They open again for the first 48 hours of next week.'); return; }
+    openModal(mine && mine.source==='picked' ? 'switch' : 'pick'); });
+  $('qCheckin').addEventListener('click', async function(){ if(!(await ensureWallet())) return; doCheckin(); });
 
 
   // ---- UX bits: ranks toggle, tap hint, local time ----
