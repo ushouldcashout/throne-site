@@ -7,9 +7,9 @@
 <link rel="apple-touch-icon" sizes="256x256" href="/throne-favicon-256.png">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>THRONE · the Yield Court of Robinhood Chain</title>
-<meta name="description" content="THRONE is the Yield Court of Robinhood Chain: a USDG vault paid by a perp desk, a launch pool and a vote market, settled weekly on a public stats page.">
+<meta name="description" content="THRONE is the Yield Court of Robinhood Chain: a two-sided USDG vault on Morpho, paid by a perp desk and a launch pool, with every figure on a public stats page.">
 <meta property="og:title" content="THRONE · the Yield Court of Robinhood Chain">
-<meta property="og:description" content="A USDG vault paid by a perp desk, a launch pool and a vote market. Settled weekly. Every figure read from chain.">
+<meta property="og:description" content="A two-sided USDG vault on Morpho, paid by a perp desk and a launch pool. Every figure read from chain.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://throne.network/og.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -46,7 +46,6 @@ a:hover{color:#C9A646}
       <a href="#court" style="text-decoration:none;color:#B5B0A5" class="hv">the Court</a>
       <a href="court/" style="text-decoration:none;color:#B5B0A5" class="hv">stats</a>
       <a href="terminal/" style="text-decoration:none;color:#B5B0A5" class="hv">terminal</a>
-      <a href="court/bounty/" style="text-decoration:none;color:#B5B0A5" class="hv">Bounty</a>
       <a href="app/" style="text-decoration:none;color:#B5B0A5" class="hv">app</a>
       <a href="https://trade.throne.network" style="text-decoration:none;color:#B5B0A5" class="hv">desk</a>
       <a href="https://docs.throne.network" style="text-decoration:none;color:#B5B0A5" class="hv">docs</a>
@@ -60,7 +59,7 @@ a:hover{color:#C9A646}
         <span style="font-size:clamp(44px,5.6vw,86px);color:#B5B0A5">The Court collects.</span>
         <span style="font-size:clamp(54px,7vw,106px);font-style:italic;color:#C9A646">Depositors get paid first.</span>
       </h1>
-      <p style="margin:0;max-width:44ch;font-size:clamp(18px,1.4vw,21px);line-height:1.55;color:#B5B0A5;text-wrap:pretty">Fees, votes and emissions from where stocks trade on chain, caught in one house, paid out weekly.</p>
+      <p style="margin:0;max-width:44ch;font-size:clamp(18px,1.4vw,21px);line-height:1.55;color:#B5B0A5;text-wrap:pretty">Morpho's lending rate plus the fees from where stocks trade on chain, caught in one vault. Depositors are paid first.</p>
       <div style="display:flex;gap:40px;flex-wrap:wrap;font-size:19px">
         <a href="court/" style="white-space:nowrap">See the stats →</a>
         <a href="#key" style="white-space:nowrap">Take the key →</a>
@@ -104,16 +103,6 @@ a:hover{color:#C9A646}
           <span style="font-family:'JetBrains Mono',monospace;font-feature-settings:'zero' 1;font-size:13px;color:#8A867C">on the 20% first-loss side · not open yet</span>
           <a href="terminal/" style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#39F194;text-decoration:underline;text-underline-offset:3px">terminal →</a>
         </div>
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#39F194"></span>votes + bounty</span>
-          <span style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:#39F194;padding-top:6px">coming soon</span>
-          <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#8A867C">with Fables' token</span>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <span style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C"><span style="width:12px;height:2px;background:#39F194"></span>vlTHRONE income</span>
-          <span style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:#39F194;padding-top:6px">coming soon</span>
-          <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#8A867C">50% of vote income to lockers</span>
-        </div>
       </div>
       <div style="font-size:12px;color:#8A867C;font-family:'JetBrains Mono',monospace">as of <span id="asof"><span id="asofV">·</span></span></div>
     </div>
@@ -124,40 +113,40 @@ a:hover{color:#C9A646}
     <div style="display:flex;flex-direction:column;gap:clamp(32px,4vw,56px)">
       <div style="display:grid;grid-template-columns:clamp(56px,9vw,140px) minmax(0,1fr);align-items:baseline">
         <span style="font-family:'Instrument Serif',serif;font-size:clamp(32px,3.4vw,52px);color:#8A867C">I.</span>
-        <p style="margin:0;max-width:34ch;font-family:'Instrument Serif',serif;font-size:clamp(28px,3vw,46px);line-height:1.18;letter-spacing:-0.015em;text-wrap:pretty">Every chain that pays voters grows three things on top of its DEX: a vault that puts deposits to work, a block that owns the votes, and a market where those votes are bought. Whoever holds all three holds the yield of the chain.</p>
+        <p style="margin:0;max-width:34ch;font-family:'Instrument Serif',serif;font-size:clamp(28px,3vw,46px);line-height:1.18;letter-spacing:-0.015em;text-wrap:pretty">Every dollar on a chain wants two things: a rate, and someone standing in front of the loss.</p>
       </div>
       <div style="display:grid;grid-template-columns:clamp(56px,9vw,140px) minmax(0,1fr);align-items:baseline">
         <span style="font-family:'Instrument Serif',serif;font-size:clamp(32px,3.4vw,52px);color:#8A867C">II.</span>
-        <p style="margin:0;max-width:34ch;font-family:'Instrument Serif',serif;font-size:clamp(28px,3vw,46px);line-height:1.18;letter-spacing:-0.015em;text-wrap:pretty">Robinhood Chain is about to run that play with Fables. <em style="color:#B5B0A5">Nobody is sitting in the chair.</em></p>
+        <p style="margin:0;max-width:34ch;font-family:'Instrument Serif',serif;font-size:clamp(28px,3vw,46px);line-height:1.18;letter-spacing:-0.015em;text-wrap:pretty">Robinhood Chain has the rate in Morpho. <em style="color:#B5B0A5">Nobody is standing in front of it.</em></p>
       </div>
       <div style="display:grid;grid-template-columns:clamp(56px,9vw,140px) minmax(0,1fr);align-items:baseline">
         <span style="font-family:'Instrument Serif',serif;font-size:clamp(32px,3.4vw,52px);color:#8A867C">III.</span>
-        <p style="margin:0;max-width:34ch;font-family:'Instrument Serif',serif;font-size:clamp(28px,3vw,46px);line-height:1.18;letter-spacing:-0.015em;font-style:italic;color:#C9A646">The block is our partner Sink's. The vault and the market are ours.</p>
+        <p style="margin:0;max-width:34ch;font-family:'Instrument Serif',serif;font-size:clamp(28px,3vw,46px);line-height:1.18;letter-spacing:-0.015em;font-style:italic;color:#C9A646">Senior takes the rate. The Court stands in front.</p>
       </div>
     </div>
     <div style="margin-top:clamp(56px,7vw,104px);border-top:1px solid rgba(237,233,223,0.22)">
       <div style="display:grid;grid-template-columns:clamp(56px,9vw,140px) minmax(0,1fr);border-bottom:1px solid rgba(237,233,223,0.12);padding:26px 0">
         <span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#8A867C;padding-top:10px">01</span>
         <div style="display:flex;flex-wrap:wrap;gap:12px 40px;align-items:baseline">
-          <span style="font-family:'Instrument Serif',serif;font-size:clamp(30px,3vw,44px);letter-spacing:-0.02em;min-width:9ch">Take the votes</span>
-          <span style="flex:1 1 380px;max-width:58ch;color:#B5B0A5;text-wrap:pretty">Our partner Sink locks FABLES and votes as one block; the Court is its anchor holder; $THRONE lockers point it.</span>
-          <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;white-space:nowrap">with Fables' token</span>
+          <span style="font-family:'Instrument Serif',serif;font-size:clamp(30px,3vw,44px);letter-spacing:-0.02em;min-width:9ch">Lend through Morpho</span>
+          <span style="flex:1 1 380px;max-width:58ch;color:#B5B0A5;text-wrap:pretty">USDG into Senior sits in a Morpho vault we curate, spread across Robinhood Chain's lending markets, withdrawable to available liquidity.</span>
+          <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;white-space:nowrap">audited code</span>
         </div>
       </div>
       <div style="display:grid;grid-template-columns:clamp(56px,9vw,140px) minmax(0,1fr);border-bottom:1px solid rgba(237,233,223,0.12);padding:26px 0">
         <span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#8A867C;padding-top:10px">02</span>
         <div style="display:flex;flex-wrap:wrap;gap:12px 40px;align-items:baseline">
-          <span style="font-family:'Instrument Serif',serif;font-size:clamp(30px,3vw,44px);letter-spacing:-0.02em;min-width:9ch">Run the market</span>
-          <span style="flex:1 1 380px;max-width:58ch;color:#B5B0A5;text-wrap:pretty">Bounty is where projects pay for votes. Voters get paid; the Court keeps 5%.</span>
-          <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;white-space:nowrap">not live</span>
+          <span style="font-family:'Instrument Serif',serif;font-size:clamp(30px,3vw,44px);letter-spacing:-0.02em;min-width:9ch">Stand in front</span>
+          <span style="flex:1 1 380px;max-width:58ch;color:#B5B0A5;text-wrap:pretty">The Court, the junior side, takes the first loss on Senior and is paid for standing there.</span>
+          <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;white-space:nowrap">first loss</span>
         </div>
       </div>
       <div style="display:grid;grid-template-columns:clamp(56px,9vw,140px) minmax(0,1fr);border-bottom:1px solid rgba(237,233,223,0.22);padding:26px 0">
         <span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#8A867C;padding-top:10px">03</span>
         <div style="display:flex;flex-wrap:wrap;gap:12px 40px;align-items:baseline">
           <span style="font-family:'Instrument Serif',serif;font-size:clamp(30px,3vw,44px);letter-spacing:-0.02em;min-width:9ch">Pay depositors first</span>
-          <span style="flex:1 1 380px;max-width:58ch;color:#B5B0A5;text-wrap:pretty">USDG into Senior sits in Morpho with first claim on everything the Court earns. The Court takes the first loss.</span>
-          <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;white-space:nowrap">November</span>
+          <span style="flex:1 1 380px;max-width:58ch;color:#B5B0A5;text-wrap:pretty">Senior has first claim on what the vault earns: Morpho's rate, desk fees and pons fees.</span>
+          <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;white-space:nowrap">capped at launch</span>
         </div>
       </div>
     </div>
@@ -199,13 +188,8 @@ a:hover{color:#C9A646}
         <span style="font-family:'Instrument Serif',serif;font-size:clamp(36px,5vw,80px);line-height:0.95;letter-spacing:-0.035em">Senior's claim</span>
         <span style="font-size:16px;color:#8A867C;white-space:nowrap">first call on Court income</span>
       </li>
-      <li style="display:flex;align-items:baseline;gap:clamp(16px,2vw,28px);flex-wrap:wrap;padding-left:clamp(40px,6vw,80px)">
-        <span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#8A867C">02</span>
-        <span style="font-family:'Instrument Serif',serif;font-size:clamp(36px,5vw,80px);line-height:0.95;letter-spacing:-0.035em">vlTHRONE lockers</span>
-        <span style="font-size:16px;color:#8A867C;white-space:nowrap">their published share of vote income</span>
-      </li>
       <li style="display:flex;align-items:baseline;gap:clamp(16px,2vw,28px);flex-wrap:wrap;padding-left:clamp(60px,9vw,120px)">
-        <span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#8A867C">03</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#8A867C">02</span>
         <span style="font-family:'Instrument Serif',serif;font-size:clamp(36px,5vw,80px);line-height:0.95;letter-spacing:-0.035em;font-style:italic;color:#C9A646">the Court keeps the rest</span>
       </li>
     </ol>
@@ -230,17 +214,7 @@ a:hover{color:#C9A646}
           <span style="display:flex;justify-content:flex-end;align-items:center;gap:8px;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#EDE9DF;text-align:right"><span style="width:12px;height:2px;background:#39F194"></span>live</span>
         </div>
       
-        <div style="display:grid;grid-template-columns:minmax(0,0.9fr) minmax(0,2fr) minmax(0,0.8fr);gap:24px;padding:20px 0;align-items:baseline">
-          <span style="font-family:'Instrument Serif',serif;font-size:clamp(24px,2.2vw,32px);letter-spacing:-0.015em">votes</span>
-          <span style="color:#B5B0A5;text-wrap:pretty">Fees and incentives earned by the Court's vlSINK votes on Fables emissions.</span>
-          <span style="display:flex;justify-content:flex-end;align-items:center;gap:8px;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;text-align:right"><span style="width:0px;height:2px;background:#39F194"></span>with Fables' token</span>
-        </div>
       
-        <div style="display:grid;grid-template-columns:minmax(0,0.9fr) minmax(0,2fr) minmax(0,0.8fr);gap:24px;padding:20px 0;align-items:baseline">
-          <span style="font-family:'Instrument Serif',serif;font-size:clamp(24px,2.2vw,32px);letter-spacing:-0.015em">Bounty</span>
-          <span style="color:#B5B0A5;text-wrap:pretty">The Court keeps 5% of what projects pay voters on the Bounty market.</span>
-          <span style="display:flex;justify-content:flex-end;align-items:center;gap:8px;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8A867C;text-align:right"><span style="width:0px;height:2px;background:#39F194"></span>with Fables' token</span>
-        </div>
       
         <div style="display:grid;grid-template-columns:minmax(0,0.9fr) minmax(0,2fr) minmax(0,0.8fr);gap:24px;padding:20px 0;align-items:baseline">
           <span style="font-family:'Instrument Serif',serif;font-size:clamp(24px,2.2vw,32px);letter-spacing:-0.015em">pool fees</span>
@@ -257,10 +231,6 @@ a:hover{color:#C9A646}
       <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px clamp(24px,4vw,64px);padding:18px 0;border-bottom:1px solid rgba(237,233,223,0.12)">
         <span style="font-family:'Instrument Serif',serif;font-size:clamp(72px,9vw,128px);line-height:0.9;letter-spacing:-0.04em;min-width:4.2ch">HOLD</span>
         <span style="flex:1 1 360px;max-width:52ch;font-size:clamp(18px,1.4vw,21px);color:#B5B0A5;text-wrap:pretty">Trade it on pons. Its swap fees feed Senior and buy back $THRONE.</span>
-      </div>
-      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px clamp(24px,4vw,64px);padding:18px 0;border-bottom:1px solid rgba(237,233,223,0.12)">
-        <span style="font-family:'Instrument Serif',serif;font-size:clamp(72px,9vw,128px);line-height:0.9;letter-spacing:-0.04em;min-width:4.2ch">LOCK</span>
-        <span style="flex:1 1 360px;max-width:52ch;font-size:clamp(18px,1.4vw,21px);color:#B5B0A5;text-wrap:pretty">Lock for <span style="font-family:'JetBrains Mono',monospace;color:#C9A646">16 weeks</span> as vlTHRONE. Point the Court's votes each epoch and take the published locker share.</span>
       </div>
       <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px clamp(24px,4vw,64px);padding:18px 0">
         <span style="font-family:'Instrument Serif',serif;font-size:clamp(72px,9vw,128px);line-height:0.9;letter-spacing:-0.04em;min-width:4.2ch">STAKE</span>
@@ -283,12 +253,12 @@ a:hover{color:#C9A646}
       
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:12px clamp(32px,5vw,80px);padding:28px 0;border-top:1px solid rgba(237,233,223,0.12)">
           <dt style="font-family:'Instrument Serif',serif;font-size:clamp(28px,2.6vw,38px);line-height:1.1;letter-spacing:-0.02em">What is the Court?</dt>
-          <dd style="margin:0;max-width:48ch;color:#B5B0A5;text-wrap:pretty;padding-top:6px">A vault with two sides on Robinhood Chain. It collects fees, votes and emissions in one place and pays USDG depositors first, every week.</dd>
+          <dd style="margin:0;max-width:48ch;color:#B5B0A5;text-wrap:pretty;padding-top:6px">A vault with two sides on Robinhood Chain. It puts USDG to work in Morpho, adds the fees from the desk and the THRONE pool, and pays Senior first.</dd>
         </div>
       
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:12px clamp(32px,5vw,80px);padding:28px 0;border-top:1px solid rgba(237,233,223,0.12)">
           <dt style="font-family:'Instrument Serif',serif;font-size:clamp(28px,2.6vw,38px);line-height:1.1;letter-spacing:-0.02em">Where does the money come from?</dt>
-          <dd style="margin:0;max-width:48ch;color:#B5B0A5;text-wrap:pretty;padding-top:6px">Desk fees and pons swap fees today. Fables votes and the Bounty market once Fables' token is live. Every source is a row on the stats page.</dd>
+          <dd style="margin:0;max-width:48ch;color:#B5B0A5;text-wrap:pretty;padding-top:6px">Morpho's lending rate, plus desk fees, pons swap fees and the Court's own pool fees. Every source is a row on the stats page.</dd>
         </div>
       
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:12px clamp(32px,5vw,80px);padding:28px 0;border-top:1px solid rgba(237,233,223,0.12)">
@@ -298,12 +268,12 @@ a:hover{color:#C9A646}
       
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:12px clamp(32px,5vw,80px);padding:28px 0;border-top:1px solid rgba(237,233,223,0.12)">
           <dt style="font-family:'Instrument Serif',serif;font-size:clamp(28px,2.6vw,38px);line-height:1.1;letter-spacing:-0.02em">Why do I need $THRONE?</dt>
-          <dd style="margin:0;max-width:48ch;color:#B5B0A5;text-wrap:pretty;padding-top:6px">It is the key. Lock it for 16 weeks to point the votes, stake it alongside USDG to sit on the junior side.</dd>
+          <dd style="margin:0;max-width:48ch;color:#B5B0A5;text-wrap:pretty;padding-top:6px">Stake it alongside your USDG to sit on the junior side. Senior needs none.</dd>
         </div>
       
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:12px clamp(32px,5vw,80px);padding:28px 0;border-top:1px solid rgba(237,233,223,0.12)">
           <dt style="font-family:'Instrument Serif',serif;font-size:clamp(28px,2.6vw,38px);line-height:1.1;letter-spacing:-0.02em">When can I deposit?</dt>
-          <dd style="margin:0;max-width:48ch;color:#B5B0A5;text-wrap:pretty;padding-top:6px">Senior opens in November as a capped vault. Caps lift after audit.</dd>
+          <dd style="margin:0;max-width:48ch;color:#B5B0A5;text-wrap:pretty;padding-top:6px">Senior opens as a capped vault. Caps lift after audit.</dd>
         </div>
       
     </dl>
